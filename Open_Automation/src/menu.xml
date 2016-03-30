@@ -1,0 +1,45 @@
+<menu>
+	<!-- this shows you how to add a new menu item underneath virtual -->
+	<menuitem>
+		<!-- specify the menuid of the parent you want to place the new menu(s) under -->
+		<menuid>1000</menuid>
+		<children>
+			<menuitem>
+				<!-- all the new menu ids, i selected arbitrarily, when you are ready to validate your module,
+				you will be provided a block of integers reserved exclusively for you, until then for development
+				purposes i'd recommend using really large numbers just to avoid collision -->
+				<menuid>12000</menuid>
+				<label>Random Menu 1</label>
+				<path>random_menu_1/</path>
+				<op>no_check</op>
+				<url>modules/GenericModule.swf</url>
+				<leftNavType>backend_provided</leftNavType>
+			</menuitem>
+			<menuitem>
+				<menuid>12001</menuid>
+				<label>Random Menu 2</label>
+				<path>random_menu_2/</path>
+				<op>no_check</op>
+				<url>modules/GenericModule.swf</url>
+				<leftNavType>backend_provided</leftNavType>
+			</menuitem>
+		</children>
+	</menuitem>
+	<!-- this shows you how to add an entirely new menu -->
+	<menuitem>
+		<menuid>11000</menuid>
+		<label>Dummy Category</label>
+		<path>dummy_cat/</path>
+		<op>no_check</op>
+		<children>
+			<menuitem>
+				<menuid>11001</menuid>
+				<label>Dummy Menu 1</label>
+				<path>dummy_menu_1/</path>
+				<op>no_check</op>
+				<url>modules/GenericModule.swf</url>
+				<leftNavType>backend_provided</leftNavType>
+			</menuitem>
+		</children>
+	</menuitem>
+</menu>

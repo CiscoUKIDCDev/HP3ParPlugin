@@ -1,0 +1,8 @@
+<ManagedReport>
+	<ID>foo.test.cloudsense.report</ID>
+	<Type>Foo Test Cloudsense Report</Type>
+	<ImplFile>foo_test_report.report</ImplFile>
+	<MenuID>60</MenuID>
+	<InputContext>7</InputContext>
+</ManagedReport>
+
