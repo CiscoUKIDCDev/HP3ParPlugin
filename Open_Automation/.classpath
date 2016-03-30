@@ -18,5 +18,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/ucsd-rest-sdk/ucsd-rest-api-sdk-v2.jar"/>
+	<classpathentry kind="lib" path="lib/ucsd-httprequest/httpRequest-ucsd-1.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Users/matt/Documents/UCS%20Director%20JavaDoc/httpRequest%20Docs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
