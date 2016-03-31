@@ -8,8 +8,8 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
 
 public class VolumeReport extends CloupiaReport {
-	public final static String REPORT_NAME = "Volumes";
-	public final static String REPORT_LABEL = "List of Volumes";
+	public final static String REPORT_NAME = "HP3ParVolumes";
+	public final static String REPORT_LABEL = "Volumes";
 	
 	public VolumeReport () {
 		super();

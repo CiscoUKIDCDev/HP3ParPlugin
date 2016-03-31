@@ -39,8 +39,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		AbstractTask[] task = new AbstractTask[1];
 		task[0] = new CreateVolume();
 		// task[1] = new HP3ParDeleteVolume();
-		// return task;
-		return null;
+		return task;
+		//return null;
 	}
 
 	@Override
