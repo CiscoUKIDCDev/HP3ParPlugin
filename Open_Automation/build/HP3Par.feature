@@ -1,5 +1,5 @@
 {
-      "jars":  [ 	"features/feature-HP3Par.jar", 
+      "jars":  [ 	"features/HP3Par-plugin.jar", 
       			"features/HP3Par/lib/jsch/jsch-0.1.45.jar", 
       			"features/HP3Par/lib/apache-commons-httpclient/httpclient-4.5.1.jar", 
       			"features/HP3Par/lib/apache-commons-httpclient/httpcore-4.4.3.jar", 

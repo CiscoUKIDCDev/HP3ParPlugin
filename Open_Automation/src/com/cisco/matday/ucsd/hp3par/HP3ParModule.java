@@ -39,8 +39,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		AbstractTask[] task = new AbstractTask[1];
 		task[0] = new CreateVolume();
 		// task[1] = new HP3ParDeleteVolume();
-		return task;
-		// return null;
+		// return task;
+		return null;
 	}
 
 	@Override
@@ -112,9 +112,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			 * MonitoringTriggerUtil.register(monTrigger);
 			 * menuProvider.registerWithProvider();
 			 */
-			
-			ReportContextRegistry.getInstance().register(HP3ParConstants.INFRA_ACCOUNT_TYPE, HP3ParConstants.INFRA_ACCOUNT_LABEL);
-
+			logger.info("Registering as " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
+			ReportContextRegistry.getInstance().register(HP3ParConstants.INFRA_ACCOUNT_TYPE,
+					HP3ParConstants.INFRA_ACCOUNT_LABEL);
 
 			// support for new Account Type
 			logger.info("Adding account...");
@@ -135,7 +135,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	private void createAccountType() {
 		logger.info("Creating AccountTypeEntry");
 		AccountTypeEntry entry = new AccountTypeEntry();
-
+		
 		logger.info("Setting credenital class to HP3ParAccount.class");
 		// This is mandatory, hold the information for device credential details
 		entry.setCredentialClass(HP3ParAccount.class);
@@ -154,27 +154,21 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		// Network / Storage / //Compute
 		entry.setCategory(InfraAccountTypes.CAT_STORAGE);
 
-		logger.info("Setting context type");
 		// This is mandatory
-		try {
-			entry.setContextType(
-					ReportContextRegistry.getInstance().getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE).getType());
-		} catch (Exception e) {
-		}
-		logger.info("Context type output....." + ReportContextRegistry.getInstance().getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE).getType());
+		logger.info("Setting context type");
+		entry.setContextType(
+				ReportContextRegistry.getInstance().getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE).getType());
 
-		logger.info("Setting to physical account");
 		// This is mandatory, on which accounts either physical or virtual
 		// account , new account //type belong to.
 		entry.setAccountClass(AccountTypeEntry.PHYSICAL_ACCOUNT);
 
-		logger.info("Prefixing tasks");
 		// Optional , prefix of the task
-		entry.setInventoryTaskPrefix("HP 3PAR Task");
+		entry.setInventoryTaskPrefix(HP3ParConstants.TASK_PREFIX);
 
 		// Optional. Group inventory system tasks under this folder.
 		// By default it is grouped under General Tasks
-		entry.setWorkflowTaskCategory("HP 3PAR");
+		entry.setWorkflowTaskCategory(HP3ParConstants.WORKFLOW_CATEGORY);
 
 		// Optional , collect the inventory frequency, whenever required you can
 		// change the
@@ -183,7 +177,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 		// This is mandatory,under which pod type , the new account type is
 		// applicable.
-		entry.setPodTypes(new String[] { "HP3Par" });
+		entry.setPodTypes(new String[] { HP3ParConstants.POD_TYPE });
 
 		// This is optional, dependents on the need of session for collecting
 		// the inventory

@@ -9,9 +9,9 @@ public class VolumeResponseMembers {
 	private boolean readOnly;
 	private int state;
 	// private <List> failedStates;
-    // private <List> degradedStates;
-    // private <List> additionalStates;
-	
+	// private <List> degradedStates;
+	// private <List> additionalStates;
+
 	private VolumeResponseMembersAdminSpace adminSpace;
 
 	private VolumeResponseMembersSpace snapshotSpace;
@@ -187,7 +187,20 @@ public class VolumeResponseMembers {
 		this.uuid = uuid;
 	}
 
+	public String getUserCPG() {
+		if (userCPG == null) {
+			return "-";
+		}
+		return userCPG;
+	}
+
+	public void setUserCPG(String userCPG) {
+		this.userCPG = userCPG;
+	}
+
 	private VolumeResponseMembersPolicies policies;
 
 	private String uuid;
+	
+	private String userCPG;
 }

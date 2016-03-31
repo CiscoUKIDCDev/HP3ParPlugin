@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 import com.cloupia.lib.connector.account.PhysicalConnectivityTestHandler;
@@ -34,7 +33,8 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 						String token = t.getToken();
 						if (token == null) {
 							logger.info("No token acquired - connection verified");
-							status.setConnectionOK(false);	
+							status.setConnectionOK(false);
+							status.setErrorMsg("Could not get authentication token (check credentials)");
 						}
 						else {
 							logger.info("Token acquired - connection verified");
@@ -42,9 +42,10 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 						}
 						
 					} catch (Exception e) {
-						logger.info("Failed to get token, don't permit connection");
+						logger.info("Exception raised - failing connection (probably wrong IP address)");
 						// Didn't get a token
 						status.setConnectionOK(false);
+						status.setErrorMsg("Array not found (check IP address)");
 					}
 
 				}

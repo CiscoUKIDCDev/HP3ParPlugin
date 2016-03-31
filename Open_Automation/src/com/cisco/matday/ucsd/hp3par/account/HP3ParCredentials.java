@@ -6,7 +6,6 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
 
 import com.cisco.cuic.api.client.JSON;
-import com.cisco.matday.ucsd.hp3par.account.handler.HP3ParConnectionHandler;
 import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
 import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 

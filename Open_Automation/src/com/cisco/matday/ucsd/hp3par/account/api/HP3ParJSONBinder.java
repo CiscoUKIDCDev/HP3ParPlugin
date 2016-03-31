@@ -11,6 +11,7 @@ import com.cloupia.service.cIM.inframgr.collector.controller.ItemDataObjectBinde
 public abstract class HP3ParJSONBinder implements ItemDataObjectBinderIf {
 	private static Logger logger = Logger.getLogger(HP3ParJSONBinder.class);
 	
+	@SuppressWarnings("rawtypes")
 	public abstract List<Class> getPersistantClassList();
 
 	protected void bindContext(Object obj, Map<String, Object> context) {

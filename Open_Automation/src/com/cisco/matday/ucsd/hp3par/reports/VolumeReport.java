@@ -18,6 +18,7 @@ public class VolumeReport extends CloupiaReport {
 		this.setMgmtColumnIndex(1);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getImplementationClass() {
 		return VolumeReportImpl.class;
