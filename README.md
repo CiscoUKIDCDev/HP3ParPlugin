@@ -1,9 +1,9 @@
 # HP 3PAR UCS Director Plugin
 This intends to be a comprehensive UCS Director plugin for HP 3PAR storage blades.
 
-It is currently in early alpha, it is unsupported and used at your own risk. If you'd like to give it a go, the latest copy is always [available here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/Open_Automation/feature-HP3Par.zip?raw=true).
+It is currently in early alpha, it is unsupported and used at your own risk. If you'd like to give it a go, the latest copy is always [available here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/Open_Automation/HP3Par-plugin.zip?raw=true).
 
-![Account screenshot](https://matt.fragilegeek.com/ucsd-3par-account)
+![Account screenshot](https://matt.fragilegeek.com/ucsd-3par-account.png)
 
 ![Converged view screenshot](https://matt.fragilegeek.com/ucsd-3par-volume-list)
 
