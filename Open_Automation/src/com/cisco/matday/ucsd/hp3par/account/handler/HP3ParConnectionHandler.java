@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 import com.cloupia.lib.connector.account.PhysicalConnectivityTestHandler;
@@ -30,9 +31,16 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 					HP3ParCredentials t = new HP3ParCredentials(acc);
 					try {
 						// Got a token, set as OK
-						t.getToken();
-						logger.info("Token acquired - connection verified");
-						status.setConnectionOK(true);
+						String token = t.getToken();
+						if (token == null) {
+							logger.info("No token acquired - connection verified");
+							status.setConnectionOK(false);	
+						}
+						else {
+							logger.info("Token acquired - connection verified");
+							status.setConnectionOK(true);
+						}
+						
 					} catch (Exception e) {
 						logger.info("Failed to get token, don't permit connection");
 						// Didn't get a token
