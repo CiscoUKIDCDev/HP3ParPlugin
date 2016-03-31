@@ -21,6 +21,11 @@ import com.cloupia.service.cIM.inframgr.CustomFeatureRegistry;
 import com.cloupia.service.cIM.inframgr.collector.controller.CollectorFactory;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 
+/**
+ * UCS Director HP 3PAR storage module
+ * @author matt
+ *
+ */
 public class HP3ParModule extends AbstractCloupiaModule {
 
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
