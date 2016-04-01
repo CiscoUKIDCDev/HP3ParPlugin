@@ -4,6 +4,8 @@ public class HP3ParConstants {
 	public static final String INFRA_ACCOUNT_TYPE = "HP 3PAR"; 
 	public static final String INFRA_ACCOUNT_LABEL = "HP 3PAR";
 	
+	public static final String INFRA_ACCOUNT_NAME = "HP 3PAR";
+	
 	// Docs say to give this a really big number (> 1000); I've used my birthday...
 	public static final int INFRA_ACCOUNT_MAGIC_NUMBER = 19832701;
 	

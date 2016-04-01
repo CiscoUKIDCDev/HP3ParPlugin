@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import com.cisco.cuic.api.client.JSON;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
+import com.cloupia.lib.connector.account.AbstractInfraAccount;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 import com.cloupia.model.cIM.ReportContext;
@@ -158,6 +159,23 @@ public class HP3ParCredentials {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	/**
+	 * To get the object of HP3Par by passing the AccountName.
+	 * 
+	 * @param accountName
+	 * @return
+	 * @throws Exception
+	 */
+	public static HP3ParAccount getInternalCredential(String accountName) throws Exception {
+		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
+		String json = acc.getCredential();
+		AbstractInfraAccount specificAcc = (AbstractInfraAccount) JSON.jsonToJavaObject(json, HP3ParAccount.class);
+		specificAcc.setAccount(acc);
+
+		return (HP3ParAccount) specificAcc;
+
 	}
 
 }

@@ -214,8 +214,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		// required for this Account type then this is mandatory, can implement
 		// credential check against the policyname.
 		// entry.setCredentialParser(new FooAccountCredentialParser());
+		
 		try {
-
 			// Adding inventory root
 			registerInventoryObjects(entry);
 			PhysicalAccountTypeManager.getInstance().addNewAccountType(entry);
