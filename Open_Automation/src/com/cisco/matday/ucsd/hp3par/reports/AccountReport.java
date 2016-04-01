@@ -15,6 +15,7 @@ public class AccountReport extends GenericInfraAccountReport {
 			new UsagePieChart(),
 			new VolumeAllocationPieChart(),
 			new OverviewTable(),
+			new CPGBarChartReport(),
 	};
 
 	public AccountReport() {
