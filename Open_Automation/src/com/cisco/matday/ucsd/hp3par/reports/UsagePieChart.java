@@ -32,6 +32,11 @@ public class UsagePieChart extends CloupiaNonTabularReport {
 	}
 
 	@Override
+	public boolean isLeafReport() {
+		return true;
+	}
+
+	@Override
 	public String getReportName() {
 		return REPORT_NAME;
 	}
@@ -42,10 +47,17 @@ public class UsagePieChart extends CloupiaNonTabularReport {
 		return 51;
 	}
 
+	/**
+	 * @return true if you want this chart to show up in a summary report
+	 */
+	@Override
+	public boolean showInSummary() {
+		return true;
+	}
+
 	// Returns report hint for pie chart as shown below
 	@Override
 	public int getReportHint() {
-
 		return ReportDefinition.REPORT_HINT_PIECHART;
 	}
 
