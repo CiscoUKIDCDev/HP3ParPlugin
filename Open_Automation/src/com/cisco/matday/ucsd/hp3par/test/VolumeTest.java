@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.CPGResponseMembers;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.VolumeResponseMembers;
 
 public class VolumeTest {
 
@@ -23,15 +24,34 @@ public class VolumeTest {
 
 			HP3ParVolumeList list = new HP3ParVolumeList(login);
 			HP3ParSystem systemInfo = new HP3ParSystem(login);
+			HP3ParCPG cpgInfo = new HP3ParCPG(login);
 			System.out.println("Model: " + systemInfo.getSystem().getModel());
+			System.out.println(systemInfo.getSystem().getFreeCapacityMiB() / 1024d);
+			System.out.println(systemInfo.getSystem().getTotalCapacityMiB() / 1024d);
 			System.out.println("Total members: " + list.getVolume().getTotal());
+			System.out.println(cpgInfo.getCpg().getTotal());
+			
 
-			HP3ParVolumeList newlist = new HP3ParVolumeList(login);
+			//HP3ParVolumeList newlist = new HP3ParVolumeList(login);
 
-			for (Iterator<VolumeResponseMembers> i = newlist.getVolume().getMembers().iterator(); i.hasNext();) {
+			/*for (Iterator<VolumeResponseMembers> i = newlist.getVolume().getMembers().iterator(); i.hasNext();) {
 				VolumeResponseMembers volume = i.next();
 				System.out.println(volume.getUserCPG());
 				System.out.println(login.getToken());
+			}*/
+			
+			HP3ParCPG cpglist = new HP3ParCPG(login);
+
+			for (Iterator<CPGResponseMembers> i = cpglist.getCpg().getMembers().iterator(); i.hasNext();) {
+				CPGResponseMembers cpg = i.next();
+				// Get total
+				long total = ((cpg.getUsrUsage().getTotalMiB() + cpg.getSAUsage().getTotalMiB() + cpg.getSDUsage().getTotalMiB()));
+				long used = ((cpg.getUsrUsage().getUsedMiB() + cpg.getSAUsage().getUsedMiB() + cpg.getSDUsage().getUsedMiB()));
+				long free = total - used;
+				int volumeCount = cpg.getNumTPVVs();
+				
+				System.out.println(cpg.getName() + " == " + total + " == " + free + " == TPVVS = " + volumeCount);
+				//System.out.println(login.getToken());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

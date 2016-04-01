@@ -7,12 +7,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
-import com.cloupia.lib.connector.account.AccountUtil;
-import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 import com.cloupia.model.cIM.ReportContextRegistry;
 
 public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuilderIf {
@@ -30,22 +27,8 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 	 */
 	@Override
 	public ConvergedStackComponentDetail buildConvergedStackComponent(String contextId) throws Exception {
-		logger.info("contextId: " + contextId);
-		String accountName = null;
-		if (contextId != null) {
-			// As the contextId returns as: "account Name;POD Name"
-			accountName = contextId.split(";")[0];
-		}
-		if (accountName == null) {
-			throw new Exception("Unable to find the account name");
-		}
 
-		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
-		if (acc == null) {
-			throw new Exception("Unable to find the account:" + accountName);
-		}
-
-		HP3ParCredentials c = new HP3ParCredentials(acc);
+		HP3ParCredentials c = new HP3ParCredentials(contextId);
 		HP3ParSystem systemInfo = new HP3ParSystem(c);
 
 		ConvergedStackComponentDetail detail = new ConvergedStackComponentDetail();

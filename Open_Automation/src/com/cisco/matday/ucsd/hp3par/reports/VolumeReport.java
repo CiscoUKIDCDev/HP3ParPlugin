@@ -8,7 +8,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
 
 public class VolumeReport extends CloupiaReport {
-	public final static String REPORT_NAME = "HP3ParVolumes";
+	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.VolumeReport";
 	public final static String REPORT_LABEL = "Volumes";
 	
 	public VolumeReport () {
@@ -18,9 +18,8 @@ public class VolumeReport extends CloupiaReport {
 		this.setMgmtColumnIndex(1);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getImplementationClass() {
+	public Class<VolumeReportImpl> getImplementationClass() {
 		return VolumeReportImpl.class;
 	}
 	
@@ -49,7 +48,7 @@ public class VolumeReport extends CloupiaReport {
 	}
 	
 	public int getMenuID() {
-		return 51; // NimbleConstants.DUMMY_MENU_1;
+		return 51;
 	}
 
 	@Override

@@ -7,16 +7,15 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.VolumeResponseMembers;
-import com.cloupia.lib.connector.account.AccountUtil;
-import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
-public class VolumeReportImpl<E> implements TabularReportGeneratorIf {
+public class VolumeReportImpl implements TabularReportGeneratorIf {
 
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(VolumeReportImpl.class);
 
 	@Override
@@ -28,20 +27,6 @@ public class VolumeReportImpl<E> implements TabularReportGeneratorIf {
 		report.setReportName(reportEntry.getReportLabel());
 		report.setContext(context);
 
-		String accountName = "";
-		String contextId = context.getId();
-
-		if (contextId != null) {
-			// As the contextId returns as: "account Name;POD Name"
-			accountName = contextId.split(";")[0];
-		}
-
-		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
-		if (acc == null) {
-			logger.error("Couldn't find account " + accountName);
-			throw new Exception("Unable to find the account:" + accountName);
-		}
-
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
@@ -51,7 +36,7 @@ public class VolumeReportImpl<E> implements TabularReportGeneratorIf {
 
 		model.completedHeader();
 
-		HP3ParCredentials credentials = new HP3ParCredentials(acc);
+		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
 		HP3ParVolumeList list = new HP3ParVolumeList(credentials);
 

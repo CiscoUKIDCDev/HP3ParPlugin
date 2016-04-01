@@ -26,7 +26,7 @@
 		</children>
 	</menuitem>
 	<!-- this shows you how to add an entirely new menu -->
-	<menuitem>
+<!-- 	<menuitem>
 		<menuid>11000</menuid>
 		<label>Dummy Category</label>
 		<path>dummy_cat/</path>
@@ -42,4 +42,5 @@
 			</menuitem>
 		</children>
 	</menuitem>
-</menu>
+-->
+</menu> 

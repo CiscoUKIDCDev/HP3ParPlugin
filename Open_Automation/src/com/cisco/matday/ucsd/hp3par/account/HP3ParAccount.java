@@ -7,6 +7,7 @@ import javax.jdo.annotations.Persistent;
 
 import org.apache.log4j.Logger;
 
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.connector.account.AbstractInfraAccount;
@@ -15,22 +16,29 @@ import com.cloupia.model.cIM.InfraAccount;
 import com.cloupia.service.cIM.inframgr.collector.view2.ConnectorCredential;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
+/**
+ * This class extends the in-build UCS Director account storage. Don't use it
+ * directly, instead use HP3ParCredentials to obtain and manage this
+ * information.
+ * 
+ * @author matt
+ *
+ */
 @PersistenceCapable(detachable = "true", table = "hp3par_account")
 public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCredential {
 
 	static Logger logger = Logger.getLogger(HP3ParAccount.class);
-	private final static int DEFAULT_PORT = 8080;
 
 	@Persistent
 	private boolean isCredentialPolicy = false;
 
 	@Persistent
-	@FormField(label = "Device Address", help = "Device Address", mandatory = true)
+	@FormField(label = "Device Address", help = "Device Address (hostname or IP address)", mandatory = true)
 	private String array_address;
 
 	@Persistent
-	@FormField(label = "TCP Port", help = "TCP Port", mandatory = true)
-	private int tcp_port = DEFAULT_PORT;
+	@FormField(label = "TCP Port", help = "TCP Port (default is 8080)", mandatory = true)
+	private int tcp_port = HP3ParConstants.DEFAULT_PORT;
 
 	@Persistent
 	@FormField(label = "Username", help = "Username", mandatory = true)
@@ -40,7 +48,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	@FormField(label = "Password", help = "Password", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_PASSWORD)
 	private String password;
 
-	@FormField(label = "Use https", help = "Use secure http (https)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
+	@FormField(label = "Use secure connection (https)", help = "Use secure connection (https)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
 	private boolean https = true;
 
 	public HP3ParAccount() {
@@ -83,11 +91,13 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 			if (accList != null && accList.size() > 0) {
 				return accList.get(0);
-			} else {
+			}
+			else {
 				return null;
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("Exception while mapping DeviceCredential to InfraAccount for server: " + array_address + ": "
 					+ e.getMessage());
 		}

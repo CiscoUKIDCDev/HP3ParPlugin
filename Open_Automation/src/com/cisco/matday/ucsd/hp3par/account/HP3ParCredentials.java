@@ -6,16 +6,28 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
 
 import com.cisco.cuic.api.client.JSON;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
+import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalInfraAccount;
+import com.cloupia.model.cIM.ReportContext;
 
 /**
+ * 
+ * This holds the state and credentials for connection to the 3PAR system.
+ * 
+ * Use it to store username, password, address etc and also to obtain a token
+ * for use with the REST API. It has multiple constructors and can be used
+ * almost anywhere in UCSD with a single call.
+ * 
+ * I suggest you use this rather than the built-in Account class to make future
+ * changes a lot easier!
  * 
  * @author matt
  *
  */
 public class HP3ParCredentials {
-	private final static int DEFAULT_PORT = 8080;
+
 	private int tcp_port;
 	private boolean https;
 	private String array_address;
@@ -29,10 +41,49 @@ public class HP3ParCredentials {
 	}
 
 	public HP3ParCredentials(String array_address, String username, String password, boolean https) {
-		init(array_address, username, password, https, DEFAULT_PORT);
+		init(array_address, username, password, https, HP3ParConstants.DEFAULT_PORT);
+	}
+
+	public HP3ParCredentials(String contextId) throws Exception {
+		logger.info("contextId: " + contextId);
+		String accountName = null;
+		if (contextId != null) {
+			// As the contextId returns as: "account Name;POD Name"
+			accountName = contextId.split(";")[0];
+		}
+		if (accountName == null) {
+			throw new Exception("Unable to find the account name");
+		}
+
+		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
+		if (acc == null) {
+			throw new Exception("Unable to find the account:" + accountName);
+		}
+		initFromAccount(acc);
+	}
+
+	public HP3ParCredentials(ReportContext context) throws Exception {
+		String contextId = context.getId();
+		String accountName = null;
+		if (contextId != null) {
+			// As the contextId returns as: "account Name;POD Name"
+			accountName = contextId.split(";")[0];
+		}
+		if (accountName == null) {
+			throw new Exception("Account not found");
+		}
+		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
+		if (acc == null) {
+			throw new Exception("Unable to find the account:" + accountName);
+		}
+		initFromAccount(acc);
 	}
 
 	public HP3ParCredentials(PhysicalInfraAccount acc) throws Exception {
+		initFromAccount(acc);
+	}
+
+	private void initFromAccount(PhysicalInfraAccount acc) throws Exception {
 		String json = acc.getCredential();
 		HP3ParAccountJsonObject account = (HP3ParAccountJsonObject) JSON.jsonToJavaObject(json,
 				HP3ParAccountJsonObject.class);

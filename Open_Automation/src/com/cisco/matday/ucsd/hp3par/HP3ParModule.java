@@ -8,6 +8,10 @@ import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParConvergedStackBuilde
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryItemHandler;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryListener;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
+import com.cisco.matday.ucsd.hp3par.reports.CPGReport;
+import com.cisco.matday.ucsd.hp3par.reports.SummaryReport;
+import com.cisco.matday.ucsd.hp3par.reports.UsagePieChart;
 import com.cisco.matday.ucsd.hp3par.reports.VolumeReport;
 import com.cisco.matday.ucsd.hp3par.tasks.CreateVolume;
 import com.cloupia.lib.connector.ConfigItemDef;
@@ -23,6 +27,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 
 /**
  * UCS Director HP 3PAR storage module
+ * 
  * @author matt
  *
  */
@@ -33,16 +38,19 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	@Override
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
-		CloupiaReport[] report = new CloupiaReport[1];
-		report[0] = new VolumeReport();
+		CloupiaReport[] report = new CloupiaReport[] {
+				//new AccountReport(), new SummaryReport(), new VolumeReport(), new CPGReport(), new UsagePieChart(),new AccountReport(), new SummaryReport(), new VolumeReport(), new CPGReport(), new UsagePieChart(),
+				new AccountReport(), new VolumeReport(), new CPGReport(),
+		};
 		return report;
 	}
 
 	// Return a list of API tasks supported
 	public AbstractTask[] getTasks() {
 		logger.info("Adding tasks");
-		AbstractTask[] task = new AbstractTask[1];
-		task[0] = new CreateVolume();
+		AbstractTask[] task = new AbstractTask[] {
+				new CreateVolume(),
+		};
 		// task[1] = new HP3ParDeleteVolume();
 		return task;
 		// return null;
@@ -125,7 +133,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			logger.info("Adding account...");
 			createAccountType();
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("Error loading HP 3PAR module.", e);
 		}
 
@@ -140,7 +149,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	private void createAccountType() {
 		logger.info("Creating AccountTypeEntry");
 		AccountTypeEntry entry = new AccountTypeEntry();
-		
+
 		logger.info("Setting credenital class to HP3ParAccount.class");
 		// This is mandatory, hold the information for device credential details
 		entry.setCredentialClass(HP3ParAccount.class);
@@ -182,7 +191,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 		// This is mandatory,under which pod type , the new account type is
 		// applicable.
-		entry.setPodTypes(new String[] { HP3ParConstants.POD_TYPE });
+		entry.setPodTypes(new String[] {
+				HP3ParConstants.POD_TYPE
+		});
 
 		// This is optional, dependents on the need of session for collecting
 		// the inventory
@@ -211,7 +222,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			// Adding inventory root
 			registerInventoryObjects(entry);
 			PhysicalAccountTypeManager.getInstance().addNewAccountType(entry);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
