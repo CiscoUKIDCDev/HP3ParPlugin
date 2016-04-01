@@ -14,8 +14,7 @@ public class LoginResponseJSON {
 		
 		LoginResponseJsonWrapper lrd = gson.fromJson(this.request, LoginResponseJsonWrapper.class);
 		
-		//System.out.println(lrd.getData().getSession_token());
-		
+
 		return lrd.getKey();
 		
 	}

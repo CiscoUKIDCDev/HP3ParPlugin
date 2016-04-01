@@ -1,4 +1,4 @@
-package com.cisco.matday.ucsd.hp3par.rest.cpg;
+package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
 public class CPGResponseSpace {
     private long totalMiB;

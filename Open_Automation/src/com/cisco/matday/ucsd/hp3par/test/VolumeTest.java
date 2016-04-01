@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.CPGResponseMembers;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMembers;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 
 public class VolumeTest {
 
@@ -30,6 +32,9 @@ public class VolumeTest {
 			System.out.println(systemInfo.getSystem().getTotalCapacityMiB() / 1024d);
 			System.out.println("Total members: " + list.getVolume().getTotal());
 			System.out.println(cpgInfo.getCpg().getTotal());
+			
+			HP3ParVolumeInformation vol = new HP3ParVolumeInformation("VolumeTesat-Test", "FC_r1", 1024, "No comment");
+			System.out.println(CreateVolumeRestCall.create(login, vol).getError());
 			
 
 			//HP3ParVolumeList newlist = new HP3ParVolumeList(login);

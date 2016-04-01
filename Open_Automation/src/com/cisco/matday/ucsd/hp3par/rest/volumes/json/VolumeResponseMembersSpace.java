@@ -1,4 +1,4 @@
-package com.cisco.matday.ucsd.hp3par.rest.volumes;
+package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
 public class VolumeResponseMembersSpace {
 	 /* "snapshotSpace": { "reservedMiB": 0, "rawReservedMiB": 0, "usedMiB": 0,

@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.VolumeResponseMembers;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMembers;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;

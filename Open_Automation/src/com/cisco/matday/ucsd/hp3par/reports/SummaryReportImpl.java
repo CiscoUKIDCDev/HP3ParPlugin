@@ -2,7 +2,7 @@ package com.cisco.matday.ucsd.hp3par.reports;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
-import com.cisco.matday.ucsd.hp3par.rest.system.SystemResponse;
+import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.ReportNameValuePair;
 import com.cloupia.model.cIM.SnapshotReport;

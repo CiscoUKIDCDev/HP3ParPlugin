@@ -1,4 +1,4 @@
-package com.cisco.matday.ucsd.hp3par.rest.system;
+package com.cisco.matday.ucsd.hp3par.rest.system.json;
 
 public class SystemResponse {
 	private long id;
