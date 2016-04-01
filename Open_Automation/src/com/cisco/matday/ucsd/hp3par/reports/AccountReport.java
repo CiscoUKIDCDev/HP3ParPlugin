@@ -13,6 +13,7 @@ public class AccountReport extends GenericInfraAccountReport {
 	//this is the best way to declare what reports can be drilled down to from the dummy account mgmt report
 	private CloupiaReport[] ddReports = new CloupiaReport[] {
 			new UsagePieChart(),
+			new VolumeAllocationPieChart(),
 			new OverviewTable(),
 	};
 

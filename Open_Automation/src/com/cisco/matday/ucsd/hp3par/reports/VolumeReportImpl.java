@@ -30,7 +30,7 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
-		model.addTextColumn("Size GB", "Size GB");
+		model.addTextColumn("Size GiB", "Size GiB");
 		model.addTextColumn("Provisioning", "Provisioning");
 		model.addTextColumn("User CPG", "User CPG");
 
