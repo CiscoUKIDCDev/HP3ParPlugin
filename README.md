@@ -5,7 +5,7 @@ It is currently in early alpha, it is unsupported and used at your own risk. If 
 
 ![Account screenshot](https://matt.fragilegeek.com/ucsd-3par-account.png)
 
-![Converged view screenshot](https://matt.fragilegeek.com/ucsd-3par-volume-list)
+![Converged view screenshot](https://matt.fragilegeek.com/ucsd-3par-summary)
 
 ## Features
 
