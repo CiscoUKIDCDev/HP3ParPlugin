@@ -10,8 +10,6 @@ import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryListener;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
 import com.cisco.matday.ucsd.hp3par.reports.CPGReport;
-import com.cisco.matday.ucsd.hp3par.reports.SummaryReport;
-import com.cisco.matday.ucsd.hp3par.reports.UsagePieChart;
 import com.cisco.matday.ucsd.hp3par.reports.VolumeReport;
 import com.cisco.matday.ucsd.hp3par.tasks.CreateVolume;
 import com.cloupia.lib.connector.ConfigItemDef;
@@ -39,7 +37,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
 		CloupiaReport[] report = new CloupiaReport[] {
-				//new AccountReport(), new SummaryReport(), new VolumeReport(), new CPGReport(), new UsagePieChart(),new AccountReport(), new SummaryReport(), new VolumeReport(), new CPGReport(), new UsagePieChart(),
 				new AccountReport(), new VolumeReport(), new CPGReport(),
 		};
 		return report;

@@ -7,7 +7,7 @@ import com.cloupia.model.cIM.ReportDefinition;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
-public class SummaryReport extends CloupiaNonTabularReport {
+public class OverviewTable extends CloupiaNonTabularReport {
 
 	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.SummaryReport";
 	private static final String REPORT_LABEL = "Summary";
@@ -22,7 +22,7 @@ public class SummaryReport extends CloupiaNonTabularReport {
 		return SummaryReportImpl.class;
 	}
 
-	public SummaryReport() {
+	public OverviewTable() {
 		super();
 		// IMPORTANT: this tells the framework which column of this report you
 		// want to pass as the report context id
