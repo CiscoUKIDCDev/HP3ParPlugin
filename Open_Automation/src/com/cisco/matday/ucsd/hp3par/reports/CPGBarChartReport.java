@@ -22,12 +22,17 @@ package com.cisco.matday.ucsd.hp3par.reports;
 
 import org.apache.log4j.Logger;
 
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cloupia.model.cIM.DynReportContext;
+import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.model.cIM.ReportDefinition;
+import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
 public class CPGBarChartReport extends CloupiaNonTabularReport {
 
-	private static final String NAME = "com.cisco.matday.ucsd.hp3par.reports.CPGBarChartReport";
+	//private static final String NAME = "com.cisco.matday.ucsd.hp3par.reports.CPGBarChartReport";
+	private static final String NAME = "hp3par.reports.CPGBarChartReport";
 	private static final String LABEL = "CPG usage by volume";
 	private static Logger logger = Logger.getLogger(CPGBarChartReportImpl.class);
 
@@ -39,20 +44,27 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 		logger.info("Asked for bar chart implementation class");
 		return CPGBarChartReportImpl.class;
 	}
+	
+	public CPGBarChartReport () {
+		super();
+		//IMPORTANT: this tells the framework which column of this report you want to pass as the report context id
+		//when there is a UI action being launched in this report
+		this.setMgmtColumnIndex(1);
+	}
 
 	/**
 	 * @return Report label
 	 */
 	@Override
 	public String getReportLabel() {
-		logger.info("Asked for bar chart label");
+		logger.info("Asked for bar chart label: " + LABEL);
 		return LABEL;
 	}
 
 	// Forcing this report into the Physical->Storage part of the GUI.
 	@Override
 	public int getMenuID() {
-		logger.info("Asked for bar chart menu id");
+		logger.info("Asked for bar chart menu id ");
 		return 51;
 	}
 
@@ -61,7 +73,7 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	 */
 	@Override
 	public String getReportName() {
-		logger.info("Asked for bar chart name");
+		logger.info("Asked for bar chart name: " + NAME);
 		return NAME;
 	}
 
@@ -109,6 +121,26 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	public boolean showInSummary() {
 		logger.info("Asked for bar chart show in summary");
 		return true;
+	}
+	@Override
+	public boolean isManagementReport() {
+		return true;
+	}
+	
+	@Override
+	public ContextMapRule[] getMapRules() {
+
+		DynReportContext context = ReportContextRegistry.getInstance()
+				.getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE);
+
+		ContextMapRule rule = new ContextMapRule();
+		rule.setContextName(context.getId());
+		rule.setContextType(context.getType());
+
+		ContextMapRule[] rules = new ContextMapRule[1];
+		rules[0] = rule;
+
+		return rules;
 	}
 
 }

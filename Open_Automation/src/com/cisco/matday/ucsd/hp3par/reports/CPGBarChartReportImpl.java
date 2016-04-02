@@ -41,7 +41,6 @@ public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 
 	@Override
 	public SnapshotReport getSnapshotReport(ReportRegistryEntry reportEntry, ReportContext context) throws Exception {
-		logger.info("Trying to build bar chart...");
 		SnapshotReport report = new SnapshotReport();
 		report.setContext(context);
 		report.setReportName(reportEntry.getReportLabel());
@@ -49,28 +48,26 @@ public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 		report.setValueAxisName("Volumes");
 		report.setPrecision(0);
 		
-		logger.info("Running REST request");
 		CPGResponse cpgList = new HP3ParCPG(new HP3ParCredentials(context)).getCpg();
 
-		logger.info("Running through Name/Value pair");
 		ReportNameValuePair[] rnv = new ReportNameValuePair[cpgList.getTotal()];
 		int j = 0;
 		for (Iterator<CPGResponseMembers> i = cpgList.getMembers().iterator(); i.hasNext();) {
 			logger.info("Iterating (row " + j + ")");
 			CPGResponseMembers cpg = i.next();
 			String name = cpg.getName();
-			int tpv = cpg.getNumTPVVs();
+			int vol = cpg.getNumTPVVs() + cpg.getNumFPVVs();
 			if (name == null) {
 				name = "-";
 			}
-			logger.info("Added :" + name + " == " + tpv);
-			rnv[j++] = new ReportNameValuePair(name, tpv);
+			logger.info("Added :" + name + " == " + vol);
+			rnv[j++] = new ReportNameValuePair(name, vol);
 		}
 		
 		logger.info("Adding report");
 
 		SnapshotReportCategory cpgs = new SnapshotReportCategory();
-		cpgs.setCategoryName("cpgs");
+		cpgs.setCategoryName("CPGs");
 		cpgs.setNameValuePairs(rnv);
 
 		report.setCategories(new SnapshotReportCategory[] {

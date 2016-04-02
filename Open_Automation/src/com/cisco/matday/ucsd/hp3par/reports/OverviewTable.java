@@ -29,8 +29,8 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularRepo
 
 public class OverviewTable extends CloupiaNonTabularReport {
 
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.SummaryReport";
-	private static final String REPORT_LABEL = "Summary";
+	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.OverviewTable";
+	private static final String REPORT_LABEL = "Overview";
 
 	/**
 	 * This method returns implementation class of the summary report
@@ -38,8 +38,8 @@ public class OverviewTable extends CloupiaNonTabularReport {
 	 * @return implementation class
 	 */
 	@Override
-	public Class<SummaryReportImpl> getImplementationClass() {
-		return SummaryReportImpl.class;
+	public Class<OverviewTableImpl> getImplementationClass() {
+		return OverviewTableImpl.class;
 	}
 
 	public OverviewTable() {

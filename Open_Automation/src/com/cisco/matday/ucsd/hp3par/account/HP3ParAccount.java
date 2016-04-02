@@ -74,6 +74,12 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	public HP3ParAccount() {
 
 	}
+	
+	@Override
+	public String getProtocol () {
+		return (https) ? "https" : "http";
+	}
+
 
 	@Override
 	public boolean isCredentialPolicy() {
@@ -88,6 +94,19 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	@Override
 	public String getPassword() {
 		return this.password;
+	}
+	
+	@Override
+	public void setServer (String ip) {
+		this.array_address = ip;
+	}
+	@Override
+	public void setServerAddress (String ip) {
+		this.array_address = ip;
+	}
+	@Override
+	public void setServerIp (String ip) {
+		this.array_address = ip;
 	}
 
 	@Override

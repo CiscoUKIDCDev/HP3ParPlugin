@@ -65,12 +65,13 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	// Return a list of API tasks supported
 	public AbstractTask[] getTasks() {
 		logger.info("Adding tasks");
+		@SuppressWarnings("unused")
 		AbstractTask[] task = new AbstractTask[] {
 				new CreateVolume(),
 		};
 		// task[1] = new HP3ParDeleteVolume();
-		return task;
-		// return null;
+		//return task;
+		return null;
 	}
 
 	@Override

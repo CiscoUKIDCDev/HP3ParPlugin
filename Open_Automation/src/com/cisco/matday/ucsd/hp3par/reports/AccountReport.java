@@ -30,10 +30,10 @@ public class AccountReport extends GenericInfraAccountReport {
 	//SUPER IMPORTANT MAKE SURE THIS IS ONLY INSTANTIATED ONCE!!!!
 	//this is the best way to declare what reports can be drilled down to from the dummy account mgmt report
 	private CloupiaReport[] ddReports = new CloupiaReport[] {
-			new CPGBarChartReport(),
+			new OverviewTable(),
 			new UsagePieChart(),
 			new VolumeAllocationPieChart(),
-			new OverviewTable(),
+			new CPGBarChartReport(),
 	};
 
 	public AccountReport() {

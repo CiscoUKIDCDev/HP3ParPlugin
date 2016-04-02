@@ -33,7 +33,7 @@ import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.SummaryReportInternalModel;
 
-public class SummaryReportImpl implements TabularReportGeneratorIf, SnapshotReportGeneratorIf {
+public class OverviewTableImpl implements TabularReportGeneratorIf, SnapshotReportGeneratorIf {
 
 	private static final String SYS_INFO_TABLE = "Overview";
 	// private static final String TABLE_TWO = "Dummy Table Two";
