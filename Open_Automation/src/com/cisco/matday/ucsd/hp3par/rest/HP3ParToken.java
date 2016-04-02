@@ -21,9 +21,9 @@
 package com.cisco.matday.ucsd.hp3par.rest;
 
 import java.io.IOException;
-import java.util.Date;
 
 import org.apache.commons.httpclient.HttpException;
+import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.rwhitear.threeParREST.authenticate.json.LoginRequestJSON;
@@ -34,11 +34,8 @@ import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
 public class HP3ParToken {
 	private String token;
-	private long time;
-	private HP3ParCredentials loginCredentials;
-	// Hard coded for now
-	public final static int TOKEN_LIFE = 3600;
-
+	HP3ParCredentials loginCredentials;
+	private static Logger logger = Logger.getLogger(HP3ParToken.class);
 
 	public HP3ParToken(HP3ParCredentials loginCredentials) throws HttpException, IOException {
 		this.loginCredentials = loginCredentials;
@@ -57,35 +54,49 @@ public class HP3ParToken {
 		request.setBodyText(
 				new LoginRequestJSON(loginCredentials.getUsername(), loginCredentials.getPassword()).convertToJSON());
 
-		// System.out.println("User JSON: " + new
-		// LoginRequestJSON(this.username, this.password).convertToJSON());
-
 		request.execute();
-		// String token = request.getHttpResponse();
 		String token = new LoginResponseJSON().getSessionToken(request.getHttpResponse());
 		this.token = token;
-		Date d = new Date();
-		this.time = d.getTime();
 	}
 
-	public String getToken() {
-		Date d = new Date();
-		long c = d.getTime();
-		// Check if token has expired
-		if ((c - this.time) > TOKEN_LIFE) {
-			try {
-				getToken(this.loginCredentials);
-			} // If this fails ignore it because we already have a token
-			catch (IOException e) {
-				e.printStackTrace();
-			}
+	public String getToken() throws TokenExpiredException {
+		if (this.token == null) {
+			throw new TokenExpiredException("Token has expired or has been released");
 		}
+		logger.info("Returning token: " + token);
+		System.out.println("Returning token: " + token);
 		return this.token;
+	}
+
+	public void release() throws HttpException, IOException, TokenExpiredException {
+		if (token == null) {
+			throw new TokenExpiredException("Token has expired or was already released");
+		}
+		logger.info("Releasing token: " + token);
+		UCSDHttpRequest request = new UCSDHttpRequest(loginCredentials.getArray_address(),
+				loginCredentials.getProtocol(), loginCredentials.getTcp_port());
+		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
+		
+		String uri = "/api/v1/credentials/" + token;
+
+		request.setUri(uri);
+
+		request.setMethodType(HttpRequestConstants.METHOD_TYPE_DELETE);
+
+		request.execute();
+		
+		this.token = null;
+	}
+	/**
+	 * DO NOT rely on this! Use release() instead when done!
+	 */
+	protected void finalize() throws Throwable {
+		super.finalize();
+		this.release();
 	}
 
 	public void setToken(String token) {
 		this.token = token;
 	}
-
 
 }

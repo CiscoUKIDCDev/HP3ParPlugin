@@ -124,7 +124,7 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	}
 	@Override
 	public boolean isManagementReport() {
-		return true;
+		return false;
 	}
 	
 	@Override

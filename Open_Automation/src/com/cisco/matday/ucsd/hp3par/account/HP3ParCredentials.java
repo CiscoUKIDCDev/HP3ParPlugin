@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import com.cisco.cuic.api.client.JSON;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
+import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
 import com.cloupia.lib.connector.account.AbstractInfraAccount;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalInfraAccount;
@@ -116,7 +117,15 @@ public class HP3ParCredentials {
 		init(array_address, username, password, https, tcp_port);
 	}
 
-	public String getToken() throws HttpException, IOException {
+	@Deprecated
+	/**
+	 * @deprecated Don't call directly as it's not safe due it not releasing a
+	 *             token afterwards causing major issues later
+	 * @return
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+	public String getToken() throws HttpException, IOException, TokenExpiredException {
 		if (this.token == null) {
 			this.token = new HP3ParToken(this);
 			logger.info("Got token from 3PAR: " + token.getToken());

@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.status.StorageAccountStatusSummary;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 import com.cloupia.lib.connector.account.PhysicalConnectivityTestHandler;
@@ -52,8 +53,12 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 					HP3ParCredentials t = new HP3ParCredentials(acc);
 					try {
 						// Got a token, set as OK if it's not null
-						String token = t.getToken();
-						if (token == null) {
+						HP3ParToken token = new HP3ParToken(t);
+
+						String token_string = null;
+						token_string = token.getToken();
+						// String token = t.getToken();
+						if (token_string == null) {
 							logger.info("No token acquired - connection verified");
 							status.setConnectionOK(false);
 							status.setErrorMsg("Could not get authentication token (check credentials)");
@@ -63,6 +68,7 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 							status.setConnectionOK(true);
 							StorageAccountStatusSummary.accountSummary(accountName);
 						}
+						token.release();
 
 					}
 					catch (Exception e) {

@@ -57,7 +57,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	private String array_address;
 
 	@Persistent
-	@FormField(label = "TCP Port", help = "TCP Port (default is 8080)", mandatory = true)
+	@FormField(label = "TCP Port", help = "TCP Port (default is 8080 for https, 8008 for http)", mandatory = true)
 	private int tcp_port = HP3ParConstants.DEFAULT_PORT;
 
 	@Persistent

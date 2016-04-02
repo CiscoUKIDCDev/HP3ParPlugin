@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMembers;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
@@ -79,6 +80,10 @@ public class VolumeTest {
 				//System.out.println(login.getToken());
 			}
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (TokenExpiredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

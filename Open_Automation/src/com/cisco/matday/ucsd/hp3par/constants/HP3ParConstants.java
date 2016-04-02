@@ -36,4 +36,6 @@ public class HP3ParConstants {
 	
 	public final static int DEFAULT_PORT = 8080;
 	
+	public final static int TOKEN_LIFE = 3600;
+	
 }
