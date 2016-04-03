@@ -22,7 +22,6 @@
 package com.cisco.matday.ucsd.hp3par.test;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -30,7 +29,6 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMembers;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
@@ -54,12 +52,10 @@ public class VolumeTest {
 			HP3ParSystem systemInfo = new HP3ParSystem(login);
 			HP3ParCPG cpgInfo = new HP3ParCPG(login);
 			System.out.println("Model: " + systemInfo.getSystem().getModel());
-			System.out.println(systemInfo.getSystem().getFreeCapacityMiB() / 1024d);
-			System.out.println(systemInfo.getSystem().getTotalCapacityMiB() / 1024d);
-			System.out.println("Total members: " + list.getVolume().getTotal());
-			System.out.println(cpgInfo.getCpg().getTotal());
+			System.out.println("Total Volumes: " + list.getVolume().getTotal());
+			System.out.println("Total CPGs: " + cpgInfo.getCpg().getTotal());
 			
-			HP3ParVolumeInformation vol = new HP3ParVolumeInformation("VolumeTesat-Test", "FC_r1", 1024, "No comment");
+			HP3ParVolumeInformation vol = new HP3ParVolumeInformation("SSD-Test", "SSD_r1", 1024, "No comment");
 			System.out.println(CreateVolumeRestCall.create(login, vol).getError());
 			
 
@@ -70,7 +66,7 @@ public class VolumeTest {
 				System.out.println(volume.getUserCPG());
 				System.out.println(login.getToken());
 			}*/
-			
+			/*
 			HP3ParCPG cpglist = new HP3ParCPG(login);
 
 			for (Iterator<CPGResponseMembers> i = cpglist.getCpg().getMembers().iterator(); i.hasNext();) {
@@ -83,7 +79,7 @@ public class VolumeTest {
 				
 				System.out.println(cpg.getName() + " == " + total + " == " + free + " == TPVVS = " + volumeCount);
 				//System.out.println(login.getToken());
-			}
+			}*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
