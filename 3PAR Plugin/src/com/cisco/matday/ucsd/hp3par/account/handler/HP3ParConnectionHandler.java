@@ -59,20 +59,19 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 						token_string = token.getToken();
 						// String token = t.getToken();
 						if (token_string == null) {
-							logger.info("No token acquired - connection verified");
+							logger.warn("Couldn't get token from system - probably invalid credentials");
 							status.setConnectionOK(false);
 							status.setErrorMsg("Could not get authentication token (check credentials)");
-						}
-						else {
-							logger.info("Token acquired - connection verified");
+						} else {
+							logger.debug("Token acquired - connection verified");
 							status.setConnectionOK(true);
 							StorageAccountStatusSummary.accountSummary(accountName);
 						}
-						token.release();
-
-					}
-					catch (Exception e) {
-						logger.info("Exception raised - failing connection (probably wrong IP address)");
+						if (token != null) {
+							token.release();
+						}
+					} catch (Exception e) {
+						logger.warn("Exception raised testing connection - probably wrong IP address or unreachable");
 						// Didn't get a token
 						status.setConnectionOK(false);
 						status.setErrorMsg("Array not found (check IP address or hostname)");
@@ -82,7 +81,7 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 			}
 
 		}
-		logger.info("Returning status " + status.isConnectionOK());
+		logger.debug("Returning 3PAR status " + status.isConnectionOK());
 		return status;
 	}
 
