@@ -48,7 +48,7 @@ public class CreateVolumeRestCall {
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 
-		// Use defaults for a GET request
+		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(volumeInformation));
 		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
 
@@ -59,9 +59,9 @@ public class CreateVolumeRestCall {
 		if (!response.equals("")) {
 			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
 			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
-			status.setCreated(false);
+			status.setSuccess(false);
 		} else {
-			status.setCreated(true);
+			status.setSuccess(true);
 		}
 		// Return the same reference as passed for convenience and clarity
 		return status;

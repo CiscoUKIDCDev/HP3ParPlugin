@@ -22,7 +22,6 @@ public class WorkflowInputTypeDeclaration {
 	/**
 	 * This method is used to register Workflow Input Types.
 	 * 
-	 * @return void This returns sum of numA and numB.
 	 */
 	public static void registerWFInputs() {
 		registerAccountPicker();
@@ -38,29 +37,34 @@ public class WorkflowInputTypeDeclaration {
 
 	private static void registerAccountPicker() {
 		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
-		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME,
-				"HP 3PAR Account", FormFieldDefinition.FIELD_TYPE_TABULAR, HP3ParConstants.ACCOUNT_LIST_FORM_NAME));
-
+		sampleInputType.addDeclaration(
+				new WorkflowInputFieldTypeDeclaration(HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME, "HP 3PAR Account",
+						FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.ACCOUNT_LIST_FORM_NAME));
+		
+		// First item is what we return to the workflow, second is what we display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_NAME,
-				HP3ParAccountSelector.class, "0", "2");
+				HP3ParAccountSelector.class, "0", "0");
 	}
-	
-	private static void registerCpgList () {
+
+	private static void registerCpgList() {
 		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
 		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.CPG_LIST_FORM_TABLE_NAME,
-				"HP 3PAR CPG List", FormFieldDefinition.FIELD_TYPE_TABULAR, HP3ParConstants.CPG_LIST_FORM_NAME));
+				"HP 3PAR CPG List", FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.CPG_LIST_FORM_NAME));
 
+		// First item is what we return to the workflow, second is what we display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.CPG_LIST_FORM_NAME,
-				HP3ParCpgSelector.class, "0", "2");
+				HP3ParCpgSelector.class, "0", "3");
 	}
-	
-	private static void registerVolumeList () {
-		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
-		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME,
-				"HP 3PAR Volume List", FormFieldDefinition.FIELD_TYPE_TABULAR, HP3ParConstants.VOLUME_LIST_FORM_NAME));
 
+	private static void registerVolumeList() {
+		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(
+				HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, "HP 3PAR Volume List",
+				FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.VOLUME_LIST_FORM_NAME));
+		
+		// First item is what we return to the workflow, second is what we display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_NAME,
-				HP3ParVolumeSelector.class, "0", "2");
+				HP3ParVolumeSelector.class, "0", "3");
 	}
 
 }

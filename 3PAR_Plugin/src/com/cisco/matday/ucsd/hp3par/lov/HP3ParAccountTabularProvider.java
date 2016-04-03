@@ -12,6 +12,14 @@ import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
+/**
+ * I've deprecated this as I'm not sure what it actually does! Until I can
+ * figure it out, I'll leave it this way to flag up in code that might use it...
+ * 
+ * @author matt
+ *
+ */
+@Deprecated
 public class HP3ParAccountTabularProvider implements TabularReportGeneratorIf {
 
 	private static Logger logger = Logger.getLogger(HP3ParAccountTabularProvider.class);

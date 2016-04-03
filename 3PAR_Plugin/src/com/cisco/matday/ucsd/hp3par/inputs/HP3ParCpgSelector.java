@@ -74,7 +74,8 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 					// Pod
 					model.addTextValue(a.getDcName());
 					// Volume Count
-					model.addTextValue(Integer.toString(cpg.getNumTPVVs()));
+					int totalVol = cpg.getNumTPVVs() + cpg.getNumFPVVs();
+					model.addTextValue(Integer.toString(totalVol));
 					model.completedRow();
 				}
 			}

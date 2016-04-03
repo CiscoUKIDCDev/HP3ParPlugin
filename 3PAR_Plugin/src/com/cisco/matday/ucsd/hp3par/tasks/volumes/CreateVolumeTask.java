@@ -58,7 +58,7 @@ public class CreateVolumeTask extends AbstractTask {
 		HP3ParVolumeStatus s = CreateVolumeRestCall.create(c, volume);
 		
 		// If it wasn't created error out
-		if (!s.isCreated()) {
+		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to create volume:" + s.getError());
 			throw new Exception("Failed to create volume");
 		}

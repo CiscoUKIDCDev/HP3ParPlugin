@@ -22,7 +22,7 @@
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
 public class HP3ParVolumeStatus {
-	private boolean created = false;
+	private boolean success = false;
 	private String error;
 	public String getError() {
 		if (error == null) {
@@ -33,10 +33,19 @@ public class HP3ParVolumeStatus {
 	public void setError(String error) {
 		this.error = error;
 	}
+	@Deprecated
 	public boolean isCreated() {
-		return created;
+		return success;
 	}
+	@Deprecated
 	public void setCreated(boolean created) {
-		this.created = created;
+		this.success = created;
 	}
+	public boolean isSuccess () {
+		return success;
+	}
+	public void setSuccess (boolean success) {
+		this.success = success;
+	}
+
 }

@@ -82,7 +82,8 @@ public class CPGReportImpl implements TabularReportGeneratorIf {
 			// Free Capacity
 			model.addTextValue(Double.toString(free));
 			// Volume Count
-			model.addTextValue(Integer.toString(cpg.getNumTPVVs()));
+			int totalVol = cpg.getNumTPVVs() + cpg.getNumFPVVs();
+			model.addTextValue(Integer.toString(totalVol));
 			model.completedRow();
 		}
 

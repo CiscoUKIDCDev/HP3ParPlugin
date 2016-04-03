@@ -15,6 +15,11 @@ It is **not** recommended to run this plugin in production - it has never been t
 
 ![Account screenshot](https://matt.fragilegeek.com/ucsd-3par-account.png)
 
+![Task Screenshot](https://matt.fragilegeek.com/ucsd-3par-workflow-create)
+
+![CPG Selector Screenshot](https://matt.fragilegeek.com/ucsd-3par-cpg-selector)
+
+
 ## Features
 
 ### Implemented
@@ -24,7 +29,7 @@ It is **not** recommended to run this plugin in production - it has never been t
 * Create volume task (may be buggy)
 
 ### Near-term roadmap
-* More tasks
+* More tasks (delete volumes, deal with CPGs etc)
 * Action buttons
 * Drilldown reports (e.g. double-click CPG to see its volumes)
 * Better documentation
