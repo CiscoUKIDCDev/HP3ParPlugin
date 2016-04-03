@@ -25,32 +25,24 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.HP3ParRestWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
+import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
-import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
 
 public class HP3ParVolumeList {
 	private VolumeResponse volume;
 	
 	public HP3ParVolumeList (HP3ParCredentials loginCredentials) throws HttpException, IOException, TokenExpiredException {
-		/*UCSDHttpRequest request = new UCSDHttpRequest(loginCredentials.getArray_address(),
-				loginCredentials.getProtocol(), loginCredentials.getTcp_port());
-		
-		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
-		
-		request.addRequestHeaders(threeParRESTconstants.SESSION_KEY_HEADER, loginCredentials.getToken());
-
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+		// Use defaults for GET method
+		request.setGetDefaults();
 		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
-
-		request.setMethodType(HttpRequestConstants.METHOD_TYPE_GET);
-
 		request.execute();
-		String response = request.getHttpResponse();*/
-		String response = new HP3ParRestWrapper(loginCredentials, threeParRESTconstants.GET_VOLUMES_URI, HttpRequestConstants.METHOD_TYPE_GET).execute();
+		String response = request.getHttpResponse();
+		//String response = new HP3ParRestWrapper(loginCredentials, threeParRESTconstants.GET_VOLUMES_URI, HttpRequestConstants.METHOD_TYPE_GET).execute();
 		Gson gson = new Gson();
 		this.volume = gson.fromJson(response, VolumeResponse.class);
 	}

@@ -25,14 +25,13 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.HP3ParRestWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
+import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
-import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
 public class CreateVolumeRestCall {
 	/*
@@ -42,26 +41,25 @@ public class CreateVolumeRestCall {
 	 */
 	public static HP3ParVolumeStatus create(HP3ParCredentials loginCredentials,
 			HP3ParVolumeInformation volumeInformation) throws HttpException, IOException, TokenExpiredException {
-		
 
-		
 		Gson gson = new Gson();
 		HP3ParVolumeStatus status = new HP3ParVolumeStatus();
-		
-		System.out.println(gson.toJson(volumeInformation));
-		
-		HP3ParRestWrapper wrappedRequest = new HP3ParRestWrapper(loginCredentials, threeParRESTconstants.GET_VOLUMES_URI, HttpRequestConstants.METHOD_TYPE_POST, gson.toJson(volumeInformation), true);
-		
-		String response = wrappedRequest.execute();
 
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+
+		// Use defaults for a GET request
+		request.setPostDefaults(gson.toJson(volumeInformation));
+		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
+
+		request.execute();
+		String response = request.getHttpResponse();
 
 		// Shouldn't get a response if all is good... if we did it's trouble
 		if (!response.equals("")) {
 			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
 			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
 			status.setCreated(false);
-		}
-		else {
+		} else {
 			status.setCreated(true);
 		}
 		// Return the same reference as passed for convenience and clarity

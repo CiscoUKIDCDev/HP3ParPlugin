@@ -25,12 +25,11 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.HP3ParRestWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
+import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
-import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
 public class HP3ParCPG {
 
@@ -38,9 +37,14 @@ public class HP3ParCPG {
 
 	public HP3ParCPG(HP3ParCredentials loginCredentials) throws HttpException, IOException, TokenExpiredException {
 
-		String response = new HP3ParRestWrapper(loginCredentials, threeParRESTconstants.GET_CPG_URI,
-				HttpRequestConstants.METHOD_TYPE_GET).execute();
-		System.out.println(response);
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+		// Use defaults for a GET request
+		request.setGetDefaults();
+		
+		request.setUri(threeParRESTconstants.GET_CPG_URI);
+		request.execute();
+		String response = request.getHttpResponse();
+
 		Gson gson = new Gson();
 		this.cpgResponse = gson.fromJson(response, CPGResponse.class);
 	}

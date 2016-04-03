@@ -22,6 +22,7 @@ package com.cisco.matday.ucsd.hp3par.rest;
 
 import java.io.IOException;
 
+
 import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
 
@@ -29,7 +30,6 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.rwhitear.threeParREST.authenticate.json.LoginRequestJSON;
 import com.cisco.rwhitear.threeParREST.authenticate.json.LoginResponseJSON;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
-import com.rwhitear.ucsdHttpRequest.UCSDHttpRequest;
 import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
 public class HP3ParToken {
@@ -43,17 +43,13 @@ public class HP3ParToken {
 	}
 
 	private void getToken(HP3ParCredentials loginCredentials) throws HttpException, IOException {
-		UCSDHttpRequest request = new UCSDHttpRequest(loginCredentials.getArray_address(),
-				loginCredentials.getProtocol(), loginCredentials.getTcp_port());
+		
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
-
 		request.setUri(threeParRESTconstants.GET_SESSION_TOKEN_URI);
-
 		request.setMethodType(HttpRequestConstants.METHOD_TYPE_POST);
-
 		request.setBodyText(
 				new LoginRequestJSON(loginCredentials.getUsername(), loginCredentials.getPassword()).convertToJSON());
-
 		request.execute();
 		String token = new LoginResponseJSON().getSessionToken(request.getHttpResponse());
 		this.token = token;
@@ -63,7 +59,7 @@ public class HP3ParToken {
 		if (this.token == null) {
 			throw new TokenExpiredException("Token has expired or has been released");
 		}
-		logger.info("Acquired token: " + token);
+		logger.debug("Acquired token: " + token);
 		return this.token;
 	}
 
@@ -71,19 +67,13 @@ public class HP3ParToken {
 		if (token == null) {
 			throw new TokenExpiredException("Token has expired or was already released");
 		}
-		logger.info("Releasing token: " + token);
-		UCSDHttpRequest request = new UCSDHttpRequest(loginCredentials.getArray_address(),
-				loginCredentials.getProtocol(), loginCredentials.getTcp_port());
+		logger.debug("Released token: " + token);
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
-		
 		String uri = "/api/v1/credentials/" + token;
-
 		request.setUri(uri);
-
 		request.setMethodType(HttpRequestConstants.METHOD_TYPE_DELETE);
-
-		request.execute();
-		
+		request.execute();		
 		this.token = null;
 	}
 	/**

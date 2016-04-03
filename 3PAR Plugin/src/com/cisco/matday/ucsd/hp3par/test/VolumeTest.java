@@ -23,6 +23,9 @@ package com.cisco.matday.ucsd.hp3par.test;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
@@ -40,6 +43,7 @@ public class VolumeTest {
 
 	public static void main(String[] args) {
 		try {
+			Logger.getRootLogger().setLevel(Level.INFO);
 			// token = new HP3ParToken(new
 			// HP3ParCredentials(ipAddress,user,password, true));
 			// System.out.println(token.getToken());

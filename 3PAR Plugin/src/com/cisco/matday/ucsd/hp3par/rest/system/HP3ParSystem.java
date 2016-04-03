@@ -25,33 +25,25 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.HP3ParRestWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
+import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
-import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
 public class HP3ParSystem {
 	//
 	private SystemResponse systemResponse;
 	
 	public HP3ParSystem (HP3ParCredentials loginCredentials) throws HttpException, IOException, TokenExpiredException {
-		/*UCSDHttpRequest request = new UCSDHttpRequest(loginCredentials.getArray_address(),
-				loginCredentials.getProtocol(), loginCredentials.getTcp_port());
 		
-		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
-		
-		request.addRequestHeaders(threeParRESTconstants.SESSION_KEY_HEADER, loginCredentials.getToken());
-
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+		// Use defaults for a GET request
+		request.setGetDefaults();
 		request.setUri(threeParRESTconstants.GET_SYSTEM_URI);
-
-		request.setMethodType(HttpRequestConstants.METHOD_TYPE_GET);
-
-		request.execute();
-		String response = request.getHttpResponse();*/
 		
-		String response = new HP3ParRestWrapper(loginCredentials, threeParRESTconstants.GET_SYSTEM_URI, HttpRequestConstants.METHOD_TYPE_GET).execute();
+		request.execute();
+		String response = request.getHttpResponse();
 		
 		Gson gson = new Gson();
 		this.systemResponse = gson.fromJson(response, SystemResponse.class);
