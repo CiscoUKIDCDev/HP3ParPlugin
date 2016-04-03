@@ -69,10 +69,17 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	@FormField(label = "Password", help = "Password", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_PASSWORD)
 	private String password;
 
+	@Persistent
 	@FormField(label = "Use secure connection (https)", help = "Use secure connection (https)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
 	private boolean https = true;
 
 	public HP3ParAccount() {
+		super();
+		// TODO: Send logger here to see if we're actually getting instantiated - if so maybe register LoV?
+		logger.warn("pppppppppppppppppp");
+		logger.warn("HP3Par account type created!");
+		logger.warn("pppppppppppppppppp");
+		
 	}
 
 	@Override
@@ -225,5 +232,6 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	public void setUsername(String userName) {
 		username = userName;
 	}
+
 
 }
