@@ -6,7 +6,9 @@ It is currently in early alpha, it is unsupported and used at your own risk. If 
 Alternatively, you can check out the project and import it in to the Eclipse IDE and build it yourself.
 
 ## Warning
-This plugin is considered unstable - your warranty is now void! Upgrading between versions is **not supported**. In particular upgrading from a previous tagged release to 0.0.3 will break any existing 3PAR accounts! You should remove all accounts, pods etc, upgrade the plugin and re-create them!
+This plugin is considered unstable - your warranty is now void!
+
+In particular, you should remove all 3PAR accounts from your UCS Director installation before upgrading and then re-add them later. Things change between builds that might leave you with a headache if you don't do this! Once the release 1.x.x happens this won't be a requirement any more.
 
 It is **not** recommended to run this plugin in production - it has never been tested beyond a basic lab environment.
 
