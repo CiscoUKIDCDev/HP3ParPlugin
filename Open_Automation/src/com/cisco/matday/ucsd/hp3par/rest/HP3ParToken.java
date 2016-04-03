@@ -63,8 +63,7 @@ public class HP3ParToken {
 		if (this.token == null) {
 			throw new TokenExpiredException("Token has expired or has been released");
 		}
-		logger.info("Returning token: " + token);
-		System.out.println("Returning token: " + token);
+		logger.info("Acquired token: " + token);
 		return this.token;
 	}
 
