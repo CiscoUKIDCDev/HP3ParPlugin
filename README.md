@@ -13,9 +13,9 @@ In particular, you should remove all 3PAR accounts from your UCS Director instal
 It is **not** recommended to run this plugin in production - it has never been tested beyond a basic lab environment.
 
 ## Screenshots
-![Converged view screenshot](https://matt.fragilegeek.com/ucsd-3par-summary.png)
+![Converged view screenshot](https://matt.fragilegeek.com/ucsd-3par-summary)
 
-![Account screenshot](https://matt.fragilegeek.com/ucsd-3par-account.png)
+![Account screenshot](https://matt.fragilegeek.com/ucsd-3par-account)
 
 ![Task Screenshot](https://matt.fragilegeek.com/ucsd-3par-workflow-create)
 
