@@ -1,7 +1,9 @@
 # HP 3PAR UCS Director Plugin
 This intends to be a comprehensive UCS Director plugin for HP 3PAR storage blades.
 
-It is currently in early alpha, it is unsupported and used at your own risk. If you'd like to give it a go, the latest development version is always [available here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/3PAR_Plugin/HP3Par-plugin.zip?raw=true).
+It is currently in early alpha, it is unsupported and used at your own risk. If you'd like to give it a go, you can find the [latest releases here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/releases).
+
+Alternatively, you can check out the project and import it in to the Eclipse IDE and build it yourself.
 
 ## Warning
 This plugin is considered unstable - your warranty is now void! Upgrading between versions is **not supported**. In particular upgrading from a previous tagged release to 0.0.3 will break any existing 3PAR accounts! You should remove all accounts, pods etc, upgrade the plugin and re-create them!
