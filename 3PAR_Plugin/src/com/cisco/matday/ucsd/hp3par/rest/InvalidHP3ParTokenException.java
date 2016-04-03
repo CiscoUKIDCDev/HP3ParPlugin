@@ -21,13 +21,16 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest;
 
-public class TokenExpiredException extends Exception {
+public class InvalidHP3ParTokenException extends Exception {
 
 	/**
-	 * Throwthrowthwo
+	 * Throw when a requested token is invalid. Reasons might include:
+	 *  - 3PAR array not found (likely throw IOException here though)
+	 *  - Credentials are wrong
+	 *  - 3PAR system is refusing to respond via its WSAPI
 	 */
 	private static final long serialVersionUID = 1L;
-	public TokenExpiredException(String args) {
+	public InvalidHP3ParTokenException(String args) {
 		super(args);
 	}
 

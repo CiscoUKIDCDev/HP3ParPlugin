@@ -27,7 +27,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
+import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
@@ -84,7 +84,7 @@ public class VolumeTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		catch (TokenExpiredException e) {
+		catch (InvalidHP3ParTokenException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

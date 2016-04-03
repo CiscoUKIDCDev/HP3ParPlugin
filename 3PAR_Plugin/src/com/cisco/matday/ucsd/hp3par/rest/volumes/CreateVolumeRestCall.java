@@ -26,7 +26,7 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
+import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
@@ -41,7 +41,7 @@ public class CreateVolumeRestCall {
 	 * "comment": "Matt Testing" }
 	 */
 	public static HP3ParVolumeStatus create(HP3ParCredentials loginCredentials,
-			HP3ParVolumeInformation volumeInformation) throws HttpException, IOException, TokenExpiredException {
+			HP3ParVolumeInformation volumeInformation) throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		Gson gson = new Gson();
 		HP3ParVolumeStatus status = new HP3ParVolumeStatus();

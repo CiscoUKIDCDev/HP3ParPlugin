@@ -35,14 +35,14 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	//private static final String NAME = "com.cisco.matday.ucsd.hp3par.reports.CPGBarChartReport";
 	private static final String NAME = "hp3par.reports.CPGBarChartReport";
 	private static final String LABEL = "CPG usage by volume";
-	private static Logger logger = Logger.getLogger(CPGBarChartReportImpl.class);
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(CPGBarChartReport.class);
 
 	/**
 	 * @return BarChartReport implementation class type
 	 */
 	@Override
 	public Class<CPGBarChartReportImpl> getImplementationClass() {
-		logger.info("Asked for bar chart implementation class");
 		return CPGBarChartReportImpl.class;
 	}
 	
@@ -58,14 +58,12 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	 */
 	@Override
 	public String getReportLabel() {
-		logger.info("Asked for bar chart label: " + LABEL);
 		return LABEL;
 	}
 
 	// Forcing this report into the Physical->Storage part of the GUI.
 	@Override
 	public int getMenuID() {
-		logger.info("Asked for bar chart menu id ");
 		return 51;
 	}
 
@@ -74,7 +72,6 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	 */
 	@Override
 	public String getReportName() {
-		logger.info("Asked for bar chart name: " + NAME);
 		return NAME;
 	}
 
@@ -83,7 +80,6 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	 */
 	@Override
 	public boolean isEasyReport() {
-		logger.info("Asked for bar chart easy report");
 		return false;
 	}
 
@@ -92,7 +88,6 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	 */
 	@Override
 	public boolean isLeafReport() {
-		logger.info("Asked for bar chart leaf report");
 		return true;
 	}
 
@@ -102,7 +97,6 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	 */
 	@Override
 	public int getReportType() {
-		logger.info("Asked for bar chart type");
 		return ReportDefinition.REPORT_TYPE_SNAPSHOT;
 	}
 
@@ -111,7 +105,6 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	 */
 	@Override
 	public int getReportHint() {
-		logger.info("Asked for bar chart hint");
 		return ReportDefinition.REPORT_HINT_BARCHART;
 	}
 
@@ -120,7 +113,6 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	 */
 	@Override
 	public boolean showInSummary() {
-		logger.info("Asked for bar chart show in summary");
 		return true;
 	}
 	@Override

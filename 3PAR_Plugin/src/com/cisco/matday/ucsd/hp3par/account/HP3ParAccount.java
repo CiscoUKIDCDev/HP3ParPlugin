@@ -73,14 +73,12 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	private boolean https = true;
 
 	public HP3ParAccount() {
-
 	}
-	
+
 	@Override
-	public String getProtocol () {
+	public String getProtocol() {
 		return (https) ? "https" : "http";
 	}
-
 
 	@Override
 	public boolean isCredentialPolicy() {
@@ -96,17 +94,33 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	public String getPassword() {
 		return this.password;
 	}
+
+	@Override
+	public void setServer(String ip) {
+		this.array_address = ip;
+	}
 	
+	public String getServerAddress () {
+		return this.array_address;
+	}
+	
+	public String getServer () {
+		return this.array_address;
+	}
+	
+	public String getServerIp() {
+		return this.array_address;
+	}
+	
+	//public String 
+
 	@Override
-	public void setServer (String ip) {
+	public void setServerAddress(String ip) {
 		this.array_address = ip;
 	}
+
 	@Override
-	public void setServerAddress (String ip) {
-		this.array_address = ip;
-	}
-	@Override
-	public void setServerIp (String ip) {
+	public void setServerIp(String ip) {
 		this.array_address = ip;
 	}
 
@@ -131,13 +145,11 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 			if (accList != null && accList.size() > 0) {
 				return accList.get(0);
-			}
-			else {
+			} else {
 				return null;
 			}
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("Exception while mapping DeviceCredential to InfraAccount for server: " + array_address + ": "
 					+ e.getMessage());
 		}
@@ -176,14 +188,31 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@Override
 	public String getPolicy() {
+		logger.info("Getting HP3ParAccount Policy (returning null)");
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	public String getDeviceIp() {
+		return this.array_address;
+	}
+
+	public void setDeviceIp(String deviceIp) {
+		this.array_address = deviceIp;
+	}
+
+	public String getLogin() {
+		return username;
+	}
+
+	public void setLogin(String login) {
+		this.username = login;
+	}
+
 	@Override
 	public void setPolicy(String policy) {
+		logger.info("Setting HP3ParAccount Policy: " + policy);
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -57,17 +57,17 @@ public class HP3ParToken {
 		this.token = token;
 	}
 
-	public String getToken() throws TokenExpiredException {
+	public String getToken() throws InvalidHP3ParTokenException {
 		if (this.token == null) {
-			throw new TokenExpiredException("Token has expired or has been released");
+			throw new InvalidHP3ParTokenException("Token has expired or has been released");
 		}
 		logger.debug("Acquired token: " + token);
 		return this.token;
 	}
 
-	public void release() throws HttpException, IOException, TokenExpiredException {
+	public void release() throws HttpException, IOException, InvalidHP3ParTokenException {
 		if (token == null) {
-			throw new TokenExpiredException("Token has expired or was already released");
+			throw new InvalidHP3ParTokenException("Token has expired or was already released");
 		}
 		logger.debug("Released token: " + token);
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);

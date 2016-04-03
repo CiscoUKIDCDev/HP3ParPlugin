@@ -38,6 +38,7 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
 public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 	
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CPGBarChartReportImpl.class);
 
 	@Override
@@ -54,19 +55,14 @@ public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 		ReportNameValuePair[] rnv = new ReportNameValuePair[cpgList.getTotal()];
 		int j = 0;
 		for (Iterator<CPGResponseMembers> i = cpgList.getMembers().iterator(); i.hasNext();) {
-			logger.info("Iterating (row " + j + ")");
 			CPGResponseMembers cpg = i.next();
 			String name = cpg.getName();
 			int vol = cpg.getNumTPVVs() + cpg.getNumFPVVs();
 			if (name == null) {
 				name = "-";
 			}
-			logger.info("Added :" + name + " == " + vol);
 			rnv[j++] = new ReportNameValuePair(name, vol);
 		}
-		
-		logger.info("Adding report");
-
 		SnapshotReportCategory cpgs = new SnapshotReportCategory();
 		cpgs.setCategoryName("CPGs");
 		cpgs.setNameValuePairs(rnv);

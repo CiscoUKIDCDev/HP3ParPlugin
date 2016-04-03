@@ -57,9 +57,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	@Override
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
-		CloupiaReport[] report = new CloupiaReport[] {
-				new AccountReport(), new VolumeReport(), new CPGReport(),
-		};
+		CloupiaReport[] report = new CloupiaReport[] { new AccountReport(), new VolumeReport(), new CPGReport(), };
 		return report;
 	}
 
@@ -67,11 +65,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	public AbstractTask[] getTasks() {
 		logger.info("Adding tasks");
 		@SuppressWarnings("unused")
-		AbstractTask[] task = new AbstractTask[] {
-				new CreateVolume(),
-		};
+		AbstractTask[] task = new AbstractTask[] { new CreateVolume(), };
 		// task[1] = new HP3ParDeleteVolume();
-		//return task;
+		// return task;
 		return null;
 	}
 
@@ -152,8 +148,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			logger.info("Adding account...");
 			createAccountType();
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("Error loading HP 3PAR module.", e);
 		}
 
@@ -166,29 +161,29 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 	// Create the plugin as an account in UCSD
 	private void createAccountType() {
-		logger.info("Creating AccountTypeEntry");
+		logger.debug("Creating AccountTypeEntry");
 		AccountTypeEntry entry = new AccountTypeEntry();
 
-		logger.info("Setting credenital class to HP3ParAccount.class");
+		logger.debug("Setting credenital class to HP3ParAccount.class");
 		// This is mandatory, hold the information for device credential details
 		entry.setCredentialClass(HP3ParAccount.class);
 
-		logger.info("Setting account type to " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
+		logger.debug("Setting account type to " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
 		// This is mandatory, type of the Account will be shown in GUI as drill
 		// down box
 		entry.setAccountType(HP3ParConstants.INFRA_ACCOUNT_TYPE);
 
-		logger.info("Setting label to " + HP3ParConstants.INFRA_ACCOUNT_LABEL);
+		logger.debug("Setting label to " + HP3ParConstants.INFRA_ACCOUNT_LABEL);
 		// This is mandatory, label of the Account
 		entry.setAccountLabel(HP3ParConstants.INFRA_ACCOUNT_LABEL);
 
-		logger.info("Setting category to " + InfraAccountTypes.CAT_STORAGE);
+		logger.debug("Setting category to " + InfraAccountTypes.CAT_STORAGE);
 		// This is mandatory, specify the category of the account type ie.,
 		// Network / Storage / //Compute
 		entry.setCategory(InfraAccountTypes.CAT_STORAGE);
 
 		// This is mandatory
-		logger.info("Setting context type");
+		logger.debug("Setting context type");
 		entry.setContextType(
 				ReportContextRegistry.getInstance().getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE).getType());
 
@@ -208,11 +203,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		// inventory collection frequency, in mins.
 		entry.setInventoryFrequencyInMins(15);
 
-		// This is mandatory,under which pod type , the new account type is
-		// applicable.
-		entry.setPodTypes(new String[] {
-				HP3ParConstants.POD_TYPE
-		});
+		// Register for our own snowflake pod (3Par), Generic pods and also
+		// FlexPods
+		entry.setPodTypes(new String[] { HP3ParConstants.POD_TYPE, "GenericPod", "FlexPod", });
 
 		// This is optional, dependents on the need of session for collecting
 		// the inventory
@@ -236,13 +229,12 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		// required for this Account type then this is mandatory, can implement
 		// credential check against the policyname.
 		// entry.setCredentialParser(new FooAccountCredentialParser());
-		
+
 		try {
 			// Adding inventory root
 			registerInventoryObjects(entry);
 			PhysicalAccountTypeManager.getInstance().addNewAccountType(entry);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

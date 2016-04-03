@@ -22,7 +22,7 @@
 package com.cisco.matday.ucsd.hp3par.constants;
 
 public class HP3ParConstants {
-	public static final String INFRA_ACCOUNT_TYPE = "HP 3PAR"; 
+	public static final String INFRA_ACCOUNT_TYPE = "HP3PAR"; 
 	public static final String INFRA_ACCOUNT_LABEL = "HP 3PAR";
 	
 	public static final String INFRA_ACCOUNT_NAME = "HP 3PAR";

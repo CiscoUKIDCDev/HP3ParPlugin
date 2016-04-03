@@ -111,7 +111,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 				token = new HP3ParToken(credentials);
 				logger.debug("Requested token: " + token.getToken());
 				super.addRequestHeaders(threeParRESTconstants.SESSION_KEY_HEADER, token.getToken());
-			} catch (TokenExpiredException e) {
+			} catch (InvalidHP3ParTokenException e) {
 				logger.error("Could not add token to http request (token expired or invalid credentials)!");
 				e.printStackTrace();
 			}
@@ -135,7 +135,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 			try {
 				logger.debug("Released token: " + token.getToken());
 				token.release();
-			} catch (TokenExpiredException e) {
+			} catch (InvalidHP3ParTokenException e) {
 				logger.debug("Could not release token");
 				e.printStackTrace();
 			}

@@ -32,7 +32,7 @@ public class TokenManager {
 	private static HP3ParToken token;
 	private static long time = 0;
 	
-	public static String getToken (HP3ParCredentials credentials) throws HttpException, IOException, TokenExpiredException {
+	public static String getToken (HP3ParCredentials credentials) throws HttpException, IOException, InvalidHP3ParTokenException {
 		Date d = new Date();
 		if (token == null) {
 			token = new HP3ParToken(credentials);

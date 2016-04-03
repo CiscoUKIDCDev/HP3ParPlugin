@@ -26,7 +26,7 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
+import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
@@ -36,7 +36,7 @@ public class HP3ParCPG {
 
 	private CPGResponse cpgResponse;
 
-	public HP3ParCPG(HP3ParCredentials loginCredentials) throws HttpException, IOException, TokenExpiredException {
+	public HP3ParCPG(HP3ParCredentials loginCredentials) throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		// Use defaults for a GET request

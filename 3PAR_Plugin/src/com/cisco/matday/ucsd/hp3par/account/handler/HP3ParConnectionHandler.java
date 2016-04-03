@@ -27,6 +27,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.status.StorageAccountStatusSummary;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
+import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 import com.cloupia.lib.connector.account.PhysicalConnectivityTestHandler;
@@ -49,28 +50,22 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 				// Instead of Nimble Account , real account type needs to
 				// specified.
 				if (infraAccount.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE)) {
-					logger.info("Testing connectivity for account " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
+					logger.debug("Testing connectivity for account " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
 					PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
 					HP3ParCredentials t = new HP3ParCredentials(acc);
 					try {
 						// Got a token, set as OK if it's not null
 						HP3ParToken token = new HP3ParToken(t);
-
-						String token_string = null;
-						token_string = token.getToken();
-						// String token = t.getToken();
-						if (token_string == null) {
-							logger.warn("Couldn't get token from system - probably invalid credentials");
-							status.setConnectionOK(false);
-							status.setErrorMsg("Could not get authentication token (check credentials)");
-						} else {
-							logger.debug("Token acquired - connection verified");
-							status.setConnectionOK(true);
-							StorageAccountStatusSummary.accountSummary(accountName);
-						}
-						if (token != null) {
-							token.release();
-						}
+						// Don't care about output, only want to see if it throws an exception
+						token.getToken();
+						logger.debug("Token acquired - connection verified");
+						status.setConnectionOK(true);
+						StorageAccountStatusSummary.accountSummary(accountName);
+						token.release();
+					} catch (InvalidHP3ParTokenException e) {
+						logger.warn("Couldn't get token from system - probably invalid credentials");
+						status.setConnectionOK(false);
+						status.setErrorMsg("Could not get authentication token (check credentials)");
 					} catch (Exception e) {
 						logger.warn("Exception raised testing connection - probably wrong IP address or unreachable");
 						// Didn't get a token

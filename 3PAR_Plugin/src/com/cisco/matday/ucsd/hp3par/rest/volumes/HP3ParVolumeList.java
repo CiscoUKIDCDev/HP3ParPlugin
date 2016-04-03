@@ -26,7 +26,7 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.TokenExpiredException;
+import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
@@ -36,7 +36,7 @@ import com.google.gson.Gson;
 public class HP3ParVolumeList {
 	private VolumeResponse volume;
 	
-	public HP3ParVolumeList (HP3ParCredentials loginCredentials) throws HttpException, IOException, TokenExpiredException {
+	public HP3ParVolumeList (HP3ParCredentials loginCredentials) throws HttpException, IOException, InvalidHP3ParTokenException {
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		// Use defaults for GET method
 		request.setGetDefaults();
