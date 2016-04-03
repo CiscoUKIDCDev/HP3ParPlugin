@@ -14,10 +14,12 @@ import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
 /**
  * Essentially adds a token method to Russ Whitear's UCSDHttpRequest, makes it a
- * little easier by setting defaults for various methods
+ * little easier by setting defaults for various methods needing less
+ * boilerplate on each REST call
  * 
- * You should not generally use any other method to communicate with UCSD except
- * via this library
+ * You should not use any other method to communicate with UCSD except via this
+ * library, especially if you're using tokens as this handles
+ * obtaining/releasing them. The latter is especially important (see the docs)
  * 
  * @author matt
  *
@@ -41,11 +43,10 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 	/**
 	 * Set if the token should be used on the request
 	 * 
-	 * @param token
-	 * @param credentials
+	 * @param useToken
 	 */
-	public void setToken(boolean token) {
-		this.useToken = token;
+	public void setToken(boolean useToken) {
+		this.useToken = useToken;
 	}
 
 	/**
@@ -68,6 +69,15 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 	}
 
 	/**
+	 * Set HP3Par defaults for a DELETE method
+	 */
+	public void setDeleteDefaults() {
+		this.setMethodType(HttpRequestConstants.METHOD_TYPE_DELETE);
+		super.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
+		this.setToken(true);
+	}
+
+	/**
 	 * Override parent execute to include token if set
 	 * 
 	 * @throws IOException
@@ -81,7 +91,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 				logger.debug("Requested token: " + token.getToken());
 				super.addRequestHeaders(threeParRESTconstants.SESSION_KEY_HEADER, token.getToken());
 			} catch (TokenExpiredException e) {
-				logger.error("Could not add token to http request (Token Expired)!");
+				logger.error("Could not add token to http request (token expired or invalid credentials)!");
 				e.printStackTrace();
 			}
 		}

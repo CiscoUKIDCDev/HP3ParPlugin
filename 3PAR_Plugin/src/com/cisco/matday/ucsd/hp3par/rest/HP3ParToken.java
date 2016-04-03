@@ -22,7 +22,6 @@ package com.cisco.matday.ucsd.hp3par.rest;
 
 import java.io.IOException;
 
-
 import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
 
@@ -43,13 +42,15 @@ public class HP3ParToken {
 	}
 
 	private void getToken(HP3ParCredentials loginCredentials) throws HttpException, IOException {
-		
+
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
 		request.setUri(threeParRESTconstants.GET_SESSION_TOKEN_URI);
 		request.setMethodType(HttpRequestConstants.METHOD_TYPE_POST);
 		request.setBodyText(
 				new LoginRequestJSON(loginCredentials.getUsername(), loginCredentials.getPassword()).convertToJSON());
+		// Explicitly don't try and use a token:
+		request.setToken(false);
 		request.execute();
 		String token = new LoginResponseJSON().getSessionToken(request.getHttpResponse());
 		this.token = token;
@@ -73,14 +74,21 @@ public class HP3ParToken {
 		String uri = "/api/v1/credentials/" + token;
 		request.setUri(uri);
 		request.setMethodType(HttpRequestConstants.METHOD_TYPE_DELETE);
-		request.execute();		
+		// Explicitly don't try and use a token:
+		request.setToken(false);
+		request.execute();
+		// Don't care abou the output here, let the 3PAR system worry if the
+		// token was deleted or not, just null the reference on our end and let the gc
+		// pick it up
 		this.token = null;
 	}
+
 	/**
 	 * DO NOT rely on this! Use release() instead when done!
 	 */
 	protected void finalize() throws Throwable {
 		super.finalize();
+		logger.info("Warning - GC token");
 		this.release();
 	}
 
