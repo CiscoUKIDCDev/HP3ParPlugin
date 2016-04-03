@@ -89,8 +89,10 @@ public class HP3ParToken {
 	 */
 	protected void finalize() throws Throwable {
 		super.finalize();
-		logger.info("Warning - GC token");
-		this.release();
+		if (this.token != null) {
+			logger.warn("Warning - token wasn't released - GC is releasing...");
+			this.release();
+		}
 	}
 
 	public void setToken(String token) {

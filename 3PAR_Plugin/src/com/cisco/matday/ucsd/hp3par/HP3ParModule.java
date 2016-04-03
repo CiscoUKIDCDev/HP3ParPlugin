@@ -29,7 +29,6 @@ import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParConvergedStackBuilde
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryItemHandler;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryListener;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.lov.HP3ParAccountTabularProvider;
 import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
 import com.cisco.matday.ucsd.hp3par.reports.CPGReport;
 import com.cisco.matday.ucsd.hp3par.reports.VolumeReport;
@@ -141,10 +140,10 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			 * MonitoringTriggerUtil.register(monTrigger);
 			 * menuProvider.registerWithProvider();
 			 */
-			logger.info("Registering tabular list of values");
-			cfr.registerTabularField(HP3ParAccountTabularProvider.TABULAR_PROVIDER, HP3ParAccountTabularProvider.class, "0", "0");
-			
+			//logger.info("Registering tabular list of values");
+			//cfr.registerTabularField(HP3ParAccountTabularProvider.TABULAR_PROVIDER, HP3ParAccountTabularProvider.class, "0", "0");
 
+			logger.info("Registering workflow inputs");
 			WorkflowInputTypeDeclaration.registerWFInputs();
 			//InputTypeDeclaration.registerWFInputs();
 			

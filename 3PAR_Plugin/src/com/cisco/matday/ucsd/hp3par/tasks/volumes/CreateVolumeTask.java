@@ -21,6 +21,14 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 
+import org.apache.log4j.Logger;
+
+import com.cisco.matday.ucsd.hp3par.HP3ParModule;
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
+import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -28,23 +36,45 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 public class CreateVolumeTask extends AbstractTask {
+	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
 	@Override
-	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger logger) throws Exception {
-		// TODO Auto-generated method stub
+	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger) throws Exception {
+		// Obtain account information:
+		CreateVolumeConfig config = (CreateVolumeConfig) context.loadConfigObject();
+		HP3ParCredentials c = new HP3ParCredentials(AccountUtil.getAccountByName(config.getAccount()));
+		
+		// Parse out CPG - it's in the format:
+		// ID@AccountName@Name
+		String[] cpgInfo = config.getCpg().split("@");
+		if (cpgInfo.length != 3) {
+			logger.warn("CPG didn't return three items! It returned: " + config.getCpg());
+			throw new Exception("Invalid CPG");
+		}
+		String cpgName = cpgInfo[2];
+		
+		// Build volume information object:
+		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(config.getVolumeName(), cpgName, config.getVolume_size(), config.getComment());
+		HP3ParVolumeStatus s = CreateVolumeRestCall.create(c, volume);
+		
+		// If it wasn't created error out
+		if (!s.isCreated()) {
+			ucsdLogger.addError("Failed to create volume:" + s.getError());
+			throw new Exception("Failed to create volume");
+		}
+		
+		ucsdLogger.addInfo("Created volume: " + config.getVolumeName());
 
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		// TODO Auto-generated method stub
-		return null;
+		return new CreateVolumeConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		// TODO Auto-generated method stub
-		return null;
+		return CreateVolumeConfig.DISPLAY_LABEL;
 	}
 
 	@Override

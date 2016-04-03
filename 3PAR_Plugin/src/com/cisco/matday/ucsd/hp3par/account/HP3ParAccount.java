@@ -75,11 +75,6 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	public HP3ParAccount() {
 		super();
-		// TODO: Send logger here to see if we're actually getting instantiated - if so maybe register LoV?
-		logger.warn("pppppppppppppppppp");
-		logger.warn("HP3Par account type created!");
-		logger.warn("pppppppppppppppppp");
-		
 	}
 
 	@Override

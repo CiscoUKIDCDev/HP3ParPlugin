@@ -1,5 +1,5 @@
 # HP 3PAR UCS Director Plugin
-This intends to be a comprehensive UCS Director plugin for HP 3PAR storage blades.
+This intends to be a comprehensive UCS Director plugin for HP 3PAR storage systems.
 
 It is currently in early alpha, it is unsupported and used at your own risk. If you'd like to give it a go, you can find the [latest releases here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/releases).
 
@@ -20,9 +20,13 @@ It is **not** recommended to run this plugin in production - it has never been t
 ### Implemented
 * Ability to add a 3PAR physical storage account (and converged stack based on it)
 * Converged/Physical view tab (list of volumes, CPGs and some graphs)
+* Form lists to pick 3PAR accounts, CPGs and Volumes
+* Create volume task (may be buggy)
 
 ### Near-term roadmap
-* Basic tasks (create/delete volume)
+* More tasks
+* Action buttons
+* Drilldown reports (e.g. double-click CPG to see its volumes)
 * Better documentation
 
 ## Using
