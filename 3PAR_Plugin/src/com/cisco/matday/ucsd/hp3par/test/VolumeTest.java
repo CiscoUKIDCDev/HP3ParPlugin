@@ -21,13 +21,10 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.test;
 
-import java.io.IOException;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.DeleteVolumeRestCall;
@@ -41,11 +38,11 @@ public class VolumeTest {
 	final static String password = "3pardata";
 
 	public static void main(String[] args) {
+
 		try {
+
 			Logger.getRootLogger().setLevel(Level.INFO);
-			// token = new HP3ParToken(new
-			// HP3ParCredentials(ipAddress,user,password, true));
-			// System.out.println(token.getToken());
+
 			HP3ParCredentials login = new HP3ParCredentials(ipAddress, user, password, true);
 
 			HP3ParVolumeList list = new HP3ParVolumeList(login);
@@ -54,44 +51,49 @@ public class VolumeTest {
 			System.out.println("Model: " + systemInfo.getSystem().getModel());
 			System.out.println("Total Volumes: " + list.getVolume().getTotal());
 			System.out.println("Total CPGs: " + cpgInfo.getCpg().getTotal());
-			
-			//HP3ParVolumeInformation vol = new HP3ParVolumeInformation("SSD-Test", "SSD_r1", 1024, "No comment");
-			//System.out.println(CreateVolumeRestCall.create(login, vol).getError());
-			
+
+			// HP3ParVolumeInformation vol = new
+			// HP3ParVolumeInformation("SSD-Test",
+			// "SSD_r1", 1024, "No comment");
+			// System.out.println(CreateVolumeRestCall.create(login,
+			// vol).getError());
+
 			HP3ParVolumeStatus s = DeleteVolumeRestCall.delete(login, "Testing");
 			System.out.println(s.getError());
-			
 
-			//HP3ParVolumeList newlist = new HP3ParVolumeList(login);
+			// HP3ParVolumeList newlist = new HP3ParVolumeList(login);
 
-			/*for (Iterator<VolumeResponseMembers> i = newlist.getVolume().getMembers().iterator(); i.hasNext();) {
-				VolumeResponseMembers volume = i.next();
-				System.out.println(volume.getUserCPG());
-				System.out.println(login.getToken());
-			}*/
 			/*
-			HP3ParCPG cpglist = new HP3ParCPG(login);
+			 * for (Iterator<VolumeResponseMembers> i =
+			 * newlist.getVolume().getMembers().iterator(); i.hasNext();) {
+			 * VolumeResponseMembers volume = i.next();
+			 * System.out.println(volume.getUserCPG());
+			 * System.out.println(login.getToken()); }
+			 * 
+			 * /* HP3ParCPG cpglist = new HP3ParCPG(login);
+			 * 
+			 * for (Iterator<CPGResponseMembers> i =
+			 * cpglist.getCpg().getMembers().iterator(); i.hasNext();) {
+			 * CPGResponseMembers cpg = i.next(); // Get total long total =
+			 * ((cpg.getUsrUsage().getTotalMiB() +
+			 * cpg.getSAUsage().getTotalMiB() +
+			 * cpg.getSDUsage().getTotalMiB())); long used =
+			 * ((cpg.getUsrUsage().getUsedMiB() + cpg.getSAUsage().getUsedMiB()
+			 * + cpg.getSDUsage().getUsedMiB())); long free = total - used; int
+			 * volumeCount = cpg.getNumTPVVs();
+			 * 
+			 * System.out.println(cpg.getName() + " == " + total + " == " + free
+			 * + " == TPVVS = " + volumeCount);
+			 * //System.out.println(login.getToken()); }
+			 *//*
+				 * } catch (IOException e) { // TODO Auto-generated catch block
+				 * e.printStackTrace(); } catch (InvalidHP3ParTokenException e)
+				 * { // TODO Auto-generated catch block e.printStackTrace(); }
+				 * 
+				 * }
+				 */
+		} catch (Exception e) {
 
-			for (Iterator<CPGResponseMembers> i = cpglist.getCpg().getMembers().iterator(); i.hasNext();) {
-				CPGResponseMembers cpg = i.next();
-				// Get total
-				long total = ((cpg.getUsrUsage().getTotalMiB() + cpg.getSAUsage().getTotalMiB() + cpg.getSDUsage().getTotalMiB()));
-				long used = ((cpg.getUsrUsage().getUsedMiB() + cpg.getSAUsage().getUsedMiB() + cpg.getSDUsage().getUsedMiB()));
-				long free = total - used;
-				int volumeCount = cpg.getNumTPVVs();
-				
-				System.out.println(cpg.getName() + " == " + total + " == " + free + " == TPVVS = " + volumeCount);
-				//System.out.println(login.getToken());
-			}*/
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		catch (InvalidHP3ParTokenException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
-
 }

@@ -24,6 +24,8 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
+import org.apache.log4j.Logger;
+
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -50,15 +52,18 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	@Persistent
 	private String volume;
 
+	private static Logger logger = Logger.getLogger(DeleteVolumeConfig.class);
+
 	public DeleteVolumeConfig() {
 
 	}
 
 	public DeleteVolumeConfig(CreateVolumeConfig config) {
-		this.setAccount(config.getAccount());
-		// Recreate volume format (ID isn't used so set to 0)
-		// id@account@name
-		this.setVolume(0 + "@" + config.getAccount() + "@" + config.getVolumeName());
+		logger.info("Rolling back task - deleting volume: " + config.getVolumeName());
+		this.account = config.getAccount();
+		String volParse = "0@" + config.getAccount() + "@" + config.getVolumeName();
+		logger.info("Format: " + volParse);
+		this.volume = volParse;
 	}
 
 	@Override

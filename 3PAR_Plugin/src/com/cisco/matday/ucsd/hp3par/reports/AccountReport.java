@@ -22,6 +22,9 @@
 package com.cisco.matday.ucsd.hp3par.reports;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.graphs.CPGBarChartReport;
+import com.cisco.matday.ucsd.hp3par.reports.graphs.UsagePieChart;
+import com.cisco.matday.ucsd.hp3par.reports.graphs.VolumeAllocationPieChart;
 import com.cloupia.model.cIM.InfraAccountTypes;
 import com.cloupia.service.cIM.inframgr.collector.impl.GenericInfraAccountReport;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;

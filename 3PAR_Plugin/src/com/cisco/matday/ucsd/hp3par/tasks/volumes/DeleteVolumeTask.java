@@ -24,7 +24,6 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 
 import org.apache.log4j.Logger;
 
-import com.cisco.matday.ucsd.hp3par.HP3ParModule;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.DeleteVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
@@ -36,7 +35,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 public class DeleteVolumeTask extends AbstractTask {
-	private static Logger logger = Logger.getLogger(HP3ParModule.class);
+	private static Logger logger = Logger.getLogger(DeleteVolumeTask.class);
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
@@ -51,7 +50,7 @@ public class DeleteVolumeTask extends AbstractTask {
 		String[] volInfo = config.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume");
+			throw new Exception("Invalid Volume: " + config.getVolume());
 		}
 		String volName = volInfo[2];
 
