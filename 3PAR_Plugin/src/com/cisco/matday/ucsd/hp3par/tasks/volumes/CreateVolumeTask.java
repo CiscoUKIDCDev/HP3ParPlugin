@@ -28,7 +28,6 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
-import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -43,7 +42,7 @@ public class CreateVolumeTask extends AbstractTask {
 			throws Exception {
 		// Obtain account information:
 		CreateVolumeConfig config = (CreateVolumeConfig) context.loadConfigObject();
-		HP3ParCredentials c = new HP3ParCredentials(AccountUtil.getAccountByName(config.getAccount()));
+		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
 		// Parse out CPG - it's in the format:
 		// ID@AccountName@Name

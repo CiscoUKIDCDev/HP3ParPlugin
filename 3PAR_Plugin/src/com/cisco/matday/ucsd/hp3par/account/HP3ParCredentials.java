@@ -57,6 +57,8 @@ public class HP3ParCredentials {
 	private String username;
 	private String password;
 	private HP3ParToken token;
+	private String accountName = null;
+	
 	static Logger logger = Logger.getLogger(HP3ParCredentials.class);
 
 	public HP3ParCredentials(String array_address, String username, String password, boolean https, int http_port) {
@@ -66,18 +68,10 @@ public class HP3ParCredentials {
 	public HP3ParCredentials(String array_address, String username, String password, boolean https) {
 		init(array_address, username, password, https, HP3ParConstants.DEFAULT_PORT);
 	}
-
-	public HP3ParCredentials(String contextId) throws Exception {
-		logger.info("contextId: " + contextId);
-		String accountName = null;
-		if (contextId != null) {
-			// As the contextId returns as: "account Name;POD Name"
-			accountName = contextId.split(";")[0];
-		}
-		if (accountName == null) {
-			throw new Exception("Unable to find the account name");
-		}
-
+	
+	public HP3ParCredentials(String accountName) throws Exception {
+		logger.info("Account Name: " + accountName);
+		this.accountName = accountName;
 		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
 		if (acc == null) {
 			throw new Exception("Unable to find the account:" + accountName);
@@ -87,21 +81,32 @@ public class HP3ParCredentials {
 
 	public HP3ParCredentials(ReportContext context) throws Exception {
 		String contextId = context.getId();
-		String accountName = null;
+		this.accountName = null;
 		if (contextId != null) {
 			// As the contextId returns as: "account Name;POD Name"
-			accountName = contextId.split(";")[0];
+			this.accountName = contextId.split(";")[0];
 		}
-		if (accountName == null) {
+		if (this.accountName == null) {
 			throw new Exception("Account not found");
 		}
-		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
+		PhysicalInfraAccount acc = AccountUtil.getAccountByName(this.accountName);
 		if (acc == null) {
 			throw new Exception("Unable to find the account:" + accountName);
 		}
 		initFromAccount(acc);
 	}
+	public String getAccountName() {
+		if (accountName == null) {
+			accountName = "-";
+		}
+		return accountName;
+	}
 
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	@Deprecated
 	public HP3ParCredentials(PhysicalInfraAccount acc) throws Exception {
 		initFromAccount(acc);
 	}

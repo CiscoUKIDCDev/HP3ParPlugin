@@ -51,8 +51,7 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 				// specified.
 				if (infraAccount.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE)) {
 					logger.debug("Testing connectivity for account " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
-					PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
-					HP3ParCredentials t = new HP3ParCredentials(acc);
+					HP3ParCredentials t = new HP3ParCredentials(accountName);
 					try {
 						// Got a token, set as OK if it's not null
 						HP3ParToken token = new HP3ParToken(t);

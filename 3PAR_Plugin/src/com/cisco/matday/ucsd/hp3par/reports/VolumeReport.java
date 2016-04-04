@@ -23,6 +23,7 @@ package com.cisco.matday.ucsd.hp3par.reports;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeAction;
+import com.cisco.matday.ucsd.hp3par.reports.actions.DeleteVolumeAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -38,7 +39,7 @@ public class VolumeReport extends CloupiaReportWithActions {
 		// IMPORTANT: this tells the framework which column of this report you
 		// want to pass as the report context id
 		// when there is a UI action being launched in this report
-		this.setMgmtColumnIndex(1);
+		this.setMgmtColumnIndex(0);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class VolumeReport extends CloupiaReportWithActions {
 
 	@Override
 	public CloupiaReportAction[] getActions() {
-		CloupiaReportAction[] actions = { new CreateVolumeAction() };
+		CloupiaReportAction[] actions = { new CreateVolumeAction(), new DeleteVolumeAction() };
 		return actions;
 	}
 

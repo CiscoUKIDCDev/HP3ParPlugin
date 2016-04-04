@@ -48,8 +48,16 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 	 */
 	@Override
 	public ConvergedStackComponentDetail buildConvergedStackComponent(String contextId) throws Exception {
+		String accountName = null;
+		if (contextId != null) {
+			// As the contextId returns as: "account Name;POD Name"
+			accountName = contextId.split(";")[0];
+		}
+		if (accountName == null) {
+			throw new Exception("Unable to find the account name");
+		}
 
-		HP3ParCredentials c = new HP3ParCredentials(contextId);
+		HP3ParCredentials c = new HP3ParCredentials(accountName);
 		HP3ParSystem systemInfo = new HP3ParSystem(c);
 
 		ConvergedStackComponentDetail detail = new ConvergedStackComponentDetail();

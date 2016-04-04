@@ -49,6 +49,8 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 		report.setContext(context);
 
 		TabularReportInternalModel model = new TabularReportInternalModel();
+		// Internal ID is hidden from normal view and is used by tasks later
+		model.addTextColumn("Internal ID", "Internal ID", true);
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
 		model.addTextColumn("Size GiB", "Size GiB");
@@ -63,29 +65,31 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 
 		for (Iterator<VolumeResponseMembers> i = list.getVolume().getMembers().iterator(); i.hasNext();) {
 			VolumeResponseMembers volume = i.next();
+			// Internal ID, format:
+			// accountName;volumeid@accountName@volumeName
+			model.addTextValue(credentials.getAccountName() + ";" + volume.getId() + "@" + credentials.getAccountName()
+					+ "@" + volume.getName());
 			// Volume ID
 			model.addTextValue(Integer.toString(volume.getId()));
 			// Name of this volume
 			model.addTextValue(volume.getName());
-			
+
 			// Round off the size to gb with double precision
 			Double volSize = (double) (volume.getSizeMiB() / 1024d);
 			model.addTextValue(volSize.toString());
-			
+
 			// Get the provisioning type (1 = full, 2 = thin):
 			int provisioning = volume.getProvisioningType();
 			if (provisioning == 1) {
 				model.addTextValue("Full");
-			}
-			else if (provisioning == 2) {
+			} else if (provisioning == 2) {
 				model.addTextValue("Thin");
-			}
-			else {
+			} else {
 				model.addTextValue("Unknown");
 			}
-			
+
 			model.addTextValue(volume.getUserCPG());
-			
+
 			model.completedRow();
 		}
 		model.updateReport(report);

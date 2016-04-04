@@ -1,7 +1,12 @@
 package com.cisco.matday.ucsd.hp3par.reports.actions;
 
+
 import org.apache.log4j.Logger;
 
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeConfig;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
@@ -44,10 +49,11 @@ public class CreateVolumeAction extends CloupiaPageAction {
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
 
 		String query = context.getId();
-		logger.info("Action button query = " + query);
-
 		CreateVolumeConfig form = new CreateVolumeConfig();
-		// form.setVlanID(query);
+		// The form will be in the format Account;Pod - grab the former:
+		String account = query.split(";")[0];
+		// Pre-populate the account field:
+		form.setAccount(account);
 
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
@@ -55,33 +61,41 @@ public class CreateVolumeAction extends CloupiaPageAction {
 
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
-		//ObjStore<CreateVolumeConfig> store = ObjStoreHelper.getStore(CreateVolumeConfig.class);
+		// ObjStore<CreateVolumeConfig> store =
+		// ObjStoreHelper.getStore(CreateVolumeConfig.class);
 
 		Object obj = page.unmarshallToSession(FORM_ID);
 		CreateVolumeConfig form = (CreateVolumeConfig) obj;
+
+		HP3ParCredentials c = new HP3ParCredentials(context);
+
+		String[] cpgInfo = form.getCpg().split("@");
+		if (cpgInfo.length != 3) {
+			logger.warn("CPG didn't return three items! It returned: " + form.getCpg());
+			throw new Exception("Invalid CPG");
+		}
+		String cpgName = cpgInfo[2];
+
+		// Build volume information object:
+		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(form.getVolumeName(), cpgName,
+				form.getVolume_size(), form.getComment(), form.isThin_provision());
+		HP3ParVolumeStatus s = CreateVolumeRestCall.create(c, volume);
 		
-		logger.info("Submit succeded!");
-		logger.info("Volume name: " + form.getVolumeName());
-		
-		
+		if (!s.isSuccess()) {
+			logger.warn("Failed to create volume:" + s.getError());
+			throw new Exception("Failed to create volume");
+		}
+
 		/*
-
-		CreateVolumeActionForm modded = null;
-		List<CreateVolumeActionForm> objs = store.queryAll();
-		for (CreateVolumeActionForm o : objs) {
-			if (o.getVlanID().equals(form.getVlanID())) {
-				o.setGroupId(form.getGroupId());
-				modded = o;
-				break;
-			}
-		}
-
-		if (modded != null) {
-			store.modifySingleObject("vlanID == '" + form.getVlanID() + "'", modded);
-		} else {
-			store.insert(form);
-		}
-		*/
+		 * 
+		 * CreateVolumeActionForm modded = null; List<CreateVolumeActionForm>
+		 * objs = store.queryAll(); for (CreateVolumeActionForm o : objs) { if
+		 * (o.getVlanID().equals(form.getVlanID())) {
+		 * o.setGroupId(form.getGroupId()); modded = o; break; } }
+		 * 
+		 * if (modded != null) { store.modifySingleObject("vlanID == '" +
+		 * form.getVlanID() + "'", modded); } else { store.insert(form); }
+		 */
 
 		return PageIf.STATUS_OK;
 	}

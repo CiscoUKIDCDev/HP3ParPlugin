@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.DeleteVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
-import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -43,7 +42,7 @@ public class DeleteVolumeTask extends AbstractTask {
 
 		// Obtain account information:
 		DeleteVolumeConfig config = (DeleteVolumeConfig) context.loadConfigObject();
-		HP3ParCredentials c = new HP3ParCredentials(AccountUtil.getAccountByName(config.getAccount()));
+		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 		
 		// Get the volume name, it's in the format:
 		// id@account@name
