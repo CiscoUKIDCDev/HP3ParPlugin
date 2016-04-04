@@ -39,6 +39,10 @@ public class HP3ParConstants {
 	
 	public final static int TOKEN_LIFE = 3600;
 	
+	public static final String ACCOUNT_LIST_FORM_LABEL = "Account";
+	public static final String CPG_LIST_FORM_LABEL = "CPG";
+	public static final String VOLUME_LIST_FORM_LABEL = "Volume";
+	
 	public static final String ACCOUNT_LIST_FORM_NAME = "HP3ParAccountList";
 	public static final String CPG_LIST_FORM_NAME = "HP3ParCPGList";
 	public static final String VOLUME_LIST_FORM_NAME = "HP3ParVolumeList";

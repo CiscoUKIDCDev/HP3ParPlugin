@@ -40,12 +40,12 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.ACCOUNT_LIST_FORM_NAME, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER)
+	@FormField(label = HP3ParConstants.ACCOUNT_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String account;
 
-	@FormField(label = HP3ParConstants.CPG_LIST_FORM_NAME, help = "CPG to place the volume", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.CPG_LIST_FORM_PROVIDER)
+	@FormField(label = HP3ParConstants.CPG_LIST_FORM_LABEL, help = "CPG to place the volume", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.CPG_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String cpg;

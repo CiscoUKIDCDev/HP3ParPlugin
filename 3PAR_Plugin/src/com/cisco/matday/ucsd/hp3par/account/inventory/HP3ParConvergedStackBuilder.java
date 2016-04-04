@@ -61,7 +61,7 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		HP3ParSystem systemInfo = new HP3ParSystem(c);
 
 		ConvergedStackComponentDetail detail = new ConvergedStackComponentDetail();
-
+		
 		detail.setModel(systemInfo.getSystem().getModel());
 
 		detail.setOsVersion(systemInfo.getSystem().getSystemVersion());
@@ -69,6 +69,17 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		detail.setMgmtIPAddr(systemInfo.getSystem().getIPv4Addr());
 		detail.setStatus("OK");
 		detail.setVendorName("HP3PAR");
+		
+		List<String> componentSummaryList = new ArrayList<String>();
+		componentSummaryList.add("Serial Number");
+		componentSummaryList.add(systemInfo.getSystem().getModel());
+		componentSummaryList.add("Nodes");
+		componentSummaryList.add(Short.toString(systemInfo.getSystem().getTotalNodes()));
+		componentSummaryList.add("Total Capacity GiB");
+		componentSummaryList.add(Double.toString(systemInfo.getSystem().getTotalCapacityMiB() / 1024d));
+		
+		
+		detail.setComponentSummaryList(componentSummaryList );
 
 		detail.setLabel("System Name:" + systemInfo.getSystem().getName());
 
