@@ -64,7 +64,7 @@ public class WorkflowInputTypeDeclaration {
 		
 		// First item is what we return to the workflow, second is what we display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_NAME,
-				HP3ParVolumeSelector.class, "0", "3");
+				HP3ParVolumeSelector.class, "0", "2");
 	}
 
 }

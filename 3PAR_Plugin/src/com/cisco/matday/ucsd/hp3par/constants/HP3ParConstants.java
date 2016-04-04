@@ -47,6 +47,11 @@ public class HP3ParConstants {
 	public static final String CPG_LIST_FORM_TABLE_NAME = "HP3ParCPGList_table";
 	public static final String VOLUME_LIST_FORM_TABLE_NAME = "HP3ParVolumeList_table";
 	
+	public static final String ACCOUNT_LIST_FORM_PROVIDER = "HP3ParAccountList_provider";
+	public static final String CPG_LIST_FORM_PROVIDER = "HP3ParCPGList_provider";
+	public static final String VOLUME_LIST_FORM_PROVIDER = "HP3ParVolumeList_provider";
+	
 	public static final String GENERIC_TEXT_INPUT = "gen_text_input";
+
 	
 }

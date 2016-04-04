@@ -30,9 +30,9 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.DeleteVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 
 public class VolumeTest {
 
@@ -55,8 +55,11 @@ public class VolumeTest {
 			System.out.println("Total Volumes: " + list.getVolume().getTotal());
 			System.out.println("Total CPGs: " + cpgInfo.getCpg().getTotal());
 			
-			HP3ParVolumeInformation vol = new HP3ParVolumeInformation("SSD-Test", "SSD_r1", 1024, "No comment");
-			System.out.println(CreateVolumeRestCall.create(login, vol).getError());
+			//HP3ParVolumeInformation vol = new HP3ParVolumeInformation("SSD-Test", "SSD_r1", 1024, "No comment");
+			//System.out.println(CreateVolumeRestCall.create(login, vol).getError());
+			
+			HP3ParVolumeStatus s = DeleteVolumeRestCall.delete(login, "Testing");
+			System.out.println(s.getError());
 			
 
 			//HP3ParVolumeList newlist = new HP3ParVolumeList(login);

@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 
 public class DeleteVolumeRestCall {
 
-	public static HP3ParVolumeStatus create(HP3ParCredentials loginCredentials,
+	public static HP3ParVolumeStatus delete(HP3ParCredentials loginCredentials,
 			String volumeName) throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		Gson gson = new Gson();

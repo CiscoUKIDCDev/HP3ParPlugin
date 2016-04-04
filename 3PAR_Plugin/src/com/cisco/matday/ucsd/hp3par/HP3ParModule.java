@@ -29,10 +29,14 @@ import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParConvergedStackBuilde
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryItemHandler;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryListener;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
 import com.cisco.matday.ucsd.hp3par.reports.CPGReport;
 import com.cisco.matday.ucsd.hp3par.reports.VolumeReport;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeTask;
 import com.cisco.matday.ucsd.hp3par.workflow.WorkflowInputTypeDeclaration;
 import com.cloupia.lib.connector.ConfigItemDef;
 import com.cloupia.lib.connector.account.AccountTypeEntry;
@@ -65,7 +69,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	// Return a list of API tasks supported
 	public AbstractTask[] getTasks() {
 		logger.info("Adding tasks");
-		AbstractTask[] task = new AbstractTask[] { new CreateVolumeTask(), };
+		AbstractTask[] task = new AbstractTask[] { new CreateVolumeTask(), new DeleteVolumeTask() };
 		// task[1] = new HP3ParDeleteVolume();
 		return task;
 		//return null;
@@ -140,8 +144,15 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			 * MonitoringTriggerUtil.register(monTrigger);
 			 * menuProvider.registerWithProvider();
 			 */
-			//logger.info("Registering tabular list of values");
-			//cfr.registerTabularField(HP3ParAccountTabularProvider.TABULAR_PROVIDER, HP3ParAccountTabularProvider.class, "0", "0");
+			logger.info("Registering tabular list of values: " + HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER);
+			cfr.registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER, HP3ParAccountSelector.class, "0", "0");
+			
+			logger.info("Registering tabular list of values: " + HP3ParConstants.CPG_LIST_FORM_PROVIDER);
+			cfr.registerTabularField(HP3ParConstants.CPG_LIST_FORM_PROVIDER, HP3ParCpgSelector.class, "0", "3");
+			
+			logger.info("Registering tabular list of values: " + HP3ParConstants.VOLUME_LIST_FORM_PROVIDER);
+			cfr.registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_PROVIDER, HP3ParVolumeSelector.class, "0", "2");
+
 
 			logger.info("Registering workflow inputs");
 			WorkflowInputTypeDeclaration.registerWFInputs();

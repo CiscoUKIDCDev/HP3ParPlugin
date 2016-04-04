@@ -39,11 +39,12 @@ public class CreateVolumeTask extends AbstractTask {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
 	@Override
-	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger) throws Exception {
+	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
+			throws Exception {
 		// Obtain account information:
 		CreateVolumeConfig config = (CreateVolumeConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(AccountUtil.getAccountByName(config.getAccount()));
-		
+
 		// Parse out CPG - it's in the format:
 		// ID@AccountName@Name
 		String[] cpgInfo = config.getCpg().split("@");
@@ -52,18 +53,23 @@ public class CreateVolumeTask extends AbstractTask {
 			throw new Exception("Invalid CPG");
 		}
 		String cpgName = cpgInfo[2];
-		
+
 		// Build volume information object:
-		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(config.getVolumeName(), cpgName, config.getVolume_size(), config.getComment());
+		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(config.getVolumeName(), cpgName,
+				config.getVolume_size(), config.getComment(), config.isThin_provision());
 		HP3ParVolumeStatus s = CreateVolumeRestCall.create(c, volume);
-		
+
 		// If it wasn't created error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to create volume:" + s.getError());
 			throw new Exception("Failed to create volume");
 		}
-		
+
 		ucsdLogger.addInfo("Created volume: " + config.getVolumeName());
+
+		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+				"Created Volume: " + config.getVolumeName(), DeleteVolumeConfig.DISPLAY_LABEL,
+				new DeleteVolumeConfig(config));
 
 	}
 

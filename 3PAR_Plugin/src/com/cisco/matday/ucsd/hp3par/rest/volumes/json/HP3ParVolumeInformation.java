@@ -29,14 +29,29 @@ public class HP3ParVolumeInformation {
 	private String cpg;
 	private long sizeMiB;
 	private String comment;
+	private boolean tpvv = false;
 	
+	@Deprecated
 	public HP3ParVolumeInformation(String name, String cpg, long sizeMiB, String comment) {
 		this.name = name;
 		this.cpg = cpg;
 		this.sizeMiB = sizeMiB;
 		this.comment = comment;
 	}
+	public HP3ParVolumeInformation(String name, String cpg, long sizeMiB, String comment, boolean thinProvision) {
+		this.name = name;
+		this.cpg = cpg;
+		this.sizeMiB = sizeMiB;
+		this.comment = comment;
+		this.tpvv = thinProvision;
+	}
 
+	public boolean isTpvv() {
+		return tpvv;
+	}
+	public void setTpvv(boolean tpvv) {
+		this.tpvv = tpvv;
+	}
 	public String getName() {
 		return name;
 	}
