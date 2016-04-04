@@ -68,7 +68,7 @@ public class CreateVolumeTask extends AbstractTask {
 		ucsdLogger.addInfo("Created volume: " + config.getVolumeName());
 
 		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
-				"Created Volume: " + config.getVolumeName(), DeleteVolumeConfig.DISPLAY_LABEL,
+				"Undo creation of volume: " + config.getVolumeName(), DeleteVolumeConfig.DISPLAY_LABEL,
 				new DeleteVolumeConfig(config));
 
 	}
