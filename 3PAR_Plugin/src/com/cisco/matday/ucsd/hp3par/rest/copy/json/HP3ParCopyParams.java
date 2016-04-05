@@ -19,8 +19,6 @@ public class HP3ParCopyParams implements HP3ParVolumeActionParams {
 	private boolean online;
 	private boolean tpvv;
 	private String snapCPG;
-	private String comment;
-
 
 	/**
 	 * Creates a set of parameters to copy a volume
@@ -44,19 +42,6 @@ public class HP3ParCopyParams implements HP3ParVolumeActionParams {
 		this.snapCPG = snapCPG;
 	}
 
-	/**
-	 * @return the comment
-	 */
-	public String getComment() {
-		return comment;
-	}
-
-	/**
-	 * @param comment the comment to set
-	 */
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
 	/**
 	 * @return the destVolume
 	 */

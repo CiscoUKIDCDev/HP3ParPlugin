@@ -26,6 +26,7 @@ import com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeAction;
 import com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeCopyAction;
 import com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeSnapshotAction;
 import com.cisco.matday.ucsd.hp3par.reports.actions.DeleteVolumeAction;
+import com.cisco.matday.ucsd.hp3par.reports.actions.VolumeDoubleClickActionReport;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -64,8 +65,8 @@ public class VolumeReport extends CloupiaReportWithActions {
 	@Override
 	public CloupiaReportAction[] getActions() {
 		CloupiaReportAction[] actions = {
-				new CreateVolumeAction(), new DeleteVolumeAction(), new CreateVolumeSnapshotAction(),
-				new CreateVolumeCopyAction(),
+				new VolumeDoubleClickActionReport(), new CreateVolumeAction(), new DeleteVolumeAction(),
+				new CreateVolumeSnapshotAction(), new CreateVolumeCopyAction(),
 		};
 		return actions;
 	}

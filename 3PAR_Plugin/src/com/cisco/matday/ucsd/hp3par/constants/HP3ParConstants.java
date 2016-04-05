@@ -78,7 +78,7 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for copy CPG list table
 	 */
-	public static final String COPY_CPG_LIST_FORM_LABEL = "CPG";
+	public static final String COPY_CPG_LIST_FORM_LABEL = "Copy CPG";
 	/**
 	 * User-friendly label for Volume list table
 	 */

@@ -38,9 +38,12 @@ public class VolumeResponseMembers {
 	private boolean readOnly;
 	private int state;
 	private String snapCPG;
+	private String comment;
 	// private <List> failedStates;
 	// private <List> degradedStates;
 	// private <List> additionalStates;
+
+
 
 	private VolumeResponseMembersAdminSpace adminSpace;
 
@@ -264,7 +267,13 @@ public class VolumeResponseMembers {
 		}
 		return userCPG;
 	}
-	
+	@SuppressWarnings("javadoc")
+	public String getComment() {
+		if (comment == null) {
+			return "-";
+		}
+		return comment;
+	}
 	@SuppressWarnings("javadoc")
 	public String getCopyCPG() {
 		if (snapCPG == null) {

@@ -60,18 +60,18 @@ public class VolumeTest {
 			System.out.println("Total Volumes: " + list.getVolume().getTotal());
 			System.out.println("Total CPGs: " + cpgInfo.getCpg().getTotal());
 			
-			HP3ParVolumeInformation info = new HP3ParVolumeInformation("create-test", "SSD_r1", 1024, "No comment", true, "NL_r1");
+			HP3ParVolumeInformation info = new HP3ParVolumeInformation("create-testa", "SSD_r1", 1024, "No comment", true, "NL_r1");
 			HP3ParRequestStatus s = HP3ParVolumeRestCall.create(login, info);
 			System.out.println(s.getError());
 			System.out.println("Success = " + s.isSuccess());
 			
-			HP3ParSnapshotParams p = new HP3ParSnapshotParams("new-snap", false, null);
+			HP3ParSnapshotParams p = new HP3ParSnapshotParams("new-snapa", false, null);
 			s = HP3ParCopyRestCall.createSnapshot(login, "create-test", p);
 			System.out.println(s.getError());
 			System.out.println("Success = " + s.isSuccess());
 			
-			HP3ParCopyParams q = new HP3ParCopyParams("new-copy", "FC_r5", true, true, "SSD_r1");
-			s = HP3ParCopyRestCall.createCopy(login, "create-test", q);
+			HP3ParCopyParams q = new HP3ParCopyParams("new-copya", "FC_r5", true, true, "SSD_r1");
+			s = HP3ParCopyRestCall.createCopy(login, "create-testa", q);
 			System.out.println(s.getError());
 			System.out.println("Success = " + s.isSuccess());
 

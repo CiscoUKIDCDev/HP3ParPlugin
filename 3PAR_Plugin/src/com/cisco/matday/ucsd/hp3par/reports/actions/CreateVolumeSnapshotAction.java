@@ -48,8 +48,8 @@ public class CreateVolumeSnapshotAction extends CloupiaPageAction {
 	// need to provide a unique string to identify this form and action
 	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeSnapshotForm";
 	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeSnapshotAction";
-	private static final String LABEL = "Copy Volume";
-	private static final String DESCRIPTION = "Copy Volume";
+	private static final String LABEL = "Create Snapshot";
+	private static final String DESCRIPTION = "Create Snapshot";
 
 	@Override
 	public void definePage(Page page, ReportContext context) {

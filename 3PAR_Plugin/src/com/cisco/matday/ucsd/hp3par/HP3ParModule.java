@@ -33,6 +33,8 @@ import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
+import com.cisco.matday.ucsd.hp3par.reports.drilldown.VolumeDetails;
+//import com.cisco.matday.ucsd.hp3par.reports.drilldown.VolumeDrillDownReport;
 import com.cisco.matday.ucsd.hp3par.reports.tabular.CPGReport;
 import com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeReport;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyTask;
@@ -65,7 +67,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
 		CloupiaReport[] report = new CloupiaReport[] {
-				new AccountReport(), new VolumeReport(), new CPGReport(),
+				new AccountReport(), new VolumeReport(), new CPGReport(), new VolumeDetails(),
 		};
 		return report;
 	}
@@ -75,7 +77,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		logger.info("Adding tasks");
 		AbstractTask[] task = new AbstractTask[] {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
-				new CreateVolumeCopyTask()
+				new CreateVolumeCopyTask(),
 		};
 		// task[1] = new HP3ParDeleteVolume();
 		return task;
@@ -129,6 +131,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			 * Nimble_MY_FIRST_DROPDOWN,
 			 * NimbleConstants.Nimble_MY_FIRST_DROPDOWN_LABEL);
 			 * 
+			 * 
 			 * // register the left hand menu provider for the menu item i'm //
 			 * introducing DummyMenuProvider menuProvider = new
 			 * DummyMenuProvider();
@@ -151,6 +154,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			 * MonitoringTriggerUtil.register(monTrigger);
 			 * menuProvider.registerWithProvider();
 			 */
+			//ReportContextRegistry.getInstance().register("drilldown", VolumeDrillDownReport);
+			
 			logger.info("Registering tabular list of values: " + HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER);
 			cfr.registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER, HP3ParAccountSelector.class, "0", "0");
 

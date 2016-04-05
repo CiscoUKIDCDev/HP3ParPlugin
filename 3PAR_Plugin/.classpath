@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="com/cisco/matday/ucsd/hp3par/reports/drilldown/VolumeDrillDownReport.java|com/cisco/matday/ucsd/hp3par/reports/DrillDownTest.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jdo/jdo2-api-2.3-eb.jar"/>
 	<classpathentry kind="lib" path="lib/apache-commons-httpclient/commons-httpclient-3.1.jar"/>

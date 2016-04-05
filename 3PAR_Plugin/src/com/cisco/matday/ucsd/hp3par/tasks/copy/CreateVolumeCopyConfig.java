@@ -86,6 +86,25 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	@UserInputField(type = "Boolean")
 	@Persistent
 	private boolean thinProvision = false;
+	
+	@FormField(label = "Comment", help = "Comment", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String comment;
+
+	/**
+	 * @return the comment
+	 */
+	public String getComment() {
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
