@@ -53,34 +53,55 @@ public class CreateVolumeAction extends CloupiaPageAction {
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
-
+		// Use the same form (config) as the Create Volume custom task
 		page.bind(FORM_ID, CreateVolumeConfig.class);
 	}
 
+	/**
+	 * This sets up the initial fields and provides default values (in this case
+	 * the account name)
+	 */
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
-
 		String query = context.getId();
 		CreateVolumeConfig form = new CreateVolumeConfig();
+
 		// The form will be in the format Account;Pod - grab the former:
 		String account = query.split(";")[0];
+
 		// Pre-populate the account field:
 		form.setAccount(account);
 
+		// Set the account field to read-only (I couldn't find this documented
+		// anywhere, maybe there's a better way to do it?)
+		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
+
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
+
 	}
 
+	/**
+	 * This should do basic error checking (UCSD will enforce mandatory fields)
+	 * and attempt to execute the task.
+	 * 
+	 * Throwing an exception here will show the message as an error dialogue.
+	 */
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
-		// ObjStore<CreateVolumeConfig> store =
-		// ObjStoreHelper.getStore(CreateVolumeConfig.class);
-
 		Object obj = page.unmarshallToSession(FORM_ID);
 		CreateVolumeConfig form = (CreateVolumeConfig) obj;
 
+		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(context);
 
+		/*
+		 * The CPG field is in the format:
+		 * 
+		 * id@AccountName@CPG
+		 * 
+		 * Split it out and grab the exact CPG name
+		 */
 		String[] cpgInfo = form.getCpg().split("@");
 		if (cpgInfo.length != 3) {
 			logger.warn("CPG didn't return three items! It returned: " + form.getCpg());
@@ -88,27 +109,23 @@ public class CreateVolumeAction extends CloupiaPageAction {
 		}
 		String cpgName = cpgInfo[2];
 
-		// Build volume information object:
+		// This object is used to create the REST request - everything 3PAR
+		// needs to create a volume is in here
 		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(form.getVolumeName(), cpgName,
 				form.getVolume_size(), form.getComment(), form.isThin_provision());
+
+		// Execute the request and capture the status
 		HP3ParVolumeStatus s = HP3ParVolumeRestCall.create(c, volume);
 
+		// Throwing an exception fails the submit and shows the error in the
+		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to create volume:" + s.getError());
-			throw new Exception("Failed to create volume");
+			throw new Exception("Failed to create volume: " + s.getError());
 		}
 
-		/*
-		 * 
-		 * CreateVolumeActionForm modded = null; List<CreateVolumeActionForm>
-		 * objs = store.queryAll(); for (CreateVolumeActionForm o : objs) { if
-		 * (o.getVlanID().equals(form.getVlanID())) {
-		 * o.setGroupId(form.getGroupId()); modded = o; break; } }
-		 * 
-		 * if (modded != null) { store.modifySingleObject("vlanID == '" +
-		 * form.getVlanID() + "'", modded); } else { store.insert(form); }
-		 */
-
+		// Set the text for the "OK" prompt and return successfully
+		page.setPageMessage("Volume " + form.getVolumeName() + " created OK");
 		return PageIf.STATUS_OK;
 	}
 

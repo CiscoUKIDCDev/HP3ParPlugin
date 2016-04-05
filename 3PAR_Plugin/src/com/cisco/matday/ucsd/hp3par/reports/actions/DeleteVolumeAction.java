@@ -52,10 +52,14 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
-		// Use the same form as the task
+		// Use the same form (config) as the Delete Volume custom task
 		page.bind(FORM_ID, DeleteVolumeConfig.class);
 	}
 
+	/**
+	 * This sets up the initial fields and provides default values (in this case
+	 * the account and volume names)
+	 */
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
 
@@ -64,30 +68,51 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 		logger.info("3Par current pageFormID = " + page.getCurrentFormId());
 		logger.info("3Par Query = " + query);
 
-		// The query will be AccountName;VolumeName - grab them both
+		/*
+		 * Unlike CreateVolumeAction, this returns true on isSelectionRequired()
+		 * 
+		 * This means the context is whatever's in column 0 of the table. In
+		 * this case it's in the format:
+		 * 
+		 * accountName;volumeName
+		 */
 		String account = query.split(";")[0];
 		String volume = query.split(";")[1];
-		// Pre-populate the account field:
+
+		// Pre-populate the account and volume fields:
 		form.setAccount(account);
 		form.setVolume(volume);
+
+		// Set the account and volume fields to read-only (I couldn't find this
+		// documented anywhere, maybe there's a better way to do it?)
+		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
+		page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
 	}
 
+	/**
+	 * This should do basic error checking (UCSD will enforce mandatory fields)
+	 * and attempt to execute the task.
+	 * 
+	 * Throwing an exception here will show the message as an error dialogue.
+	 */
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
-		// ObjStore<DeleteVolumeConfig> store =
-		// ObjStoreHelper.getStore(DeleteVolumeConfig.class);
-
 		Object obj = page.unmarshallToSession(FORM_ID);
 		DeleteVolumeConfig form = (DeleteVolumeConfig) obj;
 
-		logger.info("Submit succeded!");
-		logger.info("Volume name: " + form.getVolume());
-
+		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(form.getAccount());
 
+		/*
+		 * The Volume field is in the format:
+		 * 
+		 * id@AccountName@Volume
+		 * 
+		 * Split it out and grab the exact Volume name
+		 */
 		String[] volInfo = form.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + form.getVolume());
@@ -97,13 +122,16 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 
 		// Delete the volume:
 		HP3ParVolumeStatus s = HP3ParVolumeRestCall.delete(c, volName);
+
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
 			logger.warn("Failed to delete Volume: " + s.getError());
-			throw new Exception("Volume deletion failed");
+			// The exception warning here is used as the failure message
+			throw new Exception("Volume deletion failed: " + s.getError());
 		}
-		logger.info("Deleted volume " + volName);
 
+		// Set the text for the "OK" prompt and return successfully
+		page.setPageMessage("Deleted volume " + volName);
 		return PageIf.STATUS_OK;
 	}
 
