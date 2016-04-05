@@ -32,30 +32,16 @@ import com.cloupia.lib.connector.InventoryContext;
 import com.cloupia.service.cIM.inframgr.collector.controller.PersistenceListener;
 import com.cloupia.service.cIM.inframgr.collector.model.ItemResponse;
 
-public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
+/**
+ * Implements the inventory collector.  This doesn't do much today
+ * @author Matt Day
+ *
+ */
 
-	/**
-	 * This class is used to provide the implementation for Nimble Account
-	 * Inventory Item handlers. While writing any new Item handler for any
-	 * Nimble Account inventory task, that should extend this
-	 * AbstractInventoryItemHandler Class. This provides the flexible way to
-	 * override the url, binder and listener objects.
-	 * 
-	 * This class provides the common logic to collect the inventory data and
-	 * persist into the respective persistable POJO objects and cleanup the data
-	 * while deleting the Nimble account.
-	 */
+public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 	private static Logger logger = Logger.getLogger(HP3ParInventoryItemHandler.class);
 
-	/**
-	 * This method used for cleanup Item Inventory. method of
-	 * InventoryItemHandlerIf interface
-	 * 
-	 * @param accountName
-	 * @return void
-	 * @exception Exception
-	 */
 	@Override
 	public void cleanup(String accountName) throws Exception {
 		// TODO Auto-generated method stub
@@ -68,7 +54,6 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 * @Override method of IInventoryItemHandlerIf interface
 	 * @param accountName
 	 *            ,InventoryContext
-	 * @return void
 	 * @exception Exception
 	 */
 	@Override
@@ -83,7 +68,6 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 * @Override method of IInventoryItemHandlerIf interface
 	 * @param accountName
 	 *            ,Object
-	 * @return void
 	 * @exception Exception
 	 */
 	@Override
@@ -96,12 +80,11 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 * private Method used for doing Inventory of Account
 	 * 
 	 * @param accountName
-	 * @return void
 	 * @exception Exception
 	 */
 	private void doInventory(String accountName) throws Exception {
 
-		// NimbleAccountAPI api = NimbleAccountAPI.getNimbleAccountAPI(acc);
+		// HP3ParAccountAPI api = HP3ParAccountAPI.getHP3ParAccountAPI(acc);
 
 		/**
 		 * To provide the real implemntation , depends on the respond data
@@ -130,7 +113,8 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 		if (listener != null) {
 			logger.info("Calling for Persistence");
 			listener.persistItem(bindedResponse);
-		} else {
+		}
+		else {
 			logger.info("Persistence is null");
 		}
 
@@ -139,9 +123,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	/**
 	 * Method used for get Url
 	 * 
-	 * @param No
 	 * @return String
-	 * @exception No
 	 */
 	public String getUrl() {
 		// TODO Auto-generated method stub
@@ -149,12 +131,10 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	}
 
 	/**
-	 * Method used to get object of NimbleAccountJSONBinder Binder will bind the
+	 * Method used to get object of HP3ParAccountJSONBinder Binder will bind the
 	 * respective object as JSON.
 	 * 
-	 * @param No
-	 * @return NimbleAccountJSONBinder
-	 * @exception No
+	 * @return HP3ParAccountJSONBinder
 	 */
 	public HP3ParAccountJSONBinder getBinder() {
 		// TODO Auto-generated method stub

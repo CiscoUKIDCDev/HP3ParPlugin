@@ -39,6 +39,13 @@ import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
+/**
+ * Table to allow selection of an HP 3PAR volumes - it should not be
+ * instantiated directly but instead used as a form item
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 
 	@Override
@@ -68,7 +75,9 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 		for (Iterator<InfraAccount> i = objs.iterator(); i.hasNext();) {
 			InfraAccount a = i.next();
 			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
-			if (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE)) {
+			// Important to check if the account type is null first
+			if ((acc != null) && (acc.getAccountType() != null)
+					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
 				HP3ParVolumeList list = new HP3ParVolumeList(new HP3ParCredentials(a.getAccountName()));
 
@@ -86,7 +95,7 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 					model.addTextValue(Integer.toString(volume.getId()));
 					// Name of this volume
 					model.addTextValue(volume.getName());
-					
+
 					// Account Name
 					model.addTextValue(a.getAccountName());
 					// Round off the size to gb with double precision
@@ -97,9 +106,11 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 					int provisioning = volume.getProvisioningType();
 					if (provisioning == 1) {
 						model.addTextValue("Full");
-					} else if (provisioning == 2) {
+					}
+					else if (provisioning == 2) {
 						model.addTextValue("Thin");
-					} else {
+					}
+					else {
 						model.addTextValue("Unknown");
 					}
 					model.addTextValue(volume.getUserCPG());

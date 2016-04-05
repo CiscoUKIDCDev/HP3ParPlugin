@@ -33,6 +33,13 @@ import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 import com.cloupia.lib.connector.account.PhysicalConnectivityTestHandler;
 import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 
+/**
+ * Used to test if the array is reachable, especially when creating a new
+ * account
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 	static Logger logger = Logger.getLogger(HP3ParConnectionHandler.class);
 
@@ -55,17 +62,20 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 					try {
 						// Got a token, set as OK if it's not null
 						HP3ParToken token = new HP3ParToken(t);
-						// Don't care about output, only want to see if it throws an exception
+						// Don't care about output, only want to see if it
+						// throws an exception
 						token.getToken();
 						logger.debug("Token acquired - connection verified");
 						status.setConnectionOK(true);
 						StorageAccountStatusSummary.accountSummary(accountName);
 						token.release();
-					} catch (InvalidHP3ParTokenException e) {
+					}
+					catch (InvalidHP3ParTokenException e) {
 						logger.warn("Couldn't get token from system - probably invalid credentials");
 						status.setConnectionOK(false);
 						status.setErrorMsg("Could not get authentication token (check credentials)");
-					} catch (Exception e) {
+					}
+					catch (Exception e) {
 						logger.warn("Exception raised testing connection - probably wrong IP address or unreachable");
 						// Didn't get a token
 						status.setConnectionOK(false);

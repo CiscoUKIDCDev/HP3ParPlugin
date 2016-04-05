@@ -21,6 +21,14 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
+/**
+ * JSON representation of a 3PAR rest call
+ * 
+ * See the HP 3PAR documentation to see what these fields mean
+ * 
+ * @author Matt Day
+ *
+ */
 public class VolumeResponseMembers {
 	private int id;
 	private String name;
@@ -39,34 +47,42 @@ public class VolumeResponseMembers {
 
 	private VolumeResponseMembersSpace userSpace;
 
+	@SuppressWarnings("javadoc")
 	public VolumeResponseMembersAdminSpace getAdminSpace() {
 		return adminSpace;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setAdminSpace(VolumeResponseMembersAdminSpace adminSpace) {
 		this.adminSpace = adminSpace;
 	}
 
+	@SuppressWarnings("javadoc")
 	public VolumeResponseMembersSpace getSnapshotSpace() {
 		return snapshotSpace;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setSnapshotSpace(VolumeResponseMembersSpace snapshotSpace) {
 		this.snapshotSpace = snapshotSpace;
 	}
 
+	@SuppressWarnings("javadoc")
 	public VolumeResponseMembersSpace getUserSpace() {
 		return userSpace;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setUserSpace(VolumeResponseMembersSpace userSpace) {
 		this.userSpace = userSpace;
 	}
 
+	@SuppressWarnings("javadoc")
 	public VolumeResponseMembersPolicies getPolicies() {
 		return policies;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setPolicies(VolumeResponseMembersPolicies policies) {
 		this.policies = policies;
 	}
@@ -80,134 +96,167 @@ public class VolumeResponseMembers {
 	private int usrSpcAllocWarningPct;
 	private int usrSpcAllocLimitPct;
 
+	@SuppressWarnings("javadoc")
 	public int getId() {
 		return id;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	@SuppressWarnings("javadoc")
 	public String getName() {
 		return name;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getProvisioningType() {
 		return provisioningType;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setProvisioningType(int provisioningType) {
 		this.provisioningType = provisioningType;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getCopyType() {
 		return copyType;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setCopyType(int copyType) {
 		this.copyType = copyType;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getBaseId() {
 		return baseId;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setBaseId(int baseId) {
 		this.baseId = baseId;
 	}
 
+	@SuppressWarnings("javadoc")
 	public boolean isReadOnly() {
 		return readOnly;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getState() {
 		return state;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setState(int state) {
 		this.state = state;
 	}
 
+	@SuppressWarnings("javadoc")
 	public long getSizeMiB() {
 		return sizeMiB;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setSizeMiB(long sizeMiB) {
 		this.sizeMiB = sizeMiB;
 	}
 
+	@SuppressWarnings("javadoc")
 	public String getWwn() {
 		return wwn;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setWwn(String wwn) {
 		this.wwn = wwn;
 	}
 
+	@SuppressWarnings("javadoc")
 	public long getCreationTimeSec() {
 		return creationTimeSec;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setCreationTimeSec(long creationTimeSec) {
 		this.creationTimeSec = creationTimeSec;
 	}
 
+	@SuppressWarnings("javadoc")
 	public String getCreationTime8601() {
 		return creationTime8601;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setCreationTime8601(String creationTime8601) {
 		this.creationTime8601 = creationTime8601;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getSsSpcAllocWarningPct() {
 		return ssSpcAllocWarningPct;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setSsSpcAllocWarningPct(int ssSpcAllocWarningPct) {
 		this.ssSpcAllocWarningPct = ssSpcAllocWarningPct;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getSsSpcAllocLimitPct() {
 		return ssSpcAllocLimitPct;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setSsSpcAllocLimitPct(int ssSpcAllocLimitPct) {
 		this.ssSpcAllocLimitPct = ssSpcAllocLimitPct;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getUsrSpcAllocWarningPct() {
 		return usrSpcAllocWarningPct;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setUsrSpcAllocWarningPct(int usrSpcAllocWarningPct) {
 		this.usrSpcAllocWarningPct = usrSpcAllocWarningPct;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getUsrSpcAllocLimitPct() {
 		return usrSpcAllocLimitPct;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setUsrSpcAllocLimitPct(int usrSpcAllocLimitPct) {
 		this.usrSpcAllocLimitPct = usrSpcAllocLimitPct;
 	}
 
+	@SuppressWarnings("javadoc")
 	public String getUuid() {
 		return uuid;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 
+	@SuppressWarnings("javadoc")
 	public String getUserCPG() {
 		if (userCPG == null) {
 			return "-";
@@ -215,6 +264,7 @@ public class VolumeResponseMembers {
 		return userCPG;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setUserCPG(String userCPG) {
 		this.userCPG = userCPG;
 	}
@@ -222,6 +272,6 @@ public class VolumeResponseMembers {
 	private VolumeResponseMembersPolicies policies;
 
 	private String uuid;
-	
+
 	private String userCPG;
 }

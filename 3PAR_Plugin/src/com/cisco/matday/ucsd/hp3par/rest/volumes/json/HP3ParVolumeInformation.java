@@ -20,9 +20,14 @@
  * SOFTWARE.
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
-/*
- * { "name": "paw-api-test", "cpg": "FC_r1", "sizeMiB": 1024,
-	 * "comment": "Matt Testing" }
+
+/**
+ * Creates an object to send to the 3PAR array to create a volume.
+ * 
+ * Objects implementing this class should be passed to HP3ParVolumeRestCall.create 
+ * 
+ * @author Matt Day
+ *
  */
 public class HP3ParVolumeInformation {
 	private String name;
@@ -30,14 +35,20 @@ public class HP3ParVolumeInformation {
 	private long sizeMiB;
 	private String comment;
 	private boolean tpvv = false;
-	
-	@Deprecated
-	public HP3ParVolumeInformation(String name, String cpg, long sizeMiB, String comment) {
-		this.name = name;
-		this.cpg = cpg;
-		this.sizeMiB = sizeMiB;
-		this.comment = comment;
-	}
+
+	/**
+	 * 
+	 * @param name
+	 *            Volume name
+	 * @param cpg
+	 *            CPG on which to place volume
+	 * @param sizeMiB
+	 *            Size in MiB
+	 * @param comment
+	 *            Optional comment (can be null)
+	 * @param thinProvision
+	 *            True if this should be thin provisioned
+	 */
 	public HP3ParVolumeInformation(String name, String cpg, long sizeMiB, String comment, boolean thinProvision) {
 		this.name = name;
 		this.cpg = cpg;
@@ -45,41 +56,43 @@ public class HP3ParVolumeInformation {
 		this.comment = comment;
 		this.tpvv = thinProvision;
 	}
-
+	@SuppressWarnings("javadoc")
 	public boolean isTpvv() {
 		return tpvv;
 	}
+	@SuppressWarnings("javadoc")
 	public void setTpvv(boolean tpvv) {
 		this.tpvv = tpvv;
 	}
+	@SuppressWarnings("javadoc")
 	public String getName() {
 		return name;
 	}
-
+	@SuppressWarnings("javadoc")
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	@SuppressWarnings("javadoc")
 	public String getCpg() {
 		return cpg;
 	}
-
+	@SuppressWarnings("javadoc")
 	public void setCpg(String cpg) {
 		this.cpg = cpg;
 	}
-
+	@SuppressWarnings("javadoc")
 	public long getSizeMiB() {
 		return sizeMiB;
 	}
-
+	@SuppressWarnings("javadoc")
 	public void setSizeMiB(long sizeMiB) {
 		this.sizeMiB = sizeMiB;
 	}
-
+	@SuppressWarnings("javadoc")
 	public String getComment() {
 		return comment;
 	}
-
+	@SuppressWarnings("javadoc")
 	public void setComment(String comment) {
 		this.comment = comment;
 	}

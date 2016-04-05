@@ -1,10 +1,30 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Matt Day, Cisco and others
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal 
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.reports.actions;
-
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeConfig;
@@ -15,6 +35,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.PageIf;
 import com.cloupia.service.cIM.inframgr.forms.wizard.WizardSession;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
+/**
+ * Action button implemenation to create a volume
+ * 
+ * @author Matt Day
+ *
+ */
 public class CreateVolumeAction extends CloupiaPageAction {
 
 	private static Logger logger = Logger.getLogger(CreateVolumeAction.class);
@@ -25,26 +51,12 @@ public class CreateVolumeAction extends CloupiaPageAction {
 	private static final String LABEL = "Create Volume";
 	private static final String DESCRIPTION = "Create a new Volume";
 
-	/**
-	 * this is where you define the layout of the form page the easiest way to
-	 * do this is to use this "bind" method
-	 * 
-	 * @param pagecontext
-	 * @param reportcontext
-	 */
 	@Override
 	public void definePage(Page page, ReportContext context) {
 
 		page.bind(FORM_ID, CreateVolumeConfig.class);
 	}
 
-	/**
-	 * This method loads the form fields and field data to the page.
-	 *
-	 * @param pagecontext
-	 * @param reportcontext
-	 * @param wizardsession
-	 */
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
 
@@ -79,8 +91,8 @@ public class CreateVolumeAction extends CloupiaPageAction {
 		// Build volume information object:
 		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(form.getVolumeName(), cpgName,
 				form.getVolume_size(), form.getComment(), form.isThin_provision());
-		HP3ParVolumeStatus s = CreateVolumeRestCall.create(c, volume);
-		
+		HP3ParVolumeStatus s = HP3ParVolumeRestCall.create(c, volume);
+
 		if (!s.isSuccess()) {
 			logger.warn("Failed to create volume:" + s.getError());
 			throw new Exception("Failed to create volume");

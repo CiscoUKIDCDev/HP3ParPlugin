@@ -21,15 +21,27 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest;
 
+/**
+ * Throw when a requested token is invalid. Reasons might include:
+ * <p>
+ * - 3PAR array not found (likely throw IOException here though)
+ * <p>
+ * - Credentials are wrong
+ * <p>
+ * - 3PAR system is refusing to respond via its WSAPI
+ * 
+ * @author Matt Day
+ *
+ */
 public class InvalidHP3ParTokenException extends Exception {
 
-	/**
-	 * Throw when a requested token is invalid. Reasons might include:
-	 *  - 3PAR array not found (likely throw IOException here though)
-	 *  - Credentials are wrong
-	 *  - 3PAR system is refusing to respond via its WSAPI
-	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Throw new token invalid exception
+	 * 
+	 * @param args
+	 */
 	public InvalidHP3ParTokenException(String args) {
 		super(args);
 	}

@@ -21,99 +21,112 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
+/**
+ * REST object representation of the HP3PAR CPG list. See the HP 3PAR REST
+ * documentation for detail on these methods and values
+ * 
+ * @author Matt Day
+ *
+ */
 public class CPGResponseMembers {
-    int id;
-    String uuid;
-    String name;
-    int numFPVVs;
-    int numTPVVs;
-    CPGResponseSpace UsrUsage;
-    CPGResponseSpace SAUsage;
-    CPGResponseSpace SDUsage;
-    int state;
-/*  
-    "SAGrowth": {
-      "incrementMiB": 8192,
-      "LDLayout": {
-        "diskPatterns": [
-          {
-            "diskType": 1
-          }
-        ],
-        "HA": 2,
-        "RAIDType": 2
-      }
-    },
-    "SDGrowth": {
-      "incrementMiB": 32768,
-      "LDLayout": {
-        "setSize": 2,
-        "HA": 2,
-        "RAIDType": 2,
-        "diskPatterns": [
-          {
-            "diskType": 1
-          }
-        ]
-      }
-    },*/
+	private int id;
+	private String uuid;
+	private String name;
+	private int numFPVVs;
+	private int numTPVVs;
+	private CPGResponseSpace UsrUsage;
+	private CPGResponseSpace SAUsage;
+	private CPGResponseSpace SDUsage;
+	private int state;
+
+	@SuppressWarnings("javadoc")
 	public int getId() {
 		return id;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	@SuppressWarnings("javadoc")
 	public String getUuid() {
 		return uuid;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+
+	@SuppressWarnings("javadoc")
 	public String getName() {
 		return name;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@SuppressWarnings("javadoc")
 	public int getNumFPVVs() {
 		return numFPVVs;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setNumFPVVs(int numFPVVs) {
 		this.numFPVVs = numFPVVs;
 	}
+
+	@SuppressWarnings("javadoc")
 	public int getNumTPVVs() {
 		return numTPVVs;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setNumTPVVs(int numTPVVs) {
 		this.numTPVVs = numTPVVs;
 	}
+
+	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getUsrUsage() {
 		return UsrUsage;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setUsrUsage(CPGResponseSpace usrUsage) {
 		UsrUsage = usrUsage;
 	}
+
+	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getSAUsage() {
 		return SAUsage;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setSAUsage(CPGResponseSpace sAUsage) {
 		SAUsage = sAUsage;
 	}
+
+	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getSDUsage() {
 		return SDUsage;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setSDUsage(CPGResponseSpace sDUsage) {
 		SDUsage = sDUsage;
 	}
+
+	@SuppressWarnings("javadoc")
 	public int getState() {
 		return state;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setState(int state) {
 		this.state = state;
 	}
 
-/*    "failedStates": [],
-    "degradedStates": [],
-    "additionalStates": [
-*/
 }

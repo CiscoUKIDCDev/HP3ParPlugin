@@ -21,38 +21,61 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
+/**
+ * Basic REST representation of a 3PAR request
+ * 
+ * See the HP3PAR documentation for more details
+ * @author Matt Day
+ *
+ */
 public class VolumeResponseMembersAdminSpace {
-    // "adminSpace": {
-    //   "reservedMiB": 0,
-    //   "rawReservedMiB": 0,
-    //   "usedMiB": 0,
-    //   "freeMiB": 0
-    // },
+	// "adminSpace": {
+	// "reservedMiB": 0,
+	// "rawReservedMiB": 0,
+	// "usedMiB": 0,
+	// "freeMiB": 0
+	// },
 	private long reservedMiB;
 	private long rawReservedMiB;
 	private long usedMiB;
 	private long freeMiB;
+
+	@SuppressWarnings("javadoc")
 	public long getReservedMiB() {
 		return reservedMiB;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setReservedMiB(long reservedMiB) {
 		this.reservedMiB = reservedMiB;
 	}
+
+	@SuppressWarnings("javadoc")
 	public long getRawReservedMiB() {
 		return rawReservedMiB;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setRawReservedMiB(long rawReservedMiB) {
 		this.rawReservedMiB = rawReservedMiB;
 	}
+
+	@SuppressWarnings("javadoc")
 	public long getUsedMiB() {
 		return usedMiB;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setUsedMiB(long usedMiB) {
 		this.usedMiB = usedMiB;
 	}
+
+	@SuppressWarnings("javadoc")
 	public long getFreeMiB() {
 		return freeMiB;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setFreeMiB(long freeMiB) {
 		this.freeMiB = freeMiB;
 	}

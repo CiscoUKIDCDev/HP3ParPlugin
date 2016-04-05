@@ -33,15 +33,20 @@ import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cloupia.model.cIM.ReportContextRegistry;
 
+/**
+ * Implements the stack view
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuilderIf {
 
 	static Logger logger = Logger.getLogger(HP3ParConvergedStackBuilder.class);
 
 	/**
-	 * Need to override this method providing account details to be shown in
-	 * converged view.
+	 * Overridden method from SDK
 	 * 
-	 * @param :
+	 * @param contextId
 	 *            account context Id
 	 * 
 	 * @return: returns ConvergedStackComponentDetail instance

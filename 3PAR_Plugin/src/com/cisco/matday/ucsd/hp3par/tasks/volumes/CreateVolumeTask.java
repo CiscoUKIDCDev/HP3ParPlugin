@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.HP3ParModule;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.CreateVolumeRestCall;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
@@ -34,6 +34,13 @@ import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
+/**
+ * Executes a task to create a volume. This should not generally be instantiated
+ * by anything other than UCS Director's internal libraries
+ * 
+ * @author Matt Day
+ *
+ */
 public class CreateVolumeTask extends AbstractTask {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
@@ -56,7 +63,7 @@ public class CreateVolumeTask extends AbstractTask {
 		// Build volume information object:
 		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(config.getVolumeName(), cpgName,
 				config.getVolume_size(), config.getComment(), config.isThin_provision());
-		HP3ParVolumeStatus s = CreateVolumeRestCall.create(c, volume);
+		HP3ParVolumeStatus s = HP3ParVolumeRestCall.create(c, volume);
 
 		// If it wasn't created error out
 		if (!s.isSuccess()) {

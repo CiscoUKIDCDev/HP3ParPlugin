@@ -21,7 +21,16 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account;
 
+/**
+ * 3PAR Account information as a REST object
+ * 
+ * See the HP 3PAR documentation for more information
+ * @author Matt Day
+ *
+ */
+@SuppressWarnings("javadoc")
 public class HP3ParAccountJsonObject {
+
 	private String account;
 	private String array_address;
 	private String dnDetachedState;

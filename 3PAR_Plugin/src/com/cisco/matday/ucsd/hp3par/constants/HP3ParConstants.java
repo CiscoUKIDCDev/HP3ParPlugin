@@ -21,41 +21,106 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.constants;
 
+/**
+ * All constants should be placed here
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParConstants {
-	public static final String INFRA_ACCOUNT_TYPE = "HP3PAR"; 
+	/**
+	 * UCSD internal account type. This value should NOT be changed between
+	 * releases - doing so breaks all existing accounts!
+	 */
+	public static final String INFRA_ACCOUNT_TYPE = "HP3PAR";
+	/**
+	 * User-friendly label for this account type. This can be changed between
+	 * releases.
+	 */
 	public static final String INFRA_ACCOUNT_LABEL = "HP 3PAR";
-	
-	public static final String INFRA_ACCOUNT_NAME = "HP 3PAR";
-	
-	// Docs say to give this a really big number (> 1000); I've used my birthday...
+
+	/**
+	 * Accounts must have a magic number in the converged view. The docs say to
+	 * use something "over 1000". Let's hope no one else uses this value!
+	 */
 	public static final int INFRA_ACCOUNT_MAGIC_NUMBER = 19832701;
-	
+
+	/**
+	 * Special snowflake pod type this can register with if you want to use it -
+	 * recommend adding to the GenericPod type
+	 */
 	public static final String POD_TYPE = "HP 3PAR Pod";
-	
+
+	/**
+	 * Category to put all the workflows
+	 */
 	public static final String WORKFLOW_CATEGORY = "HP 3PAR";
+	/**
+	 * Folder to put the tasks in
+	 */
 	public static final String TASK_PREFIX = "HP 3PAR Tasks";
-	
+
+	/**
+	 * Default port to communicate with a 3PAR array - this is usually 8080
+	 * unless https is off by default, then it should be 8008
+	 */
 	public final static int DEFAULT_PORT = 8080;
-	
-	public final static int TOKEN_LIFE = 3600;
-	
-	public static final String ACCOUNT_LIST_FORM_LABEL = "Account";
+
+	/**
+	 * User-friendly label for account list table
+	 */
+	public static final String ACCOUNT_LIST_FORM_LABEL = "HP 3PAR Account";
+	/**
+	 * User-friendly label for CPG list table
+	 */
 	public static final String CPG_LIST_FORM_LABEL = "CPG";
+	/**
+	 * User-friendly label for Volume list table
+	 */
 	public static final String VOLUME_LIST_FORM_LABEL = "Volume";
 	
+	/**
+	 * Account list form name
+	 */
 	public static final String ACCOUNT_LIST_FORM_NAME = "HP3ParAccountList";
+	/**
+	 * CPG list form name
+	 */
 	public static final String CPG_LIST_FORM_NAME = "HP3ParCPGList";
+	/**
+	 * Volume list form name
+	 */
 	public static final String VOLUME_LIST_FORM_NAME = "HP3ParVolumeList";
 	
+	/**
+	 * Account list internal UCSD data type name
+	 */
 	public static final String ACCOUNT_LIST_FORM_TABLE_NAME = "HP3ParAccountList_table";
+	/**
+	 * CPG list internal UCSD data type name
+	 */
 	public static final String CPG_LIST_FORM_TABLE_NAME = "HP3ParCPGList_table";
+	/**
+	 * Volume list internal UCSD data type name
+	 */
 	public static final String VOLUME_LIST_FORM_TABLE_NAME = "HP3ParVolumeList_table";
 	
+	/**
+	 * Account list internal UCSD provider name 
+	 */
 	public static final String ACCOUNT_LIST_FORM_PROVIDER = "HP3ParAccountList_provider";
+	/**
+	 * CPG list internal UCSD provider name 
+	 */
 	public static final String CPG_LIST_FORM_PROVIDER = "HP3ParCPGList_provider";
+	/**
+	 * Volume list internal UCSD provider name 
+	 */
 	public static final String VOLUME_LIST_FORM_PROVIDER = "HP3ParVolumeList_provider";
 	
+	/**
+	 * UCSDs internal gen_text_input type 
+	 */
 	public static final String GENERIC_TEXT_INPUT = "gen_text_input";
 
-	
 }

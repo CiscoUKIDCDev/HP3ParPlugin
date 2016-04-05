@@ -73,6 +73,9 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	@FormField(label = "Use secure connection (https)", help = "Use secure connection (https)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
 	private boolean https = true;
 
+	/**
+	 * Do not instantiate this directly, let UCSD do that...
+	 */
 	public HP3ParAccount() {
 		super();
 	}
@@ -101,20 +104,20 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	public void setServer(String ip) {
 		this.array_address = ip;
 	}
-	
-	public String getServerAddress () {
+
+	public String getServerAddress() {
 		return this.array_address;
 	}
-	
-	public String getServer () {
+
+	public String getServer() {
 		return this.array_address;
 	}
-	
+
 	public String getServerIp() {
 		return this.array_address;
 	}
-	
-	//public String 
+
+	// public String
 
 	@Override
 	public void setServerAddress(String ip) {
@@ -147,11 +150,13 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 			if (accList != null && accList.size() > 0) {
 				return accList.get(0);
-			} else {
+			}
+			else {
 				return null;
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("Exception while mapping DeviceCredential to InfraAccount for server: " + array_address + ": "
 					+ e.getMessage());
 		}
@@ -160,30 +165,37 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	}
 
+	@SuppressWarnings("javadoc")
 	public String getArray_address() {
 		return array_address;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setArray_address(String array_address) {
 		this.array_address = array_address;
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getTcp_port() {
 		return tcp_port;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setTcp_port(int tcp_port) {
 		this.tcp_port = tcp_port;
 	}
 
+	@SuppressWarnings("javadoc")
 	public boolean isHttps() {
 		return https;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setHttps(boolean https) {
 		this.https = https;
 	}
 
+	@Override
 	public String getUsername() {
 		return username;
 	}
@@ -195,18 +207,19 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 		return null;
 	}
 
+	@SuppressWarnings("javadoc")
 	public String getDeviceIp() {
 		return this.array_address;
 	}
-
+	@SuppressWarnings("javadoc")
 	public void setDeviceIp(String deviceIp) {
 		this.array_address = deviceIp;
 	}
-
+	@SuppressWarnings("javadoc")
 	public String getLogin() {
 		return username;
 	}
-
+	@SuppressWarnings("javadoc")
 	public void setLogin(String login) {
 		this.username = login;
 	}
@@ -227,6 +240,5 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	public void setUsername(String userName) {
 		username = userName;
 	}
-
 
 }

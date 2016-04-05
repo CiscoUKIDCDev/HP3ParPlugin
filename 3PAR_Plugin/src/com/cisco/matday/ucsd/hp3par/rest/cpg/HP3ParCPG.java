@@ -32,16 +32,29 @@ import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
+/**
+ * Get a list of CPGs from the 3PAR array - returns the JSON in object form
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParCPG {
 
 	private CPGResponse cpgResponse;
 
-	public HP3ParCPG(HP3ParCredentials loginCredentials) throws HttpException, IOException, InvalidHP3ParTokenException {
+	/**
+	 * @param loginCredentials Credentials for the array you wish to query
+	 * @throws HttpException
+	 * @throws IOException
+	 * @throws InvalidHP3ParTokenException If the token provided is invalid
+	 */
+	public HP3ParCPG(HP3ParCredentials loginCredentials)
+			throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		// Use defaults for a GET request
 		request.setGetDefaults();
-		
+
 		request.setUri(threeParRESTconstants.GET_CPG_URI);
 		request.execute();
 		String response = request.getHttpResponse();
@@ -50,11 +63,12 @@ public class HP3ParCPG {
 		this.cpgResponse = gson.fromJson(response, CPGResponse.class);
 	}
 
+	/**
+	 * Get the response from the array
+	 * @return CPG information from the 3PAR array
+	 */
 	public CPGResponse getCpg() {
 		return cpgResponse;
 	}
 
-	public void setCpg(CPGResponse systemResponse) {
-		this.cpgResponse = systemResponse;
-	}
 }

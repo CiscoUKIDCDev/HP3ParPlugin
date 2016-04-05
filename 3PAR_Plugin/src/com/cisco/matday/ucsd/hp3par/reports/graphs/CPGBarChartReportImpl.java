@@ -36,6 +36,11 @@ import com.cloupia.model.cIM.SnapshotReportCategory;
 import com.cloupia.service.cIM.inframgr.SnapshotReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
+/**
+ * Implements the CPG bar chart
+ * @author Matt Day
+ *
+ */
 public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 	
 	@SuppressWarnings("unused")

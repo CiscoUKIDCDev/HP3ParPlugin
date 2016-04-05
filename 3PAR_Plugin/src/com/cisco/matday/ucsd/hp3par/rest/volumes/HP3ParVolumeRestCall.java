@@ -28,20 +28,81 @@ import org.apache.commons.httpclient.HttpException;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
+import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
-public class DeleteVolumeRestCall {
+/**
+ * Contains static methods for managing volumes on the array
+ * 
+ * @author Matt Day
+ */
+public class HP3ParVolumeRestCall {
 
-	public static HP3ParVolumeStatus delete(HP3ParCredentials loginCredentials,
-			String volumeName) throws HttpException, IOException, InvalidHP3ParTokenException {
+	/**
+	 * Creates a 3PAR volume
+	 * 
+	 * @param loginCredentials
+	 *            Credentials for system
+	 * @param volumeInformation
+	 *            Specification for new volume
+	 * @return Status of execution (errors etc)
+	 * @throws HttpException
+	 * @throws IOException
+	 * @throws InvalidHP3ParTokenException
+	 */
+	public static HP3ParVolumeStatus create(HP3ParCredentials loginCredentials,
+			HP3ParVolumeInformation volumeInformation) throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		Gson gson = new Gson();
 		HP3ParVolumeStatus status = new HP3ParVolumeStatus();
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
-		
+
+		// Use defaults for a POST request
+		request.setPostDefaults(gson.toJson(volumeInformation));
+		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+
+	}
+
+	/**
+	 * Deletes a 3PAR volume - it does this mercilessly and will fail if the
+	 * array doesn't like it. It won't handle offlining etc
+	 * 
+	 * @param loginCredentials
+	 *            Specification for new volume
+	 * @param volumeName
+	 *            Name of volume to delete
+	 * @return Status of execution (errors etc)
+	 * @throws HttpException
+	 * @throws IOException
+	 * @throws InvalidHP3ParTokenException
+	 */
+	public static HP3ParVolumeStatus delete(HP3ParCredentials loginCredentials, String volumeName)
+			throws HttpException, IOException, InvalidHP3ParTokenException {
+
+		Gson gson = new Gson();
+		HP3ParVolumeStatus status = new HP3ParVolumeStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+
 		String uri = "/api/v1/volumes/" + volumeName;
 		request.setUri(uri);
 
@@ -56,11 +117,13 @@ public class DeleteVolumeRestCall {
 			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
 			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
 			status.setSuccess(false);
-		} else {
+		}
+		else {
 			status.setSuccess(true);
 		}
 		// Return the same reference as passed for convenience and clarity
 		return status;
 
 	}
+
 }

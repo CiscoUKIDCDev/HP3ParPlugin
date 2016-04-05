@@ -29,62 +29,75 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
+import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.cIaaS.netapp.model.StorageAccountStatus;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 
+/**
+ * Shows the account summary in the converged view
+ * 
+ * @author Matt Day
+ *
+ */
 public class StorageAccountStatusSummary {
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(StorageAccountStatusSummary.class);
 
+	/**
+	 * Obtain account summary information
+	 * 
+	 * @param accountName
+	 * @throws Exception
+	 */
 	public static void accountSummary(String accountName) throws Exception {
-		logger.info("pppppppppppppppppppppppppppppppppp");
-		logger.info("Getting info on " + accountName);
 		HP3ParAccount acc = HP3ParCredentials.getInternalCredential(accountName);
 		PhysicalInfraAccount infraAccount = AccountUtil.getAccountByName(accountName);
 		@SuppressWarnings("unused")
 		PhysicalConnectivityStatus status = new PhysicalConnectivityStatus(infraAccount);
 
 		StorageAccountStatus accStatus = new StorageAccountStatus();
-		if (accStatus.getModel() != null) {
-			logger.info("Model reporting as: " + accStatus.getModel());
-		}
-		else {
-			logger.info("Model is null");
-		}
-		if (accStatus.getLicense() != null) {
-			logger.info("License reporting as: " + accStatus.getLicense());
-		}
-		else {
-			logger.info("License is null");
-		}
 		accStatus.setAccountName(infraAccount.getAccountName());
 		accStatus.setDcName(acc.getPod());
-		// VERSION
-		accStatus.setReachable(true);
+		try {
+			HP3ParToken t = new HP3ParToken(new HP3ParCredentials(accountName));
+			String token = t.getToken();
+			if (token != null) {
+				accStatus.setReachable(true);
+				t.release();
+				accStatus.setLastMessage("Connection OK");
+			}
+			else {
+				accStatus.setReachable(false);
+				accStatus.setLastMessage("Could not connect (check username/password)");
+			}
+		}
+		catch (InvalidHP3ParTokenException e) {
+			accStatus.setLastMessage("Could not connect (check username/password)");
+			accStatus.setReachable(false);
+		}
+		catch (Exception e) {
+			accStatus.setLastMessage("Could not connect (is the array down?)");
+			accStatus.setReachable(false);
+		}
+
 		accStatus.setLicense("");
-		accStatus.setLastMessage("Connection is verified");
 		accStatus.setLastUpdated(System.currentTimeMillis());
 
 		accStatus.setModel("3PAR");
 		accStatus.setServerAddress(acc.getServerAddress());
 		accStatus.setVersion("1");
 		persistStorageAccountStatus(accStatus);
-		logger.info("pppppppppppppppppppppppppppppppppp");
 	}
 
-	/*
-	 * private static HP3ParAccount getInternalCredential(String accountName)
-	 * throws Exception { PhysicalInfraAccount infraAccount =
-	 * AccountUtil.getAccountByName(accountName); String json =
-	 * infraAccount.getCredential(); AbstractInfraAccount specificAcc =
-	 * (AbstractInfraAccount) JSON.jsonToJavaObject(json, HP3ParAccount.class);
-	 * specificAcc.setAccount(infraAccount);
+	/**
+	 * Not sure what this does - adding from SDK boilerplate
 	 * 
-	 * return (HP3ParAccount) specificAcc;
-	 * 
-	 * }
+	 * @param ac
+	 * @throws Exception
 	 */
 	public static void persistStorageAccountStatus(StorageAccountStatus ac) throws Exception {
 		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();

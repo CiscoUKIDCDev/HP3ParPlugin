@@ -32,6 +32,11 @@ import com.cloupia.lib.connector.account.AccountTypeEntry;
 import com.cloupia.lib.connector.account.PhysicalAccountManager;
 import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 
+/**
+ * Boilerplate from SDK - not sure what it does
+ * @author Matt Day
+ *
+ */
 public class HP3ParInventoryListener implements InventoryEventListener {
 	private static Logger logger = Logger.getLogger(HP3ParInventoryListener.class);
 

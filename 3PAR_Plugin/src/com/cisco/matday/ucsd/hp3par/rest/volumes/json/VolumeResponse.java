@@ -23,22 +23,29 @@ package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
 import java.util.List;
 
+/**
+ * REST representation from 3PAR array when querying volumes
+ * 
+ * See the HP3PAR documentation for more detail
+ * @author Matt Day
+ *
+ */
 public class VolumeResponse {
 	private int total;
 	private List<VolumeResponseMembers> members;
-
+	@SuppressWarnings("javadoc")
 	public void setMembers(List<VolumeResponseMembers> members) {
 		this.members = members;
 	}
-
+	@SuppressWarnings("javadoc")
 	public void setTotal(int total) {
 		this.total = total;
 	}
-
+	@SuppressWarnings("javadoc")
 	public long getTotal() {
 		return total;
 	}
-
+	@SuppressWarnings("javadoc")
 	public List<VolumeResponseMembers> getMembers() {
 		return members;
 	}

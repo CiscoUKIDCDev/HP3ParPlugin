@@ -21,34 +21,51 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
+/**
+ * REST representation of a 3PAR request
+ * 
+ * See the HP 3PAR documentation for more detail
+ * @author Matt Day
+ *
+ */
 public class VolumeResponseMembersPolicies {
+	@SuppressWarnings("javadoc")
 	public boolean isStaleSS() {
 		return staleSS;
 	}
+	@SuppressWarnings("javadoc")
 	public void setStaleSS(boolean staleSS) {
 		this.staleSS = staleSS;
 	}
+	@SuppressWarnings("javadoc")
 	public boolean isOneHost() {
 		return oneHost;
 	}
+	@SuppressWarnings("javadoc")
 	public void setOneHost(boolean oneHost) {
 		this.oneHost = oneHost;
 	}
+	@SuppressWarnings("javadoc")
 	public boolean isZeroDetect() {
 		return zeroDetect;
 	}
+	@SuppressWarnings("javadoc")
 	public void setZeroDetect(boolean zeroDetect) {
 		this.zeroDetect = zeroDetect;
 	}
+	@SuppressWarnings("javadoc")
 	public boolean isSystem() {
 		return system;
 	}
+	@SuppressWarnings("javadoc")
 	public void setSystem(boolean system) {
 		this.system = system;
 	}
+	@SuppressWarnings("javadoc")
 	public boolean isCaching() {
 		return caching;
 	}
+	@SuppressWarnings("javadoc")
 	public void setCaching(boolean caching) {
 		this.caching = caching;
 	}

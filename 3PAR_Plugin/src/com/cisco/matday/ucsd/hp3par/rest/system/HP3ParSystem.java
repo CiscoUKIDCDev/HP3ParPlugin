@@ -32,29 +32,44 @@ import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
+/**
+ * Gets system information from a 3PAR array and stores it as an object
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParSystem {
 	//
 	private SystemResponse systemResponse;
-	
-	public HP3ParSystem (HP3ParCredentials loginCredentials) throws HttpException, IOException, InvalidHP3ParTokenException {
-		
+
+	/**
+	 * @param loginCredentials
+	 *            Login credentials for the 3PAR system you wish to access
+	 * @throws HttpException
+	 * @throws IOException
+	 * @throws InvalidHP3ParTokenException
+	 *             if the token is invalid or cannot be obtained
+	 */
+	public HP3ParSystem(HP3ParCredentials loginCredentials)
+			throws HttpException, IOException, InvalidHP3ParTokenException {
+
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		// Use defaults for a GET request
 		request.setGetDefaults();
 		request.setUri(threeParRESTconstants.GET_SYSTEM_URI);
-		
+
 		request.execute();
 		String response = request.getHttpResponse();
-		
+
 		Gson gson = new Gson();
 		this.systemResponse = gson.fromJson(response, SystemResponse.class);
 	}
 
+	/**
+	 * @return information about the 3PAR system
+	 */
 	public SystemResponse getSystem() {
 		return systemResponse;
 	}
 
-	public void setSystem(SystemResponse systemResponse) {
-		this.systemResponse = systemResponse;
-	}
 }

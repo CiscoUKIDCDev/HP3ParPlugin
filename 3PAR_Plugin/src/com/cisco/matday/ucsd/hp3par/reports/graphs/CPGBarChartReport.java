@@ -30,6 +30,11 @@ import com.cloupia.model.cIM.ReportDefinition;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
+/**
+ * Bar chart view to show CPGs by volume 
+ * @author Matt Day
+ *
+ */
 public class CPGBarChartReport extends CloupiaNonTabularReport {
 
 	//private static final String NAME = "com.cisco.matday.ucsd.hp3par.reports.CPGBarChartReport";
@@ -46,6 +51,9 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 		return CPGBarChartReportImpl.class;
 	}
 	
+	/**
+	 * Initialise and set management column index
+	 */
 	public CPGBarChartReport () {
 		super();
 		//IMPORTANT: this tells the framework which column of this report you want to pass as the report context id

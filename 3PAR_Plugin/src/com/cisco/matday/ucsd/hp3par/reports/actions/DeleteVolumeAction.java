@@ -1,9 +1,30 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Matt Day, Cisco and others
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal 
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.reports.actions;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.DeleteVolumeRestCall;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
 import com.cloupia.model.cIM.ConfigTableAction;
@@ -13,6 +34,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.PageIf;
 import com.cloupia.service.cIM.inframgr.forms.wizard.WizardSession;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
+/**
+ * Action button implemenation to delete a volume based on context
+ * 
+ * @author Matt Day
+ *
+ */
 public class DeleteVolumeAction extends CloupiaPageAction {
 
 	private static Logger logger = Logger.getLogger(DeleteVolumeAction.class);
@@ -23,26 +50,12 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 	private static final String LABEL = "Delete Volume";
 	private static final String DESCRIPTION = "Delete Volume";
 
-	/**
-	 * this is where you define the layout of the form page the easiest way to
-	 * do this is to use this "bind" method
-	 * 
-	 * @param pagecontext
-	 * @param reportcontext
-	 */
 	@Override
 	public void definePage(Page page, ReportContext context) {
 		// Use the same form as the task
 		page.bind(FORM_ID, DeleteVolumeConfig.class);
 	}
 
-	/**
-	 * This method loads the form fields and field data to the page.
-	 *
-	 * @param pagecontext
-	 * @param reportcontext
-	 * @param wizardsession
-	 */
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
 
@@ -74,7 +87,7 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 		logger.info("Volume name: " + form.getVolume());
 
 		HP3ParCredentials c = new HP3ParCredentials(form.getAccount());
-		
+
 		String[] volInfo = form.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + form.getVolume());
@@ -83,44 +96,13 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 		String volName = volInfo[2];
 
 		// Delete the volume:
-		HP3ParVolumeStatus s = DeleteVolumeRestCall.delete(c, volName);
+		HP3ParVolumeStatus s = HP3ParVolumeRestCall.delete(c, volName);
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
 			logger.warn("Failed to delete Volume: " + s.getError());
 			throw new Exception("Volume deletion failed");
 		}
 		logger.info("Deleted volume " + volName);
-
-		/*
-		 * HP3ParCredentials c = new
-		 * HP3ParCredentials(AccountUtil.getAccountByName(form.getAccount()));
-		 * 
-		 * String[] cpgInfo = form.getCpg().split("@"); if (cpgInfo.length != 3)
-		 * { logger.warn("CPG didn't return three items! It returned: " +
-		 * form.getCpg()); throw new Exception("Invalid CPG"); } String cpgName
-		 * = cpgInfo[2];
-		 * 
-		 * // Build volume information object: HP3ParVolumeInformation volume =
-		 * new HP3ParVolumeInformation(form.getVolumeName(), cpgName,
-		 * form.getVolume_size(), form.getComment(), form.isThin_provision());
-		 * HP3ParVolumeStatus s = DeleteVolumeRestCall.Delete(c, volume);
-		 * 
-		 * if (!s.isSuccess()) { logger.warn("Failed to Delete volume:" +
-		 * s.getError()); throw new Exception("Failed to Delete volume"); }
-		 * 
-		 * logger.info("Deleted volume: " + form.getVolumeName());
-		 */
-
-		/*
-		 * 
-		 * DeleteVolumeActionForm modded = null; List<DeleteVolumeActionForm>
-		 * objs = store.queryAll(); for (DeleteVolumeActionForm o : objs) { if
-		 * (o.getVlanID().equals(form.getVlanID())) {
-		 * o.setGroupId(form.getGroupId()); modded = o; break; } }
-		 * 
-		 * if (modded != null) { store.modifySingleObject("vlanID == '" +
-		 * form.getVlanID() + "'", modded); } else { store.insert(form); }
-		 */
 
 		return PageIf.STATUS_OK;
 	}

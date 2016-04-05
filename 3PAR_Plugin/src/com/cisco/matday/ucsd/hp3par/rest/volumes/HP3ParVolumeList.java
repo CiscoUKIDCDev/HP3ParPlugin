@@ -32,28 +32,43 @@ import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
-
+/**
+ * Gets volume information from a 3PAR array and stores it as an object
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParVolumeList {
 	private VolumeResponse volume;
 	
-	public HP3ParVolumeList (HP3ParCredentials loginCredentials) throws HttpException, IOException, InvalidHP3ParTokenException {
+	/**
+	 * @param loginCredentials
+	 *            Login credentials for the 3PAR system you wish to access
+	 * @throws HttpException
+	 * @throws IOException
+	 * @throws InvalidHP3ParTokenException
+	 *             if the token is invalid or cannot be obtained
+	 */
+	public HP3ParVolumeList(HP3ParCredentials loginCredentials)
+			throws HttpException, IOException, InvalidHP3ParTokenException {
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		// Use defaults for GET method
 		request.setGetDefaults();
 		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
 		request.execute();
 		String response = request.getHttpResponse();
-		//String response = new HP3ParRestWrapper(loginCredentials, threeParRESTconstants.GET_VOLUMES_URI, HttpRequestConstants.METHOD_TYPE_GET).execute();
+		// String response = new HP3ParRestWrapper(loginCredentials,
+		// threeParRESTconstants.GET_VOLUMES_URI,
+		// HttpRequestConstants.METHOD_TYPE_GET).execute();
 		Gson gson = new Gson();
 		this.volume = gson.fromJson(response, VolumeResponse.class);
 	}
-
+	/**
+	 * @return Volumes information
+	 */
 	public VolumeResponse getVolume() {
 		return volume;
 	}
 
-	public void setVolume(VolumeResponse volume) {
-		this.volume = volume;
-	}
-	
+
 }

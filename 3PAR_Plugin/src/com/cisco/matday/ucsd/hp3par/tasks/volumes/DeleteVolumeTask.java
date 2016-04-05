@@ -25,14 +25,20 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.DeleteVolumeRestCall;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
-
+/**
+ * Executes a task to delete a volume. This should not generally be instantiated
+ * by anything other than UCS Director's internal libraries
+ * 
+ * @author Matt Day
+ *
+ */
 public class DeleteVolumeTask extends AbstractTask {
 	private static Logger logger = Logger.getLogger(DeleteVolumeTask.class);
 
@@ -54,7 +60,7 @@ public class DeleteVolumeTask extends AbstractTask {
 		String volName = volInfo[2];
 
 		// Delete the volume:
-		HP3ParVolumeStatus s = DeleteVolumeRestCall.delete(c, volName);
+		HP3ParVolumeStatus s = HP3ParVolumeRestCall.delete(c, volName);
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to delete Volume: " + s.getError());

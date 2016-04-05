@@ -32,11 +32,15 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
  * 
  *
  */
-
 public class HP3ParAccountPersistenceUtil {
 
 	static Logger logger = Logger.getLogger(HP3ParAccountPersistenceUtil.class);
 
+	/**
+	 * Boilerplate from SDK - not sure what it does
+	 * @param accountName
+	 * @throws Exception
+	 */
 	public static void persistCollectedInventory(String accountName) throws Exception {
 		logger.debug("Call in persistCollectedInventory :: inventory  ");
 		logger.debug("Account Name " + accountName);

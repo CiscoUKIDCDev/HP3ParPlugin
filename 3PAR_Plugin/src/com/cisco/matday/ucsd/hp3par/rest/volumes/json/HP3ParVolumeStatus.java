@@ -21,30 +21,46 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
+/**
+ * Obtains any error messages from the 3PAR array after performing various
+ * operations on it
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParVolumeStatus {
 	private boolean success = false;
 	private String error;
+
+	/**
+	 * Was there an error message? This will return "no error" if not, but it's
+	 * best to test isSuccess() first
+	 * 
+	 * @return Error message (if any)
+	 */
 	public String getError() {
 		if (error == null) {
 			return "no error";
 		}
 		return error;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setError(String error) {
 		this.error = error;
 	}
-	@Deprecated
-	public boolean isCreated() {
+
+	/**
+	 * Was this operation a success?
+	 * 
+	 * @return Success of operation
+	 */
+	public boolean isSuccess() {
 		return success;
 	}
-	@Deprecated
-	public void setCreated(boolean created) {
-		this.success = created;
-	}
-	public boolean isSuccess () {
-		return success;
-	}
-	public void setSuccess (boolean success) {
+
+	@SuppressWarnings("javadoc")
+	public void setSuccess(boolean success) {
 		this.success = success;
 	}
 

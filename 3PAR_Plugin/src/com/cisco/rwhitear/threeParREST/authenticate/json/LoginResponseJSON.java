@@ -2,6 +2,8 @@ package com.cisco.rwhitear.threeParREST.authenticate.json;
 
 import com.google.gson.Gson;
 
+//Supressing javadoc warnings as it's not my code to document
+@SuppressWarnings("javadoc")
 public class LoginResponseJSON {
 	
 	private String request;

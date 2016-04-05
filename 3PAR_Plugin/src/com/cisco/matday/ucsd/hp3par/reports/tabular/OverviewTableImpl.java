@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports;
+package com.cisco.matday.ucsd.hp3par.reports.tabular;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
@@ -34,6 +34,12 @@ import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.SummaryReportInternalModel;
 
+/**
+ * Implemenation of Overview table report
+ * 
+ * @author Matt Day
+ *
+ */
 public class OverviewTableImpl implements TabularReportGeneratorIf, SnapshotReportGeneratorIf {
 
 	private static final String SYS_INFO_TABLE = "Overview";

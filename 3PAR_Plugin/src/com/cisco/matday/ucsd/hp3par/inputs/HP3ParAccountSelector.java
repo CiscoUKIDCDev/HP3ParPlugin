@@ -38,6 +38,13 @@ import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
+/**
+ * Table to allow selection of an HP 3PAR accounts - it should not be
+ * instantiated directly but instead used as a form item
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParAccountSelector implements TabularReportGeneratorIf {
 
 	@SuppressWarnings("unused")
@@ -70,7 +77,9 @@ public class HP3ParAccountSelector implements TabularReportGeneratorIf {
 		for (Iterator<InfraAccount> i = objs.iterator(); i.hasNext();) {
 			InfraAccount a = i.next();
 			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
-			if (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE)) {
+			// Important to check if the account type is null first
+			if ((acc != null) && (acc.getAccountType() != null)
+					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 				model.addTextValue(a.getAccountName());
 				model.addTextValue(a.getServer());
 				model.addTextValue(a.getDcName());

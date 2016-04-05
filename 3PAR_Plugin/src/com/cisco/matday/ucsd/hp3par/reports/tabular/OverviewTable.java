@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports;
+package com.cisco.matday.ucsd.hp3par.reports.tabular;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cloupia.model.cIM.DynReportContext;
@@ -28,8 +28,16 @@ import com.cloupia.model.cIM.ReportDefinition;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
+/**
+ * Build a simple overview table with stauts about the array
+ * 
+ * @author Matt Day
+ *
+ */
 public class OverviewTable extends CloupiaNonTabularReport {
-
+	/**
+	 * Unique identifier for this report
+	 */
 	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.OverviewTable";
 	private static final String REPORT_LABEL = "Overview";
 
@@ -43,6 +51,9 @@ public class OverviewTable extends CloupiaNonTabularReport {
 		return OverviewTableImpl.class;
 	}
 
+	/**
+	 * Create overview table
+	 */
 	public OverviewTable() {
 		super();
 		// IMPORTANT: this tells the framework which column of this report you

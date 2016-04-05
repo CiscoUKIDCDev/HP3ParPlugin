@@ -24,6 +24,8 @@ package com.cisco.matday.ucsd.hp3par.inputs;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
@@ -39,12 +41,20 @@ import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
+/**
+ * Table to allow selection of an HP 3PAR CPGs - it should not be instantiated
+ * directly but instead used as a form item
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParCpgSelector implements TabularReportGeneratorIf {
+
+	private static Logger logger = Logger.getLogger(HP3ParCpgSelector.class);
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
-
 		TabularReport report = new TabularReport();
 
 		report.setGeneratedTime(System.currentTimeMillis());
@@ -66,16 +76,26 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 		for (Iterator<InfraAccount> i = objs.iterator(); i.hasNext();) {
 			InfraAccount a = i.next();
 			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
-			if (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE)) {
+			// TODO: This makes the null conditionals later invalid, but put in
+			// as a test
+			if (acc == null) {
+				logger.info("3PAR plugin CPG selector: acc == null");
+				continue;
+			}
+			if (acc.getAccountType() == null) {
+				logger.info("3PAR plugin CPG selector: acc.getAccountType() == null");
+				continue;
+			}
+			// Important to check if the account type is null first
+			if ((acc != null) && (acc.getAccountType() != null)
+					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
 				HP3ParCPG cpglist = new HP3ParCPG(new HP3ParCredentials(a.getAccountName()));
 
 				for (Iterator<CPGResponseMembers> j = cpglist.getCpg().getMembers().iterator(); j.hasNext();) {
 					CPGResponseMembers cpg = j.next();
-
 					// Bad but we can use this to parse it all out later
 					String internalId = Integer.toString(cpg.getId()) + "@" + a.getAccountName() + "@" + cpg.getName();
-
 					// Internal ID
 					model.addTextValue(internalId);
 					// ID

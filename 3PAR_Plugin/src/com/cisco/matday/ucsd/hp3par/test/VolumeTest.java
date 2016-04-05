@@ -27,10 +27,12 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.DeleteVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 
+// Don't document this test case, it changes too often
+@SuppressWarnings("javadoc")
 public class VolumeTest {
 
 	final static String ipAddress = "10.51.8.210";
@@ -43,7 +45,9 @@ public class VolumeTest {
 
 			Logger.getRootLogger().setLevel(Level.INFO);
 
-			HP3ParCredentials login = new HP3ParCredentials(ipAddress, user, password, true);
+			// Don't warn that I'm using test methods
+			@SuppressWarnings("deprecation")
+			HP3ParCredentials login = new HP3ParCredentials(ipAddress, user, password);
 
 			HP3ParVolumeList list = new HP3ParVolumeList(login);
 			HP3ParSystem systemInfo = new HP3ParSystem(login);
@@ -58,7 +62,7 @@ public class VolumeTest {
 			// System.out.println(CreateVolumeRestCall.create(login,
 			// vol).getError());
 
-			HP3ParVolumeStatus s = DeleteVolumeRestCall.delete(login, "Testing");
+			HP3ParVolumeStatus s = HP3ParVolumeRestCall.delete(login, "Testing");
 			System.out.println(s.getError());
 
 			// HP3ParVolumeList newlist = new HP3ParVolumeList(login);

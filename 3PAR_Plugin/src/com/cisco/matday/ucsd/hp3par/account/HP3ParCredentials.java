@@ -21,15 +21,10 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account;
 
-import java.io.IOException;
-
-import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
 
 import com.cisco.cuic.api.client.JSON;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
-import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cloupia.lib.connector.account.AbstractInfraAccount;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalInfraAccount;
@@ -38,15 +33,15 @@ import com.cloupia.model.cIM.ReportContext;
 /**
  * 
  * This holds the state and credentials for connection to the 3PAR system.
- * 
+ * <p>
  * Use it to store username, password, address etc and also to obtain a token
  * for use with the REST API. It has multiple constructors and can be used
  * almost anywhere in UCSD with a single call.
- * 
+ * <p>
  * I suggest you use this rather than the built-in Account class to make future
  * changes a lot easier!
  * 
- * @author matt
+ * @author Matt Day
  *
  */
 public class HP3ParCredentials {
@@ -56,19 +51,59 @@ public class HP3ParCredentials {
 	private String array_address;
 	private String username;
 	private String password;
-	private HP3ParToken token;
 	private String accountName = null;
-	
+
 	static Logger logger = Logger.getLogger(HP3ParCredentials.class);
 
+	/**
+	 * Used for test cases only, you should not use this in UCS Director
+	 * 
+	 * @deprecated You shouldn't call this outside of test applications
+	 * @param array_address
+	 *            IP address of the array
+	 * @param username
+	 *            Username to log in as
+	 * @param password
+	 *            Password to log in as
+	 * @param https
+	 *            Use the https protocol
+	 * @param http_port
+	 *            What port to use
+	 */
+	@Deprecated
 	public HP3ParCredentials(String array_address, String username, String password, boolean https, int http_port) {
 		init(array_address, username, password, https, http_port);
 	}
 
-	public HP3ParCredentials(String array_address, String username, String password, boolean https) {
-		init(array_address, username, password, https, HP3ParConstants.DEFAULT_PORT);
+	/**
+	 * Used for test cases only, you should not use this in UCS Director. This
+	 * will use a default port of 8080 and https.
+	 * 
+	 * @deprecated You shouldn't call this outside of test applications
+	 * @param array_address
+	 *            IP address of the array
+	 * @param username
+	 *            Username to log in as
+	 * @param password
+	 *            Password to log in as
+	 */
+	@Deprecated
+	public HP3ParCredentials(String array_address, String username, String password) {
+		init(array_address, username, password, true, HP3ParConstants.DEFAULT_PORT);
 	}
-	
+
+	/**
+	 * Get credentials from the account name. The account name is specified by
+	 * the user in UCS Director.
+	 * <p>
+	 * For example, they may have two accounts (3PAR-1 and 3PAR-2) - this will
+	 * get the credentials for the right one.
+	 * 
+	 * @param accountName
+	 *            Account name specified by user
+	 * @throws Exception
+	 *             If the account isn't found
+	 */
 	public HP3ParCredentials(String accountName) throws Exception {
 		logger.info("Account Name: " + accountName);
 		this.accountName = accountName;
@@ -79,6 +114,19 @@ public class HP3ParCredentials {
 		initFromAccount(acc);
 	}
 
+	/**
+	 * Get credentials from the current context. This is typically used in the
+	 * converged view where account name is known.
+	 * <p>
+	 * For example, if a user has two accounts (3PAR-1 and 3PAR-2) and is
+	 * currently looking at a table for 3PAR-1 this will return those
+	 * credentials
+	 * 
+	 * @param context
+	 *            Current context
+	 * @throws Exception
+	 *             If the account isn't found
+	 */
 	public HP3ParCredentials(ReportContext context) throws Exception {
 		String contextId = context.getId();
 		this.accountName = null;
@@ -95,6 +143,12 @@ public class HP3ParCredentials {
 		}
 		initFromAccount(acc);
 	}
+
+	/**
+	 * Get the user-specified account name
+	 * 
+	 * @return Accout name
+	 */
 	public String getAccountName() {
 		if (accountName == null) {
 			accountName = "-";
@@ -102,19 +156,11 @@ public class HP3ParCredentials {
 		return accountName;
 	}
 
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-
-	@Deprecated
-	public HP3ParCredentials(PhysicalInfraAccount acc) throws Exception {
-		initFromAccount(acc);
-	}
-
 	private void initFromAccount(PhysicalInfraAccount acc) throws Exception {
 		String json = acc.getCredential();
 		HP3ParAccountJsonObject account = (HP3ParAccountJsonObject) JSON.jsonToJavaObject(json,
 				HP3ParAccountJsonObject.class);
+		this.accountName = acc.getAccountName();
 		String username = account.getUsername();
 		String password = account.getPassword();
 		String array_address = account.getArray_address();
@@ -123,27 +169,11 @@ public class HP3ParCredentials {
 		init(array_address, username, password, https, tcp_port);
 	}
 
-	@Deprecated
 	/**
-	 * @deprecated Don't call directly as it's not safe due it not releasing a
-	 *             token afterwards causing major issues later
-	 * @return
-	 * @throws HttpException
-	 * @throws IOException
+	 * Get the current protocol in use - http or https
+	 * 
+	 * @return Current protocol (http or https)
 	 */
-	public String getToken() throws HttpException, IOException, InvalidHP3ParTokenException {
-		if (this.token == null) {
-			this.token = new HP3ParToken(this);
-			logger.info("Got token from 3PAR: " + token.getToken());
-		}
-		logger.info("Returning token: " + token.getToken());
-		return token.getToken();
-	}
-
-	public void setToken(HP3ParToken token) {
-		this.token = token;
-	}
-
 	public String getProtocol() {
 		return (https) ? "https" : "http";
 	}
@@ -156,51 +186,106 @@ public class HP3ParCredentials {
 		this.tcp_port = http_port;
 	}
 
+	/**
+	 * Get TCP port in use (default 8080)
+	 * 
+	 * @return tcp port
+	 */
 	public int getTcp_port() {
 		return tcp_port;
 	}
 
+	/**
+	 * Set TCP port in use (default 8080)
+	 * 
+	 * @param tcp_port
+	 *            tcp port
+	 */
 	public void setTcp_port(int tcp_port) {
 		this.tcp_port = tcp_port;
 	}
 
+	/**
+	 * Is this using secure http (https)?
+	 * 
+	 * @return true if it's https
+	 */
 	public boolean isHttps() {
 		return https;
 	}
 
+	/**
+	 * Set access method
+	 * 
+	 * @param https
+	 *            True if https, false if http
+	 */
 	public void setHttps(boolean https) {
 		this.https = https;
 	}
 
+	/**
+	 * Get IP address or hostname of 3PAR array
+	 * 
+	 * @return IP address or hostname of 3PAR array
+	 */
 	public String getArray_address() {
 		return array_address;
 	}
 
+	/**
+	 * Set IP address or hostname of 3PAR array
+	 * 
+	 * @param array_address
+	 *            IP address or hostname of 3PAR array
+	 */
 	public void setArray_address(String array_address) {
 		this.array_address = array_address;
 	}
 
+	/**
+	 * Username accessing array
+	 * 
+	 * @return Username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Username accessing array
+	 * 
+	 * @param username
+	 *            Username
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * Password accessing array
+	 * 
+	 * @return Password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Password accessing array
+	 * 
+	 * @param password
+	 *            Password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 	/**
-	 * To get the object of HP3Par by passing the AccountName.
+	 * Returns the internal HP3Par account information based on the account name
 	 * 
 	 * @param accountName
-	 * @return
+	 * @return UCS Director account information
 	 * @throws Exception
 	 */
 	public static HP3ParAccount getInternalCredential(String accountName) throws Exception {

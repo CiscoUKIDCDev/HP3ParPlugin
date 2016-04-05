@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports;
+package com.cisco.matday.ucsd.hp3par.reports.tabular;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cloupia.model.cIM.DynReportContext;
@@ -35,9 +35,18 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
  *
  */
 public class CPGReport extends CloupiaReport {
+	/**
+	 * Unique identifier for this report
+	 */
 	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.CPGReport";
+	/**
+	 * User-friendly report name
+	 */
 	public final static String REPORT_LABEL = "CPGs";
 
+	/**
+	 * Create CPG report
+	 */
 	public CPGReport() {
 		super();
 		// IMPORTANT: this tells the framework which column of this report you
@@ -50,6 +59,10 @@ public class CPGReport extends CloupiaReport {
 		return CPGReportImpl.class;
 	}
 	
+	/**
+	 * No actions in this report type, left in for easy migration
+	 * @return null
+	 */
 	public CloupiaReportAction[] getActions() {
 		return null;
 	}

@@ -28,9 +28,16 @@ import com.cloupia.model.cIM.ReportDefinition;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
+/**
+ * Volume allocation pie chart
+ * @author Matt Day
+ *
+ */
 public class VolumeAllocationPieChart  extends CloupiaNonTabularReport {
 
-	// Unique report name here.
+	/**
+	 * Unique identifier for this report
+	 */
 	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.VolumeAllocationPieChart";
 
 	private static final String REPORT_LABEL = "Virtual Volume Allocation";

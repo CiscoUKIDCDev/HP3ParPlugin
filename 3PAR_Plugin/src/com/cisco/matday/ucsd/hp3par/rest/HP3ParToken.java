@@ -32,11 +32,29 @@ import com.cisco.rwhitear.threeParREST.authenticate.json.LoginResponseJSON;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
+/**
+ * Provides mechanisms to obtain and release tokens from a 3PAR array.
+ * 
+ * Generally you should not access this directly but instead use the
+ * UCSD3ParHttpWrapper class to do it for you - this helps avoid having to
+ * manage releasing the token when done with it
+ * 
+ * @author Matt Day
+ *
+ */
 public class HP3ParToken {
 	private String token;
 	HP3ParCredentials loginCredentials;
 	private static Logger logger = Logger.getLogger(HP3ParToken.class);
 
+	/**
+	 * Obtain a token from the array. Note, you <b>must</b> call release() when
+	 * done with it.
+	 * 
+	 * @param loginCredentials
+	 * @throws HttpException
+	 * @throws IOException
+	 */
 	public HP3ParToken(HP3ParCredentials loginCredentials) throws HttpException, IOException {
 		this.loginCredentials = loginCredentials;
 		getToken(loginCredentials);
@@ -57,6 +75,14 @@ public class HP3ParToken {
 		this.token = token;
 	}
 
+	/**
+	 * Get the token
+	 * 
+	 * @return HP3Par authentication Token
+	 * @throws InvalidHP3ParTokenException
+	 *             If the token could not be obtained (e.g. credentials are
+	 *             invalid)
+	 */
 	public String getToken() throws InvalidHP3ParTokenException {
 		if (this.token == null) {
 			throw new InvalidHP3ParTokenException("Token has expired or has been released");
@@ -65,6 +91,15 @@ public class HP3ParToken {
 		return this.token;
 	}
 
+	/**
+	 * Release the token when done. This <b>must</b> be called when a token is
+	 * no longer in use.
+	 * 
+	 * @throws HttpException
+	 * @throws IOException
+	 * @throws InvalidHP3ParTokenException
+	 *             If the token has already been released
+	 */
 	public void release() throws HttpException, IOException, InvalidHP3ParTokenException {
 		if (token == null) {
 			throw new InvalidHP3ParTokenException("Token has expired or was already released");
@@ -78,9 +113,11 @@ public class HP3ParToken {
 		// Explicitly don't try and use a token:
 		request.setToken(false);
 		request.execute();
-		// Don't care abou the output here, let the 3PAR system worry if the
-		// token was deleted or not, just null the reference on our end and let the gc
-		// pick it up
+		/*
+		 * Don't care about the output here, let the 3PAR system worry if the
+		 * token was deleted or not, just null the reference on our end and let
+		 * the gc pick it up
+		 */
 		this.token = null;
 	}
 
@@ -94,9 +131,4 @@ public class HP3ParToken {
 			this.release();
 		}
 	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
 }

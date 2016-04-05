@@ -30,8 +30,19 @@ import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
+/**
+ * Configuration task for the 3PAR Volume creation task
+ * <p>
+ * This shouldn't be instantiated directly, instead it should be included as a form field or task config
+ * 
+ * @author Matt Day
+ *
+ */
 @PersistenceCapable(detachable = "true", table = "HP3Par_create_volume")
 public class CreateVolumeConfig implements TaskConfigIf {
+	/**
+	 * Task display label
+	 */
 	public static final String DISPLAY_LABEL = "Create 3PAR Volume";
 
 	@Persistent
@@ -70,6 +81,10 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	@Persistent
 	private String comment;
 
+	/**
+	 * Empty default constructor - this method shouldn't be instantiated
+	 * directly
+	 */
 	public CreateVolumeConfig() {
 
 	}
@@ -89,44 +104,91 @@ public class CreateVolumeConfig implements TaskConfigIf {
 		return DISPLAY_LABEL;
 	}
 
+	/**
+	 * Get the desired volume
+	 * @return The volume to be created 
+	 */
 	public String getVolumeName() {
 		return volumeName;
 	}
-
+	
+	/**
+	 * Set the desired volume
+	 * @param volumeName The volume to be created 
+	 */
 	public void setVolumeName(String volumeName) {
 		this.volumeName = volumeName;
 	}
-
+	/**
+	 * Get the desired volume size
+	 * @return The size of the volume to be created 
+	 */
 	public long getVolume_size() {
 		return volume_size;
 	}
-
+	/**
+	 * Set the desired volume size
+	 * @param volume_size The volume to be created 
+	 */
 	public void setVolume_size(long volume_size) {
 		this.volume_size = volume_size;
 	}
-
+	
+	/**
+	 * Get the account name
+	 * @return Account name to do this on 
+	 */
 	public String getAccount() {
 		return account;
 	}
-
+	/**
+	 * Set the account name
+	 * @param account The volume to be created 
+	 */
 	public void setAccount(String account) {
 		this.account = account;
 	}
-
+	/**
+	 * Get the CPG
+	 * @return CPG details (formatted id@account@cpgName)
+	 */
 	public String getCpg() {
 		return cpg;
 	}
-
+	/**
+	 * Set the CPG name
+	 * @param cpg The cpg to create the volume on - must be formatted id@account@cpgName
+	 */
 	public void setCpg(String cpg) {
 		this.cpg = cpg;
 	}
-
+	/**
+	 * Get the comment
+	 * @return Comment - might be null (and is optional)
+	 */
 	public String getComment() {
 		return comment;
 	}
-
+	/**
+	 * Set the comment - this is optional
+	 * @param comment Optional commentary
+	 */
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	/**
+	 * Get if this should be thin provisioned or not
+	 * @return True if thin provisioning is desired
+	 */
+	public boolean isThin_provision() {
+		return thin_provision;
+	}
+	/**
+	 * Set if this should be thin provisioned
+	 * @param thin_provision true to thin provision
+	 */
+	public void setThin_provision(boolean thin_provision) {
+		this.thin_provision = thin_provision;
 	}
 
 	@Override
@@ -139,12 +201,5 @@ public class CreateVolumeConfig implements TaskConfigIf {
 		this.configEntryId = configEntryId;
 	}
 
-	public boolean isThin_provision() {
-		return thin_provision;
-	}
-
-	public void setThin_provision(boolean thin_provision) {
-		this.thin_provision = thin_provision;
-	}
 
 }

@@ -23,22 +23,33 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
 import java.util.List;
 
+/**
+ * REST object representation of the HP3PAR CPG list. See the HP 3PAR REST
+ * documentation for detail on these methods and values
+ * 
+ * @author Matt Day
+ *
+ */
 public class CPGResponse {
 	private int total;
 	private List<CPGResponseMembers> members;
 
+	@SuppressWarnings("javadoc")
 	public int getTotal() {
 		return total;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setTotal(int total) {
 		this.total = total;
 	}
 
+	@SuppressWarnings("javadoc")
 	public List<CPGResponseMembers> getMembers() {
 		return members;
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setMembers(List<CPGResponseMembers> members) {
 		this.members = members;
 	}

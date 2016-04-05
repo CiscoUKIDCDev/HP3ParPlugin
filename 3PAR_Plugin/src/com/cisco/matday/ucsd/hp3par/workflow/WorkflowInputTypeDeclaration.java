@@ -32,11 +32,20 @@ import com.cloupia.service.cIM.inframgr.customactions.WorkflowInputFieldTypeDecl
 import com.cloupia.service.cIM.inframgr.customactions.WorkflowInputTypeRegistry;
 import com.cloupia.service.cIM.inframgr.forms.wizard.TabularFieldRegistry;
 
+/**
+ * Sets up the workflow input types (e.g. account/volume/cpg selection lists)
+ * 
+ * @author Matt Day
+ *
+ */
 public class WorkflowInputTypeDeclaration {
 
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(WorkflowInputTypeDeclaration.class);
 
+	/**
+	 * Empty default constructor
+	 */
 	public WorkflowInputTypeDeclaration() {
 	}
 
@@ -53,16 +62,16 @@ public class WorkflowInputTypeDeclaration {
 	/**
 	 * This method is used to register Workflow input of type tabular.
 	 * 
-	 * @return void
 	 */
 
 	private static void registerAccountPicker() {
 		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
-		sampleInputType.addDeclaration(
-				new WorkflowInputFieldTypeDeclaration(HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME, "HP 3PAR Account",
-						FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.ACCOUNT_LIST_FORM_NAME));
-		
-		// First item is what we return to the workflow, second is what we display in the GUI
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(
+				HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME, HP3ParConstants.ACCOUNT_LIST_FORM_LABEL,
+				FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.ACCOUNT_LIST_FORM_NAME));
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_NAME,
 				HP3ParAccountSelector.class, "0", "0");
 	}
@@ -70,9 +79,11 @@ public class WorkflowInputTypeDeclaration {
 	private static void registerCpgList() {
 		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
 		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.CPG_LIST_FORM_TABLE_NAME,
-				"HP 3PAR CPG List", FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.CPG_LIST_FORM_NAME));
+				HP3ParConstants.CPG_LIST_FORM_LABEL, FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP,
+				HP3ParConstants.CPG_LIST_FORM_NAME));
 
-		// First item is what we return to the workflow, second is what we display in the GUI
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.CPG_LIST_FORM_NAME,
 				HP3ParCpgSelector.class, "0", "3");
 	}
@@ -80,10 +91,11 @@ public class WorkflowInputTypeDeclaration {
 	private static void registerVolumeList() {
 		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
 		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(
-				HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, "HP 3PAR Volume List",
+				HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL,
 				FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.VOLUME_LIST_FORM_NAME));
-		
-		// First item is what we return to the workflow, second is what we display in the GUI
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_NAME,
 				HP3ParVolumeSelector.class, "0", "2");
 	}

@@ -32,8 +32,20 @@ import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
+/**
+ * Configuration task for the 3PAR Volume deletion task
+ * <p>
+ * This shouldn't be instantiated directly, instead it should be included as a
+ * form field or task config
+ * 
+ * @author Matt Day
+ *
+ */
 @PersistenceCapable(detachable = "true", table = "HP3Par_delete_volume")
 public class DeleteVolumeConfig implements TaskConfigIf {
+	/**
+	 * Task display label
+	 */
 	public static final String DISPLAY_LABEL = "Delete 3PAR Volume";
 
 	@Persistent
@@ -54,10 +66,18 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	private static Logger logger = Logger.getLogger(DeleteVolumeConfig.class);
 
+	/**
+	 * Empty default constructor - this method shouldn't be instantiated
+	 * directly
+	 */
 	public DeleteVolumeConfig() {
 
 	}
 
+	/**
+	 * Rollback constructor - used specifically for tasks that can call this to
+	 * perform rollback - shouldn't be instantiated directly
+	 */
 	public DeleteVolumeConfig(CreateVolumeConfig config) {
 		logger.info("Rolling back task - deleting volume: " + config.getVolumeName());
 		this.account = config.getAccount();
@@ -80,11 +100,18 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	public String getDisplayLabel() {
 		return DISPLAY_LABEL;
 	}
-
+	
+	/**
+	 * Get the account name
+	 * @return Account name to do this on 
+	 */
 	public String getAccount() {
 		return account;
 	}
-
+	/**
+	 * Set the account name
+	 * @param account The volume to be created 
+	 */
 	public void setAccount(String account) {
 		this.account = account;
 	}
@@ -98,11 +125,19 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	public void setConfigEntryId(long configEntryId) {
 		this.configEntryId = configEntryId;
 	}
-
+	
+	/**
+	 * Get the Volume name
+	 * @return Volume details (formatted id@account@volumeName)
+	 */
 	public String getVolume() {
 		return volume;
 	}
 
+	/**
+	 * Set the Volume name
+	 * @param volume Must be formatted id@account@volumeName
+	 */
 	public void setVolume(String volume) {
 		this.volume = volume;
 	}

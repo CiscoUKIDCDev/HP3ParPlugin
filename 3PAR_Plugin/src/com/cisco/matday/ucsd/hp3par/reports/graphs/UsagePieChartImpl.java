@@ -32,6 +32,12 @@ import com.cloupia.model.cIM.SnapshotReportCategory;
 import com.cloupia.service.cIM.inframgr.SnapshotReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
+/**
+ * Implemenation of pie chart report
+ * 
+ * @author Matt Day
+ *
+ */
 public class UsagePieChartImpl implements SnapshotReportGeneratorIf {
 
 	@SuppressWarnings("unused")
@@ -73,44 +79,6 @@ public class UsagePieChartImpl implements SnapshotReportGeneratorIf {
 		});
 
 		return report;
-
-		/*
-		 * // Get array model and OS version level. GetArrayInventory gai = new
-		 * GetArrayInventory(username, password, deviceIp);
-		 * 
-		 * // Get array inventory. ArrayDataObject ado = gai.getInventory();
-		 * 
-		 * List<Long> volUsageBytesList = ado.getVolUsageBytes(); List<Long>
-		 * snapUsageBytesList = ado.getSnapUsageBytes(); List<Long>
-		 * usableCapacityBytesList = ado.getUsableCapacityBytes();
-		 * 
-		 * Long volUsageBytes = (long) 0; Long snapUsageBytes = (long) 0; Long
-		 * usableCapacityBytes = (long) 0;
-		 * 
-		 * if (usableCapacityBytesList.size() > 0) {
-		 * 
-		 * volUsageBytes = volUsageBytesList.get(0); snapUsageBytes =
-		 * snapUsageBytesList.get(0); usableCapacityBytes =
-		 * (usableCapacityBytesList.get(0) - (volUsageBytes + snapUsageBytes));
-		 * 
-		 * }
-		 * 
-		 * // creation of report name value pair goes ReportNameValuePair[] rnv
-		 * = new ReportNameValuePair[3];
-		 * 
-		 * rnv[0] = new ReportNameValuePair("Volume Bytes", volUsageBytes);
-		 * rnv[1] = new ReportNameValuePair("Snapshot Bytes", snapUsageBytes);
-		 * rnv[2] = new ReportNameValuePair("Available Bytes",
-		 * usableCapacityBytes);
-		 * 
-		 * // setting of report category goes SnapshotReportCategory cat = new
-		 * SnapshotReportCategory();
-		 * 
-		 * cat.setCategoryName(""); cat.setNameValuePairs(rnv);
-		 * 
-		 * report.setCategories(new SnapshotReportCategory[] { cat });
-		 */
-
 	}
 
 }

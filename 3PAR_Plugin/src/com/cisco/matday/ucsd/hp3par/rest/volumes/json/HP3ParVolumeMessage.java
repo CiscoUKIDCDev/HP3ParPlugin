@@ -21,18 +21,33 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
+/**
+ * Object representation of a REST response from the 3PAR array.
+ * 
+ * See the 3PAR documentation for details
+ * @author Matt Day
+ *
+ */
 public class HP3ParVolumeMessage {
 	private int code;
 	private String desc;
+
+	@SuppressWarnings("javadoc")
 	public int getCode() {
 		return code;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setCode(int code) {
 		this.code = code;
 	}
+
+	@SuppressWarnings("javadoc")
 	public String getDesc() {
 		return desc;
 	}
+
+	@SuppressWarnings("javadoc")
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}

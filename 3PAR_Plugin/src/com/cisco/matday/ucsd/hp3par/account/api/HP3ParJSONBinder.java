@@ -29,10 +29,17 @@ import org.apache.log4j.Logger;
 
 import com.cloupia.service.cIM.inframgr.collector.controller.ItemDataObjectBinderIf;
 
+/**
+ * Boilerplate from SDK, not sure what it does 
+ * @author Matt Day
+ *
+ */
 public abstract class HP3ParJSONBinder implements ItemDataObjectBinderIf {
 	private static Logger logger = Logger.getLogger(HP3ParJSONBinder.class);
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({
+			"rawtypes", "javadoc"
+	})
 	public abstract List<Class> getPersistantClassList();
 
 	protected void bindContext(Object obj, Map<String, Object> context) {
