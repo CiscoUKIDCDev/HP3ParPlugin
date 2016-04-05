@@ -5,6 +5,8 @@ It is currently in early alpha, it is unsupported and used at your own risk. If 
 
 Alternatively, you can check out the project and import it in to the Eclipse IDE and build it yourself.
 
+If you're feeling **very brave** you can try the latest development version. These do have new features but are extremely likely to be buggy and/or not work. You can [find them here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/3PAR_Plugin/HP3Par-plugin.zip) (click view raw to download).
+
 ## Warning
 This plugin is considered unstable - your warranty is now void!
 
