@@ -28,13 +28,13 @@ It is **not** recommended to run this plugin in production - it has never been t
 * Ability to add a 3PAR physical storage account (and converged stack based on it)
 * Converged/Physical view tab (list of volumes, CPGs and some graphs)
 * Form lists to pick 3PAR accounts, CPGs and Volumes
+* Action buttons on the volume form list to create/delete
 * Create volume task (may be buggy)
+* Full Javadoc in source code
 
 ### Near-term roadmap
 * More tasks (delete volumes, deal with CPGs etc)
-* Action buttons
 * Drilldown reports (e.g. double-click CPG to see its volumes)
-* Better documentation
 
 ## Using
 ### Configuring the WSAPI on your 3PAR array
