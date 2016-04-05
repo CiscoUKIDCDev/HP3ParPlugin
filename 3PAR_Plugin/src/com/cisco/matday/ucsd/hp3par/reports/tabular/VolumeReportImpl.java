@@ -26,6 +26,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMembers;
 import com.cloupia.model.cIM.ReportContext;
@@ -62,6 +63,7 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 		model.addTextColumn("Size GiB", "Size GiB");
 		model.addTextColumn("Provisioning", "Provisioning");
 		model.addTextColumn("User CPG", "User CPG");
+		model.addTextColumn("Copy CPG", "Copy CPG");
 
 		model.completedHeader();
 
@@ -71,6 +73,23 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 
 		for (Iterator<VolumeResponseMembers> i = list.getVolume().getMembers().iterator(); i.hasNext();) {
 			VolumeResponseMembers volume = i.next();
+			int provisioning = volume.getProvisioningType();
+			String provType = null;
+			
+			if (provisioning == HP3ParConstants.PROVISION_FULL) {
+				provType = "Full";
+			}
+			else if (provisioning == HP3ParConstants.PROVISION_THIN) {
+				provType = "Thin";
+			}
+			else if (provisioning == HP3ParConstants.PROVISION_SNAPSHOT) {
+				// Don't show snapshots in this view - that's for the drilldown report
+				continue;
+			}
+			else {
+				provType = "Unknown";
+			}
+			
 			// Internal ID, format:
 			// accountName;volumeid@accountName@volumeName
 			model.addTextValue(credentials.getAccountName() + ";" + volume.getId() + "@" + credentials.getAccountName()
@@ -84,19 +103,11 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 			Double volSize = (double) (volume.getSizeMiB() / 1024d);
 			model.addTextValue(volSize.toString());
 
-			// Get the provisioning type (1 = full, 2 = thin):
-			int provisioning = volume.getProvisioningType();
-			if (provisioning == 1) {
-				model.addTextValue("Full");
-			}
-			else if (provisioning == 2) {
-				model.addTextValue("Thin");
-			}
-			else {
-				model.addTextValue("Unknown");
-			}
+			model.addTextValue(provType);
 
 			model.addTextValue(volume.getUserCPG());
+			
+			model.addTextValue(volume.getCopyCPG());
 
 			model.completedRow();
 		}

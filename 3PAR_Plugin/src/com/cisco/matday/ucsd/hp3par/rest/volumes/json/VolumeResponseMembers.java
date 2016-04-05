@@ -37,6 +37,7 @@ public class VolumeResponseMembers {
 	private int baseId;
 	private boolean readOnly;
 	private int state;
+	private String snapCPG;
 	// private <List> failedStates;
 	// private <List> degradedStates;
 	// private <List> additionalStates;
@@ -262,6 +263,14 @@ public class VolumeResponseMembers {
 			return "-";
 		}
 		return userCPG;
+	}
+	
+	@SuppressWarnings("javadoc")
+	public String getCopyCPG() {
+		if (snapCPG == null) {
+			return "-";
+		}
+		return snapCPG;
 	}
 
 	@SuppressWarnings("javadoc")

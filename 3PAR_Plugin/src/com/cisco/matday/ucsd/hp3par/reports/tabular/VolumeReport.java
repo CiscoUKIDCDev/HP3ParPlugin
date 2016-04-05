@@ -23,6 +23,8 @@ package com.cisco.matday.ucsd.hp3par.reports.tabular;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeAction;
+import com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeCopyAction;
+import com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeSnapshotAction;
 import com.cisco.matday.ucsd.hp3par.reports.actions.DeleteVolumeAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
@@ -32,6 +34,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportWithActi
 
 /**
  * Tabular list of volumes with action buttons
+ * 
  * @author Matt Day
  *
  */
@@ -60,7 +63,10 @@ public class VolumeReport extends CloupiaReportWithActions {
 
 	@Override
 	public CloupiaReportAction[] getActions() {
-		CloupiaReportAction[] actions = { new CreateVolumeAction(), new DeleteVolumeAction() };
+		CloupiaReportAction[] actions = {
+				new CreateVolumeAction(), new DeleteVolumeAction(), new CreateVolumeSnapshotAction(),
+				new CreateVolumeCopyAction(),
+		};
 		return actions;
 	}
 

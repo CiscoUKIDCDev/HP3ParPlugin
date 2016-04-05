@@ -27,6 +27,7 @@ import javax.jdo.annotations.Persistent;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
@@ -46,7 +47,7 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "Delete 3PAR Volume";
+	public static final String DISPLAY_LABEL = "3PAR Delete Volume";
 
 	@Persistent
 	private long configEntryId;
@@ -75,13 +76,23 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	}
 
 	/**
-	 * Rollback constructor - used specifically for tasks that can call this to
-	 * perform rollback - shouldn't be instantiated directly
+	 * Rollback constructor - used specifically for the create volume task
 	 */
 	public DeleteVolumeConfig(CreateVolumeConfig config) {
 		logger.info("Rolling back task - deleting volume: " + config.getVolumeName());
 		this.account = config.getAccount();
 		String volParse = "0@" + config.getAccount() + "@" + config.getVolumeName();
+		logger.info("Format: " + volParse);
+		this.volume = volParse;
+	}
+
+	/**
+	 * Rollback constructor - used specifically for the copy volume task
+	 */
+	public DeleteVolumeConfig(CreateVolumeCopyConfig config) {
+		logger.info("Rolling back task - deleting volume: " + config.getNewVolumeName());
+		this.account = config.getAccount();
+		String volParse = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
 		logger.info("Format: " + volParse);
 		this.volume = volParse;
 	}
@@ -100,17 +111,21 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	public String getDisplayLabel() {
 		return DISPLAY_LABEL;
 	}
-	
+
 	/**
 	 * Get the account name
-	 * @return Account name to do this on 
+	 * 
+	 * @return Account name to do this on
 	 */
 	public String getAccount() {
 		return account;
 	}
+
 	/**
 	 * Set the account name
-	 * @param account The volume to be created 
+	 * 
+	 * @param account
+	 *            The volume to be created
 	 */
 	public void setAccount(String account) {
 		this.account = account;
@@ -125,9 +140,10 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	public void setConfigEntryId(long configEntryId) {
 		this.configEntryId = configEntryId;
 	}
-	
+
 	/**
 	 * Get the Volume name
+	 * 
 	 * @return Volume details (formatted id@account@volumeName)
 	 */
 	public String getVolume() {
@@ -136,7 +152,9 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set the Volume name
-	 * @param volume Must be formatted id@account@volumeName
+	 * 
+	 * @param volume
+	 *            Must be formatted id@account@volumeName
 	 */
 	public void setVolume(String volume) {
 		this.volume = volume;

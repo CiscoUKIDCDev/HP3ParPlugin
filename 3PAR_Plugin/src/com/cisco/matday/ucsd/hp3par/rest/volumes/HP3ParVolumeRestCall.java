@@ -28,9 +28,9 @@ import org.apache.commons.httpclient.HttpException;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
@@ -53,11 +53,11 @@ public class HP3ParVolumeRestCall {
 	 * @throws IOException
 	 * @throws InvalidHP3ParTokenException
 	 */
-	public static HP3ParVolumeStatus create(HP3ParCredentials loginCredentials,
+	public static HP3ParRequestStatus create(HP3ParCredentials loginCredentials,
 			HP3ParVolumeInformation volumeInformation) throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		Gson gson = new Gson();
-		HP3ParVolumeStatus status = new HP3ParVolumeStatus();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 
@@ -95,11 +95,11 @@ public class HP3ParVolumeRestCall {
 	 * @throws IOException
 	 * @throws InvalidHP3ParTokenException
 	 */
-	public static HP3ParVolumeStatus delete(HP3ParCredentials loginCredentials, String volumeName)
+	public static HP3ParRequestStatus delete(HP3ParCredentials loginCredentials, String volumeName)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		Gson gson = new Gson();
-		HP3ParVolumeStatus status = new HP3ParVolumeStatus();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 

@@ -25,11 +25,15 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.copy.HP3ParCopyRestCall;
+import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
+import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
 
 // Don't document this test case, it changes too often
 @SuppressWarnings("javadoc")
@@ -55,6 +59,22 @@ public class VolumeTest {
 			System.out.println("Model: " + systemInfo.getSystem().getModel());
 			System.out.println("Total Volumes: " + list.getVolume().getTotal());
 			System.out.println("Total CPGs: " + cpgInfo.getCpg().getTotal());
+			
+			HP3ParVolumeInformation info = new HP3ParVolumeInformation("create-test", "SSD_r1", 1024, "No comment", true, "NL_r1");
+			HP3ParRequestStatus s = HP3ParVolumeRestCall.create(login, info);
+			System.out.println(s.getError());
+			System.out.println("Success = " + s.isSuccess());
+			
+			HP3ParSnapshotParams p = new HP3ParSnapshotParams("new-snap", false, null);
+			s = HP3ParCopyRestCall.createSnapshot(login, "create-test", p);
+			System.out.println(s.getError());
+			System.out.println("Success = " + s.isSuccess());
+			
+			HP3ParCopyParams q = new HP3ParCopyParams("new-copy", "FC_r5", true, true, "SSD_r1");
+			s = HP3ParCopyRestCall.createCopy(login, "create-test", q);
+			System.out.println(s.getError());
+			System.out.println("Success = " + s.isSuccess());
+
 
 			// HP3ParVolumeInformation vol = new
 			// HP3ParVolumeInformation("SSD-Test",
@@ -62,8 +82,8 @@ public class VolumeTest {
 			// System.out.println(CreateVolumeRestCall.create(login,
 			// vol).getError());
 
-			HP3ParVolumeStatus s = HP3ParVolumeRestCall.delete(login, "Testing");
-			System.out.println(s.getError());
+			//s = HP3ParVolumeRestCall.delete(login, "create-test");
+			//System.out.println(s.getError());
 
 			// HP3ParVolumeList newlist = new HP3ParVolumeList(login);
 

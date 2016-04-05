@@ -83,7 +83,7 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 
 				for (Iterator<VolumeResponseMembers> j = list.getVolume().getMembers().iterator(); j.hasNext();) {
 					VolumeResponseMembers volume = j.next();
-
+					
 					// Bad but we can use this to parse it all out later
 					String internalId = Integer.toString(volume.getId()) + "@" + a.getAccountName() + "@"
 							+ volume.getName();
@@ -104,15 +104,22 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 
 					// Get the provisioning type (1 = full, 2 = thin):
 					int provisioning = volume.getProvisioningType();
-					if (provisioning == 1) {
-						model.addTextValue("Full");
+					String provType = null;
+					
+					if (provisioning == HP3ParConstants.PROVISION_FULL) {
+						provType = "Full";
 					}
-					else if (provisioning == 2) {
-						model.addTextValue("Thin");
+					else if (provisioning == HP3ParConstants.PROVISION_THIN) {
+						provType = "Thin";
+					}
+					else if (provisioning == HP3ParConstants.PROVISION_SNAPSHOT) {
+						// Show snapshots here
+						provType = "Snapshot";
 					}
 					else {
-						model.addTextValue("Unknown");
+						provType = "Unknown";
 					}
+					model.addTextValue(provType);
 					model.addTextValue(volume.getUserCPG());
 					model.completedRow();
 				}

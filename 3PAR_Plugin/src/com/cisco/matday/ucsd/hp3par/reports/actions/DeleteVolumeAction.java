@@ -24,8 +24,8 @@ package com.cisco.matday.ucsd.hp3par.reports.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
@@ -65,8 +65,6 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 
 		String query = context.getId();
 		DeleteVolumeConfig form = new DeleteVolumeConfig();
-		logger.info("3Par current pageFormID = " + page.getCurrentFormId());
-		logger.info("3Par Query = " + query);
 
 		/*
 		 * Unlike CreateVolumeAction, this returns true on isSelectionRequired()
@@ -121,7 +119,7 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 		String volName = volInfo[2];
 
 		// Delete the volume:
-		HP3ParVolumeStatus s = HP3ParVolumeRestCall.delete(c, volName);
+		HP3ParRequestStatus s = HP3ParVolumeRestCall.delete(c, volName);
 
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {

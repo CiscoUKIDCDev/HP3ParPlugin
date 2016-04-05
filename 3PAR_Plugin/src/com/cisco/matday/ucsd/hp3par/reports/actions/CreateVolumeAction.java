@@ -24,9 +24,9 @@ package com.cisco.matday.ucsd.hp3par.reports.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeConfig;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
@@ -108,14 +108,25 @@ public class CreateVolumeAction extends CloupiaPageAction {
 			throw new Exception("Invalid CPG");
 		}
 		String cpgName = cpgInfo[2];
+		
+		String copyCpgName = null; 
+		
+		if (form.getCopyCpg() != null) {
+			String[] copyCpgInfo = form.getCopyCpg().split("@");
+			if (copyCpgInfo.length != 3) {
+				logger.warn("Copy CPG didn't return three items! It returned: " + form.getCopyCpg());
+				throw new Exception("Invalid Copy CPG");
+			}
+			copyCpgName = copyCpgInfo[2];
+		}
 
 		// This object is used to create the REST request - everything 3PAR
 		// needs to create a volume is in here
 		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(form.getVolumeName(), cpgName,
-				form.getVolume_size(), form.getComment(), form.isThin_provision());
+				form.getVolume_size(), form.getComment(), form.isThin_provision(), copyCpgName);
 
 		// Execute the request and capture the status
-		HP3ParVolumeStatus s = HP3ParVolumeRestCall.create(c, volume);
+		HP3ParRequestStatus s = HP3ParVolumeRestCall.create(c, volume);
 
 		// Throwing an exception fails the submit and shows the error in the
 		// window

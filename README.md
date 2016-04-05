@@ -38,6 +38,10 @@ It is **not** recommended to run this plugin in production - it has never been t
 * More tasks (delete volumes, deal with CPGs etc)
 * Drilldown reports (e.g. double-click CPG to see its volumes)
 
+Additionally, this plugin is mostly trying to be a clean plugin implementation. 
+
+That means there is almost no "dummy" SDK code in here (except a few boilerplate cases). If you wish to hack on this you will need to download the SDK from Cisco's website, especially to add new features.
+
 ## Using
 ### Configuring the WSAPI on your 3PAR array
 You need to enable the WSAPI on your 3PAR array. The official instructions are [available here](http://h20564.www2.hpe.com/hpsc/doc/public/display?docId=c03606339).

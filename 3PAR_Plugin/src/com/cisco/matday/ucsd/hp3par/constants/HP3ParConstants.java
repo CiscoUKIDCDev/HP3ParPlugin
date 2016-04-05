@@ -74,6 +74,11 @@ public class HP3ParConstants {
 	 * User-friendly label for CPG list table
 	 */
 	public static final String CPG_LIST_FORM_LABEL = "CPG";
+	
+	/**
+	 * User-friendly label for copy CPG list table
+	 */
+	public static final String COPY_CPG_LIST_FORM_LABEL = "CPG";
 	/**
 	 * User-friendly label for Volume list table
 	 */
@@ -122,5 +127,18 @@ public class HP3ParConstants {
 	 * UCSDs internal gen_text_input type 
 	 */
 	public static final String GENERIC_TEXT_INPUT = "gen_text_input";
+	
+	/**
+	 * Full provision 3PAR Volume 
+	 */
+	public static final int PROVISION_FULL = 1;
+	/**
+	 * Thin provision 3PAR Volume 
+	 */
+	public static final int PROVISION_THIN = 2;
+	/**
+	 * Snapshot provision 3PAR Volume 
+	 */
+	public static final int PROVISION_SNAPSHOT = 3;
 
 }

@@ -60,11 +60,17 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String cpg;
+	
+	@FormField(label = HP3ParConstants.COPY_CPG_LIST_FORM_LABEL, help = "Copy CPG for the volume", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.CPG_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
+	@Persistent
+	private String copyCpg;
 
 	@FormField(label = "Volume Name", help = "Name for your new volume", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
 	private String volumeName;
+
 
 	@FormField(label = "Volume Size MiB", help = "Size of your new volume in MiB", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
@@ -132,6 +138,20 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	 */
 	public void setVolume_size(long volume_size) {
 		this.volume_size = volume_size;
+	}
+
+	/**
+	 * @return the copyCpg
+	 */
+	public String getCopyCpg() {
+		return copyCpg;
+	}
+
+	/**
+	 * @param copyCpg the copyCpg to set
+	 */
+	public void setCopyCpg(String copyCpg) {
+		this.copyCpg = copyCpg;
 	}
 	
 	/**

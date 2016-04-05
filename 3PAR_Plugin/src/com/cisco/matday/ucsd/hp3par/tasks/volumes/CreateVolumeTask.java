@@ -23,11 +23,11 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 
 import org.apache.log4j.Logger;
 
-import com.cisco.matday.ucsd.hp3par.HP3ParModule;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -42,7 +42,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext
  *
  */
 public class CreateVolumeTask extends AbstractTask {
-	private static Logger logger = Logger.getLogger(HP3ParModule.class);
+	private static Logger logger = Logger.getLogger(CreateVolumeTask.class);
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
@@ -60,15 +60,26 @@ public class CreateVolumeTask extends AbstractTask {
 		}
 		String cpgName = cpgInfo[2];
 
+		String copyCpgName = null;
+
+		if (config.getCopyCpg() != null) {
+			String[] copyCpgInfo = config.getCopyCpg().split("@");
+			if (copyCpgInfo.length != 3) {
+				logger.warn("Copy CPG didn't return three items! It returned: " + config.getCopyCpg());
+				throw new Exception("Invalid Copy CPG");
+			}
+			copyCpgName = copyCpgInfo[2];
+		}
+
 		// Build volume information object:
 		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(config.getVolumeName(), cpgName,
-				config.getVolume_size(), config.getComment(), config.isThin_provision());
-		HP3ParVolumeStatus s = HP3ParVolumeRestCall.create(c, volume);
+				config.getVolume_size(), config.getComment(), config.isThin_provision(), copyCpgName);
+		HP3ParRequestStatus s = HP3ParVolumeRestCall.create(c, volume);
 
 		// If it wasn't created error out
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to create volume:" + s.getError());
-			throw new Exception("Failed to create volume");
+			ucsdLogger.addError("Failed to create volume: " + s.getError());
+			throw new Exception("Failed to create volume: " + s.getError());
 		}
 
 		ucsdLogger.addInfo("Created volume: " + config.getVolumeName());
@@ -76,6 +87,17 @@ public class CreateVolumeTask extends AbstractTask {
 		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
 				"Undo creation of volume: " + config.getVolumeName(), DeleteVolumeConfig.DISPLAY_LABEL,
 				new DeleteVolumeConfig(config));
+		try {
+			// Construct Volume name in the format:
+			// id@Account@Volume
+			// Don't know the volume so just use 0 as a workaround
+			String volName = "0@" + config.getAccount() + "@" + config.getVolumeName();
+			context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, volName);
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
+					+ e.getMessage());
+		}
 
 	}
 
@@ -91,8 +113,12 @@ public class CreateVolumeTask extends AbstractTask {
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		// TODO Auto-generated method stub
-		return null;
+		TaskOutputDefinition[] ops = {
+				// Register output type for the volume created
+				new TaskOutputDefinition(HP3ParConstants.VOLUME_LIST_FORM_LABEL,
+						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL),
+		};
+		return ops;
 	}
 
 }

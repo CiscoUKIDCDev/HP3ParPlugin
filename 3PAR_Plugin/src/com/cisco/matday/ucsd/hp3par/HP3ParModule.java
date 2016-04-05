@@ -35,6 +35,8 @@ import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
 import com.cisco.matday.ucsd.hp3par.reports.tabular.CPGReport;
 import com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeReport;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyTask;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeTask;
 import com.cisco.matday.ucsd.hp3par.workflow.WorkflowInputTypeDeclaration;
@@ -62,17 +64,22 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	@Override
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
-		CloupiaReport[] report = new CloupiaReport[] { new AccountReport(), new VolumeReport(), new CPGReport(), };
+		CloupiaReport[] report = new CloupiaReport[] {
+				new AccountReport(), new VolumeReport(), new CPGReport(),
+		};
 		return report;
 	}
 
 	// Return a list of API tasks supported
 	public AbstractTask[] getTasks() {
 		logger.info("Adding tasks");
-		AbstractTask[] task = new AbstractTask[] { new CreateVolumeTask(), new DeleteVolumeTask() };
+		AbstractTask[] task = new AbstractTask[] {
+				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
+				new CreateVolumeCopyTask()
+		};
 		// task[1] = new HP3ParDeleteVolume();
 		return task;
-		//return null;
+		// return null;
 	}
 
 	@Override
@@ -146,18 +153,17 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			 */
 			logger.info("Registering tabular list of values: " + HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER);
 			cfr.registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER, HP3ParAccountSelector.class, "0", "0");
-			
+
 			logger.info("Registering tabular list of values: " + HP3ParConstants.CPG_LIST_FORM_PROVIDER);
 			cfr.registerTabularField(HP3ParConstants.CPG_LIST_FORM_PROVIDER, HP3ParCpgSelector.class, "0", "3");
-			
+
 			logger.info("Registering tabular list of values: " + HP3ParConstants.VOLUME_LIST_FORM_PROVIDER);
 			cfr.registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_PROVIDER, HP3ParVolumeSelector.class, "0", "2");
 
-
 			logger.info("Registering workflow inputs");
 			WorkflowInputTypeDeclaration.registerWFInputs();
-			//InputTypeDeclaration.registerWFInputs();
-			
+			// InputTypeDeclaration.registerWFInputs();
+
 			logger.info("Registering as " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
 			ReportContextRegistry.getInstance().register(HP3ParConstants.INFRA_ACCOUNT_TYPE,
 					HP3ParConstants.INFRA_ACCOUNT_LABEL);
@@ -166,7 +172,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			logger.info("Adding account...");
 			createAccountType();
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("Error loading HP 3PAR module.", e);
 		}
 
@@ -223,7 +230,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 		// Register for our own snowflake pod (3Par), Generic pods and also
 		// FlexPods
-		entry.setPodTypes(new String[] { HP3ParConstants.POD_TYPE, "GenericPod", "FlexPod", });
+		entry.setPodTypes(new String[] {
+				HP3ParConstants.POD_TYPE, "GenericPod", "FlexPod",
+		});
 
 		// This is optional, dependents on the need of session for collecting
 		// the inventory
@@ -252,7 +261,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			// Adding inventory root
 			registerInventoryObjects(entry);
 			PhysicalAccountTypeManager.getInstance().addNewAccountType(entry);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

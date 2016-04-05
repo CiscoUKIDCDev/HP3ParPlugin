@@ -25,8 +25,8 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -60,7 +60,7 @@ public class DeleteVolumeTask extends AbstractTask {
 		String volName = volInfo[2];
 
 		// Delete the volume:
-		HP3ParVolumeStatus s = HP3ParVolumeRestCall.delete(c, volName);
+		HP3ParRequestStatus s = HP3ParVolumeRestCall.delete(c, volName);
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to delete Volume: " + s.getError());
