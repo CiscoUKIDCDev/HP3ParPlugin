@@ -101,7 +101,7 @@ public class VolumeSummaryReportImpl implements TabularReportGeneratorIf {
 		else {
 			provType = "Unknown";
 		}
-		
+
 		double total = (double) (volume.getSizeMiB() / 1024d);
 
 		// Build the table
@@ -113,7 +113,8 @@ public class VolumeSummaryReportImpl implements TabularReportGeneratorIf {
 		model.addText("Comment", volume.getComment(), VOL_INFO_TABLE);
 		model.addText("Size GiB", Double.toString(total), VOL_INFO_TABLE);
 		model.addText("User Space GiB", Double.toString(volume.getUserSpace().getFreeMiB() / 1024d), VOL_INFO_TABLE);
-		model.addText("Copy Space GiB", Double.toString(volume.getSnapshotSpace().getFreeMiB() / 1024d), VOL_INFO_TABLE);
+		model.addText("Copy Space GiB", Double.toString(volume.getSnapshotSpace().getFreeMiB() / 1024d),
+				VOL_INFO_TABLE);
 		model.addText("Admin Space GiB", Double.toString(volume.getAdminSpace().getFreeMiB() / 1024d), VOL_INFO_TABLE);
 
 		// finally perform last clean up steps

@@ -30,10 +30,11 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularRepo
 
 /**
  * Volume allocation pie chart
+ * 
  * @author Matt Day
  *
  */
-public class VolumeSummaryAllocationPieChart  extends CloupiaNonTabularReport {
+public class VolumeSummaryAllocationPieChart extends CloupiaNonTabularReport {
 
 	/**
 	 * Unique identifier for this report

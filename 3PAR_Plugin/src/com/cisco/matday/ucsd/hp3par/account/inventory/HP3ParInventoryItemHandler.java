@@ -33,7 +33,8 @@ import com.cloupia.service.cIM.inframgr.collector.controller.PersistenceListener
 import com.cloupia.service.cIM.inframgr.collector.model.ItemResponse;
 
 /**
- * Implements the inventory collector.  This doesn't do much today
+ * Implements the inventory collector. This doesn't do much today
+ * 
  * @author Matt Day
  *
  */

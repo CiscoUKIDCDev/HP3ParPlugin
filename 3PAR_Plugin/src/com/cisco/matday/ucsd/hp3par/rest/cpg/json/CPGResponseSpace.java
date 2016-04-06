@@ -29,39 +29,47 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
  *
  */
 public class CPGResponseSpace {
-    private long totalMiB;
-    private long rawTotalMiB;
-    private long usedMiB;
-    @SuppressWarnings("javadoc")
-    public long getTotalMiB() {
+	private long totalMiB;
+	private long rawTotalMiB;
+	private long usedMiB;
+
+	@SuppressWarnings("javadoc")
+	public long getTotalMiB() {
 		return totalMiB;
 	}
-    @SuppressWarnings("javadoc")
+
+	@SuppressWarnings("javadoc")
 	public void setTotalMiB(long totalMiB) {
 		this.totalMiB = totalMiB;
 	}
-    @SuppressWarnings("javadoc")
+
+	@SuppressWarnings("javadoc")
 	public long getRawTotalMiB() {
 		return rawTotalMiB;
 	}
-    @SuppressWarnings("javadoc")
+
+	@SuppressWarnings("javadoc")
 	public void setRawTotalMiB(long rawTotalMiB) {
 		this.rawTotalMiB = rawTotalMiB;
 	}
-    @SuppressWarnings("javadoc")
+
+	@SuppressWarnings("javadoc")
 	public long getUsedMiB() {
 		return usedMiB;
-	
-    }
-    @SuppressWarnings("javadoc")
+
+	}
+
+	@SuppressWarnings("javadoc")
 	public void setUsedMiB(long usedMiB) {
 		this.usedMiB = usedMiB;
 	}
-    @SuppressWarnings("javadoc")
+
+	@SuppressWarnings("javadoc")
 	public long getRawUsedMiB() {
 		return rawUsedMiB;
 	}
-    @SuppressWarnings("javadoc")
+
+	@SuppressWarnings("javadoc")
 	public void setRawUsedMiB(long rawUsedMiB) {
 		this.rawUsedMiB = rawUsedMiB;
 	}

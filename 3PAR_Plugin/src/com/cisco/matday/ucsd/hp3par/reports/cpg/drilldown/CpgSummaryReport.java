@@ -39,9 +39,10 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularRepo
 public class CpgSummaryReport extends CloupiaNonTabularReport {
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CpgSummaryReport.class);
-	
+
 	private final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.cpg.drilldown";
 	private static final String REPORT_LABEL = "Summary";
+
 	/**
 	 * Creates the account summary report and passes the account name, magic
 	 * number and storage category to the implementing class
@@ -50,7 +51,7 @@ public class CpgSummaryReport extends CloupiaNonTabularReport {
 		super();
 		this.setMgmtColumnIndex(1);
 	}
-	
+
 	/**
 	 * This method returns the report label to be display in UI
 	 * 
@@ -60,6 +61,7 @@ public class CpgSummaryReport extends CloupiaNonTabularReport {
 	public String getReportLabel() {
 		return REPORT_LABEL;
 	}
+
 	/**
 	 * @return This method returns report name ,each report should have unique
 	 *         name
@@ -74,7 +76,7 @@ public class CpgSummaryReport extends CloupiaNonTabularReport {
 		// TODO Auto-generated method stub
 		return CpgSummaryReportImpl.class;
 	}
-	
+
 	/**
 	 * @return This method returns type of report like summary/pie chart/Line
 	 *         chart/tabular etc

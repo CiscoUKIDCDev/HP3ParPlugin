@@ -36,6 +36,7 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
  * Implemenation of CPG list report
+ * 
  * @author Matt Day
  *
  */
@@ -76,7 +77,7 @@ public class CPGReportImpl implements TabularReportGeneratorIf {
 			double used = ((cpg.getUsrUsage().getUsedMiB() + cpg.getSAUsage().getUsedMiB()
 					+ cpg.getSDUsage().getUsedMiB()) / 1024d);
 			double free = total - used;
-			
+
 			// Internal ID, format:
 			// accountName;volumeid@accountName@volumeName
 			model.addTextValue(credentials.getAccountName() + ";" + cpg.getId() + "@" + credentials.getAccountName()

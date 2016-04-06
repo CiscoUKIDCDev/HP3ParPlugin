@@ -33,7 +33,8 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 /**
  * Configuration task for the 3PAR Volume creation task
  * <p>
- * This shouldn't be instantiated directly, instead it should be included as a form field or task config
+ * This shouldn't be instantiated directly, instead it should be included as a
+ * form field or task config
  * 
  * @author Matt Day
  *
@@ -60,7 +61,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String cpg;
-	
+
 	@FormField(label = HP3ParConstants.COPY_CPG_LIST_FORM_LABEL, help = "Copy CPG for the volume", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.CPG_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
 	@Persistent
@@ -70,7 +71,6 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
 	private String volumeName;
-
 
 	@FormField(label = "Volume Size MiB", help = "Size of your new volume in MiB", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
@@ -112,29 +112,37 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the desired volume
-	 * @return The volume to be created 
+	 * 
+	 * @return The volume to be created
 	 */
 	public String getVolumeName() {
 		return volumeName;
 	}
-	
+
 	/**
 	 * Set the desired volume
-	 * @param volumeName The volume to be created 
+	 * 
+	 * @param volumeName
+	 *            The volume to be created
 	 */
 	public void setVolumeName(String volumeName) {
 		this.volumeName = volumeName;
 	}
+
 	/**
 	 * Get the desired volume size
-	 * @return The size of the volume to be created 
+	 * 
+	 * @return The size of the volume to be created
 	 */
 	public long getVolume_size() {
 		return volume_size;
 	}
+
 	/**
 	 * Set the desired volume size
-	 * @param volume_size The volume to be created 
+	 * 
+	 * @param volume_size
+	 *            The volume to be created
 	 */
 	public void setVolume_size(long volume_size) {
 		this.volume_size = volume_size;
@@ -148,64 +156,85 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	}
 
 	/**
-	 * @param copyCpg the copyCpg to set
+	 * @param copyCpg
+	 *            the copyCpg to set
 	 */
 	public void setCopyCpg(String copyCpg) {
 		this.copyCpg = copyCpg;
 	}
-	
+
 	/**
 	 * Get the account name
-	 * @return Account name to do this on 
+	 * 
+	 * @return Account name to do this on
 	 */
 	public String getAccount() {
 		return account;
 	}
+
 	/**
 	 * Set the account name
-	 * @param account The volume to be created 
+	 * 
+	 * @param account
+	 *            The volume to be created
 	 */
 	public void setAccount(String account) {
 		this.account = account;
 	}
+
 	/**
 	 * Get the CPG
+	 * 
 	 * @return CPG details (formatted id@account@cpgName)
 	 */
 	public String getCpg() {
 		return cpg;
 	}
+
 	/**
 	 * Set the CPG name
-	 * @param cpg The cpg to create the volume on - must be formatted id@account@cpgName
+	 * 
+	 * @param cpg
+	 *            The cpg to create the volume on - must be formatted
+	 *            id@account@cpgName
 	 */
 	public void setCpg(String cpg) {
 		this.cpg = cpg;
 	}
+
 	/**
 	 * Get the comment
+	 * 
 	 * @return Comment - might be null (and is optional)
 	 */
 	public String getComment() {
 		return comment;
 	}
+
 	/**
 	 * Set the comment - this is optional
-	 * @param comment Optional commentary
+	 * 
+	 * @param comment
+	 *            Optional commentary
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
 	/**
 	 * Get if this should be thin provisioned or not
+	 * 
 	 * @return True if thin provisioning is desired
 	 */
 	public boolean isThin_provision() {
 		return thin_provision;
 	}
+
 	/**
 	 * Set if this should be thin provisioned
-	 * @param thin_provision true to thin provision
+	 * 
+	 * @param thin_provision
+	 *            true to thin provision
 	 */
 	public void setThin_provision(boolean thin_provision) {
 		this.thin_provision = thin_provision;
@@ -220,6 +249,5 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	public void setConfigEntryId(long configEntryId) {
 		this.configEntryId = configEntryId;
 	}
-
 
 }

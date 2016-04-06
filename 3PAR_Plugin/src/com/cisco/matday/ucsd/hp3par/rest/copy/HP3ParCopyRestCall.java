@@ -118,7 +118,7 @@ public class HP3ParCopyRestCall {
 
 		request.execute();
 		String response = request.getHttpResponse();
-		
+
 		HP3ParRequestTask r = gson.fromJson(response, HP3ParRequestTask.class);
 
 		// We should get a task ID back

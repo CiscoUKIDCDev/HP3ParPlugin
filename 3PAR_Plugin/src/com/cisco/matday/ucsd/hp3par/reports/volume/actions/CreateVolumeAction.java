@@ -108,9 +108,9 @@ public class CreateVolumeAction extends CloupiaPageAction {
 			throw new Exception("Invalid CPG");
 		}
 		String cpgName = cpgInfo[2];
-		
-		String copyCpgName = null; 
-		
+
+		String copyCpgName = null;
+
 		if (form.getCopyCpg() != null) {
 			String[] copyCpgInfo = form.getCopyCpg().split("@");
 			if (copyCpgInfo.length != 3) {

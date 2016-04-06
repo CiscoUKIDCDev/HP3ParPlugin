@@ -211,14 +211,17 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	public String getDeviceIp() {
 		return this.array_address;
 	}
+
 	@SuppressWarnings("javadoc")
 	public void setDeviceIp(String deviceIp) {
 		this.array_address = deviceIp;
 	}
+
 	@SuppressWarnings("javadoc")
 	public String getLogin() {
 		return username;
 	}
+
 	@SuppressWarnings("javadoc")
 	public void setLogin(String login) {
 		this.username = login;

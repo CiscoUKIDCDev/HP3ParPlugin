@@ -40,7 +40,7 @@ import com.google.gson.Gson;
  */
 public class HP3ParVolumeList {
 	private VolumeResponse volume;
-	
+
 	/**
 	 * @param loginCredentials
 	 *            Login credentials for the 3PAR system you wish to access
@@ -63,6 +63,7 @@ public class HP3ParVolumeList {
 		Gson gson = new Gson();
 		this.volume = gson.fromJson(response, VolumeResponse.class);
 	}
+
 	/**
 	 * @return Volumes information
 	 */

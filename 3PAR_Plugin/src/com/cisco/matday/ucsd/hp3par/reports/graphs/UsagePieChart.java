@@ -30,6 +30,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularRepo
 
 /**
  * Shows a usage pie chart from the array
+ * 
  * @author Matt Day
  *
  */

@@ -50,7 +50,7 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 		// Obtain account information:
 		CreateVolumeSnapshotConfig config = (CreateVolumeSnapshotConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
-		
+
 		// Get the volume name, it's in the format:
 		// id@account@name
 		String[] volInfo = config.getVolume().split("@");
@@ -59,9 +59,10 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 			throw new Exception("Invalid Volume: " + config.getVolume());
 		}
 		String volName = volInfo[2];
-		
-		HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(), config.getComment());
-		
+
+		HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(),
+				config.getComment());
+
 		HP3ParRequestStatus s = HP3ParCopyRestCall.createSnapshot(c, volName, p);
 
 		// If it wasn't created error out
@@ -69,7 +70,7 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 			ucsdLogger.addError("Failed to create volume:" + s.getError());
 			throw new Exception("Failed to create volume");
 		}
-		
+
 		ucsdLogger.addInfo("Created volume snapshot: " + config.getSnapshotName());
 	}
 

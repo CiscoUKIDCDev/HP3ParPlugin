@@ -42,10 +42,12 @@ public class HP3ParCPGInfo {
 	private CPGResponseMember member;
 
 	/**
-	 * @param loginCredentials Credentials for the array you wish to query
+	 * @param loginCredentials
+	 *            Credentials for the array you wish to query
 	 * @throws HttpException
 	 * @throws IOException
-	 * @throws InvalidHP3ParTokenException If the token provided is invalid
+	 * @throws InvalidHP3ParTokenException
+	 *             If the token provided is invalid
 	 */
 	public HP3ParCPGInfo(HP3ParCredentials loginCredentials, String cpg)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
@@ -65,6 +67,7 @@ public class HP3ParCPGInfo {
 
 	/**
 	 * Get the response from the array
+	 * 
 	 * @return CPG information from the 3PAR array
 	 */
 	public CPGResponseMember getMember() {

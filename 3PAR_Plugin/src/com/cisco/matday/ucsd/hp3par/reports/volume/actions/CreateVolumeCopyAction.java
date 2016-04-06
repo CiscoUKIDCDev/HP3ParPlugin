@@ -146,7 +146,7 @@ public class CreateVolumeCopyAction extends CloupiaPageAction {
 
 		// Set the text for the "OK" prompt and return successfully
 		page.setPageMessage("Volume " + config.getNewVolumeName() + " copied OK");
-		
+
 		return PageIf.STATUS_OK;
 	}
 

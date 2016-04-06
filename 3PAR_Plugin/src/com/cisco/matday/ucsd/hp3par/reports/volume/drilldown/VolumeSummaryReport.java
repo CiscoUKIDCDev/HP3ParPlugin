@@ -38,10 +38,10 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularRepo
  *
  */
 public class VolumeSummaryReport extends CloupiaNonTabularReport {
-	
+
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(VolumeReport.class);
-	
+
 	private final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeSummaryReport";
 	private static final String REPORT_LABEL = "Summary";
 
@@ -53,6 +53,7 @@ public class VolumeSummaryReport extends CloupiaNonTabularReport {
 		super();
 		this.setMgmtColumnIndex(1);
 	}
+
 	/**
 	 * This method returns the report label to be display in UI
 	 * 
@@ -62,6 +63,7 @@ public class VolumeSummaryReport extends CloupiaNonTabularReport {
 	public String getReportLabel() {
 		return REPORT_LABEL;
 	}
+
 	/**
 	 * @return This method returns report name ,each report should have unique
 	 *         name
@@ -70,6 +72,7 @@ public class VolumeSummaryReport extends CloupiaNonTabularReport {
 	public String getReportName() {
 		return REPORT_NAME;
 	}
+
 	@Override
 	public Class<VolumeSummaryReportImpl> getImplementationClass() {
 		// TODO Auto-generated method stub
@@ -92,7 +95,7 @@ public class VolumeSummaryReport extends CloupiaNonTabularReport {
 	public int getReportHint() {
 		return ReportDefinition.REPORT_HINT_VERTICAL_TABLE_WITH_GRAPHS;
 	}
-	
+
 	/**
 	 * @return This report returns boolean value true/false. Returns true if it
 	 *         is leaf report otherwise it returns false

@@ -38,11 +38,12 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
 /**
  * Implements the CPG bar chart
+ * 
  * @author Matt Day
  *
  */
 public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
-	
+
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CPGBarChartReportImpl.class);
 
@@ -54,7 +55,7 @@ public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 		report.setNumericalData(true);
 		report.setValueAxisName("Volumes");
 		report.setPrecision(0);
-		
+
 		CPGResponse cpgList = new HP3ParCPG(new HP3ParCredentials(context)).getCpg();
 
 		ReportNameValuePair[] rnv = new ReportNameValuePair[cpgList.getTotal()];

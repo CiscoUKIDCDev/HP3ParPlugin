@@ -102,7 +102,7 @@ public class CreateVolumeSnapshotAction extends CloupiaPageAction {
 		CreateVolumeSnapshotConfig config = (CreateVolumeSnapshotConfig) obj;
 
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
-		
+
 		// Get the volume name, it's in the format:
 		// id@account@name
 		String[] volInfo = config.getVolume().split("@");
@@ -111,9 +111,10 @@ public class CreateVolumeSnapshotAction extends CloupiaPageAction {
 			throw new Exception("Invalid Volume: " + config.getVolume());
 		}
 		String volName = volInfo[2];
-		
-		HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(), config.getComment());
-		
+
+		HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(),
+				config.getComment());
+
 		HP3ParRequestStatus s = HP3ParCopyRestCall.createSnapshot(c, volName, p);
 
 		// Throwing an exception fails the submit and shows the error in the
@@ -125,7 +126,7 @@ public class CreateVolumeSnapshotAction extends CloupiaPageAction {
 
 		// Set the text for the "OK" prompt and return successfully
 		page.setPageMessage("Volume " + config.getSnapshotName() + " copied OK");
-		
+
 		return PageIf.STATUS_OK;
 	}
 

@@ -33,7 +33,8 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 /**
  * Configuration task for the 3PAR Volume snapshot creation task
  * <p>
- * This shouldn't be instantiated directly, instead it should be included as a form field or task config
+ * This shouldn't be instantiated directly, instead it should be included as a
+ * form field or task config
  * 
  * @author Matt Day
  *
@@ -98,17 +99,21 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 	public String getDisplayLabel() {
 		return DISPLAY_LABEL;
 	}
-	
+
 	/**
 	 * Get the account name
-	 * @return Account name to do this on 
+	 * 
+	 * @return Account name to do this on
 	 */
 	public String getAccount() {
 		return account;
 	}
+
 	/**
 	 * Set the account name
-	 * @param account The volume to be created 
+	 * 
+	 * @param account
+	 *            The volume to be created
 	 */
 	public void setAccount(String account) {
 		this.account = account;
@@ -116,14 +121,18 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 
 	/**
 	 * Get the comment
+	 * 
 	 * @return Comment - might be null (and is optional)
 	 */
 	public String getComment() {
 		return comment;
 	}
+
 	/**
 	 * Set the comment - this is optional
-	 * @param comment Optional commentary
+	 * 
+	 * @param comment
+	 *            Optional commentary
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
@@ -131,6 +140,7 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 
 	/**
 	 * Get the Volume name
+	 * 
 	 * @return Volume details (formatted id@account@volumeName)
 	 */
 	public String getVolume() {
@@ -139,37 +149,47 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 
 	/**
 	 * Set the Volume name
-	 * @param volume Must be formatted id@account@volumeName
+	 * 
+	 * @param volume
+	 *            Must be formatted id@account@volumeName
 	 */
 	public void setVolume(String volume) {
 		this.volume = volume;
 	}
-	
+
 	/**
 	 * Get the Volume name
+	 * 
 	 * @return Snapshot name
 	 */
 	public String getSnapshotName() {
 		return snapshotName;
 	}
+
 	/**
 	 * Set the Snapshot name
-	 * @param snapshotName Snapshot
+	 * 
+	 * @param snapshotName
+	 *            Snapshot
 	 */
 	public void setSnapshotName(String snapshotName) {
 		this.snapshotName = snapshotName;
 	}
-	
+
 	/**
 	 * If the snapshot should be read-only
+	 * 
 	 * @return readOnly
 	 */
 	public boolean isReadOnly() {
 		return readOnly;
 	}
+
 	/**
 	 * If the snapshot should be read-only
-	 * @param readOnly readOnly
+	 * 
+	 * @param readOnly
+	 *            readOnly
 	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
@@ -184,6 +204,5 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 	public void setConfigEntryId(long configEntryId) {
 		this.configEntryId = configEntryId;
 	}
-
 
 }

@@ -59,8 +59,6 @@ public class HP3ParRequestStatus {
 		return success;
 	}
 
-
-
 	@SuppressWarnings("javadoc")
 	public void setSuccess(boolean success) {
 		this.success = success;

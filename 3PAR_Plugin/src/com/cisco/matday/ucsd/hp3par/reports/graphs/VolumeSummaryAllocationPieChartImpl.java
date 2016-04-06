@@ -38,6 +38,7 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
 /**
  * Implementation of the pie chart
+ * 
  * @author Matt Day
  *
  */
@@ -62,24 +63,24 @@ public class VolumeSummaryAllocationPieChartImpl implements SnapshotReportGenera
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 		VolumeResponse volumes = new HP3ParVolumeList(credentials).getVolume();
-		
+
 		double adminSpace = 0;
 		double userSpace = 0;
 		double snapSpace = 0;
-		
+
 		for (Iterator<VolumeResponseMember> i = volumes.getMembers().iterator(); i.hasNext();) {
 			VolumeResponseMember volume = i.next();
 			adminSpace += volume.getAdminSpace().getUsedMiB();
 			userSpace += volume.getUserSpace().getUsedMiB();
 			snapSpace += volume.getSnapshotSpace().getUsedMiB();
 		}
-		
+
 		ReportNameValuePair[] rnv = new ReportNameValuePair[3];
 		rnv[0] = new ReportNameValuePair("User Space (GiB)", (userSpace / 1024d));
 		rnv[1] = new ReportNameValuePair("Snapshot Space (GiB)", (snapSpace / 1024d));
 		rnv[2] = new ReportNameValuePair("Admin Space (GiB)", (adminSpace / 1024d));
 		SnapshotReportCategory cat = new SnapshotReportCategory();
-		
+
 		cat.setCategoryName("Virtual Volume Allocation");
 		cat.setNameValuePairs(rnv);
 

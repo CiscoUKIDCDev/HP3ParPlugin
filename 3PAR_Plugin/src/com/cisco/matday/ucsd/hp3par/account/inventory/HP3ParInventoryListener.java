@@ -34,6 +34,7 @@ import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 
 /**
  * Boilerplate from SDK - not sure what it does
+ * 
  * @author Matt Day
  *
  */

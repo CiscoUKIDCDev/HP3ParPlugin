@@ -72,7 +72,8 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 		// AccountName;id@AccountName@volumeName
 		try {
 			id = Integer.parseInt(context.getId().split(";")[1].split("@")[0]);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
 		}
 

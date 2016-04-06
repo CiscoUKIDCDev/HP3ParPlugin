@@ -25,5 +25,11 @@
 	<classpathentry kind="lib" path="lib/apache-commons-httpclient/httpcore-4.4.3.jar"/>
 	<classpathentry kind="lib" path="lib/apache-commons-httpclient/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/apache-commons-httpclient/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="lib/jdo/asm-5.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/jdo/datanucleus-api-jdo-4.1.0-release.jar"/>
+	<classpathentry kind="lib" path="lib/jdo/datanucleus-cache-4.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/jdo/datanucleus-core-4.1.0-release.jar"/>
+	<classpathentry kind="lib" path="lib/jdo/datanucleus-rdbms-4.1.0-release.jar"/>
+	<classpathentry kind="lib" path="lib/jdo/jdoEnhancer.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

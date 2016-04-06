@@ -31,13 +31,15 @@ import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
 /**
- * Bar chart view to show CPGs by volume 
+ * Bar chart view to show CPGs by volume
+ * 
  * @author Matt Day
  *
  */
 public class CPGBarChartReport extends CloupiaNonTabularReport {
 
-	//private static final String NAME = "com.cisco.matday.ucsd.hp3par.reports.CPGBarChartReport";
+	// private static final String NAME =
+	// "com.cisco.matday.ucsd.hp3par.reports.CPGBarChartReport";
 	private static final String NAME = "hp3par.reports.CPGBarChartReport";
 	private static final String LABEL = "CPG usage by volume";
 	@SuppressWarnings("unused")
@@ -50,14 +52,15 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	public Class<CPGBarChartReportImpl> getImplementationClass() {
 		return CPGBarChartReportImpl.class;
 	}
-	
+
 	/**
 	 * Initialise and set management column index
 	 */
-	public CPGBarChartReport () {
+	public CPGBarChartReport() {
 		super();
-		//IMPORTANT: this tells the framework which column of this report you want to pass as the report context id
-		//when there is a UI action being launched in this report
+		// IMPORTANT: this tells the framework which column of this report you
+		// want to pass as the report context id
+		// when there is a UI action being launched in this report
 		this.setMgmtColumnIndex(1);
 	}
 
@@ -123,11 +126,12 @@ public class CPGBarChartReport extends CloupiaNonTabularReport {
 	public boolean showInSummary() {
 		return true;
 	}
+
 	@Override
 	public boolean isManagementReport() {
 		return false;
 	}
-	
+
 	@Override
 	public ContextMapRule[] getMapRules() {
 

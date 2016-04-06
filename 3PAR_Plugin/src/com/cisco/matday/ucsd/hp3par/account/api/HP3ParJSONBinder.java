@@ -30,13 +30,14 @@ import org.apache.log4j.Logger;
 import com.cloupia.service.cIM.inframgr.collector.controller.ItemDataObjectBinderIf;
 
 /**
- * Boilerplate from SDK, not sure what it does 
+ * Boilerplate from SDK, not sure what it does
+ * 
  * @author Matt Day
  *
  */
 public abstract class HP3ParJSONBinder implements ItemDataObjectBinderIf {
 	private static Logger logger = Logger.getLogger(HP3ParJSONBinder.class);
-	
+
 	@SuppressWarnings({
 			"rawtypes", "javadoc"
 	})
@@ -51,18 +52,22 @@ public abstract class HP3ParJSONBinder implements ItemDataObjectBinderIf {
 				field.setAccessible(true);
 				if (value != null)
 					field.set(obj, value);
-			} catch (SecurityException e) {
+			}
+			catch (SecurityException e) {
 				// TODO Auto-generated catch block
 
-			} catch (NoSuchFieldException e) {
+			}
+			catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				logger.debug("No field by name " + varName + " for Class " + obj.getClass().getSimpleName());
 				continue;
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 				logger.info("Illegal argument value while setting value for " + varName + obj.getClass());
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 				logger.info("Illegal access while setting value for " + varName + obj.getClass());

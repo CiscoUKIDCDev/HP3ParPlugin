@@ -43,8 +43,6 @@ public class VolumeResponseMember {
 	// private <List> degradedStates;
 	// private <List> additionalStates;
 
-
-
 	private VolumeResponseMembersAdminSpace adminSpace;
 
 	private VolumeResponseMembersSpace snapshotSpace;
@@ -267,6 +265,7 @@ public class VolumeResponseMember {
 		}
 		return userCPG;
 	}
+
 	@SuppressWarnings("javadoc")
 	public String getComment() {
 		if (comment == null) {
@@ -274,6 +273,7 @@ public class VolumeResponseMember {
 		}
 		return comment;
 	}
+
 	@SuppressWarnings("javadoc")
 	public String getCopyCPG() {
 		if (snapCPG == null) {
