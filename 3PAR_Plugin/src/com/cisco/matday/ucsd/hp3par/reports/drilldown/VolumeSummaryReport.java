@@ -21,14 +21,15 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.reports.drilldown;
 
+import org.apache.log4j.Logger;
+
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.graphs.CPGBarChartReport;
-import com.cisco.matday.ucsd.hp3par.reports.graphs.UsagePieChart;
-import com.cisco.matday.ucsd.hp3par.reports.graphs.VolumeAllocationPieChart;
-import com.cisco.matday.ucsd.hp3par.reports.tabular.OverviewTable;
-import com.cloupia.model.cIM.InfraAccountTypes;
-import com.cloupia.service.cIM.inframgr.collector.impl.GenericInfraAccountReport;
-import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
+import com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeReport;
+import com.cloupia.model.cIM.DynReportContext;
+import com.cloupia.model.cIM.ReportContextRegistry;
+import com.cloupia.model.cIM.ReportDefinition;
+import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
 /**
  * Builds the account overview page
@@ -36,32 +37,71 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
  * @author Matt Day
  *
  */
-public class VolumeSummaryReport extends GenericInfraAccountReport {
-
-	// SUPER IMPORTANT MAKE SURE THIS IS ONLY INSTANTIATED ONCE!!!!
-	// this is the best way to declare what reports can be drilled down to from
-	// the dummy account mgmt report
-	private CloupiaReport[] ddReports = new CloupiaReport[] {
-			new OverviewTable(), new UsagePieChart(),
-			new VolumeAllocationPieChart(), new CPGBarChartReport(),
-	};
+public class VolumeSummaryReport extends CloupiaNonTabularReport {
+	private static Logger logger = Logger.getLogger(VolumeReport.class);
 
 	/**
 	 * Creates the account summary report and passes the account name, magic
 	 * number and storage category to the implementing class
 	 */
 	public VolumeSummaryReport() {
-		super(HP3ParConstants.INFRA_ACCOUNT_LABEL, HP3ParConstants.INFRA_ACCOUNT_MAGIC_NUMBER,
-				InfraAccountTypes.CAT_STORAGE);
-		// you'll need to provide the a name for the report which will be shown
-		// in the UI
-		// the account type you used when creating your collector
-		// the category type you used when creating your collector
+		super();
+		this.setMgmtColumnIndex(1);
 	}
 
 	@Override
-	public CloupiaReport[] getDrilldownReports() {
-		return ddReports;
+	public Class<VolumeSummaryReportImpl> getImplementationClass() {
+		// TODO Auto-generated method stub
+		return VolumeSummaryReportImpl.class;
 	}
+	
+	/**
+	 * @return This method returns type of report like summary/pie chart/Line
+	 *         chart/tabular etc
+	 */
+	@Override
+	public int getReportType() {
+		return ReportDefinition.REPORT_TYPE_SUMMARY;
+	}
+
+	/**
+	 * @return This method returns type of report
+	 */
+	@Override
+	public int getReportHint() {
+		return ReportDefinition.REPORT_HINT_VERTICAL_TABLE_WITH_GRAPHS;
+	}
+
+	/**
+	 * @return This method returns boolean value true/false. if it returns true
+	 *         then only form will be shown in UI
+	 */
+	@Override
+	public boolean isManagementReport() {
+		return true;
+	}
+
+	@Override
+	public int getContextLevel() {
+		DynReportContext context = ReportContextRegistry.getInstance()
+				.getContextByName(HP3ParConstants.VOLUME_LIST_DRILLDOWN);
+		logger.info("Context " + context.getId() + " " + context.getType());
+		return context.getType();
+	}
+
+	@Override
+	public ContextMapRule[] getMapRules() {
+		DynReportContext context = ReportContextRegistry.getInstance()
+				.getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE);
+		ContextMapRule rule = new ContextMapRule();
+		rule.setContextName(context.getId());
+		rule.setContextType(context.getType());
+
+		ContextMapRule[] rules = new ContextMapRule[1];
+		rules[0] = rule;
+
+		return rules;
+	}
+
 
 }

@@ -115,9 +115,11 @@ public class CreateVolumeAction extends CloupiaPageAction {
 			String[] copyCpgInfo = form.getCopyCpg().split("@");
 			if (copyCpgInfo.length != 3) {
 				logger.warn("Copy CPG didn't return three items! It returned: " + form.getCopyCpg());
-				throw new Exception("Invalid Copy CPG");
+				copyCpgName = null;
 			}
-			copyCpgName = copyCpgInfo[2];
+			else {
+				copyCpgName = copyCpgInfo[2];
+			}
 		}
 
 		// This object is used to create the REST request - everything 3PAR

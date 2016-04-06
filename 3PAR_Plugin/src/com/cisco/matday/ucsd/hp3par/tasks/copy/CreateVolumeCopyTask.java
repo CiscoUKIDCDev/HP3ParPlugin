@@ -73,11 +73,9 @@ public class CreateVolumeCopyTask extends AbstractTask {
 
 		if (config.getCopyCpg() != null) {
 			String[] copyCpgInfo = config.getCopyCpg().split("@");
-			if (copyCpgInfo.length != 3) {
-				logger.warn("Copy CPG didn't return three items! It returned: " + config.getCopyCpg());
-				throw new Exception("Invalid Copy CPG");
+			if (copyCpgInfo.length == 3) {
+				copyCpgName = copyCpgInfo[2];
 			}
-			copyCpgName = copyCpgInfo[2];
 		}
 
 		// Build copy parameter list:
@@ -91,8 +89,8 @@ public class CreateVolumeCopyTask extends AbstractTask {
 			ucsdLogger.addError("Failed to copy volume: " + s.getError());
 			throw new Exception("Failed to copy volume" + s.getError());
 		}
-		
-		ucsdLogger.addInfo("Copied volume: " + volName + " to "+ config.getNewVolumeName());
+
+		ucsdLogger.addInfo("Copied volume: " + volName + " to " + config.getNewVolumeName());
 
 		/*
 		 * // Build volume information object: HP3ParVolumeInformation volume =

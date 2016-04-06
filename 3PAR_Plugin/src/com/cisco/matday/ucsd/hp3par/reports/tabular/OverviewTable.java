@@ -56,9 +56,6 @@ public class OverviewTable extends CloupiaNonTabularReport {
 	 */
 	public OverviewTable() {
 		super();
-		// IMPORTANT: this tells the framework which column of this report you
-		// want to pass as the report context id
-		// when there is a UI action being launched in this report
 		this.setMgmtColumnIndex(1);
 	}
 

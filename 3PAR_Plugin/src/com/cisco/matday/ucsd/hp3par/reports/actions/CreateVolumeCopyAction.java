@@ -125,11 +125,10 @@ public class CreateVolumeCopyAction extends CloupiaPageAction {
 
 		if (config.getCopyCpg() != null) {
 			String[] copyCpgInfo = config.getCopyCpg().split("@");
-			if (copyCpgInfo.length != 3) {
-				logger.warn("Copy CPG didn't return three items! It returned: " + config.getCopyCpg());
-				throw new Exception("Invalid Copy CPG");
+			// Can leave the copy CPG as null if this errors out
+			if (copyCpgInfo.length == 3) {
+				copyCpgName = copyCpgInfo[2];
 			}
-			copyCpgName = copyCpgInfo[2];
 		}
 
 		// Build copy parameter list:
