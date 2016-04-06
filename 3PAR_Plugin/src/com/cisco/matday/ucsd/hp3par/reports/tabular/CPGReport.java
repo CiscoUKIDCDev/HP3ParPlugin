@@ -27,6 +27,7 @@ import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
+import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
 
 /**
  * Common Provisioning Group (CPG) report
@@ -34,7 +35,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
  * @author Matt
  *
  */
-public class CPGReport extends CloupiaReport {
+public class CPGReport extends DrillableReportWithActions {
 	/**
 	 * Unique identifier for this report
 	 */
@@ -83,7 +84,7 @@ public class CPGReport extends CloupiaReport {
 	}
 
 	@Override
-	public boolean isLeafReport() { 
+	public boolean isLeafReport() {
 		return false;
 	}
 	
@@ -105,5 +106,11 @@ public class CPGReport extends CloupiaReport {
 		rules[0] = rule;
 		
 		return rules;
+	}
+
+	@Override
+	public CloupiaReport[] getDrilldownReports() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

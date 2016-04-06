@@ -124,6 +124,15 @@ public class HP3ParConstants {
 	public static final String VOLUME_LIST_FORM_PROVIDER = "HP3ParVolumeList_provider";
 	
 	/**
+	 * Volume list drilldown name for global context registry
+	 */
+	public static final String VOLUME_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeList";
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String VOLUME_LIST_DRILLDOWN_LABEL = "Volume List";
+	
+	/**
 	 * UCSDs internal gen_text_input type 
 	 */
 	public static final String GENERIC_TEXT_INPUT = "gen_text_input";

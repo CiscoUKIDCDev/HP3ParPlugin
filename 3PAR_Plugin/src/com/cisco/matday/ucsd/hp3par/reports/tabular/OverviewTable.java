@@ -39,7 +39,7 @@ public class OverviewTable extends CloupiaNonTabularReport {
 	 * Unique identifier for this report
 	 */
 	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.OverviewTable";
-	private static final String REPORT_LABEL = "Overview";
+	private static final String REPORT_LABEL = "Summary";
 
 	/**
 	 * This method returns implementation class of the summary report

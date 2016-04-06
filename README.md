@@ -30,12 +30,12 @@ It is **not** recommended to run this plugin in production - it has never been t
 * Ability to add a 3PAR physical storage account (and converged stack based on it)
 * Converged/Physical view tab (list of volumes, CPGs and some graphs)
 * Form lists to pick 3PAR accounts, CPGs and Volumes
-* Action buttons on the volume form list to create/delete
-* Create volume task (may be buggy)
+* Action buttons on the volume form list to create/delete and to perform snapshots & copies
+* Create, Delete, Snapshot and Copy volume tasks
 * Full Javadoc in source code
 
 ### Near-term roadmap
-* More tasks (delete volumes, deal with CPGs etc)
+* More tasks (need suggestions)
 * Drilldown reports (e.g. double-click CPG to see its volumes)
 
 Additionally, this plugin is mostly trying to be a clean plugin implementation. 
