@@ -102,8 +102,8 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 	private List<String> getSummaryReports() throws Exception {
 
 		List<String> rpSummaryList = new ArrayList<String>();
-		rpSummaryList.add("test");
-		rpSummaryList.add("test2");
+		rpSummaryList.add("Nodes");
+		rpSummaryList.add("5");
 		return rpSummaryList;
 
 	}

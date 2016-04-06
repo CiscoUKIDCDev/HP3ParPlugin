@@ -64,15 +64,19 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	@Override
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
-		CloupiaReport[] report = new CloupiaReport[] { new AccountReport(), new VolumeReport(), new CPGReport(), };
+		CloupiaReport[] report = new CloupiaReport[] {
+				new AccountReport(), new VolumeReport(), new CPGReport(),
+		};
 		return report;
 	}
 
 	// Return a list of API tasks supported
 	public AbstractTask[] getTasks() {
 		logger.info("Adding tasks");
-		AbstractTask[] task = new AbstractTask[] { new CreateVolumeTask(), new DeleteVolumeTask(),
-				new CreateVolumeSnapshotTask(), new CreateVolumeCopyTask(), };
+		AbstractTask[] task = new AbstractTask[] {
+				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
+				new CreateVolumeCopyTask(),
+		};
 		// task[1] = new HP3ParDeleteVolume();
 		return task;
 		// return null;
@@ -174,7 +178,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			logger.info("Adding account...");
 			createAccountType();
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("Error loading HP 3PAR module.", e);
 		}
 
@@ -231,7 +236,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 		// Register for our own snowflake pod (3Par), Generic pods and also
 		// FlexPods
-		entry.setPodTypes(new String[] { HP3ParConstants.POD_TYPE, "GenericPod", "FlexPod", });
+		entry.setPodTypes(new String[] {
+				HP3ParConstants.POD_TYPE, "GenericPod", "FlexPod",
+		});
 
 		// This is optional, dependents on the need of session for collecting
 		// the inventory
@@ -260,7 +267,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			// Adding inventory root
 			registerInventoryObjects(entry);
 			PhysicalAccountTypeManager.getInstance().addNewAccountType(entry);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
