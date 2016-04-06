@@ -1,34 +1,32 @@
 # HP 3PAR UCS Director Plugin
-This intends to be a comprehensive UCS Director plugin for HP 3PAR storage systems.
+This is an Open Automation plug-in which adds 3PAR support to Cisco UCS Director.
 
-It is currently in early alpha, it is unsupported and used at your own risk. If you'd like to give it a go, you can find the [latest releases here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/releases).
+You can **[download the latest releases here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/releases)**.
 
-Alternatively, you can check out the project and import it in to the Eclipse IDE and build it yourself.
+Right now it's in maintenence mode. It's considered alpha, but no new features will be added directly without community request. If you wish to request a feature, use the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues) and create a new issue with your request.
 
-If you're feeling **very brave** you can try the latest development version. These do have new features but are extremely likely to be buggy and/or not work. You can [find them here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/3PAR_Plugin/HP3Par-plugin.zip) (click view raw to download).
+For installation instructions see the bottom of this page.
+
+This plugin is licensed under an [MIT-style license](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/LICENSE).
 
 ## Warning
-This plugin is considered unstable - your warranty is now void!
+This plugin has never been tested in a production environment before!
 
-In particular, you should remove all 3PAR accounts from your UCS Director installation before upgrading and then re-add them later. Things change between builds that might leave you with a headache if you don't do this! Once the release 1.x.x happens this won't be a requirement any more.
-
-It is **not** recommended to run this plugin in production - it has never been tested beyond a basic lab environment.
+There is no support or warranty. It is a community plugin. If you need new features or bugfixes, ask nicely. The code is there too, so you can fix it yourself (and ideally send those back as a pull request!).
 
 ## Screenshots
-![Converged view screenshot](https://matt.fragilegeek.com/ucsd/ucsd-3par-summary)
+![Converged view screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-summary-page)
 
-![Account screenshot](https://matt.fragilegeek.com/ucsd/ucsd-3par-account)
+![Workflow task screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-workflow-tasks)
 
-![Task Screenshot](https://matt.fragilegeek.com/ucsd/ucsd-3par-workflow-create)
-
-![CPG Selector Screenshot](https://matt.fragilegeek.com/ucsd/ucsd-3par-cpg-selector)
-
+For more screenshots see the [screenshots page](screenshots.md).
 
 ## Features
 
 ### Implemented
 * Ability to add a 3PAR physical storage account (and converged stack based on it)
 * Converged/Physical view tab (list of volumes, CPGs and some graphs)
+* Drilldown reports (double-click on CPGs and Volumes to see more information and graphs)
 * Form lists to pick 3PAR accounts, CPGs and Volumes
 * Action buttons on the volume form list to create/delete and to perform snapshots & copies
 * Create, Delete, Snapshot and Copy volume tasks
@@ -36,7 +34,6 @@ It is **not** recommended to run this plugin in production - it has never been t
 
 ### Near-term roadmap
 * More tasks (need suggestions)
-* Drilldown reports (e.g. double-click CPG to see its volumes)
 
 Additionally, this plugin is mostly trying to be a clean plugin implementation. 
 
