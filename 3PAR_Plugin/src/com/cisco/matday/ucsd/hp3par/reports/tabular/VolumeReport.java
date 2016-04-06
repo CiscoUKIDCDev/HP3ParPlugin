@@ -57,17 +57,19 @@ public class VolumeReport extends DrillableReportWithActions {
 	private CloupiaReport[] drillable = new CloupiaReport[] { new VolumeSnapshotReport(), };
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] { new CreateVolumeAction(),
-			new DeleteVolumeAction(), new CreateVolumeSnapshotAction(), new CreateVolumeCopyAction(), new DrillDownAction(), };
+			new DeleteVolumeAction(), new CreateVolumeSnapshotAction(), new CreateVolumeCopyAction(),
+			new DrillDownAction(), };
 
 	/**
 	 * Overridden default constructor which sets the management column (0)
 	 */
 	public VolumeReport() {
 		super();
-		// IMPORTANT: this tells the framework which column of this report you
-		// want to pass as the report context id
-		// when there is a UI action being launched in this report
+		// This sets what column to use as the context ID for child drilldown
+		// reports
 		this.setMgmtColumnIndex(0);
+		// This sets what to show in the GUI in the top
+		this.setMgmtDisplayColumnIndex(2);
 	}
 
 	@Override

@@ -43,11 +43,11 @@ public class VolumeSnapshotReport extends CloupiaReport {
 	/**
 	 * Unique identifier for this report
 	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeSnapshotReport";
+	private final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeSnapshotReport";
 	/**
 	 * User-friendly identifier for this report
 	 */
-	public final static String REPORT_LABEL = "Snapshots";
+	private final static String REPORT_LABEL = "Snapshots";
 
 	/**
 	 * Overridden default constructor which sets the management column (0)

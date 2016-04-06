@@ -130,7 +130,7 @@ public class HP3ParConstants {
 	/**
 	 * Label for it (not sure what it does)
 	 */
-	public static final String VOLUME_LIST_DRILLDOWN_LABEL = "Volume List";
+	public static final String VOLUME_LIST_DRILLDOWN_LABEL = "Volume Details";
 	
 	/**
 	 * UCSDs internal gen_text_input type 
