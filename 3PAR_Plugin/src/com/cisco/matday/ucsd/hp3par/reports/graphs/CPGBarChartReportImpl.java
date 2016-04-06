@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMembers;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.ReportNameValuePair;
 import com.cloupia.model.cIM.SnapshotReport;
@@ -59,8 +59,8 @@ public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 
 		ReportNameValuePair[] rnv = new ReportNameValuePair[cpgList.getTotal()];
 		int j = 0;
-		for (Iterator<CPGResponseMembers> i = cpgList.getMembers().iterator(); i.hasNext();) {
-			CPGResponseMembers cpg = i.next();
+		for (Iterator<CPGResponseMember> i = cpgList.getMembers().iterator(); i.hasNext();) {
+			CPGResponseMember cpg = i.next();
 			String name = cpg.getName();
 			int vol = cpg.getNumTPVVs() + cpg.getNumFPVVs();
 			if (name == null) {

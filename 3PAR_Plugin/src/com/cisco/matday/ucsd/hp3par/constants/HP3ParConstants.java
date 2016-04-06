@@ -133,6 +133,15 @@ public class HP3ParConstants {
 	public static final String VOLUME_LIST_DRILLDOWN_LABEL = "Volume Details";
 	
 	/**
+	 * Volume list drilldown name for global context registry
+	 */
+	public static final String CPG_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.CPGList";
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String CPG_LIST_DRILLDOWN_LABEL = "CPG Details";
+	
+	/**
 	 * UCSDs internal gen_text_input type 
 	 */
 	public static final String GENERIC_TEXT_INPUT = "gen_text_input";

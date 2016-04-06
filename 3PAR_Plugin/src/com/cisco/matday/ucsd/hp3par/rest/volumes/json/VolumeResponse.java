@@ -32,9 +32,9 @@ import java.util.List;
  */
 public class VolumeResponse {
 	private int total;
-	private List<VolumeResponseMembers> members;
+	private List<VolumeResponseMember> members;
 	@SuppressWarnings("javadoc")
-	public void setMembers(List<VolumeResponseMembers> members) {
+	public void setMembers(List<VolumeResponseMember> members) {
 		this.members = members;
 	}
 	@SuppressWarnings("javadoc")
@@ -46,7 +46,7 @@ public class VolumeResponse {
 		return total;
 	}
 	@SuppressWarnings("javadoc")
-	public List<VolumeResponseMembers> getMembers() {
+	public List<VolumeResponseMember> getMembers() {
 		return members;
 	}
 }

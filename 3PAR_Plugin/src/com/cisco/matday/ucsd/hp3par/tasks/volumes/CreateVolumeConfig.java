@@ -43,7 +43,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "Create 3PAR Volume";
+	public static final String DISPLAY_LABEL = "3PAR Create Volume";
 
 	@Persistent
 	private long configEntryId;

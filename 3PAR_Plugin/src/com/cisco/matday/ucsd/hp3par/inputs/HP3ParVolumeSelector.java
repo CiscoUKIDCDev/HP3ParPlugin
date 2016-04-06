@@ -27,7 +27,7 @@ import java.util.List;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMembers;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.connector.account.AccountUtil;
@@ -81,8 +81,8 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 
 				HP3ParVolumeList list = new HP3ParVolumeList(new HP3ParCredentials(a.getAccountName()));
 
-				for (Iterator<VolumeResponseMembers> j = list.getVolume().getMembers().iterator(); j.hasNext();) {
-					VolumeResponseMembers volume = j.next();
+				for (Iterator<VolumeResponseMember> j = list.getVolume().getMembers().iterator(); j.hasNext();) {
+					VolumeResponseMember volume = j.next();
 					
 					// Bad but we can use this to parse it all out later
 					String internalId = Integer.toString(volume.getId()) + "@" + a.getAccountName() + "@"

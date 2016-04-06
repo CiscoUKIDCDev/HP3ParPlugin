@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class CPGResponse {
 	private int total;
-	private List<CPGResponseMembers> members;
+	private List<CPGResponseMember> members;
 
 	@SuppressWarnings("javadoc")
 	public int getTotal() {
@@ -45,12 +45,12 @@ public class CPGResponse {
 	}
 
 	@SuppressWarnings("javadoc")
-	public List<CPGResponseMembers> getMembers() {
+	public List<CPGResponseMember> getMembers() {
 		return members;
 	}
 
 	@SuppressWarnings("javadoc")
-	public void setMembers(List<CPGResponseMembers> members) {
+	public void setMembers(List<CPGResponseMember> members) {
 		this.members = members;
 	}
 }

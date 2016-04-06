@@ -33,7 +33,7 @@ import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
 /**
- * Gets volume information from a 3PAR array and stores it as an object
+ * Gets a list of every volume in the array
  * 
  * @author Matt Day
  *
@@ -69,6 +69,5 @@ public class HP3ParVolumeList {
 	public VolumeResponse getVolume() {
 		return volume;
 	}
-
 
 }

@@ -33,8 +33,8 @@ import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
-import com.cisco.matday.ucsd.hp3par.reports.tabular.CPGReport;
-import com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeReport;
+import com.cisco.matday.ucsd.hp3par.reports.cpg.CPGReport;
+import com.cisco.matday.ucsd.hp3par.reports.volume.VolumeReport;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyTask;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
@@ -162,9 +162,11 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			logger.info("Registering tabular list of values: " + HP3ParConstants.VOLUME_LIST_FORM_PROVIDER);
 			cfr.registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_PROVIDER, HP3ParVolumeSelector.class, "0", "2");
 
-			logger.info("Registering drilldown report");
+			logger.info("Registering drilldown reports");
 			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUME_LIST_DRILLDOWN,
 					HP3ParConstants.VOLUME_LIST_DRILLDOWN_LABEL);
+			ReportContextRegistry.getInstance().register(HP3ParConstants.CPG_LIST_DRILLDOWN,
+					HP3ParConstants.CPG_LIST_DRILLDOWN_LABEL);
 
 			logger.info("Registering workflow inputs");
 			WorkflowInputTypeDeclaration.registerWFInputs();

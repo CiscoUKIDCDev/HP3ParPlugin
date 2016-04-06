@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMembers;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.connector.account.AccountUtil;
@@ -92,8 +92,8 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 
 				HP3ParCPG cpglist = new HP3ParCPG(new HP3ParCredentials(a.getAccountName()));
 
-				for (Iterator<CPGResponseMembers> j = cpglist.getCpg().getMembers().iterator(); j.hasNext();) {
-					CPGResponseMembers cpg = j.next();
+				for (Iterator<CPGResponseMember> j = cpglist.getCpg().getMembers().iterator(); j.hasNext();) {
+					CPGResponseMember cpg = j.next();
 					// Bad but we can use this to parse it all out later
 					String internalId = Integer.toString(cpg.getId()) + "@" + a.getAccountName() + "@" + cpg.getName();
 					// Internal ID
