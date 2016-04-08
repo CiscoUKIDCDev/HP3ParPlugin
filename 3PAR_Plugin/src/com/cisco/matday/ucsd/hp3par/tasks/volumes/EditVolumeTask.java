@@ -49,7 +49,6 @@ public class EditVolumeTask extends AbstractTask {
 		// error
 		if (!config.getNewVolumeName().equals(volName)) {
 			newVolName = config.getNewVolumeName();
-			config.setNewVolumeName(null);
 		}
 
 		String copyCpgName = null;

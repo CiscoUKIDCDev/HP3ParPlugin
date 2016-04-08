@@ -117,7 +117,6 @@ public class EditVolumeAction extends CloupiaPageAction {
 		// error
 		if (!config.getNewVolumeName().equals(volName)) {
 			newVolName = config.getNewVolumeName();
-			config.setNewVolumeName(null);
 		}
 
 		String copyCpgName = null;
@@ -153,7 +152,7 @@ public class EditVolumeAction extends CloupiaPageAction {
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Volume " + config.getNewVolumeName() + " edited OK");
+		page.setPageMessage("Volume edited OK");
 
 		return PageIf.STATUS_OK;
 	}
