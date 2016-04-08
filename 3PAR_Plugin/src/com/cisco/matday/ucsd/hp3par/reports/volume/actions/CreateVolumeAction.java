@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeConfig;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
@@ -124,7 +124,7 @@ public class CreateVolumeAction extends CloupiaPageAction {
 
 		// This object is used to create the REST request - everything 3PAR
 		// needs to create a volume is in here
-		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(form.getVolumeName(), cpgName,
+		HP3ParVolumeParams volume = new HP3ParVolumeParams(form.getVolumeName(), cpgName,
 				form.getVolume_size(), form.getComment(), form.isThin_provision(), copyCpgName);
 
 		// Execute the request and capture the status

@@ -30,35 +30,13 @@ package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
  * @author Matt Day
  *
  */
-public class HP3ParVolumeInformation {
+public class HP3ParVolumeParams {
 	private String name;
 	private String cpg;
 	private long sizeMiB;
 	private String comment;
 	private boolean tpvv = false;
 	private String snapCPG = null;
-
-	/**
-	 * 
-	 * @param name
-	 *            Volume name
-	 * @param cpg
-	 *            CPG on which to place volume
-	 * @param sizeMiB
-	 *            Size in MiB
-	 * @param comment
-	 *            Optional comment (can be null)
-	 * @param thinProvision
-	 *            True if this should be thin provisioned
-	 */
-	@Deprecated
-	public HP3ParVolumeInformation(String name, String cpg, long sizeMiB, String comment, boolean thinProvision) {
-		this.name = name;
-		this.cpg = cpg;
-		this.sizeMiB = sizeMiB;
-		this.comment = comment;
-		this.tpvv = thinProvision;
-	}
 
 	/**
 	 * @param name
@@ -74,7 +52,7 @@ public class HP3ParVolumeInformation {
 	 * @param snapCPG
 	 *            Snap or copy CPG to use
 	 */
-	public HP3ParVolumeInformation(String name, String cpg, long sizeMiB, String comment, boolean thinProvision,
+	public HP3ParVolumeParams(String name, String cpg, long sizeMiB, String comment, boolean thinProvision,
 			String snapCPG) {
 		this.name = name;
 		this.cpg = cpg;

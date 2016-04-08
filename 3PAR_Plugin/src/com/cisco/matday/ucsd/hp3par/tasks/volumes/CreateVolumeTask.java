@@ -27,7 +27,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -70,7 +70,7 @@ public class CreateVolumeTask extends AbstractTask {
 		}
 
 		// Build volume information object:
-		HP3ParVolumeInformation volume = new HP3ParVolumeInformation(config.getVolumeName(), cpgName,
+		HP3ParVolumeParams volume = new HP3ParVolumeParams(config.getVolumeName(), cpgName,
 				config.getVolume_size(), config.getComment(), config.isThin_provision(), copyCpgName);
 		HP3ParRequestStatus s = HP3ParVolumeRestCall.create(c, volume);
 

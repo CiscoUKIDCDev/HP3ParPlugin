@@ -33,7 +33,8 @@ import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeInformation;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 
 // Don't document this test case, it changes too often
 @SuppressWarnings("javadoc")
@@ -60,7 +61,7 @@ public class VolumeTest {
 			System.out.println("Total Volumes: " + list.getVolume().getTotal());
 			System.out.println("Total CPGs: " + cpgInfo.getCpg().getTotal());
 
-			HP3ParVolumeInformation info = new HP3ParVolumeInformation("create-testa", "SSD_r1", 1024, "No comment",
+			HP3ParVolumeParams info = new HP3ParVolumeParams("create-testa", "SSD_r1", 1024, "No comment",
 					true, "NL_r1");
 			HP3ParRequestStatus s = HP3ParVolumeRestCall.create(login, info);
 			System.out.println(s.getError());
@@ -73,6 +74,11 @@ public class VolumeTest {
 
 			HP3ParCopyParams q = new HP3ParCopyParams("new-copya", "FC_r5", true, true, "SSD_r1");
 			s = HP3ParCopyRestCall.createCopy(login, "create-testa", q);
+			System.out.println(s.getError());
+			System.out.println("Success = " + s.isSuccess());
+
+			HP3ParVolumeEditParams edit = new HP3ParVolumeEditParams("Edited", "SSD_r1", null, "FC_r5");
+			s = HP3ParVolumeRestCall.edit(login, "CPGTest", edit);
 			System.out.println(s.getError());
 			System.out.println("Success = " + s.isSuccess());
 
