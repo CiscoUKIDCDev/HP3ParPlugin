@@ -74,6 +74,10 @@ public class EditVolumeAction extends CloupiaPageAction {
 		form.setAccount(account);
 		form.setVolume(volume);
 
+		// Pre-populate volume name
+		String volumeName = volume.split("@")[2];
+		form.setNewVolumeName(volumeName);
+
 		// Set the account and volume fields to read-only (I couldn't find this
 		// documented anywhere, maybe there's a better way to do it?)
 		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
@@ -107,6 +111,15 @@ public class EditVolumeAction extends CloupiaPageAction {
 		}
 		String volName = volInfo[2];
 
+		String newVolName = null;
+
+		// If the volume name hasn't changed, set it to null else 3PAR gives an
+		// error
+		if (!config.getNewVolumeName().equals(volName)) {
+			newVolName = config.getNewVolumeName();
+			config.setNewVolumeName(null);
+		}
+
 		String copyCpgName = null;
 
 		if (config.getCopyCpg() != null) {
@@ -117,9 +130,18 @@ public class EditVolumeAction extends CloupiaPageAction {
 			}
 		}
 
+		// If the new copy CPG name is the same as the old one, set it to
+		// null (3PAR will otherwise return an error)
+		if ((!copyCpgName.equals("")) && (!copyCpgName.equals("-"))) {
+			CPGResponseMember cpg = new HP3ParCPGInfo(c, copyCpgName).getMember();
+			if (cpg.getName().equals(copyCpgName)) {
+				logger.debug("Edited CPG is the same as the old one, setting to null");
+				copyCpgName = null;
+			}
+		}
+
 		// Build copy parameter list:
-		HP3ParVolumeEditParams p = new HP3ParVolumeEditParams(config.getNewVolumeName(), null, config.getComment(),
-				copyCpgName);
+		HP3ParVolumeEditParams p = new HP3ParVolumeEditParams(newVolName, null, config.getComment(), copyCpgName);
 
 		HP3ParRequestStatus s = HP3ParVolumeRestCall.edit(c, volName, p);
 

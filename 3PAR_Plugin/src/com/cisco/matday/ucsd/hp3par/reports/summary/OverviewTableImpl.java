@@ -25,11 +25,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cloupia.model.cIM.ReportContext;
-import com.cloupia.model.cIM.ReportNameValuePair;
-import com.cloupia.model.cIM.SnapshotReport;
-import com.cloupia.model.cIM.SnapshotReportCategory;
 import com.cloupia.model.cIM.TabularReport;
-import com.cloupia.service.cIM.inframgr.SnapshotReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.SummaryReportInternalModel;
@@ -40,10 +36,9 @@ import com.cloupia.service.cIM.inframgr.reports.SummaryReportInternalModel;
  * @author Matt Day
  *
  */
-public class OverviewTableImpl implements TabularReportGeneratorIf, SnapshotReportGeneratorIf {
+public class OverviewTableImpl implements TabularReportGeneratorIf {
 
 	private static final String SYS_INFO_TABLE = "Overview";
-	// private static final String TABLE_TWO = "Dummy Table Two";
 
 	private static final String[] GROUP_ORDER = {
 			SYS_INFO_TABLE
@@ -78,8 +73,6 @@ public class OverviewTableImpl implements TabularReportGeneratorIf, SnapshotRepo
 		report.setGeneratedTime(System.currentTimeMillis());
 		report.setReportName(reportEntry.getReportLabel());
 
-		// showing how to add two tables to your summary panel
-		// the tables in summary panel are always two column tables
 		SummaryReportInternalModel model = new SummaryReportInternalModel();
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
@@ -92,63 +85,12 @@ public class OverviewTableImpl implements TabularReportGeneratorIf, SnapshotRepo
 		model.addText("Version", systemInfo.getSystemVersion(), SYS_INFO_TABLE);
 		model.addText("Serial Number", systemInfo.getSerialNumber(), SYS_INFO_TABLE);
 		model.addText("Total Nodes", Short.toString(systemInfo.getTotalNodes()), SYS_INFO_TABLE);
-		model.addText("Total Capacity (GiB)", Double.toString(systemInfo.getTotalCapacityMiB() / 1024d));
-		// model.addText("Pod Name", "table one property two", SYS_INFO_TABLE);
-
-		/*
-		 * model.addText("table two key one", "table two property one",
-		 * DUMMY_TABLE_TWO); model.addText("table two key two",
-		 * "table two property two", DUMMY_TABLE_TWO);
-		 */
-
-		// you'll notice the charts that show in summary panels aren't mentioned
-		// here
-		// that's because you'll need to specify in the chart report whether or
-		// not the
-		// chart should be displayed in the summary panel or not, look in the
-		// BarChartReport
-		// example for more detail
+		model.addText("Total Capacity (GiB)", Double.toString(systemInfo.getTotalCapacityMiB() / 1024d),
+				SYS_INFO_TABLE);
 
 		// finally perform last clean up steps
 		model.setGroupOrder(GROUP_ORDER);
 		model.updateReport(report);
-
-		return report;
-	}
-
-	@Override
-	public SnapshotReport getSnapshotReport(ReportRegistryEntry reportEntry, ReportContext context) throws Exception {
-		SnapshotReport report = new SnapshotReport();
-		report.setContext(context);
-
-		report.setReportName(reportEntry.getReportLabel());
-
-		report.setNumericalData(true);
-
-		report.setDisplayAsPie(true);
-
-		report.setPrecision(0);
-
-		HP3ParCredentials credentials = new HP3ParCredentials(context);
-		HP3ParSystem systemInfo = new HP3ParSystem(credentials);
-		systemInfo.getSystem();
-		double free = systemInfo.getSystem().getFreeCapacityMiB();
-		double allocated = systemInfo.getSystem().getAllocatedCapacityMiB();
-		double failed = systemInfo.getSystem().getFailedCapacityMiB();
-
-		ReportNameValuePair[] rnv = new ReportNameValuePair[3];
-		rnv[0] = new ReportNameValuePair("Free GiB", (free / 1024d));
-		rnv[1] = new ReportNameValuePair("Allocated GiB", (allocated / 1024d));
-		rnv[2] = new ReportNameValuePair("Failed GiB", (failed / 1024d));
-
-		SnapshotReportCategory cat = new SnapshotReportCategory();
-
-		cat.setCategoryName("Usage");
-		cat.setNameValuePairs(rnv);
-
-		report.setCategories(new SnapshotReportCategory[] {
-				cat
-		});
 
 		return report;
 	}

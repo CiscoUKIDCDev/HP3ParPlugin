@@ -29,7 +29,7 @@ import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
 /**
- * Build a simple overview table with stauts about the array
+ * Build a simple overview table with stats about the array
  * 
  * @author Matt Day
  *

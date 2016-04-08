@@ -39,6 +39,7 @@ import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyTask;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeTask;
 import com.cisco.matday.ucsd.hp3par.workflow.WorkflowInputTypeDeclaration;
 import com.cloupia.lib.connector.ConfigItemDef;
 import com.cloupia.lib.connector.account.AccountTypeEntry;
@@ -75,7 +76,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		logger.info("Adding tasks");
 		AbstractTask[] task = new AbstractTask[] {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
-				new CreateVolumeCopyTask(),
+				new CreateVolumeCopyTask(), new EditVolumeTask()
 		};
 		// task[1] = new HP3ParDeleteVolume();
 		return task;
