@@ -3,6 +3,8 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGInfo;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
@@ -54,12 +56,23 @@ public class EditVolumeAction extends CloupiaPageAction {
 		 */
 		String account = query.split(";")[0];
 		String volume = query.split(";")[1];
+
+		// Populate the copy CPG field if it's already set
 		String copyCpg = query.split(";")[3];
+		if (!copyCpg.equals("-")) {
+			// Have to do an API lookup as we need the ID which isn't in the
+			// volume REST response:
+			HP3ParCredentials login = new HP3ParCredentials(context);
+			CPGResponseMember cpg = new HP3ParCPGInfo(login, copyCpg).getMember();
+			// Build it in the format for the CPG table:
+			// ID@AccountName@CPGName
+			copyCpg = cpg.getId() + "@" + login.getAccountName() + "@" + cpg.getName();
+			form.setCopyCpg(copyCpg);
+		}
 
 		// Pre-populate the account, volume and CPG fields:
 		form.setAccount(account);
 		form.setVolume(volume);
-		form.setCopyCpg(copyCpg);
 
 		// Set the account and volume fields to read-only (I couldn't find this
 		// documented anywhere, maybe there's a better way to do it?)

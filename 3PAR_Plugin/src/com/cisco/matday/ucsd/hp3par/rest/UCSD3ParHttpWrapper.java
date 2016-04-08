@@ -99,6 +99,16 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 	}
 
 	/**
+	 * Set HP3Par defaults for a PUT method
+	 */
+	public void setPutDefaults(String body) {
+		super.setMethodType(HttpRequestConstants.METHOD_TYPE_PUT);
+		super.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
+		super.setBodyText(body);
+		this.setToken(true);
+	}
+
+	/**
 	 * Override parent execute to include token if set
 	 * 
 	 * @throws IOException

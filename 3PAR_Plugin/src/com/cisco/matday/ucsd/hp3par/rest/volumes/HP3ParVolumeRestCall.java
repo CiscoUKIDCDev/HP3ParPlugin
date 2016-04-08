@@ -30,8 +30,8 @@ import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
@@ -54,8 +54,8 @@ public class HP3ParVolumeRestCall {
 	 * @throws IOException
 	 * @throws InvalidHP3ParTokenException
 	 */
-	public static HP3ParRequestStatus create(HP3ParCredentials loginCredentials,
-			HP3ParVolumeParams volumeInformation) throws HttpException, IOException, InvalidHP3ParTokenException {
+	public static HP3ParRequestStatus create(HP3ParCredentials loginCredentials, HP3ParVolumeParams volumeInformation)
+			throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
@@ -152,7 +152,7 @@ public class HP3ParVolumeRestCall {
 		request.setUri(uri);
 
 		// Use defaults for a DELETE request
-		request.setPostDefaults(gson.toJson(volumeEditInfo));
+		request.setPutDefaults(gson.toJson(volumeEditInfo));
 
 		request.execute();
 		String response = request.getHttpResponse();
