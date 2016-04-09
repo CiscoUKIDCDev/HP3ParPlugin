@@ -78,41 +78,29 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask()
 		};
-		// task[1] = new HP3ParDeleteVolume();
 		return task;
-		// return null;
 	}
 
 	@Override
 	public void onStart(CustomFeatureRegistry cfr) {
 		logger.info("HP 3PAR Plugin");
 		try {
-
-			logger.info("Registering tabular list of values: " + HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER);
 			cfr.registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER, HP3ParAccountSelector.class, "0", "0");
 
-			logger.info("Registering tabular list of values: " + HP3ParConstants.CPG_LIST_FORM_PROVIDER);
 			cfr.registerTabularField(HP3ParConstants.CPG_LIST_FORM_PROVIDER, HP3ParCpgSelector.class, "0", "3");
 
-			logger.info("Registering tabular list of values: " + HP3ParConstants.VOLUME_LIST_FORM_PROVIDER);
 			cfr.registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_PROVIDER, HP3ParVolumeSelector.class, "0", "2");
 
-			logger.info("Registering drilldown reports");
 			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUME_LIST_DRILLDOWN,
 					HP3ParConstants.VOLUME_LIST_DRILLDOWN_LABEL);
 			ReportContextRegistry.getInstance().register(HP3ParConstants.CPG_LIST_DRILLDOWN,
 					HP3ParConstants.CPG_LIST_DRILLDOWN_LABEL);
 
-			logger.info("Registering workflow inputs");
 			WorkflowInputTypeDeclaration.registerWFInputs();
-			// InputTypeDeclaration.registerWFInputs();
 
-			logger.info("Registering as " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
 			ReportContextRegistry.getInstance().register(HP3ParConstants.INFRA_ACCOUNT_TYPE,
 					HP3ParConstants.INFRA_ACCOUNT_LABEL);
 
-			// support for new Account Type
-			logger.info("Adding account...");
 			createAccountType();
 
 		}
@@ -129,29 +117,23 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 	// Create the plugin as an account in UCSD
 	private void createAccountType() {
-		logger.debug("Creating AccountTypeEntry");
 		AccountTypeEntry entry = new AccountTypeEntry();
 
-		logger.debug("Setting credenital class to HP3ParAccount.class");
 		// This is mandatory, hold the information for device credential details
 		entry.setCredentialClass(HP3ParAccount.class);
 
-		logger.debug("Setting account type to " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
 		// This is mandatory, type of the Account will be shown in GUI as drill
 		// down box
 		entry.setAccountType(HP3ParConstants.INFRA_ACCOUNT_TYPE);
 
-		logger.debug("Setting label to " + HP3ParConstants.INFRA_ACCOUNT_LABEL);
 		// This is mandatory, label of the Account
 		entry.setAccountLabel(HP3ParConstants.INFRA_ACCOUNT_LABEL);
 
-		logger.debug("Setting category to " + InfraAccountTypes.CAT_STORAGE);
 		// This is mandatory, specify the category of the account type ie.,
 		// Network / Storage / //Compute
 		entry.setCategory(InfraAccountTypes.CAT_STORAGE);
 
 		// This is mandatory
-		logger.debug("Setting context type");
 		entry.setContextType(
 				ReportContextRegistry.getInstance().getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE).getType());
 
