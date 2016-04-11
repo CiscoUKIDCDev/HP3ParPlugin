@@ -25,8 +25,6 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.copy.HP3ParCopyRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
@@ -36,13 +34,14 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Executes a task to copy a volume. This should not generally be instantiated
- * by anything other than UCS Director's internal libraries
+ * Holds the actions to copy volumes as static methods - code within action
+ * buttons and tasks should use this
  * 
  * @author Matt Day
  *
  */
 public class CreateVolumeCopyTask extends AbstractTask {
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CreateVolumeCopyTask.class);
 
 	@Override
@@ -50,39 +49,10 @@ public class CreateVolumeCopyTask extends AbstractTask {
 			throws Exception {
 		// Obtain account information:
 		CreateVolumeCopyConfig config = (CreateVolumeCopyConfig) context.loadConfigObject();
+		
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
-
-		// Get the volume name, it's in the format:
-		// id@account@name
-		String[] volInfo = config.getVolume().split("@");
-		if (volInfo.length != 3) {
-			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
-		}
-		String volName = volInfo[2];
-		// Parse out CPG - it's in the format:
-		// ID@AccountName@Name
-		String[] cpgInfo = config.getCpg().split("@");
-		if (cpgInfo.length != 3) {
-			logger.warn("CPG didn't return three items! It returned: " + config.getCpg());
-			throw new Exception("Invalid CPG");
-		}
-		String cpgName = cpgInfo[2];
-
-		String copyCpgName = null;
-
-		if (config.getCopyCpg() != null) {
-			String[] copyCpgInfo = config.getCopyCpg().split("@");
-			if (copyCpgInfo.length == 3) {
-				copyCpgName = copyCpgInfo[2];
-			}
-		}
-
-		// Build copy parameter list:
-		HP3ParCopyParams p = new HP3ParCopyParams(config.getNewVolumeName(), cpgName, config.isOnline(),
-				config.isThinProvision(), copyCpgName);
-
-		HP3ParRequestStatus s = HP3ParCopyRestCall.createCopy(c, volName, p);
+		
+		HP3ParRequestStatus s = HP3ParCopyExecute.copy(c, config);
 
 		// If it wasn't created error out
 		if (!s.isSuccess()) {
@@ -90,7 +60,7 @@ public class CreateVolumeCopyTask extends AbstractTask {
 			throw new Exception("Failed to copy volume" + s.getError());
 		}
 
-		ucsdLogger.addInfo("Copied volume: " + volName + " to " + config.getNewVolumeName());
+		ucsdLogger.addInfo("Copied volume");
 
 		/*
 		 * // Build volume information object: HP3ParVolumeInformation volume =
@@ -115,8 +85,7 @@ public class CreateVolumeCopyTask extends AbstractTask {
 			// Don't know the volume so just use 0 as a workaround
 			String newVolName = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
 			context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, newVolName);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
 					+ e.getMessage());
 		}
@@ -137,8 +106,7 @@ public class CreateVolumeCopyTask extends AbstractTask {
 		TaskOutputDefinition[] ops = {
 				// Register output type for the volume created
 				new TaskOutputDefinition(HP3ParConstants.VOLUME_LIST_FORM_LABEL,
-						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL),
-		};
+						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL), };
 		return ops;
 	}
 

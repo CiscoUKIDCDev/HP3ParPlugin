@@ -25,8 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.volumes.HP3ParVolumeExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -74,16 +74,13 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 		 * 
 		 * accountName;volumeName
 		 */
-		String account = query.split(";")[0];
 		String volume = query.split(";")[1];
 
 		// Pre-populate the account and volume fields:
-		form.setAccount(account);
 		form.setVolume(volume);
 
 		// Set the account and volume fields to read-only (I couldn't find this
 		// documented anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
 		page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
@@ -99,27 +96,13 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
 		Object obj = page.unmarshallToSession(FORM_ID);
-		DeleteVolumeConfig form = (DeleteVolumeConfig) obj;
+		DeleteVolumeConfig config = (DeleteVolumeConfig) obj;
 
 		// Get credentials from the current context
-		HP3ParCredentials c = new HP3ParCredentials(form.getAccount());
-
-		/*
-		 * The Volume field is in the format:
-		 * 
-		 * id@AccountName@Volume
-		 * 
-		 * Split it out and grab the exact Volume name
-		 */
-		String[] volInfo = form.getVolume().split("@");
-		if (volInfo.length != 3) {
-			logger.warn("Volume didn't return three items! It returned: " + form.getVolume());
-			throw new Exception("Invalid Volume: " + form.getVolume());
-		}
-		String volName = volInfo[2];
+		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
 		// Delete the volume:
-		HP3ParRequestStatus s = HP3ParVolumeRestCall.delete(c, volName);
+		HP3ParRequestStatus s = HP3ParVolumeExecute.delete(c, config);
 
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
@@ -129,7 +112,7 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Deleted volume " + volName);
+		page.setPageMessage("Deleted volume");
 		return PageIf.STATUS_OK;
 	}
 

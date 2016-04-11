@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -41,6 +40,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext
  *
  */
 public class DeleteVolumeTask extends AbstractTask {
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(DeleteVolumeTask.class);
 
 	@Override
@@ -51,23 +51,14 @@ public class DeleteVolumeTask extends AbstractTask {
 		DeleteVolumeConfig config = (DeleteVolumeConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		// Get the volume name, it's in the format:
-		// id@account@name
-		String[] volInfo = config.getVolume().split("@");
-		if (volInfo.length != 3) {
-			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
-		}
-		String volName = volInfo[2];
-
 		// Delete the volume:
-		HP3ParRequestStatus s = HP3ParVolumeRestCall.delete(c, volName);
+		HP3ParRequestStatus s = HP3ParVolumeExecute.delete(c, config);
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to delete Volume: " + s.getError());
 			throw new Exception("Volume deletion failed");
 		}
-		ucsdLogger.addInfo("Deleted volume " + volName);
+		ucsdLogger.addInfo("Deleted volume");
 
 	}
 

@@ -58,11 +58,6 @@ public class EditVolumeConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.ACCOUNT_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private String account;
-
 	@FormField(label = HP3ParConstants.VOLUME_LIST_FORM_LABEL, help = "Volume to edit", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
 	@Persistent
@@ -127,17 +122,8 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
-		return account;
-	}
-
-	/**
-	 * Set the account name
-	 * 
-	 * @param account
-	 *            The volume to be created
-	 */
-	public void setAccount(String account) {
-		this.account = account;
+		// Volume is in the fomrat id@Account@Volume
+		return volume.split("@")[1];
 	}
 
 	/**

@@ -24,10 +24,9 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.copy.HP3ParCopyRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.HP3ParCopyExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -73,11 +72,9 @@ public class CreateVolumeSnapshotAction extends CloupiaPageAction {
 		 * 
 		 * accountName;volumeName
 		 */
-		String account = query.split(";")[0];
 		String volume = query.split(";")[1];
 
 		// Pre-populate the account and volume fields:
-		form.setAccount(account);
 		form.setVolume(volume);
 
 		// Set the account and volume fields to read-only (I couldn't find this
@@ -103,19 +100,7 @@ public class CreateVolumeSnapshotAction extends CloupiaPageAction {
 
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		// Get the volume name, it's in the format:
-		// id@account@name
-		String[] volInfo = config.getVolume().split("@");
-		if (volInfo.length != 3) {
-			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
-		}
-		String volName = volInfo[2];
-
-		HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(),
-				config.getComment());
-
-		HP3ParRequestStatus s = HP3ParCopyRestCall.createSnapshot(c, volName, p);
+		HP3ParRequestStatus s = HP3ParCopyExecute.snapshot(c, config);
 
 		// Throwing an exception fails the submit and shows the error in the
 		// window

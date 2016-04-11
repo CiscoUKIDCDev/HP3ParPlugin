@@ -54,7 +54,6 @@ public class EditVolumeAction extends CloupiaPageAction {
 		 * 
 		 * accountName;volumeName;cpgName;copyCpgName
 		 */
-		String account = query.split(";")[0];
 		String volume = query.split(";")[1];
 
 		// Populate the copy CPG field if it's already set
@@ -71,7 +70,6 @@ public class EditVolumeAction extends CloupiaPageAction {
 		}
 
 		// Pre-populate the account, volume and CPG fields:
-		form.setAccount(account);
 		form.setVolume(volume);
 
 		// Pre-populate volume name
@@ -80,7 +78,6 @@ public class EditVolumeAction extends CloupiaPageAction {
 
 		// Set the account and volume fields to read-only (I couldn't find this
 		// documented anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
 		page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);

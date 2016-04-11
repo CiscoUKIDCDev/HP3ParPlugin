@@ -24,10 +24,9 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.copy.HP3ParCopyRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.HP3ParCopyExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -73,11 +72,9 @@ public class CreateVolumeCopyAction extends CloupiaPageAction {
 		 * 
 		 * accountName;volumeName
 		 */
-		String account = query.split(";")[0];
 		String volume = query.split(";")[1];
 
 		// Pre-populate the account and volume fields:
-		form.setAccount(account);
 		form.setVolume(volume);
 
 		// Set the account and volume fields to read-only (I couldn't find this
@@ -104,38 +101,7 @@ public class CreateVolumeCopyAction extends CloupiaPageAction {
 		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(context);
 
-		// Get the volume name, it's in the format:
-		// id@account@name
-		String[] volInfo = config.getVolume().split("@");
-		if (volInfo.length != 3) {
-			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
-		}
-		String volName = volInfo[2];
-		// Parse out CPG - it's in the format:
-		// ID@AccountName@Name
-		String[] cpgInfo = config.getCpg().split("@");
-		if (cpgInfo.length != 3) {
-			logger.warn("CPG didn't return three items! It returned: " + config.getCpg());
-			throw new Exception("Invalid CPG");
-		}
-		String cpgName = cpgInfo[2];
-
-		String copyCpgName = null;
-
-		if (config.getCopyCpg() != null) {
-			String[] copyCpgInfo = config.getCopyCpg().split("@");
-			// Can leave the copy CPG as null if this errors out
-			if (copyCpgInfo.length == 3) {
-				copyCpgName = copyCpgInfo[2];
-			}
-		}
-
-		// Build copy parameter list:
-		HP3ParCopyParams p = new HP3ParCopyParams(config.getNewVolumeName(), cpgName, config.isOnline(),
-				config.isThinProvision(), copyCpgName);
-
-		HP3ParRequestStatus s = HP3ParCopyRestCall.createCopy(c, volName, p);
+		HP3ParRequestStatus s = HP3ParCopyExecute.copy(c, config);
 
 		// Throwing an exception fails the submit and shows the error in the
 		// window

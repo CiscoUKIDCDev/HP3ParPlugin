@@ -25,9 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.volumes.HP3ParVolumeExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -90,45 +89,11 @@ public class CreateVolumeAction extends CloupiaPageAction {
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
 		Object obj = page.unmarshallToSession(FORM_ID);
-		CreateVolumeConfig form = (CreateVolumeConfig) obj;
+		CreateVolumeConfig config = (CreateVolumeConfig) obj;
 
 		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(context);
-
-		/*
-		 * The CPG field is in the format:
-		 * 
-		 * id@AccountName@CPG
-		 * 
-		 * Split it out and grab the exact CPG name
-		 */
-		String[] cpgInfo = form.getCpg().split("@");
-		if (cpgInfo.length != 3) {
-			logger.warn("CPG didn't return three items! It returned: " + form.getCpg());
-			throw new Exception("Invalid CPG");
-		}
-		String cpgName = cpgInfo[2];
-
-		String copyCpgName = null;
-
-		if (form.getCopyCpg() != null) {
-			String[] copyCpgInfo = form.getCopyCpg().split("@");
-			if (copyCpgInfo.length != 3) {
-				logger.warn("Copy CPG didn't return three items! It returned: " + form.getCopyCpg());
-				copyCpgName = null;
-			}
-			else {
-				copyCpgName = copyCpgInfo[2];
-			}
-		}
-
-		// This object is used to create the REST request - everything 3PAR
-		// needs to create a volume is in here
-		HP3ParVolumeParams volume = new HP3ParVolumeParams(form.getVolumeName(), cpgName,
-				form.getVolume_size(), form.getComment(), form.isThin_provision(), copyCpgName);
-
-		// Execute the request and capture the status
-		HP3ParRequestStatus s = HP3ParVolumeRestCall.create(c, volume);
+		HP3ParRequestStatus s = HP3ParVolumeExecute.create(c, config);
 
 		// Throwing an exception fails the submit and shows the error in the
 		// window
@@ -138,7 +103,7 @@ public class CreateVolumeAction extends CloupiaPageAction {
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Volume " + form.getVolumeName() + " created OK");
+		page.setPageMessage("Volume " + config.getVolumeName() + " created OK");
 		return PageIf.STATUS_OK;
 	}
 

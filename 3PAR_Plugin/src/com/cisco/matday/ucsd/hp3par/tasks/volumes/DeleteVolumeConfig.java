@@ -55,11 +55,6 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.ACCOUNT_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private String account;
-
 	@FormField(label = HP3ParConstants.VOLUME_LIST_FORM_LABEL, help = "Volume to delete", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
 	@Persistent
@@ -80,7 +75,6 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	 */
 	public DeleteVolumeConfig(CreateVolumeConfig config) {
 		logger.info("Rolling back task - deleting volume: " + config.getVolumeName());
-		this.account = config.getAccount();
 		String volParse = "0@" + config.getAccount() + "@" + config.getVolumeName();
 		logger.info("Format: " + volParse);
 		this.volume = volParse;
@@ -91,7 +85,6 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	 */
 	public DeleteVolumeConfig(CreateVolumeCopyConfig config) {
 		logger.info("Rolling back task - deleting volume: " + config.getNewVolumeName());
-		this.account = config.getAccount();
 		String volParse = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
 		logger.info("Format: " + volParse);
 		this.volume = volParse;
@@ -118,18 +111,11 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
-		return account;
+		// Volume is in the fomrat id@Account@Volume
+		return volume.split("@")[1];
 	}
 
-	/**
-	 * Set the account name
-	 * 
-	 * @param account
-	 *            The volume to be created
-	 */
-	public void setAccount(String account) {
-		this.account = account;
-	}
+
 
 	@Override
 	public void setActionId(long actionId) {

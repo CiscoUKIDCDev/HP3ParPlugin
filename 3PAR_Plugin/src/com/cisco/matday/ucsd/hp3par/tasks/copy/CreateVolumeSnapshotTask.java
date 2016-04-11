@@ -25,8 +25,6 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.copy.HP3ParCopyRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -42,6 +40,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext
  *
  */
 public class CreateVolumeSnapshotTask extends AbstractTask {
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CreateVolumeSnapshotTask.class);
 
 	@Override
@@ -50,20 +49,9 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 		// Obtain account information:
 		CreateVolumeSnapshotConfig config = (CreateVolumeSnapshotConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
+		
+		HP3ParRequestStatus s = HP3ParCopyExecute.snapshot(c, config);
 
-		// Get the volume name, it's in the format:
-		// id@account@name
-		String[] volInfo = config.getVolume().split("@");
-		if (volInfo.length != 3) {
-			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
-		}
-		String volName = volInfo[2];
-
-		HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(),
-				config.getComment());
-
-		HP3ParRequestStatus s = HP3ParCopyRestCall.createSnapshot(c, volName, p);
 
 		// If it wasn't created error out
 		if (!s.isSuccess()) {

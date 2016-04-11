@@ -26,8 +26,6 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -42,6 +40,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext
  *
  */
 public class CreateVolumeTask extends AbstractTask {
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CreateVolumeTask.class);
 
 	@Override
@@ -50,29 +49,8 @@ public class CreateVolumeTask extends AbstractTask {
 		// Obtain account information:
 		CreateVolumeConfig config = (CreateVolumeConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
+		HP3ParRequestStatus s = HP3ParVolumeExecute.create(c, config);
 
-		// Parse out CPG - it's in the format:
-		// ID@AccountName@Name
-		String[] cpgInfo = config.getCpg().split("@");
-		if (cpgInfo.length != 3) {
-			logger.warn("CPG didn't return three items! It returned: " + config.getCpg());
-			throw new Exception("Invalid CPG");
-		}
-		String cpgName = cpgInfo[2];
-
-		String copyCpgName = null;
-
-		if (config.getCopyCpg() != null) {
-			String[] copyCpgInfo = config.getCopyCpg().split("@");
-			if (copyCpgInfo.length == 3) {
-				copyCpgName = copyCpgInfo[2];
-			}
-		}
-
-		// Build volume information object:
-		HP3ParVolumeParams volume = new HP3ParVolumeParams(config.getVolumeName(), cpgName,
-				config.getVolume_size(), config.getComment(), config.isThin_provision(), copyCpgName);
-		HP3ParRequestStatus s = HP3ParVolumeRestCall.create(c, volume);
 
 		// If it wasn't created error out
 		if (!s.isSuccess()) {
