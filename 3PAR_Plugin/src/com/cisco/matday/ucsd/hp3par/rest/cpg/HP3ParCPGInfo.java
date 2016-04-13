@@ -44,6 +44,8 @@ public class HP3ParCPGInfo {
 	/**
 	 * @param loginCredentials
 	 *            Credentials for the array you wish to query
+	 * @param cpg
+	 *            Name of the CPG to look up
 	 * @throws HttpException
 	 * @throws IOException
 	 * @throws InvalidHP3ParTokenException

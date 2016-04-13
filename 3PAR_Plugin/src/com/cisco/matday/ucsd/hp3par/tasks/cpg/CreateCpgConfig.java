@@ -19,22 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.volumes;
+package com.cisco.matday.ucsd.hp3par.tasks.cpg;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
-import org.apache.log4j.Logger;
-
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
 /**
- * Configuration task for the 3PAR Volume deletion task
+ * Configuration task for the 3PAR Volume creation task
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
@@ -42,12 +39,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_delete_volume")
-public class DeleteVolumeConfig implements TaskConfigIf {
+@PersistenceCapable(detachable = "true", table = "HP3Par_create_volume")
+public class CreateCpgConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "3PAR Delete Volume";
+	public static final String DISPLAY_LABEL = "3PAR Create CPG";
 
 	@Persistent
 	private long configEntryId;
@@ -55,41 +52,29 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.VOLUME_LIST_FORM_LABEL, help = "Volume to delete", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
+	@FormField(label = HP3ParConstants.ACCOUNT_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME)
 	@Persistent
-	private String volume;
+	private String account;
 
-	private static Logger logger = Logger.getLogger(DeleteVolumeConfig.class);
+	@FormField(label = "CPG Name", help = "Name for your new CPG", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String cpgName;
+
+	// TODO need to add logical layout + RAID objects
+
+	@FormField(label = "Comment", help = "Comment", mandatory = false)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String comment;
 
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
 	 */
-	public DeleteVolumeConfig() {
+	public CreateCpgConfig() {
 
-	}
-
-	/**
-	 * Rollback constructor - used specifically for the create volume task
-	 * @param config Configuration settings to use
-	 */
-	public DeleteVolumeConfig(CreateVolumeConfig config) {
-		logger.info("Rolling back task - deleting volume: " + config.getVolumeName());
-		String volParse = "0@" + config.getAccount() + "@" + config.getVolumeName();
-		logger.info("Format: " + volParse);
-		this.volume = volParse;
-	}
-
-	/**
-	 * Rollback constructor - used specifically for the copy volume task
-	 * @param config Configuration settings to use
-	 */
-	public DeleteVolumeConfig(CreateVolumeCopyConfig config) {
-		logger.info("Rolling back task - deleting volume: " + config.getNewVolumeName());
-		String volParse = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
-		logger.info("Format: " + volParse);
-		this.volume = volParse;
 	}
 
 	@Override
@@ -113,11 +98,37 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
-		// Volume is in the fomrat id@Account@Volume
-		return volume.split("@")[1];
+		return account;
 	}
 
+	/**
+	 * Set the account name
+	 * 
+	 * @param account
+	 *            The volume to be created
+	 */
+	public void setAccount(String account) {
+		this.account = account;
+	}
 
+	/**
+	 * Get the comment
+	 * 
+	 * @return Comment - might be null (and is optional)
+	 */
+	public String getComment() {
+		return comment;
+	}
+
+	/**
+	 * Set the comment - this is optional
+	 * 
+	 * @param comment
+	 *            Optional commentary
+	 */
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
 	@Override
 	public void setActionId(long actionId) {
@@ -127,25 +138,6 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	@Override
 	public void setConfigEntryId(long configEntryId) {
 		this.configEntryId = configEntryId;
-	}
-
-	/**
-	 * Get the Volume name
-	 * 
-	 * @return Volume details (formatted id@account@volumeName)
-	 */
-	public String getVolume() {
-		return volume;
-	}
-
-	/**
-	 * Set the Volume name
-	 * 
-	 * @param volume
-	 *            Must be formatted id@account@volumeName
-	 */
-	public void setVolume(String volume) {
-		this.volume = volume;
 	}
 
 }

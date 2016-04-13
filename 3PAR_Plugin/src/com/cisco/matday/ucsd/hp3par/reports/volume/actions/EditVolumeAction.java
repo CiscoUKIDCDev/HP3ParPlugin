@@ -6,8 +6,10 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGInfo;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeInfo;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeConfig;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
@@ -125,13 +127,18 @@ public class EditVolumeAction extends CloupiaPageAction {
 				copyCpgName = copyCpgInfo[2];
 			}
 		}
+		
+		CPGResponseMember cpg = new HP3ParCPGInfo(c, copyCpgName).getMember();
+		VolumeResponseMember volinfo = new HP3ParVolumeInfo(c, config.getOriginalName()).getMember();
+		logger.info("Vol REST Lookup: " + volinfo.getUserCPG());
+		logger.info("CPG REST lookup: " + cpg.getName());
+		logger.info("Copy CPG Name: " + copyCpgName);
 
 		// If the new copy CPG name is the same as the old one, set it to
 		// null (3PAR will otherwise return an error)
 		if ((!copyCpgName.equals("")) && (!copyCpgName.equals("-"))) {
-			CPGResponseMember cpg = new HP3ParCPGInfo(c, copyCpgName).getMember();
-			if (cpg.getName().equals(copyCpgName)) {
-				logger.debug("Edited CPG is the same as the old one, setting to null");
+			if (volinfo.getUserCPG().equals(copyCpgName)) {
+				logger.info("Edited CPG is the same as the old one, setting to null");
 				copyCpgName = null;
 			}
 		}

@@ -17,6 +17,36 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  */
 @PersistenceCapable(detachable = "true", table = "HP3Par_edit_volume")
 public class EditVolumeConfig implements TaskConfigIf {
+
+	@Persistent
+	private long configEntryId;
+
+	@Persistent
+	private long actionId;
+
+	@FormField(label = HP3ParConstants.VOLUME_LIST_FORM_LABEL, help = "Volume to edit", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
+	@Persistent
+	private String volume;
+
+	@FormField(label = "New Volume Name", help = "New volume name", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String newVolumeName;
+
+	@FormField(label = HP3ParConstants.COPY_CPG_LIST_FORM_LABEL, help = "Copy CPG for the volume", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.CPG_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
+	@Persistent
+	private String copyCpg;
+
+	@FormField(label = "Comment", help = "Comment", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String comment;
+
+	@Persistent
+	private String originalName;
+
 	/**
 	 * @return the volume
 	 */
@@ -52,38 +82,19 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 */
 	public static final String DISPLAY_LABEL = "3PAR Edit Volume";
 
-	@Persistent
-	private long configEntryId;
-
-	@Persistent
-	private long actionId;
-
-	@FormField(label = HP3ParConstants.VOLUME_LIST_FORM_LABEL, help = "Volume to edit", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private String volume;
-
-	@FormField(label = "New Volume Name", help = "New volume name", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
-	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
-	@Persistent
-	private String newVolumeName;
-
-	@FormField(label = HP3ParConstants.COPY_CPG_LIST_FORM_LABEL, help = "Copy CPG for the volume", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.CPG_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private String copyCpg;
-
-	@FormField(label = "Comment", help = "Comment", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
-	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
-	@Persistent
-	private String comment;
-
 	/**
-	 * Empty default constructor - this method shouldn't be instantiated
-	 * directly
+	 * Initialise and remember the original volume namegett
 	 */
 	public EditVolumeConfig() {
+		this.originalName = this.newVolumeName;
+	}
 
+	public String getOriginalName() {
+		return originalName;
+	}
+
+	public void setOriginalName(String originalName) {
+		this.originalName = originalName;
 	}
 
 	@Override

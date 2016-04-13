@@ -81,6 +81,9 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 
 	/**
 	 * Sets HP3Par defaults for a POST method
+	 * 
+	 * @param body
+	 *            Any body text to send with the request
 	 */
 	public void setPostDefaults(String body) {
 		super.setMethodType(HttpRequestConstants.METHOD_TYPE_POST);
@@ -100,6 +103,9 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 
 	/**
 	 * Set HP3Par defaults for a PUT method
+	 * 
+	 * @param body
+	 *            Any body text to send with the request
 	 */
 	public void setPutDefaults(String body) {
 		super.setMethodType(HttpRequestConstants.METHOD_TYPE_PUT);

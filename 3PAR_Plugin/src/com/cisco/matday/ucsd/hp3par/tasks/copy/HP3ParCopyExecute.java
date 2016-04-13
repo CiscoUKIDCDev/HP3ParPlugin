@@ -8,10 +8,28 @@ import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 
+/**
+ * Provides the task logic to perform copy actions on a 3PAR array for both
+ * tasks and action buttons
+ * 
+ * @author matt
+ *
+ */
 public class HP3ParCopyExecute {
 	private static Logger logger = Logger.getLogger(HP3ParCopyExecute.class);
 
-	public static HP3ParRequestStatus copy (HP3ParCredentials c, CreateVolumeCopyConfig config) throws Exception {
+	/**
+	 * Copy an existing volume
+	 * 
+	 * @param c
+	 *            Credentials for the account to perform this on
+	 * @param config
+	 *            Configuration settings
+	 * @return Status of the operation
+	 * @throws Exception
+	 *             if the operation was unsuccessful
+	 */
+	public static HP3ParRequestStatus copy(HP3ParCredentials c, CreateVolumeCopyConfig config) throws Exception {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
@@ -46,8 +64,20 @@ public class HP3ParCopyExecute {
 		return HP3ParCopyRestCall.createCopy(c, volName, p);
 
 	}
-	
-	public static HP3ParRequestStatus snapshot (HP3ParCredentials c, CreateVolumeSnapshotConfig config) throws Exception {
+
+	/**
+	 * Snapshot an existing volume
+	 * 
+	 * @param c
+	 *            Credentials for the account to perform this on
+	 * @param config
+	 *            Configuration settings
+	 * @return Status of the operation
+	 * @throws Exception
+	 *             if the operation was unsuccessful
+	 */
+	public static HP3ParRequestStatus snapshot(HP3ParCredentials c, CreateVolumeSnapshotConfig config)
+			throws Exception {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
@@ -62,7 +92,7 @@ public class HP3ParCopyExecute {
 				config.getComment());
 
 		return HP3ParCopyRestCall.createSnapshot(c, volName, p);
-		
+
 	}
 
 }

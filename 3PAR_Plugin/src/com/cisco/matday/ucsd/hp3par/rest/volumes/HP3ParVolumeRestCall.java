@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.rest.volumes;
 import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpException;
+import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
@@ -41,6 +42,8 @@ import com.google.gson.Gson;
  * @author Matt Day
  */
 public class HP3ParVolumeRestCall {
+	
+	private static Logger logger = Logger.getLogger(HP3ParVolumeRestCall.class);
 
 	/**
 	 * Creates a 3PAR volume
@@ -135,6 +138,8 @@ public class HP3ParVolumeRestCall {
 	 *            Specification for new volume
 	 * @param volumeName
 	 *            Name of volume to delete
+	 * @param volumeEditInfo
+	 *            Parameters to use for the edit
 	 * @return Status of execution (errors etc)
 	 * @throws HttpException
 	 * @throws IOException
@@ -150,8 +155,10 @@ public class HP3ParVolumeRestCall {
 
 		String uri = "/api/v1/volumes/" + volumeName;
 		request.setUri(uri);
+		
+		logger.info("HP 3PAR Edit REST: " + gson.toJson(volumeEditInfo));
 
-		// Use defaults for a DELETE request
+		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(volumeEditInfo));
 
 		request.execute();
