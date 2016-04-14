@@ -39,6 +39,11 @@ public class VolumeResponseMember {
 	private int state;
 	private String snapCPG;
 	private String comment;
+	// Provisioning types
+	private static final String[] provTypes = {
+			"N/A", "Full", "Thin", "Snapshot", "Peer", "Unknown", "Deduplicated"
+	};
+
 	// private <List> failedStates;
 	// private <List> degradedStates;
 	// private <List> additionalStates;
@@ -87,6 +92,16 @@ public class VolumeResponseMember {
 	@SuppressWarnings("javadoc")
 	public void setPolicies(VolumeResponseMembersPolicies policies) {
 		this.policies = policies;
+	}
+
+	/**
+	 * Get the provisioning type (e.g. Full, Thin, etc)
+	 * 
+	 * @param provType
+	 * @return Provisioning type
+	 */
+	public static String getProvisioningType(int provType) {
+		return provTypes[provType];
 	}
 
 	private long sizeMiB = 10240;

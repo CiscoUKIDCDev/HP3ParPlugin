@@ -29,7 +29,86 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
  *
  */
 public class CPGResponseMember {
+	/**
+	 * Raid level 0
+	 */
+	public static int RAID_LEVEL_0 = 1;
+	/**
+	 * Raid level 1
+	 */
+	public static int RAID_LEVEL_1 = 2;
+	/**
+	 * Raid level 5
+	 */
+	public static int RAID_LEVEL_5 = 3;
+	/**
+	 * Raid level 6
+	 */
+	public static int RAID_LEVEL_6 = 4;
+
+	// Raid level symbols
+	private static final String[] raidLevelSymbols = {
+			"N/A", "R0", "R1", "R5", "R6",
+	};
+	// Raid level names
+	private static final String[] raidLevelNames = {
+			"N/A", "RAID level 0", "RAID level 1", "RAID level 5", "Raid level 6",
+	};
+
+	// Disk type symbols
+	private static final String[] diskTypeSymbols = {
+			"N/A", "FC", "NL", "SSD",
+	};
+	// Raid level names
+	private static final String[] diskTypeNames = {
+			"N/A", "Fibre Channel", "Near Line", "SSD"
+	};
+
 	private int id;
+
+	/**
+	 * Get the raid level symbol from the member (e.g. R0, R1 etc)
+	 * 
+	 * @param raidLevel
+	 *            - RAID level from 3PAR response
+	 * @return Raid level symbol
+	 */
+	public static String getRaidLevelSymbol(int raidLevel) {
+		return raidLevelSymbols[raidLevel];
+	}
+
+	/**
+	 * Get the raid level name from the member (e.g. RAID level 0, RAID level 1
+	 * etc)
+	 * 
+	 * @param raidLevel
+	 * @return Raid level name
+	 */
+	public static String getRaidLevelNames(int raidLevel) {
+		return raidLevelNames[raidLevel];
+	}
+
+	/**
+	 * Get the disk layout symbol (e.g. FC, NL etc)
+	 * 
+	 * @param diskType
+	 * @return Disk type symbol
+	 */
+	public static String getDiskTypeSymbol(int diskType) {
+		return diskTypeSymbols[diskType];
+	}
+
+	/**
+	 * Get the disk layout name (e.g. Fibre Channel, SSD etc)
+	 * 
+	 * @param diskType
+	 * @return Disk type name
+	 */
+	public static String getDiskTypeNames(int diskType) {
+		return diskTypeNames[diskType];
+	}
+
+
 	private String uuid;
 	private String name;
 	private int numFPVVs;
