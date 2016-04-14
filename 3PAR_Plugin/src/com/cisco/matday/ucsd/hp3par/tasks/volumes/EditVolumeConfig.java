@@ -89,10 +89,17 @@ public class EditVolumeConfig implements TaskConfigIf {
 		this.originalName = this.newVolumeName;
 	}
 
+	/**
+	 * @return Original name of the volume (pre-editing)
+	 */
 	public String getOriginalName() {
 		return originalName;
 	}
 
+	/**
+	 * @param originalName
+	 *            Set the original name of the volume (pre-editing)
+	 */
 	public void setOriginalName(String originalName) {
 		this.originalName = originalName;
 	}
