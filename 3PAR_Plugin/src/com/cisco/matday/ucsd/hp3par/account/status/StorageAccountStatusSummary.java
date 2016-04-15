@@ -75,11 +75,11 @@ public class StorageAccountStatusSummary {
 				accStatus.setLastMessage("Could not connect (check username/password)");
 			}
 		}
-		catch (InvalidHP3ParTokenException e) {
+		catch (@SuppressWarnings("unused") InvalidHP3ParTokenException e) {
 			accStatus.setLastMessage("Could not connect (check username/password)");
 			accStatus.setReachable(false);
 		}
-		catch (Exception e) {
+		catch (@SuppressWarnings("unused") Exception e) {
 			accStatus.setLastMessage("Could not connect (is the array down?)");
 			accStatus.setReachable(false);
 		}

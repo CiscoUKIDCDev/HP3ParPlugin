@@ -31,5 +31,5 @@ package com.cisco.matday.ucsd.hp3par.rest.copy.json;
  *
  */
 public interface HP3ParVolumeActionParams {
-
+	// This needs no implementation (they can all be different)
 }

@@ -73,7 +73,7 @@ public class HP3ParCPGInfo {
 	 * @return CPG information from the 3PAR array
 	 */
 	public CPGResponseMember getMember() {
-		return member;
+		return this.member;
 	}
 
 }

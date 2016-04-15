@@ -77,7 +77,7 @@ public class CpgVolumeReportImpl implements TabularReportGeneratorIf {
 			cpgName = context.getId().split(";")[1].split("@")[2];
 		}
 		catch (Exception e) {
-			logger.warn("Could not get ID from context ID: " + context.getId());
+			logger.warn("Could not get ID from context ID: " + context.getId() + " " + e.getMessage());
 		}
 
 		HP3ParVolumeList list = new HP3ParVolumeList(credentials);
@@ -101,8 +101,8 @@ public class CpgVolumeReportImpl implements TabularReportGeneratorIf {
 			model.addTextValue(volume.getName());
 
 			// Round off the size to gb with double precision
-			Double volSize = (double) (volume.getSizeMiB() / 1024d);
-			model.addTextValue(volSize.toString());
+			double volSize = volume.getSizeMiB() / 1024d;
+			model.addTextValue(Double.toString(volSize));
 
 			model.addTextValue(volume.getProvisioningTypeAsText());
 

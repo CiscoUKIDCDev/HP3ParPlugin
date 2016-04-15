@@ -41,7 +41,7 @@ public class VolumeResponseMembersSpace {
 
 	@SuppressWarnings("javadoc")
 	public long getReservedMiB() {
-		return reservedMiB;
+		return this.reservedMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -51,7 +51,7 @@ public class VolumeResponseMembersSpace {
 
 	@SuppressWarnings("javadoc")
 	public long getRawReservedMiB() {
-		return rawReservedMiB;
+		return this.rawReservedMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -61,7 +61,7 @@ public class VolumeResponseMembersSpace {
 
 	@SuppressWarnings("javadoc")
 	public long getUsedMiB() {
-		return usedMiB;
+		return this.usedMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -71,7 +71,7 @@ public class VolumeResponseMembersSpace {
 
 	@SuppressWarnings("javadoc")
 	public long getFreeMiB() {
-		return freeMiB;
+		return this.freeMiB;
 	}
 
 	@SuppressWarnings("javadoc")

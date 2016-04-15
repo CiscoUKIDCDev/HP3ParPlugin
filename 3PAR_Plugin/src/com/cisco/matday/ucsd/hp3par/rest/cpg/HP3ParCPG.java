@@ -71,7 +71,7 @@ public class HP3ParCPG {
 	 * @return CPG information from the 3PAR array
 	 */
 	public CPGResponse getCpg() {
-		return cpgResponse;
+		return this.cpgResponse;
 	}
 
 }

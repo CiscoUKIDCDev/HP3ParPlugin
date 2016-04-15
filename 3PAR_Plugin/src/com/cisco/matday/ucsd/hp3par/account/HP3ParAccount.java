@@ -82,7 +82,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@Override
 	public String getProtocol() {
-		return (https) ? "https" : "http";
+		return (this.https) ? "https" : "http";
 	}
 
 	@Override
@@ -105,14 +105,17 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 		this.array_address = ip;
 	}
 
+	@Override
 	public String getServerAddress() {
 		return this.array_address;
 	}
 
+	@Override
 	public String getServer() {
 		return this.array_address;
 	}
 
+	@Override
 	public String getServerIp() {
 		return this.array_address;
 	}
@@ -141,8 +144,8 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 			ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
 
-			String cquery = "server == '" + array_address + "' && userID == '" + username + "' && transport == " + https
-					+ "' && port == " + tcp_port;
+			String cquery = "server == '" + this.array_address + "' && userID == '" + this.username
+					+ "' && transport == " + this.https + "' && port == " + this.tcp_port;
 
 			logger.info("query = " + cquery);
 
@@ -151,14 +154,12 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 			if (accList != null && accList.size() > 0) {
 				return accList.get(0);
 			}
-			else {
-				return null;
-			}
+			return null;
 
 		}
 		catch (Exception e) {
-			logger.error("Exception while mapping DeviceCredential to InfraAccount for server: " + array_address + ": "
-					+ e.getMessage());
+			logger.error("Exception while mapping DeviceCredential to InfraAccount for server: " + this.array_address
+					+ ": " + e.getMessage());
 		}
 
 		return null;
@@ -167,7 +168,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@SuppressWarnings("javadoc")
 	public String getArray_address() {
-		return array_address;
+		return this.array_address;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -177,7 +178,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@SuppressWarnings("javadoc")
 	public int getTcp_port() {
-		return tcp_port;
+		return this.tcp_port;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -187,7 +188,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@SuppressWarnings("javadoc")
 	public boolean isHttps() {
-		return https;
+		return this.https;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -197,7 +198,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@Override
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 
 	@Override
@@ -219,7 +220,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@SuppressWarnings("javadoc")
 	public String getLogin() {
-		return username;
+		return this.username;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -235,13 +236,13 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@Override
 	public void setPort(int port) {
-		tcp_port = port;
+		this.tcp_port = port;
 
 	}
 
 	@Override
 	public void setUsername(String userName) {
-		username = userName;
+		this.username = userName;
 	}
 
 }

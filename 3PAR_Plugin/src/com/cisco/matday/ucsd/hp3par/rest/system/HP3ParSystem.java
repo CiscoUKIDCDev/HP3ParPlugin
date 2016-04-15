@@ -69,7 +69,7 @@ public class HP3ParSystem {
 	 * @return information about the 3PAR system
 	 */
 	public SystemResponse getSystem() {
-		return systemResponse;
+		return this.systemResponse;
 	}
 
 }

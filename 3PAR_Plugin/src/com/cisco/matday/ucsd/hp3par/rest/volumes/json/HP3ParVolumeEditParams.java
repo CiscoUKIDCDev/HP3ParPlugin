@@ -55,7 +55,7 @@ public class HP3ParVolumeEditParams {
 
 	@SuppressWarnings("javadoc")
 	public String getSnapCPG() {
-		return snapCPG;
+		return this.snapCPG;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -67,7 +67,7 @@ public class HP3ParVolumeEditParams {
 	 * @return the newName
 	 */
 	public String getNewName() {
-		return newName;
+		return this.newName;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class HP3ParVolumeEditParams {
 	 * @return the userCpg
 	 */
 	public String getUserCpg() {
-		return userCPG;
+		return this.userCPG;
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class HP3ParVolumeEditParams {
 	 * @return the comment
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	/**

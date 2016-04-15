@@ -79,12 +79,12 @@ public class CreateCpgConfig implements TaskConfigIf {
 
 	@Override
 	public long getActionId() {
-		return actionId;
+		return this.actionId;
 	}
 
 	@Override
 	public long getConfigEntryId() {
-		return configEntryId;
+		return this.configEntryId;
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class CreateCpgConfig implements TaskConfigIf {
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
-		return account;
+		return this.account;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class CreateCpgConfig implements TaskConfigIf {
 	 * @return Comment - might be null (and is optional)
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	/**

@@ -29,8 +29,8 @@ public class LoginResponseJSON {
 
 	private String request;
 
-	public String getSessionToken(String request) {
-		this.request = request;
+	public String getSessionToken(String initRequest) {
+		this.request = initRequest;
 
 		Gson gson = new Gson();
 
@@ -47,7 +47,7 @@ class LoginResponseJsonWrapper {
 	private String key;
 
 	public String getKey() {
-		return key;
+		return this.key;
 	}
 
 	public void setKey(String key) {

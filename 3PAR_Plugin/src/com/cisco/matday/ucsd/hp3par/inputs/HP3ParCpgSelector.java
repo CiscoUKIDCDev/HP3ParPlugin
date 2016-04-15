@@ -87,8 +87,7 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 				continue;
 			}
 			// Important to check if the account type is null first
-			if ((acc != null) && (acc.getAccountType() != null)
-					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
+			if ((acc.getAccountType() != null) && (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
 				HP3ParCPG cpglist = new HP3ParCPG(new HP3ParCredentials(a.getAccountName()));
 

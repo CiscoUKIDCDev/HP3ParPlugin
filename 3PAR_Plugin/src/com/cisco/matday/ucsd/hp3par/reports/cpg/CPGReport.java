@@ -72,7 +72,7 @@ public class CPGReport extends DrillableReportWithActions {
 
 	@Override
 	public CloupiaReport[] getDrilldownReports() {
-		return drillable;
+		return this.drillable;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class CPGReport extends DrillableReportWithActions {
 
 	@Override
 	public CloupiaReportAction[] getActions() {
-		return actions;
+		return this.actions;
 	}
 
 	@Override
@@ -105,6 +105,7 @@ public class CPGReport extends DrillableReportWithActions {
 		return false;
 	}
 
+	@Override
 	public int getMenuID() {
 		return 51;
 	}

@@ -67,7 +67,7 @@ public class HP3ParCopyParams implements HP3ParVolumeActionParams {
 	 * @return the destVolume
 	 */
 	public String getDestVolume() {
-		return destVolume;
+		return this.destVolume;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class HP3ParCopyParams implements HP3ParVolumeActionParams {
 	 * @return the destCPG
 	 */
 	public String getDestCPG() {
-		return destCPG;
+		return this.destCPG;
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class HP3ParCopyParams implements HP3ParVolumeActionParams {
 	 * @return the online
 	 */
 	public boolean isOnline() {
-		return online;
+		return this.online;
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class HP3ParCopyParams implements HP3ParVolumeActionParams {
 	 * @return the tpvv
 	 */
 	public boolean isTpvv() {
-		return tpvv;
+		return this.tpvv;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class HP3ParCopyParams implements HP3ParVolumeActionParams {
 	 * @return the snapCPG
 	 */
 	public String getSnapCPG() {
-		return snapCPG;
+		return this.snapCPG;
 	}
 
 	/**

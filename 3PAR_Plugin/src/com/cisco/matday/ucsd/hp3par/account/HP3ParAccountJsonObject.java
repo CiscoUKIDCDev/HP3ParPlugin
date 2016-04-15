@@ -42,7 +42,7 @@ public class HP3ParAccountJsonObject {
 	private boolean https;
 
 	public String getAccount() {
-		return account;
+		return this.account;
 	}
 
 	public void setAccount(String account) {
@@ -50,7 +50,7 @@ public class HP3ParAccountJsonObject {
 	}
 
 	public String getArray_address() {
-		return array_address;
+		return this.array_address;
 	}
 
 	public void setArray_address(String array_address) {
@@ -58,7 +58,7 @@ public class HP3ParAccountJsonObject {
 	}
 
 	public String getDnDetachedState() {
-		return dnDetachedState;
+		return this.dnDetachedState;
 	}
 
 	public void setDnDetachedState(String dnDetachedState) {
@@ -66,7 +66,7 @@ public class HP3ParAccountJsonObject {
 	}
 
 	public String getIsCredentialPolicy() {
-		return isCredentialPolicy;
+		return this.isCredentialPolicy;
 	}
 
 	public void setIsCredentialPolicy(String isCredentialPolicy) {
@@ -74,7 +74,7 @@ public class HP3ParAccountJsonObject {
 	}
 
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 
 	public void setUsername(String username) {
@@ -82,7 +82,7 @@ public class HP3ParAccountJsonObject {
 	}
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
@@ -90,7 +90,7 @@ public class HP3ParAccountJsonObject {
 	}
 
 	public int getTcp_port() {
-		return tcp_port;
+		return this.tcp_port;
 	}
 
 	public void setTcp_port(int tcp_port) {
@@ -98,7 +98,7 @@ public class HP3ParAccountJsonObject {
 	}
 
 	public boolean isHttps() {
-		return https;
+		return this.https;
 	}
 
 	public void setHttps(boolean https) {

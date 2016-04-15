@@ -53,7 +53,7 @@ public class HP3ParSnapshotParams implements HP3ParVolumeActionParams {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class HP3ParSnapshotParams implements HP3ParVolumeActionParams {
 	 * @return the readOnly
 	 */
 	public boolean isReadOnly() {
-		return readOnly;
+		return this.readOnly;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class HP3ParSnapshotParams implements HP3ParVolumeActionParams {
 	 * @return the comment
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	/**

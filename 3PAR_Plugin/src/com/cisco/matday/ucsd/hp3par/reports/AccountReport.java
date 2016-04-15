@@ -53,7 +53,7 @@ public class AccountReport extends GenericInfraAccountReport {
 
 	@Override
 	public CloupiaReport[] getDrilldownReports() {
-		return ddReports;
+		return this.ddReports;
 	}
 
 }

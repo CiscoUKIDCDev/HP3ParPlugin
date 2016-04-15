@@ -72,7 +72,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 * @return the volume
 	 */
 	public String getVolume() {
-		return volume;
+		return this.volume;
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 * @return the newVolumeName
 	 */
 	public String getNewVolumeName() {
-		return newVolumeName;
+		return this.newVolumeName;
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 * @return Original name of the volume (pre-editing)
 	 */
 	public String getOriginalName() {
-		return originalName;
+		return this.originalName;
 	}
 
 	/**
@@ -127,12 +127,12 @@ public class EditVolumeConfig implements TaskConfigIf {
 
 	@Override
 	public long getActionId() {
-		return actionId;
+		return this.actionId;
 	}
 
 	@Override
 	public long getConfigEntryId() {
-		return configEntryId;
+		return this.configEntryId;
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 * @return the copyCpg
 	 */
 	public String getCopyCpg() {
-		return copyCpg;
+		return this.copyCpg;
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 */
 	public String getAccount() {
 		// Volume is in the fomrat id@Account@Volume
-		return volume.split("@")[1];
+		return this.volume.split("@")[1];
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 * @return Comment - might be null (and is optional)
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	/**

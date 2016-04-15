@@ -64,7 +64,7 @@ public class HP3ParVolumeParams {
 
 	@SuppressWarnings("javadoc")
 	public String getSnapCPG() {
-		return snapCPG;
+		return this.snapCPG;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -74,7 +74,7 @@ public class HP3ParVolumeParams {
 
 	@SuppressWarnings("javadoc")
 	public boolean isTpvv() {
-		return tpvv;
+		return this.tpvv;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -84,7 +84,7 @@ public class HP3ParVolumeParams {
 
 	@SuppressWarnings("javadoc")
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -94,7 +94,7 @@ public class HP3ParVolumeParams {
 
 	@SuppressWarnings("javadoc")
 	public String getCpg() {
-		return cpg;
+		return this.cpg;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -104,7 +104,7 @@ public class HP3ParVolumeParams {
 
 	@SuppressWarnings("javadoc")
 	public long getSizeMiB() {
-		return sizeMiB;
+		return this.sizeMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -114,7 +114,7 @@ public class HP3ParVolumeParams {
 
 	@SuppressWarnings("javadoc")
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	@SuppressWarnings("javadoc")

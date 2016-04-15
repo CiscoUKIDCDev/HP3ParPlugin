@@ -73,7 +73,7 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 		try {
 			id = Integer.parseInt(context.getId().split(";")[1].split("@")[0]);
 		}
-		catch (Exception e) {
+		catch (@SuppressWarnings("unused") Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
 		}
 
@@ -102,8 +102,8 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 			model.addTextValue(volume.getName());
 
 			// Round off the size to gb with double precision
-			Double volSize = (double) (volume.getSizeMiB() / 1024d);
-			model.addTextValue(volSize.toString());
+			double volSize = (volume.getSizeMiB() / 1024d);
+			model.addTextValue(Double.toString(volSize));
 
 			model.addTextValue(volume.isReadOnlyAsText());
 

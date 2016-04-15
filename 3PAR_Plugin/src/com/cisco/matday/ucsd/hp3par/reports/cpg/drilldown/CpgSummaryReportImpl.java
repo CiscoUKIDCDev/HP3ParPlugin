@@ -81,7 +81,7 @@ public class CpgSummaryReportImpl implements TabularReportGeneratorIf {
 		}
 		catch (Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
-			throw new Exception("Could not get ID from context");
+			throw new Exception("Could not get ID from context" + e.getMessage());
 		}
 
 		// Get volume info:

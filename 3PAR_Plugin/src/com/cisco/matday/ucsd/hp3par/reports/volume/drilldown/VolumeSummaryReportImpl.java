@@ -80,7 +80,7 @@ public class VolumeSummaryReportImpl implements TabularReportGeneratorIf {
 		try {
 			volName = context.getId().split(";")[1].split("@")[2];
 		}
-		catch (Exception e) {
+		catch (@SuppressWarnings("unused") Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
 			throw new Exception("Could not get ID from context");
 		}
@@ -102,7 +102,7 @@ public class VolumeSummaryReportImpl implements TabularReportGeneratorIf {
 			provType = "Unknown";
 		}
 
-		double total = (double) (volume.getSizeMiB() / 1024d);
+		double total = volume.getSizeMiB() / 1024d;
 
 		// Build the table
 		model.addText("Volume Name", volName, VOL_INFO_TABLE);

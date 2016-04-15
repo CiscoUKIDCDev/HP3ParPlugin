@@ -35,7 +35,7 @@ public class CPGResponseSpace {
 
 	@SuppressWarnings("javadoc")
 	public long getTotalMiB() {
-		return totalMiB;
+		return this.totalMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -45,7 +45,7 @@ public class CPGResponseSpace {
 
 	@SuppressWarnings("javadoc")
 	public long getRawTotalMiB() {
-		return rawTotalMiB;
+		return this.rawTotalMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -55,7 +55,7 @@ public class CPGResponseSpace {
 
 	@SuppressWarnings("javadoc")
 	public long getUsedMiB() {
-		return usedMiB;
+		return this.usedMiB;
 
 	}
 
@@ -66,7 +66,7 @@ public class CPGResponseSpace {
 
 	@SuppressWarnings("javadoc")
 	public long getRawUsedMiB() {
-		return rawUsedMiB;
+		return this.rawUsedMiB;
 	}
 
 	@SuppressWarnings("javadoc")

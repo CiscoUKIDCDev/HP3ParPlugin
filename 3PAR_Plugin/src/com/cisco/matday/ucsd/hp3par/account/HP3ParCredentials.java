@@ -138,7 +138,7 @@ public class HP3ParCredentials {
 		}
 		PhysicalInfraAccount acc = AccountUtil.getAccountByName(this.accountName);
 		if (acc == null) {
-			throw new Exception("Unable to find the account:" + accountName);
+			throw new Exception("Unable to find the account:" + this.accountName);
 		}
 		initFromAccount(acc);
 	}
@@ -149,10 +149,10 @@ public class HP3ParCredentials {
 	 * @return Accout name
 	 */
 	public String getAccountName() {
-		if (accountName == null) {
-			accountName = "-";
+		if (this.accountName == null) {
+			this.accountName = "-";
 		}
-		return accountName;
+		return this.accountName;
 	}
 
 	private void initFromAccount(PhysicalInfraAccount acc) throws Exception {
@@ -160,12 +160,12 @@ public class HP3ParCredentials {
 		HP3ParAccountJsonObject account = (HP3ParAccountJsonObject) JSON.jsonToJavaObject(json,
 				HP3ParAccountJsonObject.class);
 		this.accountName = acc.getAccountName();
-		String username = account.getUsername();
-		String password = account.getPassword();
-		String array_address = account.getArray_address();
-		boolean https = account.isHttps();
-		int tcp_port = account.getTcp_port();
-		init(array_address, username, password, https, tcp_port);
+		String initUsername = account.getUsername();
+		String initPassword = account.getPassword();
+		String initArrayAddress = account.getArray_address();
+		boolean initHttps = account.isHttps();
+		int initTcpPort = account.getTcp_port();
+		init(initArrayAddress, initUsername, initPassword, initHttps, initTcpPort);
 	}
 
 	/**
@@ -174,14 +174,15 @@ public class HP3ParCredentials {
 	 * @return Current protocol (http or https)
 	 */
 	public String getProtocol() {
-		return (https) ? "https" : "http";
+		return (this.https) ? "https" : "http";
 	}
 
-	private void init(String array_address, String username, String password, boolean https, int http_port) {
-		this.array_address = array_address;
-		this.username = username;
-		this.password = password;
-		this.https = https;
+	private void init(String initArrayAddress, String initUsername, String initPassword, boolean initHttps,
+			int http_port) {
+		this.array_address = initArrayAddress;
+		this.username = initUsername;
+		this.password = initPassword;
+		this.https = initHttps;
 		this.tcp_port = http_port;
 	}
 
@@ -191,7 +192,7 @@ public class HP3ParCredentials {
 	 * @return tcp port
 	 */
 	public int getTcp_port() {
-		return tcp_port;
+		return this.tcp_port;
 	}
 
 	/**
@@ -210,7 +211,7 @@ public class HP3ParCredentials {
 	 * @return true if it's https
 	 */
 	public boolean isHttps() {
-		return https;
+		return this.https;
 	}
 
 	/**
@@ -229,7 +230,7 @@ public class HP3ParCredentials {
 	 * @return IP address or hostname of 3PAR array
 	 */
 	public String getArray_address() {
-		return array_address;
+		return this.array_address;
 	}
 
 	/**
@@ -248,7 +249,7 @@ public class HP3ParCredentials {
 	 * @return Username
 	 */
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 
 	/**
@@ -267,7 +268,7 @@ public class HP3ParCredentials {
 	 * @return Password
 	 */
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	/**

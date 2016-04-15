@@ -56,7 +56,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public VolumeResponseMembersAdminSpace getAdminSpace() {
-		return adminSpace;
+		return this.adminSpace;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -66,7 +66,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public VolumeResponseMembersSpace getSnapshotSpace() {
-		return snapshotSpace;
+		return this.snapshotSpace;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -76,7 +76,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public VolumeResponseMembersSpace getUserSpace() {
-		return userSpace;
+		return this.userSpace;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -86,7 +86,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public VolumeResponseMembersPolicies getPolicies() {
-		return policies;
+		return this.policies;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -119,7 +119,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -129,7 +129,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -139,7 +139,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getProvisioningType() {
-		return provisioningType;
+		return this.provisioningType;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -149,7 +149,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getCopyType() {
-		return copyType;
+		return this.copyType;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -159,7 +159,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getBaseId() {
-		return baseId;
+		return this.baseId;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -169,7 +169,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public boolean isReadOnly() {
-		return readOnly;
+		return this.readOnly;
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class VolumeResponseMember {
 	 * @return Read only status of the volume
 	 */
 	public String isReadOnlyAsText() {
-		return (readOnly) ? "Read Only" : "Read/Write";
+		return (this.readOnly) ? "Read Only" : "Read/Write";
 	}
 
 	@SuppressWarnings("javadoc")
@@ -188,7 +188,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getState() {
-		return state;
+		return this.state;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -198,7 +198,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public long getSizeMiB() {
-		return sizeMiB;
+		return this.sizeMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -208,7 +208,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public String getWwn() {
-		return wwn;
+		return this.wwn;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -218,7 +218,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public long getCreationTimeSec() {
-		return creationTimeSec;
+		return this.creationTimeSec;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -228,7 +228,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public String getCreationTime8601() {
-		return creationTime8601;
+		return this.creationTime8601;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -238,7 +238,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getSsSpcAllocWarningPct() {
-		return ssSpcAllocWarningPct;
+		return this.ssSpcAllocWarningPct;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -248,7 +248,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getSsSpcAllocLimitPct() {
-		return ssSpcAllocLimitPct;
+		return this.ssSpcAllocLimitPct;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -258,7 +258,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getUsrSpcAllocWarningPct() {
-		return usrSpcAllocWarningPct;
+		return this.usrSpcAllocWarningPct;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -268,7 +268,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getUsrSpcAllocLimitPct() {
-		return usrSpcAllocLimitPct;
+		return this.usrSpcAllocLimitPct;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -278,7 +278,7 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public String getUuid() {
-		return uuid;
+		return this.uuid;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -288,26 +288,26 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public String getUserCPG() {
-		if (userCPG == null) {
+		if (this.userCPG == null) {
 			return "-";
 		}
-		return userCPG;
+		return this.userCPG;
 	}
 
 	@SuppressWarnings("javadoc")
 	public String getComment() {
-		if (comment == null) {
+		if (this.comment == null) {
 			return "-";
 		}
-		return comment;
+		return this.comment;
 	}
 
 	@SuppressWarnings("javadoc")
 	public String getCopyCPG() {
-		if (snapCPG == null) {
+		if (this.snapCPG == null) {
 			return "-";
 		}
-		return snapCPG;
+		return this.snapCPG;
 	}
 
 	@SuppressWarnings("javadoc")

@@ -94,8 +94,8 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 			model.addTextValue(volume.getName());
 
 			// Round off the size to gb with double precision
-			Double volSize = (double) (volume.getSizeMiB() / 1024d);
-			model.addTextValue(volSize.toString());
+			double volSize = (volume.getSizeMiB() / 1024d);
+			model.addTextValue(Double.toString(volSize));
 
 			model.addTextValue(volume.getProvisioningTypeAsText());
 

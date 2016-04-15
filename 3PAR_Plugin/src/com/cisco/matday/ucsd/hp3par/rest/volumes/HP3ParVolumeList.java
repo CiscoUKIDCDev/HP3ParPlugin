@@ -68,7 +68,7 @@ public class HP3ParVolumeList {
 	 * @return Volumes information
 	 */
 	public VolumeResponse getVolume() {
-		return volume;
+		return this.volume;
 	}
 
 }

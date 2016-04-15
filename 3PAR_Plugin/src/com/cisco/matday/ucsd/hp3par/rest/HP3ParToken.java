@@ -60,19 +60,18 @@ public class HP3ParToken {
 		getToken(loginCredentials);
 	}
 
-	private void getToken(HP3ParCredentials loginCredentials) throws HttpException, IOException {
+	private void getToken(HP3ParCredentials credentials) throws HttpException, IOException {
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(credentials);
 		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
 		request.setUri(threeParRESTconstants.GET_SESSION_TOKEN_URI);
 		request.setMethodType(HttpRequestConstants.METHOD_TYPE_POST);
-		request.setBodyText(
-				new LoginRequestJSON(loginCredentials.getUsername(), loginCredentials.getPassword()).convertToJSON());
+		request.setBodyText(new LoginRequestJSON(credentials.getUsername(), credentials.getPassword()).convertToJSON());
 		// Explicitly don't try and use a token:
 		request.setToken(false);
 		request.execute();
-		String token = new LoginResponseJSON().getSessionToken(request.getHttpResponse());
-		this.token = token;
+		String initToken = new LoginResponseJSON().getSessionToken(request.getHttpResponse());
+		this.token = initToken;
 	}
 
 	/**
@@ -87,7 +86,7 @@ public class HP3ParToken {
 		if (this.token == null) {
 			throw new InvalidHP3ParTokenException("Token has expired or has been released");
 		}
-		logger.debug("Acquired token: " + token);
+		logger.debug("Acquired token: " + this.token);
 		return this.token;
 	}
 
@@ -101,13 +100,13 @@ public class HP3ParToken {
 	 *             If the token has already been released
 	 */
 	public void release() throws HttpException, IOException, InvalidHP3ParTokenException {
-		if (token == null) {
+		if (this.token == null) {
 			throw new InvalidHP3ParTokenException("Token has expired or was already released");
 		}
-		logger.debug("Released token: " + token);
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+		logger.debug("Released token: " + this.token);
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(this.loginCredentials);
 		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
-		String uri = "/api/v1/credentials/" + token;
+		String uri = "/api/v1/credentials/" + this.token;
 		request.setUri(uri);
 		request.setMethodType(HttpRequestConstants.METHOD_TYPE_DELETE);
 		// Explicitly don't try and use a token:
@@ -124,6 +123,7 @@ public class HP3ParToken {
 	/**
 	 * DO NOT rely on this! Use release() instead when done!
 	 */
+	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
 		if (this.token != null) {

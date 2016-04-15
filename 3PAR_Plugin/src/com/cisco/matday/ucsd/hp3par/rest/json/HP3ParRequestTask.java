@@ -36,7 +36,7 @@ public class HP3ParRequestTask {
 	 * @return the taskid
 	 */
 	public int getTaskid() {
-		return taskid;
+		return this.taskid;
 	}
 
 	/**

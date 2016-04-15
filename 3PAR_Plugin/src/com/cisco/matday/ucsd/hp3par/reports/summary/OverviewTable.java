@@ -72,6 +72,7 @@ public class OverviewTable extends CloupiaNonTabularReport {
 	/**
 	 * Important - override default menu ID number
 	 */
+	@Override
 	public int getMenuID() {
 		return 51;
 	}
@@ -129,6 +130,7 @@ public class OverviewTable extends CloupiaNonTabularReport {
 		return true;
 	}
 
+	@Override
 	public ContextMapRule[] getMapRules() {
 		DynReportContext context = ReportContextRegistry.getInstance()
 				.getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE);

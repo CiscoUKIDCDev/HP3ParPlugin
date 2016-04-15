@@ -38,7 +38,7 @@ public class HP3ParVolumeAction {
 	 * @return the action
 	 */
 	public String getAction() {
-		return action;
+		return this.action;
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class HP3ParVolumeAction {
 	 * @return the parameters
 	 */
 	public HP3ParVolumeActionParams getParameters() {
-		return parameters;
+		return this.parameters;
 	}
 
 	/**

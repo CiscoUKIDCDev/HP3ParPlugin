@@ -97,12 +97,12 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	@Override
 	public long getActionId() {
-		return actionId;
+		return this.actionId;
 	}
 
 	@Override
 	public long getConfigEntryId() {
-		return configEntryId;
+		return this.configEntryId;
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	 * @return The volume to be created
 	 */
 	public String getVolumeName() {
-		return volumeName;
+		return this.volumeName;
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	 * @return The size of the volume to be created
 	 */
 	public long getVolume_size() {
-		return volume_size;
+		return this.volume_size;
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	 * @return the copyCpg
 	 */
 	public String getCopyCpg() {
-		return copyCpg;
+		return this.copyCpg;
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
-		return account;
+		return this.account;
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	 * @return CPG details (formatted id@account@cpgName)
 	 */
 	public String getCpg() {
-		return cpg;
+		return this.cpg;
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	 * @return Comment - might be null (and is optional)
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 	 * @return True if thin provisioning is desired
 	 */
 	public boolean isThin_provision() {
-		return thin_provision;
+		return this.thin_provision;
 	}
 
 	/**

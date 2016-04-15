@@ -49,7 +49,7 @@ public class HP3ParAccountJSONBinder extends HP3ParJSONBinder {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List<Class> getPersistantClassList() {
-		List<Class> cList = new ArrayList<Class>();
+		List<Class> cList = new ArrayList<>();
 		// add the Persistant class in the CList , for reference.
 		return cList;
 	}

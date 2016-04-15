@@ -43,6 +43,7 @@ public abstract class HP3ParJSONBinder implements ItemDataObjectBinderIf {
 	})
 	public abstract List<Class> getPersistantClassList();
 
+	@SuppressWarnings("static-method")
 	protected void bindContext(Object obj, Map<String, Object> context) {
 		for (Map.Entry<String, Object> entry : context.entrySet()) {
 			String varName = entry.getKey();
@@ -53,21 +54,21 @@ public abstract class HP3ParJSONBinder implements ItemDataObjectBinderIf {
 				if (value != null)
 					field.set(obj, value);
 			}
-			catch (SecurityException e) {
+			catch (@SuppressWarnings("unused") SecurityException e) {
 				// TODO Auto-generated catch block
 
 			}
-			catch (NoSuchFieldException e) {
+			catch (@SuppressWarnings("unused") NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				logger.debug("No field by name " + varName + " for Class " + obj.getClass().getSimpleName());
 				continue;
 			}
-			catch (IllegalArgumentException e) {
+			catch (@SuppressWarnings("unused") IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 				logger.info("Illegal argument value while setting value for " + varName + obj.getClass());
 			}
-			catch (IllegalAccessException e) {
+			catch (@SuppressWarnings("unused") IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 				logger.info("Illegal access while setting value for " + varName + obj.getClass());

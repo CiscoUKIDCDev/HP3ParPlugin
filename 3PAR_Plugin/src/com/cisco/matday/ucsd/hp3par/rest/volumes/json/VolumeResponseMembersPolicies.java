@@ -32,7 +32,7 @@ package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 public class VolumeResponseMembersPolicies {
 	@SuppressWarnings("javadoc")
 	public boolean isStaleSS() {
-		return staleSS;
+		return this.staleSS;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -42,7 +42,7 @@ public class VolumeResponseMembersPolicies {
 
 	@SuppressWarnings("javadoc")
 	public boolean isOneHost() {
-		return oneHost;
+		return this.oneHost;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -52,7 +52,7 @@ public class VolumeResponseMembersPolicies {
 
 	@SuppressWarnings("javadoc")
 	public boolean isZeroDetect() {
-		return zeroDetect;
+		return this.zeroDetect;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -62,7 +62,7 @@ public class VolumeResponseMembersPolicies {
 
 	@SuppressWarnings("javadoc")
 	public boolean isSystem() {
-		return system;
+		return this.system;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -72,7 +72,7 @@ public class VolumeResponseMembersPolicies {
 
 	@SuppressWarnings("javadoc")
 	public boolean isCaching() {
-		return caching;
+		return this.caching;
 	}
 
 	@SuppressWarnings("javadoc")

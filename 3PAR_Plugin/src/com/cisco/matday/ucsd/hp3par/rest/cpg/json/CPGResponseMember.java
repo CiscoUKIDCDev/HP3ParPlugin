@@ -119,7 +119,7 @@ public class CPGResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -129,7 +129,7 @@ public class CPGResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public String getUuid() {
-		return uuid;
+		return this.uuid;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -139,7 +139,7 @@ public class CPGResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -149,7 +149,7 @@ public class CPGResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getNumFPVVs() {
-		return numFPVVs;
+		return this.numFPVVs;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -159,7 +159,7 @@ public class CPGResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public int getNumTPVVs() {
-		return numTPVVs;
+		return this.numTPVVs;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -169,37 +169,37 @@ public class CPGResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getUsrUsage() {
-		return UsrUsage;
+		return this.UsrUsage;
 	}
 
 	@SuppressWarnings("javadoc")
 	public void setUsrUsage(CPGResponseSpace usrUsage) {
-		UsrUsage = usrUsage;
+		this.UsrUsage = usrUsage;
 	}
 
 	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getSAUsage() {
-		return SAUsage;
+		return this.SAUsage;
 	}
 
 	@SuppressWarnings("javadoc")
 	public void setSAUsage(CPGResponseSpace sAUsage) {
-		SAUsage = sAUsage;
+		this.SAUsage = sAUsage;
 	}
 
 	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getSDUsage() {
-		return SDUsage;
+		return this.SDUsage;
 	}
 
 	@SuppressWarnings("javadoc")
 	public void setSDUsage(CPGResponseSpace sDUsage) {
-		SDUsage = sDUsage;
+		this.SDUsage = sDUsage;
 	}
 
 	@SuppressWarnings("javadoc")
 	public int getState() {
-		return state;
+		return this.state;
 	}
 
 	@SuppressWarnings("javadoc")

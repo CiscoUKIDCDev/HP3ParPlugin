@@ -82,12 +82,12 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 
 	@Override
 	public long getActionId() {
-		return actionId;
+		return this.actionId;
 	}
 
 	@Override
 	public long getConfigEntryId() {
-		return configEntryId;
+		return this.configEntryId;
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 	 */
 	public String getAccount() {
 		// Volume is in the fomrat id@Account@Volume
-		return volume.split("@")[1];
+		return this.volume.split("@")[1];
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 	 * @return Comment - might be null (and is optional)
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 	 * @return Volume details (formatted id@account@volumeName)
 	 */
 	public String getVolume() {
-		return volume;
+		return this.volume;
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 	 * @return Snapshot name
 	 */
 	public String getSnapshotName() {
-		return snapshotName;
+		return this.snapshotName;
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 	 * @return readOnly
 	 */
 	public boolean isReadOnly() {
-		return readOnly;
+		return this.readOnly;
 	}
 
 	/**

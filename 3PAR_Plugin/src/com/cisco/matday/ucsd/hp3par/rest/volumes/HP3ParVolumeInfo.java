@@ -71,7 +71,7 @@ public class HP3ParVolumeInfo {
 	 * @return Information about this volume
 	 */
 	public VolumeResponseMember getMember() {
-		return member;
+		return this.member;
 	}
 
 }

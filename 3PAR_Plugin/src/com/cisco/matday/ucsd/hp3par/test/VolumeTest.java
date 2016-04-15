@@ -83,8 +83,8 @@ public class VolumeTest {
 			System.out.println("Success = " + s.isSuccess());
 
 		}
-		catch (Exception e) {
-
+		catch (@SuppressWarnings("unused") Exception e) {
+			// Ignore errors in test case
 		}
 	}
 }

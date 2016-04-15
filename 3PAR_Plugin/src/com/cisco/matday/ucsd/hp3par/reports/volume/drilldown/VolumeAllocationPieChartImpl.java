@@ -65,7 +65,7 @@ public class VolumeAllocationPieChartImpl implements SnapshotReportGeneratorIf {
 		try {
 			volName = context.getId().split(";")[1].split("@")[2];
 		}
-		catch (Exception e) {
+		catch (@SuppressWarnings("unused") Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
 			throw new Exception("Could not get ID from context");
 		}

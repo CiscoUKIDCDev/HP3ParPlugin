@@ -35,7 +35,7 @@ public class HP3ParVolumeMessage {
 
 	@SuppressWarnings("javadoc")
 	public int getCode() {
-		return code;
+		return this.code;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -45,7 +45,7 @@ public class HP3ParVolumeMessage {
 
 	@SuppressWarnings("javadoc")
 	public String getDesc() {
-		return desc;
+		return this.desc;
 	}
 
 	@SuppressWarnings("javadoc")

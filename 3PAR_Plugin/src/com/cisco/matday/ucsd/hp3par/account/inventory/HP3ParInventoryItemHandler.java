@@ -126,6 +126,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 * 
 	 * @return String
 	 */
+	@SuppressWarnings("static-method")
 	public String getUrl() {
 		// TODO Auto-generated method stub
 		return "platform/1/protocols/smb/shares";
@@ -137,6 +138,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 * 
 	 * @return HP3ParAccountJSONBinder
 	 */
+	@SuppressWarnings("static-method")
 	public HP3ParAccountJSONBinder getBinder() {
 		// TODO Auto-generated method stub
 		return new HP3ParAccountJSONBinder();
@@ -149,8 +151,8 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 * @return Map<String, Object>
 	 * @exception No
 	 */
+	@SuppressWarnings("static-method")
 	private Map<String, Object> getContext(String accountName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -161,6 +163,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 * @return PersistenceListener
 	 * @exception No
 	 */
+	@SuppressWarnings("static-method")
 	private PersistenceListener getListener() {
 		// TODO Auto-generated method stub
 		return new HP3ParCollectorInventoryPersistenceListener();

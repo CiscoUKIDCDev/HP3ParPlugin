@@ -70,12 +70,12 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 						StorageAccountStatusSummary.accountSummary(accountName);
 						token.release();
 					}
-					catch (InvalidHP3ParTokenException e) {
+					catch (@SuppressWarnings("unused") InvalidHP3ParTokenException e) {
 						logger.warn("Couldn't get token from system - probably invalid credentials");
 						status.setConnectionOK(false);
 						status.setErrorMsg("Could not get authentication token (check credentials)");
 					}
-					catch (Exception e) {
+					catch (@SuppressWarnings("unused") Exception e) {
 						logger.warn("Exception raised testing connection - probably wrong IP address or unreachable");
 						// Didn't get a token
 						status.setConnectionOK(false);

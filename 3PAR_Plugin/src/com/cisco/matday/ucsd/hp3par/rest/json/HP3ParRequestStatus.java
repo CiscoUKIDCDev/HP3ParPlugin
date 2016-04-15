@@ -39,10 +39,10 @@ public class HP3ParRequestStatus {
 	 * @return Error message (if any)
 	 */
 	public String getError() {
-		if (error == null) {
+		if (this.error == null) {
 			return "no error";
 		}
-		return error;
+		return this.error;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -56,7 +56,7 @@ public class HP3ParRequestStatus {
 	 * @return Success of operation
 	 */
 	public boolean isSuccess() {
-		return success;
+		return this.success;
 	}
 
 	@SuppressWarnings("javadoc")

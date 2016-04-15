@@ -21,8 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
-import com.cloupia.model.cIM.ConvergedStackComponentDetail;
-import com.cloupia.service.cIM.inframgr.reports.contextresolve.ConvergedStackComponentBuilderIf;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,9 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
+import com.cloupia.model.cIM.ConvergedStackComponentDetail;
 import com.cloupia.model.cIM.ReportContextRegistry;
+import com.cloupia.service.cIM.inframgr.reports.contextresolve.ConvergedStackComponentBuilderIf;
 
 /**
  * Implements the stack view
@@ -77,7 +77,7 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 
 		// Not sure what this does - almost verbatim copied from the docs but it
 		// doesn't do anything?
-		List<String> componentSummaryList = new ArrayList<String>(6);
+		List<String> componentSummaryList = new ArrayList<>(6);
 		componentSummaryList.add("Serial Number");
 		componentSummaryList.add(systemInfo.getSystem().getModel());
 		componentSummaryList.add("Nodes");
@@ -99,9 +99,10 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		return detail;
 	}
 
+	@SuppressWarnings("static-method")
 	private List<String> getSummaryReports() throws Exception {
 
-		List<String> rpSummaryList = new ArrayList<String>();
+		List<String> rpSummaryList = new ArrayList<>();
 		rpSummaryList.add("Nodes");
 		rpSummaryList.add("5");
 		return rpSummaryList;

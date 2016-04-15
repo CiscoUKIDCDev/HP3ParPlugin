@@ -36,7 +36,7 @@ public class CPGResponse {
 
 	@SuppressWarnings("javadoc")
 	public int getTotal() {
-		return total;
+		return this.total;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -46,7 +46,7 @@ public class CPGResponse {
 
 	@SuppressWarnings("javadoc")
 	public List<CPGResponseMember> getMembers() {
-		return members;
+		return this.members;
 	}
 
 	@SuppressWarnings("javadoc")

@@ -153,7 +153,7 @@ public class HP3ParVolumeExecute {
 
 		// If the new copy CPG name is the same as the old one, set it to
 		// null (3PAR will otherwise return an error)
-		if ((!copyCpgName.equals("")) && (!copyCpgName.equals("-"))) {
+		if ((!"".equals(copyCpgName)) && (!"-".equals(copyCpgName))) {
 			if (volinfo.getUserCPG().equals(copyCpgName)) {
 				logger.info("Edited CPG is the same as the old one, setting to null");
 				copyCpgName = null;

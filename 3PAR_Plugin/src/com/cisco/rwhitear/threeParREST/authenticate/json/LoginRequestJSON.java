@@ -59,7 +59,7 @@ public class LoginRequestJSON {
 	}
 
 	public String getUsername() {
-		return user;
+		return this.user;
 	}
 
 	public void setUsername(String user) {
@@ -67,7 +67,7 @@ public class LoginRequestJSON {
 	}
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
@@ -82,7 +82,7 @@ class UserCredentials {
 	private String password;
 
 	public String getUsername() {
-		return user;
+		return this.user;
 	}
 
 	public void setUsername(String user) {
@@ -90,7 +90,7 @@ class UserCredentials {
 	}
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {

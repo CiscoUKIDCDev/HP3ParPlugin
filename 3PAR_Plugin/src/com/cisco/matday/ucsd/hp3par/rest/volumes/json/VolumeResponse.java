@@ -47,11 +47,11 @@ public class VolumeResponse {
 
 	@SuppressWarnings("javadoc")
 	public long getTotal() {
-		return total;
+		return this.total;
 	}
 
 	@SuppressWarnings("javadoc")
 	public List<VolumeResponseMember> getMembers() {
-		return members;
+		return this.members;
 	}
 }

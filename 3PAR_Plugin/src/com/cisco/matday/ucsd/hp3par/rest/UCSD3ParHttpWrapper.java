@@ -22,8 +22,6 @@
 package com.cisco.matday.ucsd.hp3par.rest;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
 import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
@@ -120,11 +118,12 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 	 * @throws IOException
 	 * @throws HttpException
 	 */
+	@Override
 	public void execute() throws HttpException, IOException {
 		HP3ParToken token = null;
 		if ((this.useToken) && (this.credentials != null)) {
 			try {
-				token = new HP3ParToken(credentials);
+				token = new HP3ParToken(this.credentials);
 				logger.debug("Requested token: " + token.getToken());
 				super.addRequestHeaders(threeParRESTconstants.SESSION_KEY_HEADER, token.getToken());
 			}
@@ -133,19 +132,8 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 				e.printStackTrace();
 			}
 		}
-		// Disable System.out.println from library
-		PrintStream originalStream = System.out;
-
-		PrintStream emptyStream = new PrintStream(new OutputStream() {
-			public void write(int b) {
-				// NO-OP
-			}
-		});
-		System.setOut(emptyStream);
 		// Call parent
 		super.execute();
-		// Re-allow
-		System.setOut(originalStream);
 
 		// Now clean up the token:
 		if ((this.useToken) && (token != null)) {

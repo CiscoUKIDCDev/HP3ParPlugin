@@ -98,12 +98,12 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	@Override
 	public long getActionId() {
-		return actionId;
+		return this.actionId;
 	}
 
 	@Override
 	public long getConfigEntryId() {
-		return configEntryId;
+		return this.configEntryId;
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	 */
 	public String getAccount() {
 		// Volume is in the fomrat id@Account@Volume
-		return volume.split("@")[1];
+		return this.volume.split("@")[1];
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	 * @return Volume details (formatted id@account@volumeName)
 	 */
 	public String getVolume() {
-		return volume;
+		return this.volume;
 	}
 
 	/**

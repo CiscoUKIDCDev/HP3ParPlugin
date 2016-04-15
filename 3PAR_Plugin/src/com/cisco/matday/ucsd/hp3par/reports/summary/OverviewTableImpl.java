@@ -44,7 +44,7 @@ public class OverviewTableImpl implements TabularReportGeneratorIf {
 			SYS_INFO_TABLE
 	};
 
-	private String getAccountName(ReportContext context) {
+	private static String getAccountName(ReportContext context) {
 		String contextId = context.getId();
 		String accountName = null;
 		if (contextId != null) {

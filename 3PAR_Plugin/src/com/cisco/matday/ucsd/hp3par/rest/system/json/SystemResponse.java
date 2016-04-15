@@ -47,7 +47,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public long getId() {
-		return id;
+		return this.id;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -57,7 +57,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -67,7 +67,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public String getSystemVersion() {
-		return systemVersion;
+		return this.systemVersion;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -77,17 +77,17 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public String getIPv4Addr() {
-		return IPv4Addr;
+		return this.IPv4Addr;
 	}
 
 	@SuppressWarnings("javadoc")
 	public void setIPv4Addr(String iPv4Addr) {
-		IPv4Addr = iPv4Addr;
+		this.IPv4Addr = iPv4Addr;
 	}
 
 	@SuppressWarnings("javadoc")
 	public String getModel() {
-		return model;
+		return this.model;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -97,7 +97,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public String getSerialNumber() {
-		return serialNumber;
+		return this.serialNumber;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -107,7 +107,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public short getTotalNodes() {
-		return totalNodes;
+		return this.totalNodes;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -117,7 +117,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public short getMasterNode() {
-		return masterNode;
+		return this.masterNode;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -127,7 +127,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public double getChunkletSizeMiB() {
-		return chunkletSizeMiB;
+		return this.chunkletSizeMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -137,7 +137,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public double getTotalCapacityMiB() {
-		return totalCapacityMiB;
+		return this.totalCapacityMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -147,7 +147,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public double getAllocatedCapacityMiB() {
-		return allocatedCapacityMiB;
+		return this.allocatedCapacityMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -157,7 +157,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public double getFreeCapacityMiB() {
-		return freeCapacityMiB;
+		return this.freeCapacityMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -167,7 +167,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public double getFailedCapacityMiB() {
-		return failedCapacityMiB;
+		return this.failedCapacityMiB;
 	}
 
 	@SuppressWarnings("javadoc")
@@ -177,7 +177,7 @@ public class SystemResponse {
 
 	@SuppressWarnings("javadoc")
 	public String getTimeZone() {
-		return timeZone;
+		return this.timeZone;
 	}
 
 	@SuppressWarnings("javadoc")

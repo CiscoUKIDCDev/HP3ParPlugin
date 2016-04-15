@@ -91,7 +91,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	 * @return the comment
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
 
 	/**
@@ -112,12 +112,12 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 
 	@Override
 	public long getActionId() {
-		return actionId;
+		return this.actionId;
 	}
 
 	@Override
 	public long getConfigEntryId() {
-		return configEntryId;
+		return this.configEntryId;
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	 */
 	public String getAccount() {
 		// Volume is in the fomrat id@Account@Volume
-		return volume.split("@")[1];
+		return this.volume.split("@")[1];
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	 * @return Volume details (formatted id@account@volumeName)
 	 */
 	public String getVolume() {
-		return volume;
+		return this.volume;
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	 * @return the newVolumeName
 	 */
 	public String getNewVolumeName() {
-		return newVolumeName;
+		return this.newVolumeName;
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	 * @return the cpg
 	 */
 	public String getCpg() {
-		return cpg;
+		return this.cpg;
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	 * @return the copyCpg
 	 */
 	public String getCopyCpg() {
-		return copyCpg;
+		return this.copyCpg;
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	 * @return the online
 	 */
 	public boolean isOnline() {
-		return online;
+		return this.online;
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 	 * @return the thinProvision
 	 */
 	public boolean isThinProvision() {
-		return thinProvision;
+		return this.thinProvision;
 	}
 
 	/**

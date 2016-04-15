@@ -72,6 +72,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	}
 
 	// Return a list of API tasks supported
+	@Override
 	public AbstractTask[] getTasks() {
 		logger.info("Adding tasks");
 		AbstractTask[] task = new AbstractTask[] {
@@ -111,6 +112,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	}
 
 	// This method is deprecated, so return null
+	@Override
 	public CollectorFactory[] getCollectors() {
 		return null;
 	}
@@ -185,6 +187,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		}
 	}
 
+	@SuppressWarnings("static-method")
 	private void registerInventoryObjects(AccountTypeEntry hP3ParRecoverPointAccountEntry) {
 		@SuppressWarnings("unused")
 		ConfigItemDef HP3ParRecoverPointStateInfo = hP3ParRecoverPointAccountEntry
