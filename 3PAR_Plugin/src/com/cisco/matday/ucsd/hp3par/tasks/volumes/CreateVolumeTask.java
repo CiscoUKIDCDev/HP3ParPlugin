@@ -51,7 +51,6 @@ public class CreateVolumeTask extends AbstractTask {
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 		HP3ParRequestStatus s = HP3ParVolumeExecute.create(c, config);
 
-
 		// If it wasn't created error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to create volume: " + s.getError());

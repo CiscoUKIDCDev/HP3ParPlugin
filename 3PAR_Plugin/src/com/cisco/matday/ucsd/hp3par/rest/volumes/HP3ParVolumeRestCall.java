@@ -42,7 +42,7 @@ import com.google.gson.Gson;
  * @author Matt Day
  */
 public class HP3ParVolumeRestCall {
-	
+
 	private static Logger logger = Logger.getLogger(HP3ParVolumeRestCall.class);
 
 	/**
@@ -155,7 +155,7 @@ public class HP3ParVolumeRestCall {
 
 		String uri = "/api/v1/volumes/" + volumeName;
 		request.setUri(uri);
-		
+
 		logger.info("HP 3PAR Edit REST: " + gson.toJson(volumeEditInfo));
 
 		// Use defaults for a PUT request

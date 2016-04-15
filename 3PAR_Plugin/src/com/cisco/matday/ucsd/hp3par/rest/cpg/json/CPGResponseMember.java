@@ -108,7 +108,6 @@ public class CPGResponseMember {
 		return diskTypeNames[diskType];
 	}
 
-
 	private String uuid;
 	private String name;
 	private int numFPVVs;

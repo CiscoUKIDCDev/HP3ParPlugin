@@ -49,9 +49,8 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 		// Obtain account information:
 		CreateVolumeSnapshotConfig config = (CreateVolumeSnapshotConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
-		
-		HP3ParRequestStatus s = HP3ParCopyExecute.snapshot(c, config);
 
+		HP3ParRequestStatus s = HP3ParCopyExecute.snapshot(c, config);
 
 		// If it wasn't created error out
 		if (!s.isSuccess()) {

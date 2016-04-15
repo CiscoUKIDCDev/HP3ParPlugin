@@ -72,7 +72,9 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Rollback constructor - used specifically for the create volume task
-	 * @param config Configuration settings to use
+	 * 
+	 * @param config
+	 *            Configuration settings to use
 	 */
 	public DeleteVolumeConfig(CreateVolumeConfig config) {
 		logger.info("Rolling back task - deleting volume: " + config.getVolumeName());
@@ -83,7 +85,9 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Rollback constructor - used specifically for the copy volume task
-	 * @param config Configuration settings to use
+	 * 
+	 * @param config
+	 *            Configuration settings to use
 	 */
 	public DeleteVolumeConfig(CreateVolumeCopyConfig config) {
 		logger.info("Rolling back task - deleting volume: " + config.getNewVolumeName());
@@ -116,8 +120,6 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 		// Volume is in the fomrat id@Account@Volume
 		return volume.split("@")[1];
 	}
-
-
 
 	@Override
 	public void setActionId(long actionId) {

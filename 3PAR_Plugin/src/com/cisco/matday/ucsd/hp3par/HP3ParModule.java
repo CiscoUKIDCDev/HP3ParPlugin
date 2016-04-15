@@ -159,10 +159,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				HP3ParConstants.POD_TYPE, "GenericPod", "FlexPod",
 		});
 
-		// This is optional, dependents on the need of session for collecting
-		// the inventory
-		// entry.setConnectorSessionFactory(new FooSessionFactory());
-
 		// This is mandatory, to test the connectivity of the new account. The
 		// Handler should be of type PhysicalConnectivityTestHandler.
 		entry.setTestConnectionHandler(new HP3ParConnectionHandler());
@@ -175,12 +171,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		entry.setConvergedStackComponentBuilder(new HP3ParConvergedStackBuilder());
 
 		// This is required to show up the details of the stack view in the GUI
+		// TODO: Add stack designer support (need a real 3PAR array on UCS to
+		// really do this though!)
 		// entry.setStackViewItemProvider(new FooStackViewProvider());
-
-		// This is required credential.If the Credential Policy support is
-		// required for this Account type then this is mandatory, can implement
-		// credential check against the policyname.
-		// entry.setCredentialParser(new FooAccountCredentialParser());
 
 		try {
 			// Adding inventory root
@@ -188,7 +181,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			PhysicalAccountTypeManager.getInstance().addNewAccountType(entry);
 		}
 		catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

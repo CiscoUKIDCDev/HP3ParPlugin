@@ -49,9 +49,9 @@ public class CreateVolumeCopyTask extends AbstractTask {
 			throws Exception {
 		// Obtain account information:
 		CreateVolumeCopyConfig config = (CreateVolumeCopyConfig) context.loadConfigObject();
-		
+
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
-		
+
 		HP3ParRequestStatus s = HP3ParCopyExecute.copy(c, config);
 
 		// If it wasn't created error out
@@ -85,7 +85,8 @@ public class CreateVolumeCopyTask extends AbstractTask {
 			// Don't know the volume so just use 0 as a workaround
 			String newVolName = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
 			context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, newVolName);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
 					+ e.getMessage());
 		}
@@ -106,7 +107,8 @@ public class CreateVolumeCopyTask extends AbstractTask {
 		TaskOutputDefinition[] ops = {
 				// Register output type for the volume created
 				new TaskOutputDefinition(HP3ParConstants.VOLUME_LIST_FORM_LABEL,
-						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL), };
+						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL),
+		};
 		return ops;
 	}
 
