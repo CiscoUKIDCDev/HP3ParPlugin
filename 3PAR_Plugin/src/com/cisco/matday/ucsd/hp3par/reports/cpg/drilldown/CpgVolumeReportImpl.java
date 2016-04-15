@@ -26,7 +26,6 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.reports.volume.VolumeReportImpl;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
@@ -64,6 +63,7 @@ public class CpgVolumeReportImpl implements TabularReportGeneratorIf {
 		model.addTextColumn("Provisioning", "Provisioning");
 		model.addTextColumn("User CPG", "User CPG");
 		model.addTextColumn("Copy CPG", "Copy CPG");
+		model.addTextColumn("Protection", "Protection");
 		model.addTextColumn("Comment", "Comment");
 
 		model.completedHeader();
@@ -88,21 +88,6 @@ public class CpgVolumeReportImpl implements TabularReportGeneratorIf {
 			if ((!volume.getUserCPG().equals(cpgName)) && (!volume.getCopyCPG().equals(cpgName))) {
 				continue;
 			}
-			int provisioning = volume.getProvisioningType();
-			String provType = null;
-
-			if (provisioning == HP3ParConstants.PROVISION_FULL) {
-				provType = "Full";
-			}
-			else if (provisioning == HP3ParConstants.PROVISION_THIN) {
-				provType = "Thin";
-			}
-			else if (provisioning == HP3ParConstants.PROVISION_SNAPSHOT) {
-				provType = "Copy";
-			}
-			else {
-				provType = "Unknown";
-			}
 
 			// Internal ID, format:
 			// accountName;volumeid@accountName@volumeName;cpgname;copycpgname
@@ -119,11 +104,13 @@ public class CpgVolumeReportImpl implements TabularReportGeneratorIf {
 			Double volSize = (double) (volume.getSizeMiB() / 1024d);
 			model.addTextValue(volSize.toString());
 
-			model.addTextValue(provType);
+			model.addTextValue(volume.getProvisioningTypeAsText());
 
 			model.addTextValue(volume.getUserCPG());
 
 			model.addTextValue(volume.getCopyCPG());
+
+			model.addTextValue(volume.isReadOnlyAsText());
 
 			model.addTextValue(volume.getComment());
 

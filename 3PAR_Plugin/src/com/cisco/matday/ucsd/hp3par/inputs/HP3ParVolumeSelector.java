@@ -69,6 +69,9 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 		model.addTextColumn("Size GiB", "Size GiB");
 		model.addTextColumn("Provisioning", "Provisioning");
 		model.addTextColumn("User CPG", "User CPG");
+		model.addTextColumn("Copy CPG", "Copy CPG");
+		model.addTextColumn("Protection", "Protection");
+		model.addTextColumn("Comment", "Comment");
 
 		model.completedHeader();
 
@@ -98,11 +101,20 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 
 					// Account Name
 					model.addTextValue(a.getAccountName());
+
 					// Round off the size to gb with double precision
 					Double volSize = (double) (volume.getSizeMiB() / 1024d);
 					model.addTextValue(volSize.toString());
+
 					model.addTextValue(volume.getProvisioningTypeAsText());
+
 					model.addTextValue(volume.getUserCPG());
+
+					model.addTextValue(volume.getCopyCPG());
+
+					model.addTextValue(volume.isReadOnlyAsText());
+
+					model.addTextValue(volume.getComment());
 					model.completedRow();
 				}
 			}

@@ -64,6 +64,7 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 		model.addTextColumn("Provisioning", "Provisioning");
 		model.addTextColumn("User CPG", "User CPG");
 		model.addTextColumn("Copy CPG", "Copy CPG");
+		model.addTextColumn("Protection", "Protection");
 		model.addTextColumn("Comment", "Comment");
 
 		model.completedHeader();
@@ -101,6 +102,8 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 			model.addTextValue(volume.getUserCPG());
 
 			model.addTextValue(volume.getCopyCPG());
+
+			model.addTextValue(volume.isReadOnlyAsText());
 
 			model.addTextValue(volume.getComment());
 

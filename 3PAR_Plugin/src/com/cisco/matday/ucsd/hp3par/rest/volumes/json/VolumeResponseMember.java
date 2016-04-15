@@ -172,6 +172,15 @@ public class VolumeResponseMember {
 		return readOnly;
 	}
 
+	/**
+	 * Returns "Read Only" or "Read/Write" depending on the volume type
+	 * 
+	 * @return Read only status of the volume
+	 */
+	public String isReadOnlyAsText() {
+		return (readOnly) ? "Read Only" : "Read/Write";
+	}
+
 	@SuppressWarnings("javadoc")
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;

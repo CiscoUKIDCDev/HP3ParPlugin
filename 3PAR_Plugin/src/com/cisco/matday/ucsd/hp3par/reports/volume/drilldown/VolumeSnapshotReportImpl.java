@@ -60,7 +60,7 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
 		model.addTextColumn("Size GiB", "Size GiB");
-		model.addTextColumn("Copy CPG", "Copy CPG");
+		model.addTextColumn("Protection", "Protection");
 		model.addTextColumn("Comment", "Comment");
 
 		model.completedHeader();
@@ -105,7 +105,7 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 			Double volSize = (double) (volume.getSizeMiB() / 1024d);
 			model.addTextValue(volSize.toString());
 
-			model.addTextValue(volume.getCopyCPG());
+			model.addTextValue(volume.isReadOnlyAsText());
 
 			model.addTextValue(volume.getComment());
 
