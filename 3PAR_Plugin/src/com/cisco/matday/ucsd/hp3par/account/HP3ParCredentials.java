@@ -105,7 +105,6 @@ public class HP3ParCredentials {
 	 *             If the account isn't found
 	 */
 	public HP3ParCredentials(String accountName) throws Exception {
-		logger.info("Account Name: " + accountName);
 		this.accountName = accountName;
 		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
 		if (acc == null) {

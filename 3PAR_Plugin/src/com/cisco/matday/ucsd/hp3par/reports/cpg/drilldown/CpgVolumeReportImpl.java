@@ -105,9 +105,11 @@ public class CpgVolumeReportImpl implements TabularReportGeneratorIf {
 			}
 
 			// Internal ID, format:
-			// accountName;volumeid@accountName@volumeName@cpg
+			// accountName;volumeid@accountName@volumeName;cpgname;copycpgname
+			// TODO This needs cleaning up and/or putting in its own library
+			// (e.g. GetInternalId.volume())
 			model.addTextValue(credentials.getAccountName() + ";" + volume.getId() + "@" + credentials.getAccountName()
-					+ "@" + volume.getName() + "@" + volume.getUserCPG());
+					+ "@" + volume.getName() + ";" + volume.getUserCPG() + ";" + volume.getCopyCPG());
 			// Volume ID
 			model.addTextValue(Integer.toString(volume.getId()));
 			// Name of this volume

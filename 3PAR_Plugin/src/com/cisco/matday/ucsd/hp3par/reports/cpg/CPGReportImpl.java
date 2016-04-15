@@ -79,9 +79,9 @@ public class CPGReportImpl implements TabularReportGeneratorIf {
 			double free = total - used;
 
 			// Internal ID, format:
-			// accountName;volumeid@accountName@volumeName
+			// accountName;volumeid@accountName@volumeName;cpgName
 			model.addTextValue(credentials.getAccountName() + ";" + cpg.getId() + "@" + credentials.getAccountName()
-					+ "@" + cpg.getName());
+					+ "@" + cpg.getName() + ";" + cpg.getName());
 
 			// ID
 			model.addTextValue(Integer.toString(cpg.getId()));

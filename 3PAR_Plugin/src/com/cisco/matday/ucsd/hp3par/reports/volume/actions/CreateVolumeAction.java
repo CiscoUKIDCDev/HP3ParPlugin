@@ -70,7 +70,7 @@ public class CreateVolumeAction extends CloupiaPageAction {
 
 		// Check if the CPG is included in the field (it will be if we're in a
 		// CPG drilldown)
-		if (query.split("@").length >= 3) {
+		if (query.split(";").length >= 3) {
 			String cpg = query.split(";")[1];
 			form.setCpg(cpg);
 			page.getFlist().getByFieldId(FORM_ID + ".cpg").setEditable(false);
