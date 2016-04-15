@@ -41,7 +41,7 @@ public class VolumeResponseMember {
 	private String comment;
 	// Provisioning types
 	private static final String[] provTypes = {
-			"N/A", "Full", "Thin", "Snapshot", "Peer", "Unknown", "Deduplicated"
+			"Unknown", "Full", "Thin", "Snapshot", "Peer", "Unknown", "Deduplicated"
 	};
 
 	// private <List> failedStates;
@@ -97,11 +97,15 @@ public class VolumeResponseMember {
 	/**
 	 * Get the provisioning type (e.g. Full, Thin, etc)
 	 * 
-	 * @param provType
-	 * @return Provisioning type
+	 * @return Provisioning type as text
 	 */
-	public static String getProvisioningType(int provType) {
-		return provTypes[provType];
+	public String getProvisioningTypeAsText() {
+		// Check for safety in case API changes
+		if (this.provisioningType < provTypes.length) {
+			return provTypes[this.provisioningType];
+		}
+		return "Unknown";
+
 	}
 
 	private long sizeMiB = 10240;

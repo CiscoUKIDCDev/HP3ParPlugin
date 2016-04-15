@@ -24,10 +24,17 @@ package com.cisco.matday.ucsd.hp3par.reports.cpg.drilldown;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeAction;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeCopyAction;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeSnapshotAction;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.DeleteVolumeAction;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.EditVolumeAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
+import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
 
 /**
  * Provides a table for all the volumes in a CPG
@@ -35,7 +42,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
  * @author Matt Day
  *
  */
-public class CpgVolumeReport extends CloupiaReport {
+public class CpgVolumeReport extends DrillableReportWithActions {
 
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CpgVolumeReport.class);
@@ -49,20 +56,36 @@ public class CpgVolumeReport extends CloupiaReport {
 	 */
 	private final static String REPORT_LABEL = "Volumes";
 
+	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
+			new CreateVolumeAction(), new EditVolumeAction(), new DeleteVolumeAction(),
+			new CreateVolumeSnapshotAction(), new CreateVolumeCopyAction(),
+	};
+
 	/**
 	 * Overridden default constructor which sets the management column (0)
 	 */
 	public CpgVolumeReport() {
 		super();
-		// IMPORTANT: this tells the framework which column of this report you
-		// want to pass as the report context id
-		// when there is a UI action being launched in this report
+		// This sets what column to use as the context ID for child drilldown
+		// reports
 		this.setMgmtColumnIndex(0);
+		// This sets what to show in the GUI in the top
+		this.setMgmtDisplayColumnIndex(2);
 	}
 
 	@Override
 	public Class<CpgVolumeReportImpl> getImplementationClass() {
 		return CpgVolumeReportImpl.class;
+	}
+
+	@Override
+	public CloupiaReport[] getDrilldownReports() {
+		return null;
+	}
+
+	@Override
+	public CloupiaReportAction[] getActions() {
+		return this.actions;
 	}
 
 	@Override

@@ -95,6 +95,7 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 				for (Iterator<CPGResponseMember> j = cpglist.getCpg().getMembers().iterator(); j.hasNext();) {
 					CPGResponseMember cpg = j.next();
 					// Bad but we can use this to parse it all out later
+					// Format: ID@AccountName@CPGName
 					String internalId = Integer.toString(cpg.getId()) + "@" + a.getAccountName() + "@" + cpg.getName();
 					// Internal ID
 					model.addTextValue(internalId);

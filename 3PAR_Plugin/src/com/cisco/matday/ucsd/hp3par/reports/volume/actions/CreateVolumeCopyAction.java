@@ -79,7 +79,6 @@ public class CreateVolumeCopyAction extends CloupiaPageAction {
 
 		// Set the account and volume fields to read-only (I couldn't find this
 		// documented anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
 		page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);

@@ -74,22 +74,11 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 
 		for (Iterator<VolumeResponseMember> i = list.getVolume().getMembers().iterator(); i.hasNext();) {
 			VolumeResponseMember volume = i.next();
-			int provisioning = volume.getProvisioningType();
-			String provType = null;
 
-			if (provisioning == HP3ParConstants.PROVISION_FULL) {
-				provType = "Full";
-			}
-			else if (provisioning == HP3ParConstants.PROVISION_THIN) {
-				provType = "Thin";
-			}
-			else if (provisioning == HP3ParConstants.PROVISION_SNAPSHOT) {
-				// Don't show snapshots in this view - that's for the drilldown
-				// report
+			// Don't show snapshots in this view - that's for the drilldown
+			// report
+			if (volume.getProvisioningType() == HP3ParConstants.PROVISION_SNAPSHOT) {
 				continue;
-			}
-			else {
-				provType = "Unknown";
 			}
 
 			// Internal ID, format:
@@ -107,7 +96,7 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 			Double volSize = (double) (volume.getSizeMiB() / 1024d);
 			model.addTextValue(volSize.toString());
 
-			model.addTextValue(provType);
+			model.addTextValue(volume.getProvisioningTypeAsText());
 
 			model.addTextValue(volume.getUserCPG());
 

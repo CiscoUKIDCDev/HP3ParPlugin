@@ -81,10 +81,10 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 
 		for (Iterator<VolumeResponseMember> i = list.getVolume().getMembers().iterator(); i.hasNext();) {
 			VolumeResponseMember volume = i.next();
-			int provisioning = volume.getProvisioningType();
 
 			// Only interested in snapshots here:
-			if ((provisioning != HP3ParConstants.PROVISION_SNAPSHOT) && (volume.getBaseId() == volume.getId())) {
+			if ((volume.getProvisioningType() != HP3ParConstants.PROVISION_SNAPSHOT)
+					&& (volume.getBaseId() == volume.getId())) {
 				continue;
 			}
 			// We only want to match on this volume's children

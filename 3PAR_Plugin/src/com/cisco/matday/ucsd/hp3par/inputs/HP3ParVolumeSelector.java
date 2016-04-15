@@ -101,25 +101,7 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 					// Round off the size to gb with double precision
 					Double volSize = (double) (volume.getSizeMiB() / 1024d);
 					model.addTextValue(volSize.toString());
-
-					// Get the provisioning type (1 = full, 2 = thin):
-					int provisioning = volume.getProvisioningType();
-					String provType = null;
-
-					if (provisioning == HP3ParConstants.PROVISION_FULL) {
-						provType = "Full";
-					}
-					else if (provisioning == HP3ParConstants.PROVISION_THIN) {
-						provType = "Thin";
-					}
-					else if (provisioning == HP3ParConstants.PROVISION_SNAPSHOT) {
-						// Show snapshots here
-						provType = "Snapshot";
-					}
-					else {
-						provType = "Unknown";
-					}
-					model.addTextValue(provType);
+					model.addTextValue(volume.getProvisioningTypeAsText());
 					model.addTextValue(volume.getUserCPG());
 					model.completedRow();
 				}
