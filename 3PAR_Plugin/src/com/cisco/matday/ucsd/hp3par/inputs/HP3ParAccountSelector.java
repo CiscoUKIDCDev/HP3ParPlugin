@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,7 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.inputs;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -41,7 +40,7 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 /**
  * Table to allow selection of an HP 3PAR accounts - it should not be
  * instantiated directly but instead used as a form item
- * 
+ *
  * @author Matt Day
  *
  */
@@ -53,16 +52,16 @@ public class HP3ParAccountSelector implements TabularReportGeneratorIf {
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
-		TabularReport report = new TabularReport();
+		final TabularReport report = new TabularReport();
 
 		report.setGeneratedTime(System.currentTimeMillis());
 		report.setReportName(reportEntry.getReportLabel());
 		report.setContext(context);
 
-		ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
-		List<InfraAccount> objs = store.queryAll();
+		final ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
+		final List<InfraAccount> objs = store.queryAll();
 
-		TabularReportInternalModel model = new TabularReportInternalModel();
+		final TabularReportInternalModel model = new TabularReportInternalModel();
 		model.addTextColumn("Account Name", "Account Name");
 		model.addTextColumn("IP Address", "IP Address");
 		model.addTextColumn("Pod", "Pod");
@@ -71,12 +70,11 @@ public class HP3ParAccountSelector implements TabularReportGeneratorIf {
 		/*
 		 * I'm jumping through a LOT of hoops to get the account list here...
 		 * Surely there's a better way?
-		 * 
+		 *
 		 * InfraAccount.accountTypeAsString() returns "Other" which is useless!
 		 */
-		for (Iterator<InfraAccount> i = objs.iterator(); i.hasNext();) {
-			InfraAccount a = i.next();
-			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
+		for (final InfraAccount a : objs) {
+			final PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
 			// Important to check if the account type is null first
 			if ((acc != null) && (acc.getAccountType() != null)
 					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {

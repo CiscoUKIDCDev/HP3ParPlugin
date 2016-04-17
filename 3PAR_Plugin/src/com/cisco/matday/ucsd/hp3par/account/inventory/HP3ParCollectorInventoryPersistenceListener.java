@@ -42,6 +42,10 @@ public class HP3ParCollectorInventoryPersistenceListener extends PersistenceList
 		final ObjStore<HP3ParAccount> store = ObjStoreHelper.getStore(HP3ParAccount.class);
 		final ObjStore<HP3ParInventory> inv = ObjStoreHelper.getStore(HP3ParInventory.class);
 
+		logger.info("Inventory Persistence arguments: " + arg0.getItem().getName());
+
+		// inv.insert(new );
+
 		return;
 	}
 

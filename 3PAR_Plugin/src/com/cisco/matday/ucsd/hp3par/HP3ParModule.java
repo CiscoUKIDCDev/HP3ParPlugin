@@ -21,11 +21,14 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
 import com.cisco.matday.ucsd.hp3par.account.handler.HP3ParConnectionHandler;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParConvergedStackBuilder;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryItemHandler;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryListener;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
@@ -41,9 +44,14 @@ import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeTask;
 import com.cisco.matday.ucsd.hp3par.workflow.WorkflowInputTypeDeclaration;
+import com.cloupia.fw.objstore.ObjStore;
+import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.connector.ConfigItemDef;
 import com.cloupia.lib.connector.account.AccountTypeEntry;
+import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalAccountTypeManager;
+import com.cloupia.lib.connector.account.PhysicalInfraAccount;
+import com.cloupia.model.cIM.InfraAccount;
 import com.cloupia.model.cIM.InfraAccountTypes;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.AbstractCloupiaModule;
@@ -182,6 +190,39 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			PhysicalAccountTypeManager.getInstance().addNewAccountType(entry);
 		}
 		catch (final Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			logger.info("Looping through accounts to kick off inventory");
+			final ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
+			final List<InfraAccount> objs = store.queryAll();
+			for (final InfraAccount a : objs) {
+				final PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
+				// Important to check if the account type is null first
+				if ((acc != null) && (acc.getAccountType() != null)
+						&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
+					final String accountName = acc.getAccountName();
+					final ObjStore<HP3ParInventory> invStore = ObjStoreHelper.getStore(HP3ParInventory.class);
+					final List<HP3ParInventory> invStoreList = invStore.queryAll();
+					HP3ParInventory inv = null;
+					for (final HP3ParInventory i : invStoreList) {
+						if (accountName.equals(i.getAccountName())) {
+							logger.info("Found persistence: " + i.getAccountName());
+							inv = i;
+						}
+					}
+					if (inv == null) {
+						inv = new HP3ParInventory(accountName);
+					}
+					logger.info("Updating inventory for account " + accountName);
+					// Force an update:
+					inv.update(true);
+				}
+
+			}
+		}
+		catch (final Exception e) {
+			logger.warn("Could not start initial inventory collection");
 			e.printStackTrace();
 		}
 	}

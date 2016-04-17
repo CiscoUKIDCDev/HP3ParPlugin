@@ -21,39 +21,47 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
+import java.io.IOException;
+import java.util.Date;
+
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
+import org.apache.commons.httpclient.HttpException;
+
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
+import com.cloupia.model.cIM.InventoryDBItemIf;
 
 /**
  * Stores all persistent data for inventory purposes
- * 
+ *
  * @author Matt Day
  *
  */
 @PersistenceCapable(detachable = "true", table = "hp3par_inventory")
-public class HP3ParInventory {
+public class HP3ParInventory implements InventoryDBItemIf {
 	@Persistent
-	private HP3ParAccount account;
+	private String accountName;
 
 	@Persistent
 	private VolumeResponse volumeInfo;
 
-	/**
-	 * @return the account
-	 */
-	public HP3ParAccount getAccount() {
-		return this.account;
-	}
+	@Persistent
+	private final long updated;
 
 	/**
-	 * @param account
-	 *            the account to set
+	 * Initialise inventory with an account name
+	 *
+	 * @param accountName
+	 *            Name of the account to persist
 	 */
-	public void setAccount(HP3ParAccount account) {
-		this.account = account;
+	public HP3ParInventory(String accountName) {
+		this.accountName = accountName;
+		this.updated = 0;
 	}
 
 	/**
@@ -69,6 +77,52 @@ public class HP3ParInventory {
 	 */
 	public void setVolumeInfo(VolumeResponse volumeInfo) {
 		this.volumeInfo = volumeInfo;
+	}
+
+	@Override
+	public String getAccountName() {
+		return this.accountName;
+	}
+
+	@Override
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	/**
+	 * Update the inventory held in the database and optionally force a new
+	 * query even if the data is not out of date
+	 *
+	 * @param force
+	 *            set to true if the inventory should be refreshed even if it's
+	 *            not timed out
+	 * @throws HttpException
+	 * @throws IOException
+	 * @throws InvalidHP3ParTokenException
+	 * @throws Exception
+	 */
+	public void update(boolean force) throws HttpException, IOException, InvalidHP3ParTokenException, Exception {
+		if (!force) {
+			final Date d = new Date();
+			final long c = d.getTime();
+			if ((c - this.updated) < HP3ParConstants.INVENTORY_LIFE) {
+				return;
+			}
+		}
+		final HP3ParVolumeList list = new HP3ParVolumeList(new HP3ParCredentials(this.accountName));
+		this.volumeInfo = list.getVolume();
+	}
+
+	/**
+	 * Update the inventory held in the database if it is not out of date
+	 *
+	 * @throws HttpException
+	 * @throws IOException
+	 * @throws InvalidHP3ParTokenException
+	 * @throws Exception
+	 */
+	public void update() throws HttpException, IOException, InvalidHP3ParTokenException, Exception {
+		this.update(false);
 	}
 
 }

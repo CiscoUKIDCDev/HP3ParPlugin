@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -23,7 +23,7 @@ package com.cisco.matday.ucsd.hp3par.constants;
 
 /**
  * All constants should be placed here
- * 
+ *
  * @author Matt Day
  *
  */
@@ -158,5 +158,12 @@ public class HP3ParConstants {
 	 * Snapshot provision 3PAR Volume
 	 */
 	public static final int PROVISION_SNAPSHOT = 3;
+
+	/**
+	 * How long should the inventory be considered 'fresh' for?
+	 *
+	 * Default 15 minutes
+	 */
+	public static final long INVENTORY_LIFE = 900;
 
 }

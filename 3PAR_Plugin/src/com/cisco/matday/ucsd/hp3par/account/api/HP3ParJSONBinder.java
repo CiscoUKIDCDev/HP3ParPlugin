@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -30,8 +30,8 @@ import org.apache.log4j.Logger;
 import com.cloupia.service.cIM.inframgr.collector.controller.ItemDataObjectBinderIf;
 
 /**
- * Boilerplate from SDK, not sure what it does
- * 
+ * Boilerplate from SDK, not sure what it does!
+ *
  * @author Matt Day
  *
  */
@@ -45,30 +45,31 @@ public abstract class HP3ParJSONBinder implements ItemDataObjectBinderIf {
 
 	@SuppressWarnings("static-method")
 	protected void bindContext(Object obj, Map<String, Object> context) {
-		for (Map.Entry<String, Object> entry : context.entrySet()) {
-			String varName = entry.getKey();
-			Object value = entry.getValue();
+		for (final Map.Entry<String, Object> entry : context.entrySet()) {
+			final String varName = entry.getKey();
+			final Object value = entry.getValue();
 			try {
-				Field field = obj.getClass().getDeclaredField(varName);
+				final Field field = obj.getClass().getDeclaredField(varName);
 				field.setAccessible(true);
-				if (value != null)
+				if (value != null) {
 					field.set(obj, value);
+				}
 			}
-			catch (@SuppressWarnings("unused") SecurityException e) {
+			catch (@SuppressWarnings("unused") final SecurityException e) {
 				// TODO Auto-generated catch block
 
 			}
-			catch (@SuppressWarnings("unused") NoSuchFieldException e) {
+			catch (@SuppressWarnings("unused") final NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				logger.debug("No field by name " + varName + " for Class " + obj.getClass().getSimpleName());
 				continue;
 			}
-			catch (@SuppressWarnings("unused") IllegalArgumentException e) {
+			catch (@SuppressWarnings("unused") final IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 				logger.info("Illegal argument value while setting value for " + varName + obj.getClass());
 			}
-			catch (@SuppressWarnings("unused") IllegalAccessException e) {
+			catch (@SuppressWarnings("unused") final IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 				logger.info("Illegal access while setting value for " + varName + obj.getClass());
