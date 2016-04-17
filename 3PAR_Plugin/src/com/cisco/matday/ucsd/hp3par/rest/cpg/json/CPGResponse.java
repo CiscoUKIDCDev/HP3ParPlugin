@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,16 +21,21 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * REST object representation of the HP3PAR CPG list. See the HP 3PAR REST
  * documentation for detail on these methods and values
- * 
+ *
  * @author Matt Day
  *
  */
-public class CPGResponse {
+public class CPGResponse implements Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 	private int total;
 	private List<CPGResponseMember> members;
 

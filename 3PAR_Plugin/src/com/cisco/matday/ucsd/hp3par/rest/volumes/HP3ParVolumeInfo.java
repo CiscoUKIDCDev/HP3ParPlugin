@@ -53,6 +53,7 @@ public class HP3ParVolumeInfo {
 	 * @throws InvalidHP3ParTokenException
 	 *             If credentials are invalid
 	 */
+	@Deprecated
 	public HP3ParVolumeInfo(HP3ParCredentials loginCredentials, String volName)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);

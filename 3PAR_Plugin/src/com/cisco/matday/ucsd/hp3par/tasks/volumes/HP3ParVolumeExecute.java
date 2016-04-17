@@ -24,10 +24,9 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGInfo;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeInfo;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
@@ -145,8 +144,10 @@ public class HP3ParVolumeExecute {
 			}
 		}
 
-		CPGResponseMember cpg = new HP3ParCPGInfo(c, copyCpgName).getMember();
-		VolumeResponseMember volinfo = new HP3ParVolumeInfo(c, config.getOriginalName()).getMember();
+		CPGResponseMember cpg = HP3ParInventory.getCpgInfo(c.getAccountName(), copyCpgName);
+		// VolumeResponseMember volinfo = new HP3ParVolumeInfo(c,
+		// config.getOriginalName()).getMember();
+		VolumeResponseMember volinfo = HP3ParInventory.getVolumeInfo(c.getAccountName(), config.getOriginalName());
 		logger.info("Vol REST Lookup: " + volinfo.getUserCPG());
 		logger.info("CPG REST lookup: " + cpg.getName());
 		logger.info("Copy CPG Name: " + copyCpgName);

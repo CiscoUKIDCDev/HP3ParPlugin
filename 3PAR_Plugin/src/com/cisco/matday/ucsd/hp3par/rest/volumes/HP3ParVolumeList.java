@@ -48,10 +48,7 @@ public class HP3ParVolumeList {
 	 * @throws IOException
 	 * @throws InvalidHP3ParTokenException
 	 *             if the token is invalid or cannot be obtained
-	 * @deprecated Because it should not be accessed directly but instead via
-	 *             inventory collection
 	 */
-	@Deprecated
 	public HP3ParVolumeList(HP3ParCredentials loginCredentials)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);

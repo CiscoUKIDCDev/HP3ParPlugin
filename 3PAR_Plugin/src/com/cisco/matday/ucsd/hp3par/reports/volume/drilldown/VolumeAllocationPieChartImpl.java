@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -24,7 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.drilldown;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeInfo;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.ReportNameValuePair;
@@ -35,7 +35,7 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
 /**
  * Implementation of the pie chart
- * 
+ *
  * @author Matt Day
  *
  */
@@ -70,7 +70,9 @@ public class VolumeAllocationPieChartImpl implements SnapshotReportGeneratorIf {
 			throw new Exception("Could not get ID from context");
 		}
 
-		VolumeResponseMember volume = new HP3ParVolumeInfo(credentials, volName).getMember();
+		// VolumeResponseMember volume = new HP3ParVolumeInfo(credentials,
+		// volName).getMember();
+		VolumeResponseMember volume = HP3ParInventory.getVolumeInfo(credentials.getAccountName(), volName);
 
 		double adminSpace = volume.getAdminSpace().getUsedMiB();
 		double userSpace = volume.getUserSpace().getUsedMiB();

@@ -68,7 +68,7 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		detail.setModel(systemInfo.getModel());
 
 		detail.setOsVersion(systemInfo.getSystemVersion());
-		detail.setVendorLogoUrl("/app/images/icons/vendors/hp.png");
+		detail.setVendorLogoUrl("/app/uploads/openauto/3Par_Icon.png");
 		detail.setMgmtIPAddr(systemInfo.getIPv4Addr());
 		detail.setStatus("OK");
 		detail.setVendorName("HP3PAR");

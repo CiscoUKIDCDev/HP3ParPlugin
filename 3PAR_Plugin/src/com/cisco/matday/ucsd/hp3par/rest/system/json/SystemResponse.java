@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,15 +21,21 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.system.json;
 
+import java.io.Serializable;
+
 /**
  * Object to represent JSON response for a System request on a 3PAR array.
- * 
+ *
  * See the HP3Par documentation for what these fields mean.
- * 
+ *
  * @author Matt Day
  *
  */
-public class SystemResponse {
+public class SystemResponse implements Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String name;
 	private String systemVersion;

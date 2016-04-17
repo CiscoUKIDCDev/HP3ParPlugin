@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,14 +21,20 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
+import java.io.Serializable;
+
 /**
  * REST object representation of the HP3PAR CPG list. See the HP 3PAR REST
  * documentation for detail on these methods and values
- * 
+ *
  * @author Matt Day
  *
  */
-public class CPGResponseMember {
+public class CPGResponseMember implements Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Raid level 0
 	 */
@@ -68,7 +74,7 @@ public class CPGResponseMember {
 
 	/**
 	 * Get the raid level symbol from the member (e.g. R0, R1 etc)
-	 * 
+	 *
 	 * @param raidLevel
 	 *            - RAID level from 3PAR response
 	 * @return Raid level symbol
@@ -80,7 +86,7 @@ public class CPGResponseMember {
 	/**
 	 * Get the raid level name from the member (e.g. RAID level 0, RAID level 1
 	 * etc)
-	 * 
+	 *
 	 * @param raidLevel
 	 * @return Raid level name
 	 */
@@ -90,7 +96,7 @@ public class CPGResponseMember {
 
 	/**
 	 * Get the disk layout symbol (e.g. FC, NL etc)
-	 * 
+	 *
 	 * @param diskType
 	 * @return Disk type symbol
 	 */
@@ -100,7 +106,7 @@ public class CPGResponseMember {
 
 	/**
 	 * Get the disk layout name (e.g. Fibre Channel, SSD etc)
-	 * 
+	 *
 	 * @param diskType
 	 * @return Disk type name
 	 */

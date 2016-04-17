@@ -96,9 +96,10 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 		// String jsonData = api.getInventoryData(getUrl());
 
-		logger.info("Persisting data and querying - Important - this SHOULD exist!");
+		logger.info("Persisting data and querying on schedule");
 
-		final HP3ParInventory inv = HP3ParInventory.get(accountName);
+		final HP3ParInventory inv = new HP3ParInventory(accountName);
+		// Force update
 		inv.update(true);
 
 		final String jsonData = null;

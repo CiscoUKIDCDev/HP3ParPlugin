@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,17 +21,22 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * REST representation from 3PAR array when querying volumes
- * 
+ *
  * See the HP3PAR documentation for more detail
- * 
+ *
  * @author Matt Day
  *
  */
-public class VolumeResponse {
+public class VolumeResponse implements Serializable {
+	/**
+	 * Version
+	 */
+	private static final long serialVersionUID = 1L;
 	private int total;
 	private List<VolumeResponseMember> members;
 

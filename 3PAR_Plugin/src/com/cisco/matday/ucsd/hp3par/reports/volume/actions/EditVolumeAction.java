@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -24,7 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGInfo;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeConfig;
@@ -38,7 +38,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
 /**
  * Creates an action button to edit a volume
- * 
+ *
  * @author Matt Day
  *
  */
@@ -68,10 +68,10 @@ public class EditVolumeAction extends CloupiaPageAction {
 		EditVolumeConfig form = new EditVolumeConfig();
 		/*
 		 * Unlike CreateVolumeAction, this returns true on isSelectionRequired()
-		 * 
+		 *
 		 * This means the context is whatever's in column 0 of the table. In
 		 * this case it's in the format:
-		 * 
+		 *
 		 * accountName;volumeName;cpgName;copyCpgName
 		 */
 		String volume = query.split(";")[1];
@@ -82,7 +82,7 @@ public class EditVolumeAction extends CloupiaPageAction {
 			// Have to do an API lookup as we need the ID which isn't in the
 			// volume REST response:
 			HP3ParCredentials login = new HP3ParCredentials(context);
-			CPGResponseMember cpg = new HP3ParCPGInfo(login, copyCpg).getMember();
+			CPGResponseMember cpg = HP3ParInventory.getCpgInfo(login.getAccountName(), copyCpg);
 			// Build it in the format for the CPG table:
 			// ID@AccountName@CPGName
 			copyCpg = cpg.getId() + "@" + login.getAccountName() + "@" + cpg.getName();
@@ -108,7 +108,7 @@ public class EditVolumeAction extends CloupiaPageAction {
 	/**
 	 * This should do basic error checking (UCSD will enforce mandatory fields)
 	 * and attempt to execute the task.
-	 * 
+	 *
 	 * Throwing an exception here will show the message as an error dialogue.
 	 */
 	@Override

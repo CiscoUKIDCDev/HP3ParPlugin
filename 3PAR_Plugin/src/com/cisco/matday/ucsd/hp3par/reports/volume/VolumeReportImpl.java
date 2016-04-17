@@ -70,7 +70,7 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 
 		final HP3ParCredentials credentials = new HP3ParCredentials(context);
 		// Get the list from the internal persistence list:
-		final VolumeResponse list = HP3ParInventory.get(credentials.getAccountName()).getVolumeInfo();
+		final VolumeResponse list = HP3ParInventory.getVolumeResponse(credentials.getAccountName());
 		// VolumeResponse list = new
 		// HP3ParVolumeList(credentials).getVolumeList();
 

@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,15 +21,21 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
+import java.io.Serializable;
+
 /**
  * JSON representation of a 3PAR rest call
- * 
+ *
  * See the HP 3PAR documentation to see what these fields mean
- * 
+ *
  * @author Matt Day
  *
  */
-public class VolumeResponseMember {
+public class VolumeResponseMember implements Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private int provisioningType;
@@ -96,7 +102,7 @@ public class VolumeResponseMember {
 
 	/**
 	 * Get the provisioning type (e.g. Full, Thin, etc)
-	 * 
+	 *
 	 * @return Provisioning type as text
 	 */
 	public String getProvisioningTypeAsText() {
@@ -174,7 +180,7 @@ public class VolumeResponseMember {
 
 	/**
 	 * Returns "Read Only" or "Read/Write" depending on the volume type
-	 * 
+	 *
 	 * @return Read only status of the volume
 	 */
 	public String isReadOnlyAsText() {

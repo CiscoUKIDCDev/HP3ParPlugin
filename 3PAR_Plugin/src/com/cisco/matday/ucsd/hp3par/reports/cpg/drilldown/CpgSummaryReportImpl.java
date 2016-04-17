@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -24,7 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.cpg.drilldown;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGInfo;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
@@ -34,7 +34,7 @@ import com.cloupia.service.cIM.inframgr.reports.SummaryReportInternalModel;
 
 /**
  * Implemenation of Overview table report
- * 
+ *
  * @author Matt Day
  *
  */
@@ -51,7 +51,7 @@ public class CpgSummaryReportImpl implements TabularReportGeneratorIf {
 	/**
 	 * This method returns implemented tabular report,and also perform cleanup
 	 * process and updating report.
-	 * 
+	 *
 	 * @param reportEntry
 	 *            This parameter contains Object of ReportRegistryEntry class
 	 *            which is used to register newly created report
@@ -85,7 +85,7 @@ public class CpgSummaryReportImpl implements TabularReportGeneratorIf {
 		}
 
 		// Get volume info:
-		CPGResponseMember cpg = new HP3ParCPGInfo(credentials, cpgName).getMember();
+		CPGResponseMember cpg = HP3ParInventory.getCpgInfo(credentials.getAccountName(), cpgName);
 
 		// Build the table
 		model.addText("CPG Name", cpgName, CPG_INFO_TABLE);

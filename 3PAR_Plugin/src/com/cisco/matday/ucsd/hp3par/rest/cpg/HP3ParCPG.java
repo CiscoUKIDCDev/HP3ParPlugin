@@ -50,7 +50,6 @@ public class HP3ParCPG {
 	 * @throws InvalidHP3ParTokenException
 	 *             If the token provided is invalid
 	 */
-	@Deprecated
 	public HP3ParCPG(HP3ParCredentials loginCredentials)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 

@@ -160,10 +160,10 @@ public class HP3ParConstants {
 	public static final int PROVISION_SNAPSHOT = 3;
 
 	/**
-	 * How long should the inventory be considered 'fresh' for?
+	 * How long should the inventory be considered 'fresh' for in milliseconds?
 	 *
-	 * Default 15 minutes
+	 * Default 15 minutes (900,000 milliseconds)
 	 */
-	public static final long INVENTORY_LIFE = 900;
+	public static final long INVENTORY_LIFE = 900000;
 
 }

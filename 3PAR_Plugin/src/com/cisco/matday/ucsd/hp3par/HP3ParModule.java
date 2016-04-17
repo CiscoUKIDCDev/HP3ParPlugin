@@ -202,7 +202,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				if ((acc != null) && (acc.getAccountType() != null)
 						&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 					final String accountName = acc.getAccountName();
-					final HP3ParInventory inv = HP3ParInventory.get(accountName);
+					final HP3ParInventory inv = new HP3ParInventory(accountName);
 					logger.info("Updating inventory for account: " + accountName);
 					inv.update(true);
 				}
@@ -211,6 +211,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		}
 		catch (final Exception e) {
 			logger.warn("Could not start initial inventory collection");
+			logger.warn("3PAR inventory collection failed: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
