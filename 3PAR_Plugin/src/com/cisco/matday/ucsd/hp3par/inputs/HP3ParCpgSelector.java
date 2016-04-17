@@ -23,8 +23,6 @@ package com.cisco.matday.ucsd.hp3par.inputs;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
@@ -48,9 +46,6 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
  *
  */
 public class HP3ParCpgSelector implements TabularReportGeneratorIf {
-
-	private static Logger logger = Logger.getLogger(HP3ParCpgSelector.class);
-
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
@@ -76,12 +71,7 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
 			// TODO: This makes the null conditionals later invalid, but put in
 			// as a test
-			if (acc == null) {
-				logger.info("3PAR plugin CPG selector: acc == null");
-				continue;
-			}
-			if (acc.getAccountType() == null) {
-				logger.info("3PAR plugin CPG selector: acc.getAccountType() == null");
+			if ((acc == null) || (acc.getAccountType() == null)) {
 				continue;
 			}
 			// Important to check if the account type is null first

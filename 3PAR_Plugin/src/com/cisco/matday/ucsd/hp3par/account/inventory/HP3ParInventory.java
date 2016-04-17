@@ -89,20 +89,24 @@ public class HP3ParInventory {
 		final Date d = new Date();
 		final long c = d.getTime();
 		if ((!force) && ((c - this.store.getUpdated()) < HP3ParConstants.INVENTORY_LIFE)) {
-			logger.info("Inventory up to date");
+			logger.info("Inventory already up to date");
 			return;
 		}
 		logger.info("Pulling new inventory from array");
 
 		this.store.setUpdated(c);
+
 		final HP3ParVolumeList volumeList = new HP3ParVolumeList(new HP3ParCredentials(this.store.getAccountName()));
 		this.store.setVolumeInfo(volumeList.getVolume());
+
 		final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(this.store.getAccountName()));
 		this.store.setSysInfo(systemInfo.getSystem());
+
 		final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(this.store.getAccountName()));
 		this.store.setCpgInfo(cpg.getCpg());
 
 		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
+
 		try {
 			objStore.modifySingleObject("accountName == '" + this.store.getAccountName() + "'", this.store);
 		}
