@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -22,7 +22,7 @@
 package com.cisco.matday.ucsd.hp3par.reports.summary;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
@@ -32,7 +32,7 @@ import com.cloupia.service.cIM.inframgr.reports.SummaryReportInternalModel;
 
 /**
  * Implemenation of Overview table report
- * 
+ *
  * @author Matt Day
  *
  */
@@ -57,7 +57,7 @@ public class OverviewTableImpl implements TabularReportGeneratorIf {
 	/**
 	 * This method returns implemented tabular report,and also perform cleanup
 	 * process and updating report.
-	 * 
+	 *
 	 * @param reportEntry
 	 *            This parameter contains Object of ReportRegistryEntry class
 	 *            which is used to register newly created report
@@ -76,7 +76,7 @@ public class OverviewTableImpl implements TabularReportGeneratorIf {
 		SummaryReportInternalModel model = new SummaryReportInternalModel();
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
-		SystemResponse systemInfo = new HP3ParSystem(credentials).getSystem();
+		final SystemResponse systemInfo = HP3ParInventory.getSystemResponse(credentials.getAccountName());
 
 		// Build the table
 		model.addText("Account Name", getAccountName(context), SYS_INFO_TABLE);

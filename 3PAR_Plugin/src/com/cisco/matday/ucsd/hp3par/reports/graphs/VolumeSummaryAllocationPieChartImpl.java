@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,12 +21,10 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.reports.graphs;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.model.cIM.ReportContext;
@@ -38,7 +36,7 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
 /**
  * Implementation of the pie chart
- * 
+ *
  * @author Matt Day
  *
  */
@@ -62,14 +60,13 @@ public class VolumeSummaryAllocationPieChartImpl implements SnapshotReportGenera
 		report.setPrecision(0);
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
-		VolumeResponse volumes = new HP3ParVolumeList(credentials).getVolume();
+		VolumeResponse volumes = HP3ParInventory.getVolumeResponse(credentials.getAccountName());
 
 		double adminSpace = 0;
 		double userSpace = 0;
 		double snapSpace = 0;
 
-		for (Iterator<VolumeResponseMember> i = volumes.getMembers().iterator(); i.hasNext();) {
-			VolumeResponseMember volume = i.next();
+		for (VolumeResponseMember volume : volumes.getMembers()) {
 			adminSpace += volume.getAdminSpace().getUsedMiB();
 			userSpace += volume.getUserSpace().getUsedMiB();
 			snapSpace += volume.getSnapshotSpace().getUsedMiB();

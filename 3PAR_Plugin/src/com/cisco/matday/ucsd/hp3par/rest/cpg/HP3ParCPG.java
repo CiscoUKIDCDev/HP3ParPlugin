@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -34,7 +34,7 @@ import com.google.gson.Gson;
 
 /**
  * Get a list of CPGs from the 3PAR array - returns the JSON in object form
- * 
+ *
  * @author Matt Day
  *
  */
@@ -50,6 +50,7 @@ public class HP3ParCPG {
 	 * @throws InvalidHP3ParTokenException
 	 *             If the token provided is invalid
 	 */
+	@Deprecated
 	public HP3ParCPG(HP3ParCredentials loginCredentials)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 
@@ -67,7 +68,7 @@ public class HP3ParCPG {
 
 	/**
 	 * Get the response from the array
-	 * 
+	 *
 	 * @return CPG information from the 3PAR array
 	 */
 	public CPGResponse getCpg() {

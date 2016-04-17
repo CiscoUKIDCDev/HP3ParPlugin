@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -34,12 +34,12 @@ import com.google.gson.Gson;
 
 /**
  * Gets a list of every volume in the array
- * 
+ *
  * @author Matt Day
  *
  */
 public class HP3ParVolumeList {
-	private VolumeResponse volume;
+	private final VolumeResponse volume;
 
 	/**
 	 * @param loginCredentials
@@ -48,19 +48,22 @@ public class HP3ParVolumeList {
 	 * @throws IOException
 	 * @throws InvalidHP3ParTokenException
 	 *             if the token is invalid or cannot be obtained
+	 * @deprecated Because it should not be accessed directly but instead via
+	 *             inventory collection
 	 */
+	@Deprecated
 	public HP3ParVolumeList(HP3ParCredentials loginCredentials)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		// Use defaults for GET method
 		request.setGetDefaults();
 		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
 		request.execute();
-		String response = request.getHttpResponse();
+		final String response = request.getHttpResponse();
 		// String response = new HP3ParRestWrapper(loginCredentials,
 		// threeParRESTconstants.GET_VOLUMES_URI,
 		// HttpRequestConstants.METHOD_TYPE_GET).execute();
-		Gson gson = new Gson();
+		final Gson gson = new Gson();
 		this.volume = gson.fromJson(response, VolumeResponse.class);
 	}
 

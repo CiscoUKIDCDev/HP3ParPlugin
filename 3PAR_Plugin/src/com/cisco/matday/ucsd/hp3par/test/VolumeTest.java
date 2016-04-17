@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -44,6 +44,7 @@ public class VolumeTest {
 	final static String user = "3paradm";
 	final static String password = "3pardata";
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 
 		try {
@@ -51,10 +52,9 @@ public class VolumeTest {
 			Logger.getRootLogger().setLevel(Level.INFO);
 
 			// Don't warn that I'm using test methods
-			@SuppressWarnings("deprecation")
 			HP3ParCredentials login = new HP3ParCredentials(ipAddress, user, password);
-
 			HP3ParVolumeList list = new HP3ParVolumeList(login);
+
 			HP3ParSystem systemInfo = new HP3ParSystem(login);
 			HP3ParCPG cpgInfo = new HP3ParCPG(login);
 			System.out.println("Model: " + systemInfo.getSystem().getModel());

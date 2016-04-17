@@ -202,20 +202,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				if ((acc != null) && (acc.getAccountType() != null)
 						&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 					final String accountName = acc.getAccountName();
-					final ObjStore<HP3ParInventory> invStore = ObjStoreHelper.getStore(HP3ParInventory.class);
-					final List<HP3ParInventory> invStoreList = invStore.queryAll();
-					HP3ParInventory inv = null;
-					for (final HP3ParInventory i : invStoreList) {
-						if (accountName.equals(i.getAccountName())) {
-							logger.info("Found persistence: " + i.getAccountName());
-							inv = i;
-						}
-					}
-					if (inv == null) {
-						inv = new HP3ParInventory(accountName);
-					}
-					logger.info("Updating inventory for account " + accountName);
-					// Force an update:
+					final HP3ParInventory inv = HP3ParInventory.get(accountName);
+					logger.info("Updating inventory for account: " + accountName);
 					inv.update(true);
 				}
 

@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,12 +21,11 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.reports.cpg;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
@@ -36,7 +35,7 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
  * Implemenation of CPG list report
- * 
+ *
  * @author Matt Day
  *
  */
@@ -67,10 +66,9 @@ public class CPGReportImpl implements TabularReportGeneratorIf {
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		HP3ParCPG cpglist = new HP3ParCPG(credentials);
+		CPGResponse cpgList = HP3ParInventory.getCPGResponse(new HP3ParCredentials(context).getAccountName());
 
-		for (Iterator<CPGResponseMember> i = cpglist.getCpg().getMembers().iterator(); i.hasNext();) {
-			CPGResponseMember cpg = i.next();
+		for (CPGResponseMember cpg : cpgList.getMembers()) {
 			// Get total
 			double total = ((cpg.getUsrUsage().getTotalMiB() + cpg.getSAUsage().getTotalMiB()
 					+ cpg.getSDUsage().getTotalMiB()) / 1024d);

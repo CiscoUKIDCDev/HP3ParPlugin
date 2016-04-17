@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,12 +21,11 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.inputs;
 
-import java.util.Iterator;
 import java.util.List;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
@@ -42,7 +41,7 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 /**
  * Table to allow selection of an HP 3PAR volumes - it should not be
  * instantiated directly but instead used as a form item
- * 
+ *
  * @author Matt Day
  *
  */
@@ -75,18 +74,15 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 
 		model.completedHeader();
 
-		for (Iterator<InfraAccount> i = objs.iterator(); i.hasNext();) {
-			InfraAccount a = i.next();
+		for (InfraAccount a : objs) {
 			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
 			// Important to check if the account type is null first
 			if ((acc != null) && (acc.getAccountType() != null)
 					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
-				HP3ParVolumeList list = new HP3ParVolumeList(new HP3ParCredentials(a.getAccountName()));
+				VolumeResponse list = HP3ParInventory.getVolumeResponse(a.getAccountName());
 
-				for (Iterator<VolumeResponseMember> j = list.getVolume().getMembers().iterator(); j.hasNext();) {
-					VolumeResponseMember volume = j.next();
-
+				for (VolumeResponseMember volume : list.getMembers()) {
 					// Bad but we can use this to parse it all out later
 					String internalId = Integer.toString(volume.getId()) + "@" + a.getAccountName() + "@"
 							+ volume.getName();

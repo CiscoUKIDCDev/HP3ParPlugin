@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,14 +21,13 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.inputs;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
@@ -44,7 +43,7 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 /**
  * Table to allow selection of an HP 3PAR CPGs - it should not be instantiated
  * directly but instead used as a form item
- * 
+ *
  * @author Matt Day
  *
  */
@@ -73,8 +72,7 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 		model.addTextColumn("Virtual Volumes", "Virtual Volumes");
 		model.completedHeader();
 
-		for (Iterator<InfraAccount> i = objs.iterator(); i.hasNext();) {
-			InfraAccount a = i.next();
+		for (InfraAccount a : objs) {
 			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
 			// TODO: This makes the null conditionals later invalid, but put in
 			// as a test
@@ -89,10 +87,9 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 			// Important to check if the account type is null first
 			if ((acc.getAccountType() != null) && (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
-				HP3ParCPG cpglist = new HP3ParCPG(new HP3ParCredentials(a.getAccountName()));
+				CPGResponse cpgList = HP3ParInventory.getCPGResponse(a.getAccountName());
 
-				for (Iterator<CPGResponseMember> j = cpglist.getCpg().getMembers().iterator(); j.hasNext();) {
-					CPGResponseMember cpg = j.next();
+				for (CPGResponseMember cpg : cpgList.getMembers()) {
 					// Bad but we can use this to parse it all out later
 					// Format: ID@AccountName@CPGName
 					String internalId = Integer.toString(cpg.getId()) + "@" + a.getAccountName() + "@" + cpg.getName();

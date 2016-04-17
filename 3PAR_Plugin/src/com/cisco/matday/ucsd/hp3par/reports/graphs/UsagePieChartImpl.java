@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -23,10 +23,11 @@ package com.cisco.matday.ucsd.hp3par.reports.graphs;
 
 import org.apache.log4j.Logger;
 
-import com.cloupia.model.cIM.ReportNameValuePair;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cloupia.model.cIM.ReportContext;
+import com.cloupia.model.cIM.ReportNameValuePair;
 import com.cloupia.model.cIM.SnapshotReport;
 import com.cloupia.model.cIM.SnapshotReportCategory;
 import com.cloupia.service.cIM.inframgr.SnapshotReportGeneratorIf;
@@ -34,7 +35,7 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
 /**
  * Implemenation of pie chart report
- * 
+ *
  * @author Matt Day
  *
  */
@@ -58,11 +59,10 @@ public class UsagePieChartImpl implements SnapshotReportGeneratorIf {
 		report.setPrecision(0);
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
-		HP3ParSystem systemInfo = new HP3ParSystem(credentials);
-		systemInfo.getSystem();
-		double free = systemInfo.getSystem().getFreeCapacityMiB();
-		double allocated = systemInfo.getSystem().getAllocatedCapacityMiB();
-		double failed = systemInfo.getSystem().getFailedCapacityMiB();
+		final SystemResponse systemInfo = HP3ParInventory.getSystemResponse(credentials.getAccountName());
+		double free = systemInfo.getFreeCapacityMiB();
+		double allocated = systemInfo.getAllocatedCapacityMiB();
+		double failed = systemInfo.getFailedCapacityMiB();
 
 		ReportNameValuePair[] rnv = new ReportNameValuePair[3];
 		rnv[0] = new ReportNameValuePair("Free GiB", (free / 1024d));

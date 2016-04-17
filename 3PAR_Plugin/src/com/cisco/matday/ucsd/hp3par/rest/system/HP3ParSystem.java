@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -34,7 +34,7 @@ import com.google.gson.Gson;
 
 /**
  * Gets system information from a 3PAR array and stores it as an object
- * 
+ *
  * @author Matt Day
  *
  */
@@ -50,6 +50,7 @@ public class HP3ParSystem {
 	 * @throws InvalidHP3ParTokenException
 	 *             if the token is invalid or cannot be obtained
 	 */
+	@Deprecated
 	public HP3ParSystem(HP3ParCredentials loginCredentials)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 

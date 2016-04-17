@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -35,11 +35,11 @@ import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
  * Essentially adds a token method to Russ Whitear's UCSDHttpRequest, makes it a
  * little easier by setting defaults for various methods needing less
  * boilerplate on each REST call
- * 
+ *
  * You should not use any other method to communicate with UCSD except via this
  * library, especially if you're using tokens as this handles
  * obtaining/releasing them. The latter is especially important (see the docs)
- * 
+ *
  * @author matt
  *
  */
@@ -51,7 +51,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 
 	/**
 	 * Only initialise from credentials to allow token later
-	 * 
+	 *
 	 * @param credentials
 	 */
 	public UCSD3ParHttpWrapper(HP3ParCredentials credentials) {
@@ -61,7 +61,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 
 	/**
 	 * Set if the token should be used on the request
-	 * 
+	 *
 	 * @param useToken
 	 */
 	public void setToken(boolean useToken) {
@@ -79,7 +79,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 
 	/**
 	 * Sets HP3Par defaults for a POST method
-	 * 
+	 *
 	 * @param body
 	 *            Any body text to send with the request
 	 */
@@ -101,7 +101,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 
 	/**
 	 * Set HP3Par defaults for a PUT method
-	 * 
+	 *
 	 * @param body
 	 *            Any body text to send with the request
 	 */
@@ -114,7 +114,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 
 	/**
 	 * Override parent execute to include token if set
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws HttpException
 	 */
@@ -127,11 +127,12 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 				logger.debug("Requested token: " + token.getToken());
 				super.addRequestHeaders(threeParRESTconstants.SESSION_KEY_HEADER, token.getToken());
 			}
-			catch (InvalidHP3ParTokenException e) {
+			catch (final InvalidHP3ParTokenException e) {
 				logger.error("Could not add token to http request (token expired or invalid credentials)!");
 				e.printStackTrace();
 			}
 		}
+		logger.info("Sending REST request - " + this.getUri());
 		// Call parent
 		super.execute();
 
@@ -141,7 +142,7 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 				logger.debug("Released token: " + token.getToken());
 				token.release();
 			}
-			catch (InvalidHP3ParTokenException e) {
+			catch (final InvalidHP3ParTokenException e) {
 				logger.debug("Could not release token");
 				e.printStackTrace();
 			}

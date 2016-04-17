@@ -21,15 +21,12 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.api.HP3ParAccountJSONBinder;
 import com.cisco.matday.ucsd.hp3par.account.api.HP3ParJSONBinder;
-import com.cloupia.fw.objstore.ObjStore;
-import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.connector.AbstractInventoryItemHandler;
 import com.cloupia.lib.connector.InventoryContext;
 import com.cloupia.service.cIM.inframgr.collector.controller.PersistenceListener;
@@ -99,22 +96,9 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 		// String jsonData = api.getInventoryData(getUrl());
 
-		logger.info("Persisting data and querying");
-		logger.info("Important - this SHOULD exist!");
-		final ObjStore<HP3ParInventory> store = ObjStoreHelper.getStore(HP3ParInventory.class);
-		final List<HP3ParInventory> invStore = store.queryAll();
-		HP3ParInventory inv = null;
-		for (final HP3ParInventory i : invStore) {
-			if (accountName.equals(i.getAccountName())) {
-				logger.info("Found persistence: " + i.getAccountName());
-				inv = i;
-			}
-		}
-		if (inv == null) {
-			inv = new HP3ParInventory(accountName);
-		}
-		logger.info("Updating inventory for account " + accountName);
-		// Force an update:
+		logger.info("Persisting data and querying - Important - this SHOULD exist!");
+
+		final HP3ParInventory inv = HP3ParInventory.get(accountName);
 		inv.update(true);
 
 		final String jsonData = null;

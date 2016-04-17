@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -26,11 +26,12 @@ import java.io.IOException;
 import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
-import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParVolumeAction;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
+import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParVolumeAction;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestTask;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
@@ -38,14 +39,14 @@ import com.google.gson.Gson;
 
 /**
  * Contains static methods for managing volumes on the array
- * 
+ *
  * @author Matt Day
  */
 public class HP3ParCopyRestCall {
 
 	/**
 	 * Creates a 3PAR volume snapshot
-	 * 
+	 *
 	 * @param loginCredentials
 	 *            Credentials for system
 	 * @param volumeName
@@ -82,6 +83,13 @@ public class HP3ParCopyRestCall {
 		}
 		else {
 			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(loginCredentials.getAccountName(), true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		// Return the same reference as passed for convenience and clarity
 		return status;
@@ -90,7 +98,7 @@ public class HP3ParCopyRestCall {
 
 	/**
 	 * Creates a 3PAR volume copy
-	 * 
+	 *
 	 * @param loginCredentials
 	 *            Credentials for system
 	 * @param volumeName
@@ -129,6 +137,13 @@ public class HP3ParCopyRestCall {
 		}
 		else {
 			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(loginCredentials.getAccountName(), true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		// Return the same reference as passed for convenience and clarity
 		return status;

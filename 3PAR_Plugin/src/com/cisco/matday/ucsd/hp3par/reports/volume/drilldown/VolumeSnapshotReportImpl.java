@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,13 +21,12 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.reports.volume.drilldown;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
@@ -37,7 +36,7 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
  * Implementation of tabular volume list
- * 
+ *
  * @author Matt Day
  *
  */
@@ -77,11 +76,9 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 			logger.warn("Could not get ID from context ID: " + context.getId());
 		}
 
-		HP3ParVolumeList list = new HP3ParVolumeList(credentials);
+		VolumeResponse list = HP3ParInventory.getVolumeResponse(credentials.getAccountName());
 
-		for (Iterator<VolumeResponseMember> i = list.getVolume().getMembers().iterator(); i.hasNext();) {
-			VolumeResponseMember volume = i.next();
-
+		for (VolumeResponseMember volume : list.getMembers()) {
 			// Only interested in snapshots here:
 			if ((volume.getProvisioningType() != HP3ParConstants.PROVISION_SNAPSHOT)
 					&& (volume.getBaseId() == volume.getId())) {

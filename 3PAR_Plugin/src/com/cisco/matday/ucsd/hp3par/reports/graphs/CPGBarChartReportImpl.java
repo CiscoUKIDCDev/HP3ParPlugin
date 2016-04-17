@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -21,12 +21,10 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.reports.graphs;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cloupia.model.cIM.ReportContext;
@@ -38,7 +36,7 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
 /**
  * Implements the CPG bar chart
- * 
+ *
  * @author Matt Day
  *
  */
@@ -56,12 +54,11 @@ public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 		report.setValueAxisName("Volumes");
 		report.setPrecision(0);
 
-		CPGResponse cpgList = new HP3ParCPG(new HP3ParCredentials(context)).getCpg();
+		CPGResponse cpgList = HP3ParInventory.getCPGResponse(new HP3ParCredentials(context).getAccountName());
 
 		ReportNameValuePair[] rnv = new ReportNameValuePair[cpgList.getTotal()];
 		int j = 0;
-		for (Iterator<CPGResponseMember> i = cpgList.getMembers().iterator(); i.hasNext();) {
-			CPGResponseMember cpg = i.next();
+		for (CPGResponseMember cpg : cpgList.getMembers()) {
 			String name = cpg.getName();
 			int vol = cpg.getNumTPVVs() + cpg.getNumFPVVs();
 			if (name == null) {

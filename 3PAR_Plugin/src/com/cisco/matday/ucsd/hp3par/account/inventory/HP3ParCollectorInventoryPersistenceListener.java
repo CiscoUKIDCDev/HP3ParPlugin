@@ -23,9 +23,6 @@ package com.cisco.matday.ucsd.hp3par.account.inventory;
 
 import org.apache.log4j.Logger;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
-import com.cloupia.fw.objstore.ObjStore;
-import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.service.cIM.inframgr.collector.controller.PersistenceListener;
 import com.cloupia.service.cIM.inframgr.collector.model.ItemResponse;
 
@@ -39,8 +36,6 @@ public class HP3ParCollectorInventoryPersistenceListener extends PersistenceList
 	@Override
 	public void persistItem(ItemResponse arg0) throws Exception {
 		logger.info("HP3PAR Persisting inventory...");
-		final ObjStore<HP3ParAccount> store = ObjStoreHelper.getStore(HP3ParAccount.class);
-		final ObjStore<HP3ParInventory> inv = ObjStoreHelper.getStore(HP3ParInventory.class);
 
 		logger.info("Inventory Persistence arguments: " + arg0.getItem().getName());
 
