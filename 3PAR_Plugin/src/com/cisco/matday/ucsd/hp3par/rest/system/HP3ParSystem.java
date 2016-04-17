@@ -41,6 +41,7 @@ import com.google.gson.Gson;
 public class HP3ParSystem {
 	//
 	private SystemResponse systemResponse;
+	private String json;
 
 	/**
 	 * @param loginCredentials
@@ -59,10 +60,10 @@ public class HP3ParSystem {
 		request.setUri(threeParRESTconstants.GET_SYSTEM_URI);
 
 		request.execute();
-		String response = request.getHttpResponse();
+		this.json = request.getHttpResponse();
 
 		Gson gson = new Gson();
-		this.systemResponse = gson.fromJson(response, SystemResponse.class);
+		this.systemResponse = gson.fromJson(this.json, SystemResponse.class);
 	}
 
 	/**
@@ -70,6 +71,13 @@ public class HP3ParSystem {
 	 */
 	public SystemResponse getSystem() {
 		return this.systemResponse;
+	}
+
+	/**
+	 * @return in JSON encoded form
+	 */
+	public String toJson() {
+		return this.json;
 	}
 
 }

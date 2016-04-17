@@ -26,10 +26,14 @@ import java.io.IOException;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
+import org.apache.log4j.Logger;
+
+import com.cisco.matday.ucsd.hp3par.HP3ParModule;
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
-import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cloupia.model.cIM.InventoryDBItemIf;
 
 /**
@@ -41,22 +45,31 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_inventory")
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory_v3")
 public class HP3ParInventoryStore implements InventoryDBItemIf {
+	private static Logger logger = Logger.getLogger(HP3ParModule.class);
+
 	@Persistent
 	private String accountName;
 
 	@Persistent
-	private long updated;
+	private long updated = 0;
 
 	@Persistent
-	private VolumeResponse volumeInfo;
+	private String volumeInfo;
 
 	@Persistent
-	private SystemResponse sysInfo;
+	private String sysInfo;
 
 	@Persistent
-	private CPGResponse cpgInfo;
+	private String cpgInfo;
+
+	/**
+	 * Get the API version in case this database needs to be rebuilt in the
+	 * future
+	 */
+	@Persistent
+	public static final int API_VERSION = 3;
 
 	/**
 	 * Initialise inventory with an account name
@@ -66,6 +79,41 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 */
 	public HP3ParInventoryStore(String accountName) {
 		this.accountName = accountName;
+		logger.info("Created persistent entry (API version: " + HP3ParInventoryStore.API_VERSION + ")");
+
+		// Touch everything to ensure persistence
+		if (this.volumeInfo == null) {
+			logger.info("Setting up volume inventory");
+			HP3ParVolumeList volumeList;
+			try {
+				volumeList = new HP3ParVolumeList(new HP3ParCredentials(accountName));
+				this.volumeInfo = volumeList.toJson();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (this.sysInfo == null) {
+			try {
+				logger.info("Setting up system inventory");
+				final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(accountName));
+				this.sysInfo = systemInfo.toJson();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (this.cpgInfo == null) {
+			try {
+				logger.info("Setting up cpg inventory");
+				final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(accountName));
+				this.cpgInfo = cpg.toJson();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -74,7 +122,7 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 * @throws InvalidHP3ParTokenException
 	 * @throws IOException
 	 */
-	public SystemResponse getSysInfo() throws Exception {
+	public String getSysInfo() throws Exception {
 		return this.sysInfo;
 	}
 
@@ -84,7 +132,7 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 * @throws InvalidHP3ParTokenException
 	 * @throws IOException
 	 */
-	public CPGResponse getCpgInfo() throws Exception {
+	public String getCpgInfo() throws Exception {
 		return this.cpgInfo;
 	}
 
@@ -94,7 +142,7 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 * @throws InvalidHP3ParTokenException
 	 * @throws IOException
 	 */
-	public VolumeResponse getVolumeInfo() throws Exception {
+	public String getVolumeInfo() throws Exception {
 		return this.volumeInfo;
 	}
 
@@ -129,7 +177,7 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 *
 	 * @param volumeInfo
 	 */
-	public void setVolumeInfo(VolumeResponse volumeInfo) {
+	public void setVolumeInfo(String volumeInfo) {
 		this.volumeInfo = volumeInfo;
 	}
 
@@ -138,7 +186,7 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 *
 	 * @param sysInfo
 	 */
-	public void setSysInfo(SystemResponse sysInfo) {
+	public void setSysInfo(String sysInfo) {
 		this.sysInfo = sysInfo;
 	}
 
@@ -147,7 +195,7 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 *
 	 * @param cpgInfo
 	 */
-	public void setCpgInfo(CPGResponse cpgInfo) {
+	public void setCpgInfo(String cpgInfo) {
 		this.cpgInfo = cpgInfo;
 	}
 

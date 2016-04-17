@@ -41,6 +41,7 @@ import com.google.gson.Gson;
 public class HP3ParCPG {
 
 	private CPGResponse cpgResponse;
+	private String json;
 
 	/**
 	 * @param loginCredentials
@@ -59,10 +60,10 @@ public class HP3ParCPG {
 
 		request.setUri(threeParRESTconstants.GET_CPG_URI);
 		request.execute();
-		String response = request.getHttpResponse();
+		this.json = request.getHttpResponse();
 
 		Gson gson = new Gson();
-		this.cpgResponse = gson.fromJson(response, CPGResponse.class);
+		this.cpgResponse = gson.fromJson(this.json, CPGResponse.class);
 	}
 
 	/**
@@ -72,6 +73,13 @@ public class HP3ParCPG {
 	 */
 	public CPGResponse getCpg() {
 		return this.cpgResponse;
+	}
+
+	/**
+	 * @return in JSON encoded form
+	 */
+	public String toJson() {
+		return this.json;
 	}
 
 }

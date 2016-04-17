@@ -40,6 +40,7 @@ import com.google.gson.Gson;
  */
 public class HP3ParVolumeList {
 	private final VolumeResponse volume;
+	private final String json;
 
 	/**
 	 * @param loginCredentials
@@ -56,12 +57,12 @@ public class HP3ParVolumeList {
 		request.setGetDefaults();
 		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
 		request.execute();
-		final String response = request.getHttpResponse();
+		this.json = request.getHttpResponse();
 		// String response = new HP3ParRestWrapper(loginCredentials,
 		// threeParRESTconstants.GET_VOLUMES_URI,
 		// HttpRequestConstants.METHOD_TYPE_GET).execute();
 		final Gson gson = new Gson();
-		this.volume = gson.fromJson(response, VolumeResponse.class);
+		this.volume = gson.fromJson(this.json, VolumeResponse.class);
 	}
 
 	/**
@@ -69,6 +70,13 @@ public class HP3ParVolumeList {
 	 */
 	public VolumeResponse getVolume() {
 		return this.volume;
+	}
+
+	/**
+	 * @return in JSON encoded form
+	 */
+	public String toJson() {
+		return this.json;
 	}
 
 }

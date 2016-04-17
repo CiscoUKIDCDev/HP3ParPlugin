@@ -40,6 +40,7 @@ import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
+import com.google.gson.Gson;
 
 /**
  * Manages inventory data including storing and managing it
@@ -61,9 +62,9 @@ public class HP3ParInventory {
 	 */
 	public HP3ParInventory(String accountName) throws Exception {
 		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
-		final List<HP3ParInventoryStore> invStore = objStore.queryAll();
+		final List<HP3ParInventoryStore> invStore = objStore.query("accountName == '" + accountName + "'");
 
-		// HP3ParInventoryStore inv = null;
+		logger.info("Persistent inventory data list query returned: " + invStore.size());
 
 		for (final HP3ParInventoryStore i : invStore) {
 			if (accountName.equals(i.getAccountName())) {
@@ -105,13 +106,14 @@ public class HP3ParInventory {
 		this.store.setUpdated(c);
 		logger.info("Pulling down volume inventory");
 		final HP3ParVolumeList volumeList = new HP3ParVolumeList(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setVolumeInfo(volumeList.getVolume());
+		this.store.setVolumeInfo(volumeList.toJson());
 		logger.info("Pulling down system inventory");
 		final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setSysInfo(systemInfo.getSystem());
+		this.store.setSysInfo(systemInfo.toJson());
+		logger.info("System info name: " + systemInfo.getSystem().getName());
 		logger.info("Pulling down cpg inventory");
 		final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setCpgInfo(cpg.getCpg());
+		this.store.setCpgInfo(cpg.toJson());
 
 		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
 		// Update store:
@@ -138,7 +140,11 @@ public class HP3ParInventory {
 		logger.info("Searching cache for specific volume: " + volumeName);
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		for (final VolumeResponseMember i : inv.getStore().getVolumeInfo().getMembers()) {
+
+		Gson gson = new Gson();
+
+		for (final VolumeResponseMember i : (gson.fromJson(inv.getStore().getVolumeInfo(), VolumeResponse.class))
+				.getMembers()) {
 			if (volumeName.equals(i.getName())) {
 				logger.info("Found details on volume: " + volumeName);
 				return i;
@@ -159,8 +165,10 @@ public class HP3ParInventory {
 	public static CPGResponseMember getCpgInfo(String accountName, String cpgName) throws Exception {
 		logger.info("Searching cache for specific CPG: " + cpgName);
 		HP3ParInventory inv = new HP3ParInventory(accountName);
+		Gson gson = new Gson();
+
 		inv.update();
-		for (final CPGResponseMember i : inv.getStore().getCpgInfo().getMembers()) {
+		for (final CPGResponseMember i : (gson.fromJson(inv.getStore().getCpgInfo(), CPGResponse.class)).getMembers()) {
 			if (cpgName.equals(i.getName())) {
 				logger.info("Found details on CPG: " + cpgName);
 				return i;
@@ -223,7 +231,8 @@ public class HP3ParInventory {
 	public static VolumeResponse getVolumeResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		return inv.getStore().getVolumeInfo();
+		Gson gson = new Gson();
+		return gson.fromJson(inv.getStore().getVolumeInfo(), VolumeResponse.class);
 	}
 
 	/**
@@ -236,7 +245,12 @@ public class HP3ParInventory {
 	public static SystemResponse getSystemResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		return inv.getStore().getSysInfo();
+		if (inv.getStore().getSysInfo() == null) {
+			logger.warn("Warning! System info is still null! Running forced update");
+			inv.update(true);
+		}
+		Gson gson = new Gson();
+		return gson.fromJson(inv.getStore().getSysInfo(), SystemResponse.class);
 	}
 
 	/**
@@ -249,7 +263,8 @@ public class HP3ParInventory {
 	public static CPGResponse getCPGResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		return inv.getStore().getCpgInfo();
+		Gson gson = new Gson();
+		return gson.fromJson(inv.getStore().getCpgInfo(), CPGResponse.class);
 	}
 
 	/**
