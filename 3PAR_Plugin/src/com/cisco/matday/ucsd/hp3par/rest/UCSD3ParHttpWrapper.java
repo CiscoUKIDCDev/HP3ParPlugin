@@ -132,7 +132,6 @@ public class UCSD3ParHttpWrapper extends UCSDHttpRequest {
 				e.printStackTrace();
 			}
 		}
-		logger.info("Sending REST request - " + this.getUri());
 		// Call parent
 		super.execute();
 

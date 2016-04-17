@@ -40,7 +40,6 @@ import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
-import com.google.gson.Gson;
 
 /**
  * Manages inventory data including storing and managing it
@@ -64,16 +63,12 @@ public class HP3ParInventory {
 		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
 		final List<HP3ParInventoryStore> invStore = objStore.query("accountName == '" + accountName + "'");
 
-		logger.info("Persistent inventory data list query returned: " + invStore.size());
-
 		for (final HP3ParInventoryStore i : invStore) {
 			if (accountName.equals(i.getAccountName())) {
-				logger.info("Found persistence: " + i.getAccountName());
 				this.store = i;
 				return;
 			}
 		}
-		logger.info("Persistence not found. Creating new inventory for account " + accountName);
 		this.store = new HP3ParInventoryStore(accountName);
 		objStore.insert(this.store);
 	}
@@ -94,30 +89,20 @@ public class HP3ParInventory {
 		final Date d = new Date();
 		final long c = d.getTime();
 		if ((!force) && ((c - this.store.getUpdated()) < HP3ParConstants.INVENTORY_LIFE)) {
-			logger.info("Inventory not out of date, so skipping update");
+			logger.info("Inventory up to date");
 			return;
 		}
-		logger.info("Inventory out of date (or forced to update)");
-		logger.info("Last update: " + this.store.getUpdated());
-		logger.info("Time now: " + c);
-		logger.info(
-				"Difference = " + (c - this.store.getUpdated()) + " allowed delta = " + HP3ParConstants.INVENTORY_LIFE);
+		logger.info("Pulling new inventory from array");
 
 		this.store.setUpdated(c);
-		logger.info("Pulling down volume inventory");
 		final HP3ParVolumeList volumeList = new HP3ParVolumeList(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setVolumeInfo(volumeList.toJson());
-		logger.info("Pulling down system inventory");
+		this.store.setVolumeInfo(volumeList.getVolume());
 		final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setSysInfo(systemInfo.toJson());
-		logger.info("System info name: " + systemInfo.getSystem().getName());
-		logger.info("Pulling down cpg inventory");
+		this.store.setSysInfo(systemInfo.getSystem());
 		final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setCpgInfo(cpg.toJson());
+		this.store.setCpgInfo(cpg.getCpg());
 
 		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
-		// Update store:
-		logger.info("Storing updated inventory in persistent database");
 		try {
 			objStore.modifySingleObject("accountName == '" + this.store.getAccountName() + "'", this.store);
 		}
@@ -137,21 +122,18 @@ public class HP3ParInventory {
 	 * @throws Exception
 	 */
 	public static VolumeResponseMember getVolumeInfo(String accountName, String volumeName) throws Exception {
-		logger.info("Searching cache for specific volume: " + volumeName);
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
 
-		Gson gson = new Gson();
-
-		for (final VolumeResponseMember i : (gson.fromJson(inv.getStore().getVolumeInfo(), VolumeResponse.class))
-				.getMembers()) {
+		for (final VolumeResponseMember i : inv.getStore().getVolumeInfo().getMembers()) {
 			if (volumeName.equals(i.getName())) {
-				logger.info("Found details on volume: " + volumeName);
 				return i;
 			}
+
 		}
 		logger.warn("Volume not found in cache: " + volumeName);
 		return null;
+
 	}
 
 	/**
@@ -163,18 +145,14 @@ public class HP3ParInventory {
 	 * @throws Exception
 	 */
 	public static CPGResponseMember getCpgInfo(String accountName, String cpgName) throws Exception {
-		logger.info("Searching cache for specific CPG: " + cpgName);
 		HP3ParInventory inv = new HP3ParInventory(accountName);
-		Gson gson = new Gson();
 
 		inv.update();
-		for (final CPGResponseMember i : (gson.fromJson(inv.getStore().getCpgInfo(), CPGResponse.class)).getMembers()) {
+		for (final CPGResponseMember i : inv.getStore().getCpgInfo().getMembers()) {
 			if (cpgName.equals(i.getName())) {
-				logger.info("Found details on CPG: " + cpgName);
 				return i;
 			}
 		}
-		logger.warn("CPG not found in cache: " + cpgName);
 		return null;
 	}
 
@@ -204,11 +182,9 @@ public class HP3ParInventory {
 
 		for (final HP3ParInventoryStore i : invStore) {
 			if (accountName.equals(i.getAccountName())) {
-				logger.info("Found persistence: " + i.getAccountName());
 				return i;
 			}
 		}
-		logger.info("Creating new inventory for account " + accountName);
 		inv = new HP3ParInventoryStore(accountName);
 		store.insert(inv);
 		return inv;
@@ -231,8 +207,7 @@ public class HP3ParInventory {
 	public static VolumeResponse getVolumeResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		Gson gson = new Gson();
-		return gson.fromJson(inv.getStore().getVolumeInfo(), VolumeResponse.class);
+		return inv.getStore().getVolumeInfo();
 	}
 
 	/**
@@ -249,8 +224,7 @@ public class HP3ParInventory {
 			logger.warn("Warning! System info is still null! Running forced update");
 			inv.update(true);
 		}
-		Gson gson = new Gson();
-		return gson.fromJson(inv.getStore().getSysInfo(), SystemResponse.class);
+		return inv.getStore().getSysInfo();
 	}
 
 	/**
@@ -263,8 +237,7 @@ public class HP3ParInventory {
 	public static CPGResponse getCPGResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		Gson gson = new Gson();
-		return gson.fromJson(inv.getStore().getCpgInfo(), CPGResponse.class);
+		return inv.getStore().getCpgInfo();
 	}
 
 	/**
