@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -34,7 +34,7 @@ import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
 
 /**
  * Boilerplate from SDK - not sure what it does
- * 
+ *
  * @author Matt Day
  *
  */
@@ -46,15 +46,15 @@ public class HP3ParInventoryListener implements InventoryEventListener {
 		logger.info("Completed HP 3PAR inventory collection...");
 		HP3ParAccountPersistenceUtil.persistCollectedInventory(accountName);
 
-		AccountTypeEntry entry = PhysicalAccountManager.getInstance().getAccountTypeEntryByName(accountName);
+		final AccountTypeEntry entry = PhysicalAccountManager.getInstance().getAccountTypeEntryByName(accountName);
 		PhysicalConnectivityStatus connectivityStatus = null;
 		if (entry != null) {
 			connectivityStatus = entry.getTestConnectionHandler().testConnection(accountName);
 		}
 
-		HP3ParAccount acc = HP3ParCredentials.getInternalCredential(accountName);
+		final HP3ParAccount acc = HP3ParCredentials.getInternalCredential(accountName);
 
-		if (acc != null && connectivityStatus != null) {
+		if ((acc != null) && (connectivityStatus != null)) {
 			logger.info("Inventory collected successfully");
 		}
 

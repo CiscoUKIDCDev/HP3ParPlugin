@@ -19,38 +19,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.account.util;
+package com.cisco.matday.ucsd.hp3par.account.inventory;
 
-import org.apache.log4j.Logger;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
-import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 
 /**
- * This is the sample persistent util class for account. You can write your
- * methods to expose your persistence
- *
+ * Stores all persistent data for inventory purposes
+ * 
+ * @author Matt Day
  *
  */
-public class HP3ParAccountPersistenceUtil {
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory")
+public class HP3ParInventory {
+	@Persistent
+	private HP3ParAccount account;
 
-	static Logger logger = Logger.getLogger(HP3ParAccountPersistenceUtil.class);
+	@Persistent
+	private VolumeResponse volumeInfo;
 
 	/**
-	 * Boilerplate from SDK - not sure what it does
-	 *
-	 * @param accountName
-	 * @throws Exception
+	 * @return the account
 	 */
-	public static void persistCollectedInventory(String accountName) throws Exception {
-		logger.info("Call in persistCollectedInventory :: inventory  ");
-		logger.info("Account Name " + accountName);
+	public HP3ParAccount getAccount() {
+		return this.account;
+	}
 
-		final HP3ParAccount account = HP3ParCredentials.getInternalCredential(accountName);
+	/**
+	 * @param account
+	 *            the account to set
+	 */
+	public void setAccount(HP3ParAccount account) {
+		this.account = account;
+	}
 
-		if (account != null) {
-			logger.info("Remote Host Ip " + account.getServerAddress());
-		}
+	/**
+	 * @return the volumeInfo
+	 */
+	public VolumeResponse getVolumeInfo() {
+		return this.volumeInfo;
+	}
+
+	/**
+	 * @param volumeInfo
+	 *            the volumeInfo to set
+	 */
+	public void setVolumeInfo(VolumeResponse volumeInfo) {
+		this.volumeInfo = volumeInfo;
 	}
 
 }

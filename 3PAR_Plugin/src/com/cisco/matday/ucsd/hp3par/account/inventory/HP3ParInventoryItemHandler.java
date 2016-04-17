@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -34,7 +34,7 @@ import com.cloupia.service.cIM.inframgr.collector.model.ItemResponse;
 
 /**
  * Implements the inventory collector. This doesn't do much today
- * 
+ *
  * @author Matt Day
  *
  */
@@ -51,7 +51,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 	/**
 	 * This method used for do Inventory of Account
-	 * 
+	 *
 	 * @Override method of IInventoryItemHandlerIf interface
 	 * @param accountName
 	 *            ,InventoryContext
@@ -59,13 +59,13 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 */
 	@Override
 	public void doInventory(String accountName, InventoryContext inventoryCtxt) throws Exception {
-		doInventory(accountName);
+		this.doInventory(accountName);
 
 	}
 
 	/**
 	 * This method used for do Inventory of Account
-	 * 
+	 *
 	 * @Override method of IInventoryItemHandlerIf interface
 	 * @param accountName
 	 *            ,Object
@@ -79,7 +79,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 	/**
 	 * private Method used for doing Inventory of Account
-	 * 
+	 *
 	 * @param accountName
 	 * @exception Exception
 	 */
@@ -95,24 +95,29 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 		 */
 
 		// String jsonData = api.getInventoryData(getUrl());
-		String jsonData = null;
-		ItemResponse bindableResponse = new ItemResponse();
-		bindableResponse.setContext(getContext(accountName));
+
+		final String jsonData = null;
+		final ItemResponse bindableResponse = new ItemResponse();
+		bindableResponse.setContext(this.getContext(accountName));
 		bindableResponse.setCollectedData(jsonData);
 		ItemResponse bindedResponse = null;
 		logger.info("Before Callng bind");
 
-		HP3ParJSONBinder binder = getBinder();
+		final HP3ParJSONBinder binder = this.getBinder();
 		if (binder != null) {
 			bindedResponse = binder.bind(bindableResponse);
+			logger.info(bindedResponse.getItem().getLabel());
 
 		}
 
 		logger.info("after Calling bind");
 
-		PersistenceListener listener = getListener();
+		final PersistenceListener listener = this.getListener();
 		if (listener != null) {
 			logger.info("Calling for Persistence");
+			if (bindedResponse == null) {
+				logger.info("bindedResponse is null");
+			}
 			listener.persistItem(bindedResponse);
 		}
 		else {
@@ -123,7 +128,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 	/**
 	 * Method used for get Url
-	 * 
+	 *
 	 * @return String
 	 */
 	@SuppressWarnings("static-method")
@@ -135,7 +140,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	/**
 	 * Method used to get object of HP3ParAccountJSONBinder Binder will bind the
 	 * respective object as JSON.
-	 * 
+	 *
 	 * @return HP3ParAccountJSONBinder
 	 */
 	@SuppressWarnings("static-method")
@@ -146,7 +151,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 	/**
 	 * Private Method used to get Map of Context
-	 * 
+	 *
 	 * @param accountName
 	 * @return Map<String, Object>
 	 * @exception No
@@ -158,7 +163,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 	/**
 	 * Private Method used to get Object of PersistenceListener
-	 * 
+	 *
 	 * @param No
 	 * @return PersistenceListener
 	 * @exception No

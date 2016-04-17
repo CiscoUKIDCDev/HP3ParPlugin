@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -54,7 +54,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 
 /**
  * UCS Director HP 3PAR storage module
- * 
+ *
  * @author matt
  *
  */
@@ -65,7 +65,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	@Override
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
-		CloupiaReport[] report = new CloupiaReport[] {
+		final CloupiaReport[] report = new CloupiaReport[] {
 				new AccountReport(), new VolumeReport(), new CPGReport(),
 		};
 		return report;
@@ -75,7 +75,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	@Override
 	public AbstractTask[] getTasks() {
 		logger.info("Adding tasks");
-		AbstractTask[] task = new AbstractTask[] {
+		final AbstractTask[] task = new AbstractTask[] {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask()
 		};
@@ -102,10 +102,10 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			ReportContextRegistry.getInstance().register(HP3ParConstants.INFRA_ACCOUNT_TYPE,
 					HP3ParConstants.INFRA_ACCOUNT_LABEL);
 
-			createAccountType();
+			this.createAccountType();
 
 		}
-		catch (Exception e) {
+		catch (final Exception e) {
 			logger.error("Error loading HP 3PAR module.", e);
 		}
 
@@ -119,7 +119,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 	// Create the plugin as an account in UCSD
 	private void createAccountType() {
-		AccountTypeEntry entry = new AccountTypeEntry();
+		final AccountTypeEntry entry = new AccountTypeEntry();
 
 		// This is mandatory, hold the information for device credential details
 		entry.setCredentialClass(HP3ParAccount.class);
@@ -155,10 +155,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		// inventory collection frequency, in mins.
 		entry.setInventoryFrequencyInMins(15);
 
-		// Register for our own snowflake pod (3Par), Generic pods and also
-		// FlexPods
+		// Register for our own snowflake pod (3Par) and generic pods
 		entry.setPodTypes(new String[] {
-				HP3ParConstants.POD_TYPE, "GenericPod", "FlexPod",
+				HP3ParConstants.POD_TYPE, "GenericPod",
 		});
 
 		// This is mandatory, to test the connectivity of the new account. The
@@ -179,10 +178,10 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 		try {
 			// Adding inventory root
-			registerInventoryObjects(entry);
+			this.registerInventoryObjects(entry);
 			PhysicalAccountTypeManager.getInstance().addNewAccountType(entry);
 		}
-		catch (Exception e) {
+		catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -190,7 +189,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	@SuppressWarnings("static-method")
 	private void registerInventoryObjects(AccountTypeEntry hP3ParRecoverPointAccountEntry) {
 		@SuppressWarnings("unused")
-		ConfigItemDef HP3ParRecoverPointStateInfo = hP3ParRecoverPointAccountEntry
+		final ConfigItemDef HP3ParRecoverPointStateInfo = hP3ParRecoverPointAccountEntry
 				.createInventoryRoot("HP3Par.inventory.root", HP3ParInventoryItemHandler.class);
 	}
 
