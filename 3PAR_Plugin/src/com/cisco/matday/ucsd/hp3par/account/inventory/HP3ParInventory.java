@@ -58,19 +58,33 @@ public class HP3ParInventory {
 	 *
 	 * @param accountName
 	 * @throws Exception
+	 *
 	 */
 	public HP3ParInventory(String accountName) throws Exception {
 		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
-		final List<HP3ParInventoryStore> invStore = objStore.query("accountName == '" + accountName + "'");
-
-		for (final HP3ParInventoryStore i : invStore) {
-			if (accountName.equals(i.getAccountName())) {
-				this.store = i;
-				return;
+		List<HP3ParInventoryStore> invStore = null;
+		try {
+			invStore = objStore.query("accountName == '" + accountName + "'");
+			for (final HP3ParInventoryStore i : invStore) {
+				if (accountName.equals(i.getAccountName())) {
+					this.store = i;
+					return;
+				}
 			}
+			this.store = new HP3ParInventoryStore(accountName);
+			objStore.insert(this.store);
 		}
-		this.store = new HP3ParInventoryStore(accountName);
-		objStore.insert(this.store);
+		catch (Exception e) {
+			if (ObjStoreHelper.getPersistenceManager().currentTransaction().isActive()) {
+				logger.warn("Rolling back transaction: " + e.getMessage());
+				ObjStoreHelper.getPersistenceManager().currentTransaction().rollback();
+			}
+			else {
+				logger.warn("Transaction failed: " + e.getMessage());
+			}
+			throw new Exception(e);
+		}
+
 	}
 
 	/**
