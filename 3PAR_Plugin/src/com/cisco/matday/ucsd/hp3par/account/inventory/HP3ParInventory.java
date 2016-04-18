@@ -61,20 +61,25 @@ public class HP3ParInventory {
 	 *
 	 */
 	public HP3ParInventory(String accountName) throws Exception {
+		logger.info("Opening persistent store for account: " + accountName);
 		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
+		logger.info("Query was fine - looping through accounts to find " + accountName);
 		List<HP3ParInventoryStore> invStore = null;
 		try {
 			invStore = objStore.query("accountName == '" + accountName + "'");
 			for (final HP3ParInventoryStore i : invStore) {
 				if (accountName.equals(i.getAccountName())) {
+					logger.info("Found existing object");
 					this.store = i;
 					return;
 				}
 			}
+			logger.info("Inventory for account: " + accountName + " not found. Attempting to create new object");
 			this.store = new HP3ParInventoryStore(accountName);
 			objStore.insert(this.store);
 		}
 		catch (Exception e) {
+			logger.warn("Transaction failed!");
 			if (ObjStoreHelper.getPersistenceManager().currentTransaction().isActive()) {
 				logger.warn("Rolling back transaction: " + e.getMessage());
 				ObjStoreHelper.getPersistenceManager().currentTransaction().rollback();
