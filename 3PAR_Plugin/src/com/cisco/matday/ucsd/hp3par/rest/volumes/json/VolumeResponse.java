@@ -40,9 +40,26 @@ public class VolumeResponse implements Serializable {
 	private int total;
 	private List<VolumeResponseMember> members;
 
+	private String json;
+
 	@SuppressWarnings("javadoc")
 	public void setMembers(List<VolumeResponseMember> members) {
 		this.members = members;
+	}
+
+	/**
+	 * @return the json
+	 */
+	public String getJson() {
+		return this.json;
+	}
+
+	/**
+	 * @param json
+	 *            the json to set
+	 */
+	public void setJson(String json) {
+		this.json = json;
 	}
 
 	@SuppressWarnings("javadoc")

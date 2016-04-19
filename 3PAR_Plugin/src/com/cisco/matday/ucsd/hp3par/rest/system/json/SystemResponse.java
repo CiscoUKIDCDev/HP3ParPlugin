@@ -51,6 +51,23 @@ public class SystemResponse implements Serializable {
 	private double failedCapacityMiB;
 	private String timeZone;
 
+	private String json;
+
+	/**
+	 * @return the json
+	 */
+	public String getJson() {
+		return this.json;
+	}
+
+	/**
+	 * @param json
+	 *            the json to set
+	 */
+	public void setJson(String json) {
+		this.json = json;
+	}
+
 	@SuppressWarnings("javadoc")
 	public long getId() {
 		return this.id;

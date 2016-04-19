@@ -48,7 +48,7 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_inventory_v4")
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory_v5")
 public class HP3ParInventoryStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
@@ -59,20 +59,20 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	private long updated = 0;
 
 	@Persistent(defaultFetchGroup = "true")
-	private VolumeResponse volumeInfo;
+	private VolumeResponse volumeList;
 
 	@Persistent(defaultFetchGroup = "true")
 	private SystemResponse sysInfo;
 
 	@Persistent(defaultFetchGroup = "true")
-	private CPGResponse cpgInfo;
+	private CPGResponse cpgList;
 
 	/**
 	 * Get the API version in case this database needs to be rebuilt in the
 	 * future
 	 */
 	@Persistent
-	public static final int API_VERSION = 4;
+	public static final int API_VERSION = 5;
 
 	/**
 	 * Initialise inventory with an account name
@@ -85,12 +85,12 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 		logger.info("Created persistent entry (API version: " + HP3ParInventoryStore.API_VERSION + ")");
 
 		// Touch everything to ensure persistence
-		if (this.volumeInfo == null) {
+		if (this.volumeList == null) {
 			logger.info("Setting up volume inventory");
-			HP3ParVolumeList volumeList;
+			HP3ParVolumeList volume;
 			try {
-				volumeList = new HP3ParVolumeList(new HP3ParCredentials(accountName));
-				this.volumeInfo = volumeList.getVolume();
+				volume = new HP3ParVolumeList(new HP3ParCredentials(accountName));
+				this.volumeList = volume.getVolume();
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -106,11 +106,11 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 				e.printStackTrace();
 			}
 		}
-		if (this.cpgInfo == null) {
+		if (this.cpgList == null) {
 			try {
 				logger.info("Setting up cpg inventory");
 				final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(accountName));
-				this.cpgInfo = cpg.getCpg();
+				this.cpgList = cpg.getCpg();
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -135,8 +135,8 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 * @throws InvalidHP3ParTokenException
 	 * @throws IOException
 	 */
-	public CPGResponse getCpgInfo() throws Exception {
-		return this.cpgInfo;
+	public CPGResponse getCpgList() throws Exception {
+		return this.cpgList;
 	}
 
 	/**
@@ -145,8 +145,8 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 * @throws InvalidHP3ParTokenException
 	 * @throws IOException
 	 */
-	public VolumeResponse getVolumeInfo() throws Exception {
-		return this.volumeInfo;
+	public VolumeResponse getVolumeList() throws Exception {
+		return this.volumeList;
 	}
 
 	@Override
@@ -180,8 +180,8 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 *
 	 * @param volumeInfo
 	 */
-	public void setVolumeInfo(VolumeResponse volumeInfo) {
-		this.volumeInfo = volumeInfo;
+	public void setVolumeList(VolumeResponse volumeInfo) {
+		this.volumeList = volumeInfo;
 	}
 
 	/**
@@ -198,8 +198,8 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 *
 	 * @param cpgInfo
 	 */
-	public void setCpgInfo(CPGResponse cpgInfo) {
-		this.cpgInfo = cpgInfo;
+	public void setCpgList(CPGResponse cpgInfo) {
+		this.cpgList = cpgInfo;
 	}
 
 }

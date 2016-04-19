@@ -22,8 +22,12 @@
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 import org.apache.log4j.Logger;
 
@@ -38,11 +42,14 @@ import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
-import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
+import com.google.gson.Gson;
 
 /**
  * Manages inventory data including storing and managing it
+ *
+ * Everything should be accessed via the static members as they guarantee
+ * releasing resources and writing back to the database
  *
  * @author Matt Day
  *
@@ -51,7 +58,7 @@ public class HP3ParInventory {
 
 	private static Logger logger = Logger.getLogger(HP3ParInventory.class);
 
-	private HP3ParInventoryStore store = null;
+	private HP3ParInventoryStore invStore = null;
 
 	/**
 	 * Create a new inventory instance
@@ -60,36 +67,73 @@ public class HP3ParInventory {
 	 * @throws Exception
 	 *
 	 */
-	public HP3ParInventory(String accountName) throws Exception {
+	private HP3ParInventory(String accountName) throws Exception {
 		logger.info("Opening persistent store for account: " + accountName);
-		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
-		logger.info("Query was fine - looping through accounts to find " + accountName);
-		List<HP3ParInventoryStore> invStore = null;
+		final String queryString = "accountName == '" + accountName + "'";
+		final PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
+		pm.getFetchPlan().setFetchSize(3);
+		final Transaction tx = pm.currentTransaction();
 		try {
-			invStore = objStore.query("accountName == '" + accountName + "'");
-			for (final HP3ParInventoryStore i : invStore) {
-				if (accountName.equals(i.getAccountName())) {
-					logger.info("Found existing object");
-					this.store = i;
-					return;
+			tx.begin();
+			Query query = pm.newQuery(HP3ParInventoryStore.class, queryString);
+			// Suppress unchecked cast warnings here as the query has an
+			// explicit class definition
+			@SuppressWarnings("unchecked")
+			Collection<HP3ParInventoryStore> invStoreCollection = (Collection<HP3ParInventoryStore>) query.execute();
+			for (HP3ParInventoryStore store : invStoreCollection) {
+				if (accountName.equals(store.getAccountName())) {
+					logger.info("Account found: " + store.getAccountName());
+					this.invStore = store;
+				}
+				else {
+					logger.info("Found account (not going to use): " + store.getAccountName());
 				}
 			}
-			logger.info("Inventory for account: " + accountName + " not found. Attempting to create new object");
-			this.store = new HP3ParInventoryStore(accountName);
-			objStore.insert(this.store);
+			tx.commit();
 		}
 		catch (Exception e) {
-			logger.warn("Transaction failed!");
-			if (ObjStoreHelper.getPersistenceManager().currentTransaction().isActive()) {
-				logger.warn("Rolling back transaction: " + e.getMessage());
-				ObjStoreHelper.getPersistenceManager().currentTransaction().rollback();
+			if (tx.isActive()) {
+				tx.rollback();
 			}
-			else {
-				logger.warn("Transaction failed: " + e.getMessage());
+			logger.info("Exeption when doing this! " + e.getMessage());
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.commit();
 			}
-			throw new Exception(e);
+			pm.close();
+		}
+		if (this.invStore == null) {
+			logger.warn("No account found! Attempting to create and store");
+			this.create(accountName);
 		}
 
+	}
+
+	private void create(String accountName) {
+		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
+		pm.getFetchPlan().setFetchSize(3);
+		Transaction tx = pm.currentTransaction();
+		try {
+			logger.info("Creating new data store: " + accountName);
+			this.invStore = new HP3ParInventoryStore(accountName);
+			tx.begin();
+			pm.makePersistent(this.invStore);
+			tx.commit();
+		}
+		catch (Exception e) {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			logger.info("Exeption when doing this! " + e.getMessage());
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.commit();
+			}
+			logger.info("Closing connection");
+			pm.close();
+		}
 	}
 
 	/**
@@ -103,37 +147,74 @@ public class HP3ParInventory {
 	 * @throws InvalidHP3ParTokenException
 	 * @throws Exception
 	 */
-	public void update(boolean force) throws Exception {
-		logger.info("Inventory update requested; forced: " + force);
-		final Date d = new Date();
-		final long c = d.getTime();
-		if ((!force) && ((c - this.store.getUpdated()) < HP3ParConstants.INVENTORY_LIFE)) {
-			logger.info("Inventory already up to date");
-			return;
-		}
-		logger.info("Pulling new inventory from array");
-
-		this.store.setUpdated(c);
-
-		final HP3ParVolumeList volumeList = new HP3ParVolumeList(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setVolumeInfo(volumeList.getVolume());
-
-		final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setSysInfo(systemInfo.getSystem());
-
-		final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(this.store.getAccountName()));
-		this.store.setCpgInfo(cpg.getCpg());
-
-		final ObjStore<HP3ParInventoryStore> objStore = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
-
+	private void update(boolean force) throws Exception {
+		final String accountName = this.invStore.getAccountName();
+		final String queryString = "accountName == '" + accountName + "'";
+		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
+		// pm.getFetchPlan().setFetchSize(3);
+		Transaction tx = pm.currentTransaction();
 		try {
-			objStore.modifySingleObject("accountName == '" + this.store.getAccountName() + "'", this.store);
+			tx.begin();
+			Query query = pm.newQuery(HP3ParInventoryStore.class, queryString);
+			// Suppress unchecked cast warnings here as the query has an
+			// explicit class definition
+			@SuppressWarnings("unchecked")
+			Collection<HP3ParInventoryStore> invStoreCollection = (Collection<HP3ParInventoryStore>) query.execute();
+			HP3ParInventoryStore store = invStoreCollection.iterator().next();
+			if (store == null) {
+				logger.warn("Cannot find " + accountName + " in inventory! Rolling back and creating new");
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				// Attempt to create it:
+				this.create(accountName);
+				return;
+			}
+			final Date d = new Date();
+			final long c = d.getTime();
+			if ((!force) && ((c - store.getUpdated()) < HP3ParConstants.INVENTORY_LIFE)) {
+				if (tx.isActive()) {
+					tx.commit();
+				}
+				return;
+			}
+			store.setUpdated(c);
+
+			final HP3ParVolumeList volumeList = new HP3ParVolumeList(new HP3ParCredentials(store.getAccountName()));
+			store.setVolumeList(volumeList.getVolume());
+
+			final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(store.getAccountName()));
+			store.setSysInfo(systemInfo.getSystem());
+
+			final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(store.getAccountName()));
+			store.setCpgList(cpg.getCpg());
+			this.invStore = store;
+			tx.commit();
 		}
 		catch (Exception e) {
-			logger.warn("Update failed: " + e.getMessage());
-			throw new Exception(e);
+			logger.warn("Exception updating database! " + e.getMessage());
+			if (tx.isActive()) {
+				tx.rollback();
+			}
 		}
+		finally {
+			if (tx.isActive()) {
+				tx.commit();
+			}
+			pm.close();
+		}
+	}
 
+	private VolumeResponse getVol() throws Exception {
+		return this.getStore().getVolumeList();
+	}
+
+	private CPGResponse getCpg() throws Exception {
+		return this.getStore().getCpgList();
+	}
+
+	private SystemResponse getSys() throws Exception {
+		return this.getStore().getSysInfo();
 	}
 
 	/**
@@ -144,15 +225,19 @@ public class HP3ParInventory {
 	 * @return Volume information
 	 * @throws Exception
 	 */
-	public static VolumeResponseMember getVolumeInfo(String accountName, String volumeName) throws Exception {
+	public synchronized static final VolumeResponseMember getVolumeInfo(String accountName, String volumeName)
+			throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
 
-		for (final VolumeResponseMember i : inv.getStore().getVolumeInfo().getMembers()) {
+		// Copy original
+		final Gson gson = new Gson();
+		VolumeResponse copy = gson.fromJson(inv.getVol().getJson(), VolumeResponse.class);
+
+		for (final VolumeResponseMember i : copy.getMembers()) {
 			if (volumeName.equals(i.getName())) {
 				return i;
 			}
-
 		}
 		logger.warn("Volume not found in cache: " + volumeName);
 		return null;
@@ -167,15 +252,19 @@ public class HP3ParInventory {
 	 * @return Volume information
 	 * @throws Exception
 	 */
-	public static CPGResponseMember getCpgInfo(String accountName, String cpgName) throws Exception {
+	public synchronized static CPGResponseMember getCpgInfo(String accountName, String cpgName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
-
 		inv.update();
-		for (final CPGResponseMember i : inv.getStore().getCpgInfo().getMembers()) {
+		// Copy the class from original JSON
+		final Gson gson = new Gson();
+		CPGResponse copy = gson.fromJson(inv.getCpg().getJson(), CPGResponse.class);
+
+		for (final CPGResponseMember i : copy.getMembers()) {
 			if (cpgName.equals(i.getName())) {
 				return i;
 			}
 		}
+		logger.warn("CPG not found in cache: " + cpgName);
 		return null;
 	}
 
@@ -186,38 +275,15 @@ public class HP3ParInventory {
 	 * @throws InvalidHP3ParTokenException
 	 * @throws Exception
 	 */
-	public void update() throws Exception {
+	private void update() throws Exception {
 		this.update(false);
-	}
-
-	/**
-	 * Get the inventory for an account name
-	 *
-	 * @param accountName
-	 *            Name of the account
-	 * @return Inventory
-	 * @throws Exception
-	 */
-	public static HP3ParInventoryStore get(String accountName) throws Exception {
-		final ObjStore<HP3ParInventoryStore> store = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
-		final List<HP3ParInventoryStore> invStore = store.queryAll();
-		HP3ParInventoryStore inv = null;
-
-		for (final HP3ParInventoryStore i : invStore) {
-			if (accountName.equals(i.getAccountName())) {
-				return i;
-			}
-		}
-		inv = new HP3ParInventoryStore(accountName);
-		store.insert(inv);
-		return inv;
 	}
 
 	/**
 	 * @return raw db store
 	 */
-	public HP3ParInventoryStore getStore() {
-		return this.store;
+	private HP3ParInventoryStore getStore() {
+		return this.invStore;
 	}
 
 	/**
@@ -227,10 +293,13 @@ public class HP3ParInventory {
 	 * @return volume response list
 	 * @throws Exception
 	 */
-	public static VolumeResponse getVolumeResponse(String accountName) throws Exception {
+	public synchronized static VolumeResponse getVolumeResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		return inv.getStore().getVolumeInfo();
+		// Copy the object from original JSON
+		final Gson gson = new Gson();
+		VolumeResponse copy = gson.fromJson(inv.getVol().getJson(), VolumeResponse.class);
+		return copy;
 	}
 
 	/**
@@ -240,14 +309,13 @@ public class HP3ParInventory {
 	 * @return volume response list
 	 * @throws Exception
 	 */
-	public static SystemResponse getSystemResponse(String accountName) throws Exception {
+	public synchronized static SystemResponse getSystemResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		if (inv.getStore().getSysInfo() == null) {
-			logger.warn("Warning! System info is still null! Running forced update");
-			inv.update(true);
-		}
-		return inv.getStore().getSysInfo();
+		// Copy the object from original JSON
+		final Gson gson = new Gson();
+		SystemResponse copy = gson.fromJson(inv.getSys().getJson(), SystemResponse.class);
+		return copy;
 	}
 
 	/**
@@ -257,10 +325,13 @@ public class HP3ParInventory {
 	 * @return volume response list
 	 * @throws Exception
 	 */
-	public static CPGResponse getCPGResponse(String accountName) throws Exception {
+	public synchronized static CPGResponse getCPGResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		return inv.getStore().getCpgInfo();
+		// Copy object from original JSON
+		final Gson gson = new Gson();
+		CPGResponse copy = gson.fromJson(inv.getCpg().getJson(), CPGResponse.class);
+		return copy;
 	}
 
 	/**
@@ -271,7 +342,7 @@ public class HP3ParInventory {
 	 *            - force the updates
 	 * @throws Exception
 	 */
-	public static void update(String accountName, boolean force) throws Exception {
+	public synchronized static void update(String accountName, boolean force) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update(force);
 	}

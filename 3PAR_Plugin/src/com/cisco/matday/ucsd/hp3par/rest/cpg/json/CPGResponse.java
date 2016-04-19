@@ -39,6 +39,23 @@ public class CPGResponse implements Serializable {
 	private int total;
 	private List<CPGResponseMember> members;
 
+	private String json;
+
+	/**
+	 * @return the json
+	 */
+	public String getJson() {
+		return this.json;
+	}
+
+	/**
+	 * @param json
+	 *            the json to set
+	 */
+	public void setJson(String json) {
+		this.json = json;
+	}
+
 	@SuppressWarnings("javadoc")
 	public int getTotal() {
 		return this.total;

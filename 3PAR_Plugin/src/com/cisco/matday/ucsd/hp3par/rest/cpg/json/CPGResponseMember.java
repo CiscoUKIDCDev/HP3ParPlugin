@@ -123,6 +123,23 @@ public class CPGResponseMember implements Serializable {
 	private CPGResponseSpace SDUsage;
 	private int state;
 
+	private String json;
+
+	/**
+	 * @return the json
+	 */
+	public String getJson() {
+		return this.json;
+	}
+
+	/**
+	 * @param json
+	 *            the json to set
+	 */
+	public void setJson(String json) {
+		this.json = json;
+	}
+
 	@SuppressWarnings("javadoc")
 	public int getId() {
 		return this.id;

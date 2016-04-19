@@ -98,9 +98,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 		logger.info("Persisting data and querying on schedule");
 
-		final HP3ParInventory inv = new HP3ParInventory(accountName);
-		// Force update
-		inv.update(true);
+		HP3ParInventory.update(accountName, true);
 
 		final String jsonData = null;
 		final ItemResponse bindableResponse = new ItemResponse();

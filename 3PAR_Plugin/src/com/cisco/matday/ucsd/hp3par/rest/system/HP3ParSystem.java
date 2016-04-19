@@ -64,6 +64,7 @@ public class HP3ParSystem {
 
 		Gson gson = new Gson();
 		this.systemResponse = gson.fromJson(this.json, SystemResponse.class);
+		this.systemResponse.setJson(this.json);
 	}
 
 	/**
