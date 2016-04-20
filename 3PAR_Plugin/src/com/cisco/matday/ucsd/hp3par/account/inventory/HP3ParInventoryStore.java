@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.Element;
+import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -51,11 +52,10 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_inventory_v5")
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory_v7")
 public class HP3ParInventoryStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@PrimaryKey
 	@Column(name = "ID")
 	private long id;
@@ -68,17 +68,17 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 
 	@Persistent(defaultFetchGroup = "true")
 	@Element(dependent = "true")
-	// @Embedded
+	@Embedded
 	private VolumeResponse volumeList;
 
 	@Persistent(defaultFetchGroup = "true")
 	@Element(dependent = "true")
-	// @Embedded
+	@Embedded
 	private SystemResponse sysInfo;
 
 	@Persistent(defaultFetchGroup = "true")
 	@Element(dependent = "true")
-	// @Embedded
+	@Embedded
 	private CPGResponse cpgList;
 
 	/**
@@ -86,7 +86,7 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 * future
 	 */
 	@Persistent
-	public static final int API_VERSION = 5;
+	public static final int API_VERSION = 7;
 
 	/**
 	 * Initialise inventory with an account name

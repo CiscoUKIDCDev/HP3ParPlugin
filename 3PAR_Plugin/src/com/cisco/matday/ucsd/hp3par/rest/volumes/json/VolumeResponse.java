@@ -24,6 +24,9 @@ package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+
 /**
  * REST representation from 3PAR array when querying volumes
  *
@@ -32,34 +35,23 @@ import java.util.List;
  * @author Matt Day
  *
  */
+@PersistenceCapable(detachable = "true", table = "hp3par_volume_response_v1")
 public class VolumeResponse implements Serializable {
 	/**
 	 * Version
 	 */
+	@Persistent(defaultFetchGroup = "true")
 	private static final long serialVersionUID = 1L;
-	private int total;
-	private List<VolumeResponseMember> members;
 
-	private String json;
+	@Persistent(defaultFetchGroup = "true")
+	private int total;
+
+	@Persistent(defaultFetchGroup = "true")
+	private List<VolumeResponseMember> members;
 
 	@SuppressWarnings("javadoc")
 	public void setMembers(List<VolumeResponseMember> members) {
 		this.members = members;
-	}
-
-	/**
-	 * @return the json
-	 */
-	public String getJson() {
-		return this.json;
-	}
-
-	/**
-	 * @param json
-	 *            the json to set
-	 */
-	public void setJson(String json) {
-		this.json = json;
 	}
 
 	@SuppressWarnings("javadoc")

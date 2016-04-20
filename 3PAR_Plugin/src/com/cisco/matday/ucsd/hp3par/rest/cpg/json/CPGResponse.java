@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
@@ -35,17 +36,36 @@ import javax.jdo.annotations.Persistent;
  *
  */
 
-@PersistenceCapable(detachable = "true", table = "hp3par_cpg_v1")
+@PersistenceCapable(detachable = "true", table = "hp3par_cpg_response_v2")
 public class CPGResponse implements Serializable {
 	/**
 	 *
 	 */
-	@Persistent
+	@Persistent(defaultFetchGroup = "true")
 	private static final long serialVersionUID = 1L;
-	@Persistent
+
+	@Persistent(defaultFetchGroup = "true")
 	private int total;
-	@Persistent
+
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
 	private List<CPGResponseMember> members;
+
+	// private String json;
+
+	/**
+	 * @return the json
+	 */
+	/*
+	 * public String getJson() { return this.json; }
+	 */
+
+	/**
+	 * @param json
+	 *            the json to set
+	 *//*
+		 * public void setJson(String json) { this.json = json; }
+		 */
 
 	@SuppressWarnings("javadoc")
 	public int getTotal() {

@@ -63,7 +63,7 @@ public class HP3ParVolumeList {
 		// HttpRequestConstants.METHOD_TYPE_GET).execute();
 		final Gson gson = new Gson();
 		this.volume = gson.fromJson(this.json, VolumeResponse.class);
-		this.volume.setJson(this.json);
+		// this.volume.setJson(this.json);
 	}
 
 	/**

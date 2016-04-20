@@ -23,6 +23,8 @@ package com.cisco.matday.ucsd.hp3par.rest.system.json;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.PersistenceCapable;
+
 /**
  * Object to represent JSON response for a System request on a 3PAR array.
  *
@@ -31,6 +33,7 @@ import java.io.Serializable;
  * @author Matt Day
  *
  */
+@PersistenceCapable(detachable = "true", table = "hp3par_system_response_v2")
 public class SystemResponse implements Serializable {
 	/**
 	 *
@@ -50,23 +53,6 @@ public class SystemResponse implements Serializable {
 	private double freeCapacityMiB;
 	private double failedCapacityMiB;
 	private String timeZone;
-
-	private String json;
-
-	/**
-	 * @return the json
-	 */
-	public String getJson() {
-		return this.json;
-	}
-
-	/**
-	 * @param json
-	 *            the json to set
-	 */
-	public void setJson(String json) {
-		this.json = json;
-	}
 
 	@SuppressWarnings("javadoc")
 	public long getId() {

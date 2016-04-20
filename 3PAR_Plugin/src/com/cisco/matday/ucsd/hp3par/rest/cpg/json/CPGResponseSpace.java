@@ -23,6 +23,9 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+
 /**
  * REST object representation of the HP3PAR CPG list. See the HP 3PAR REST
  * documentation for detail on these methods and values
@@ -30,13 +33,18 @@ import java.io.Serializable;
  * @author Matt Day
  *
  */
+@PersistenceCapable(detachable = "true", table = "hp3par_cpg_response_space_v1")
 public class CPGResponseSpace implements Serializable {
 	/**
 	 *
 	 */
+	@Persistent(defaultFetchGroup = "true")
 	private static final long serialVersionUID = 50770804727716403L;
+	@Persistent(defaultFetchGroup = "true")
 	private long totalMiB;
+	@Persistent(defaultFetchGroup = "true")
 	private long rawTotalMiB;
+	@Persistent(defaultFetchGroup = "true")
 	private long usedMiB;
 
 	@SuppressWarnings("javadoc")
@@ -80,5 +88,6 @@ public class CPGResponseSpace implements Serializable {
 		this.rawUsedMiB = rawUsedMiB;
 	}
 
+	@Persistent(defaultFetchGroup = "true")
 	private long rawUsedMiB;
 }

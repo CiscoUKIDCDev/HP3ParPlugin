@@ -23,6 +23,11 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.Element;
+import javax.jdo.annotations.Embedded;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+
 /**
  * REST object representation of the HP3PAR CPG list. See the HP 3PAR REST
  * documentation for detail on these methods and values
@@ -30,10 +35,12 @@ import java.io.Serializable;
  * @author Matt Day
  *
  */
+@PersistenceCapable(detachable = "true", table = "hp3par_cpg_response_member_v1")
 public class CPGResponseMember implements Serializable {
 	/**
 	 *
 	 */
+
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Raid level 0
@@ -70,6 +77,35 @@ public class CPGResponseMember implements Serializable {
 			"N/A", "Fibre Channel", "Near Line", "SSD"
 	};
 
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	private String uuid;
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	private String name;
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	private int numFPVVs;
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	private int numTPVVs;
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	@Embedded
+	private CPGResponseSpace UsrUsage;
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	@Embedded
+	private CPGResponseSpace SAUsage;
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	@Embedded
+	private CPGResponseSpace SDUsage;
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	private int state;
+	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
 	private int id;
 
 	/**
@@ -112,32 +148,6 @@ public class CPGResponseMember implements Serializable {
 	 */
 	public static String getDiskTypeNames(int diskType) {
 		return diskTypeNames[diskType];
-	}
-
-	private String uuid;
-	private String name;
-	private int numFPVVs;
-	private int numTPVVs;
-	private CPGResponseSpace UsrUsage;
-	private CPGResponseSpace SAUsage;
-	private CPGResponseSpace SDUsage;
-	private int state;
-
-	private String json;
-
-	/**
-	 * @return the json
-	 */
-	public String getJson() {
-		return this.json;
-	}
-
-	/**
-	 * @param json
-	 *            the json to set
-	 */
-	public void setJson(String json) {
-		this.json = json;
 	}
 
 	@SuppressWarnings("javadoc")

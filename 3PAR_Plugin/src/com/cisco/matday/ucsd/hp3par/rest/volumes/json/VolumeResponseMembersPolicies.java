@@ -23,6 +23,8 @@ package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.PersistenceCapable;
+
 /**
  * REST representation of a 3PAR request
  *
@@ -31,6 +33,7 @@ import java.io.Serializable;
  * @author Matt Day
  *
  */
+@PersistenceCapable(detachable = "true", table = "hp3par_volume_response_member_policy_v1")
 public class VolumeResponseMembersPolicies implements Serializable {
 	/**
 	 *

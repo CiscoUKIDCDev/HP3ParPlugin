@@ -43,7 +43,6 @@ import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.fw.objstore.ObjStoreHelper;
-import com.google.gson.Gson;
 
 /**
  * Manages inventory data including storing and managing it
@@ -238,11 +237,7 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
 
-		// Copy original
-		final Gson gson = new Gson();
-		VolumeResponse copy = gson.fromJson(inv.getVol().getJson(), VolumeResponse.class);
-
-		for (final VolumeResponseMember i : copy.getMembers()) {
+		for (final VolumeResponseMember i : (inv.getVol().getMembers())) {
 			if (volumeName.equals(i.getName())) {
 				return i;
 			}
@@ -263,6 +258,13 @@ public class HP3ParInventory {
 	public synchronized static CPGResponseMember getCpgInfo(String accountName, String cpgName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
+
+		// Copy original
+		// final Gson gson = new Gson();
+		// CPGResponse copy = gson.fromJson(inv.getCpg().getJson(),
+		// CPGResponse.class);
+
+		// CPGResponse copy = inv.getCpg();
 
 		for (final CPGResponseMember i : inv.getCpg().getMembers()) {
 			if (cpgName.equals(i.getName())) {
@@ -302,9 +304,7 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
 		// Copy the object from original JSON
-		final Gson gson = new Gson();
-		VolumeResponse copy = gson.fromJson(inv.getVol().getJson(), VolumeResponse.class);
-		return copy;
+		return inv.getVol();
 	}
 
 	/**
@@ -317,10 +317,12 @@ public class HP3ParInventory {
 	public synchronized static SystemResponse getSystemResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
+		return inv.getSys();
 		// Copy the object from original JSON
-		final Gson gson = new Gson();
-		SystemResponse copy = gson.fromJson(inv.getSys().getJson(), SystemResponse.class);
-		return copy;
+		// final Gson gson = new Gson();
+		// SystemResponse copy = gson.fromJson(inv.getSys().getJson(),
+		// SystemResponse.class);
+		// return copy;
 	}
 
 	/**
@@ -333,6 +335,10 @@ public class HP3ParInventory {
 	public synchronized static CPGResponse getCPGResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
+		// final Gson gson = new Gson();
+		// CPGResponse copy = gson.fromJson(inv.getCpg().getJson(),
+		// CPGResponse.class);
+		// return copy;
 		return inv.getCpg();
 	}
 
