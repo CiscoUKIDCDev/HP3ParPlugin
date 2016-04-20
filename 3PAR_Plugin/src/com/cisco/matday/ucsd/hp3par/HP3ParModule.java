@@ -94,12 +94,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	public void onStart(CustomFeatureRegistry cfr) {
 		logger.info("HP 3PAR Plugin");
 		try {
-			int fetchSize = ObjStoreHelper.getPersistenceManager().getFetchPlan().getFetchSize();
-			logger.warn("Current fetch size: " + fetchSize + " increasing to " + (fetchSize + (1 * 3)));
-			ObjStoreHelper.getPersistenceManager().getFetchPlan().setFetchSize((fetchSize + (1 * 3)));
-			logger.warn("Current fetch size is now : "
-					+ ObjStoreHelper.getPersistenceManager().getFetchPlan().getFetchSize());
-
 			cfr.registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER, HP3ParAccountSelector.class, "0", "0");
 
 			cfr.registerTabularField(HP3ParConstants.CPG_LIST_FORM_PROVIDER, HP3ParCpgSelector.class, "0", "3");
@@ -127,12 +121,13 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 	// This method is deprecated, so return null
 	@Override
+	@Deprecated
 	public CollectorFactory[] getCollectors() {
 		return null;
 	}
 
 	// Create the plugin as an account in UCSD
-	private void createAccountType() {
+	private void createAccountType() throws Exception {
 		final AccountTypeEntry entry = new AccountTypeEntry();
 
 		// This is mandatory, hold the information for device credential details
@@ -217,7 +212,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		catch (final Exception e) {
 			logger.warn("Could not start initial inventory collection");
 			logger.warn("3PAR inventory collection failed: " + e.getMessage());
-			e.printStackTrace();
+			throw new Exception(e);
 		}
 	}
 

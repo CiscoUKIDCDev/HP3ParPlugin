@@ -24,6 +24,9 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+
 /**
  * REST object representation of the HP3PAR CPG list. See the HP 3PAR REST
  * documentation for detail on these methods and values
@@ -31,30 +34,18 @@ import java.util.List;
  * @author Matt Day
  *
  */
+
+@PersistenceCapable(detachable = "true", table = "hp3par_cpg_v1")
 public class CPGResponse implements Serializable {
 	/**
 	 *
 	 */
+	@Persistent
 	private static final long serialVersionUID = 1L;
+	@Persistent
 	private int total;
+	@Persistent
 	private List<CPGResponseMember> members;
-
-	private String json;
-
-	/**
-	 * @return the json
-	 */
-	public String getJson() {
-		return this.json;
-	}
-
-	/**
-	 * @param json
-	 *            the json to set
-	 */
-	public void setJson(String json) {
-		this.json = json;
-	}
 
 	@SuppressWarnings("javadoc")
 	public int getTotal() {

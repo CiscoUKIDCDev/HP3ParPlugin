@@ -72,6 +72,8 @@ public class HP3ParInventory {
 		final String queryString = "accountName == '" + accountName + "'";
 		final PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
 		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
+		logger.info(
+				"Fetch depth: " + pm.getFetchPlan().getFetchSize() + " (should be " + HP3ParConstants.JDO_DEPTH + ")");
 		final Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
@@ -111,8 +113,11 @@ public class HP3ParInventory {
 	}
 
 	private void create(String accountName) {
+		logger.info("Creating persistent store for account " + accountName);
 		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
 		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
+		logger.info(
+				"Fetch depth: " + pm.getFetchPlan().getFetchSize() + " (should be " + HP3ParConstants.JDO_DEPTH + ")");
 		Transaction tx = pm.currentTransaction();
 		try {
 			logger.info("Creating new data store: " + accountName);
@@ -150,8 +155,11 @@ public class HP3ParInventory {
 	private void update(boolean force) throws Exception {
 		final String accountName = this.invStore.getAccountName();
 		final String queryString = "accountName == '" + accountName + "'";
+		logger.info("Updating persistent store for account " + accountName);
 		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
 		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
+		logger.info(
+				"Fetch depth: " + pm.getFetchPlan().getFetchSize() + " (should be " + HP3ParConstants.JDO_DEPTH + ")");
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
@@ -255,11 +263,8 @@ public class HP3ParInventory {
 	public synchronized static CPGResponseMember getCpgInfo(String accountName, String cpgName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		// Copy the class from original JSON
-		final Gson gson = new Gson();
-		CPGResponse copy = gson.fromJson(inv.getCpg().getJson(), CPGResponse.class);
 
-		for (final CPGResponseMember i : copy.getMembers()) {
+		for (final CPGResponseMember i : inv.getCpg().getMembers()) {
 			if (cpgName.equals(i.getName())) {
 				return i;
 			}
@@ -328,10 +333,7 @@ public class HP3ParInventory {
 	public synchronized static CPGResponse getCPGResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		// Copy object from original JSON
-		final Gson gson = new Gson();
-		CPGResponse copy = gson.fromJson(inv.getCpg().getJson(), CPGResponse.class);
-		return copy;
+		return inv.getCpg();
 	}
 
 	/**

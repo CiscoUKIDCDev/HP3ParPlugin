@@ -61,7 +61,21 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 			throw new Exception("Unable to find the account name");
 		}
 
-		final SystemResponse systemInfo = HP3ParInventory.getSystemResponse(accountName);
+		SystemResponse systemInfo = null;
+		boolean ok = false;
+		try {
+			systemInfo = HP3ParInventory.getSystemResponse(accountName);
+			ok = true;
+		}
+		catch (Exception e) {
+			logger.warn("Couldn't populate account: " + e.getMessage());
+			systemInfo = new SystemResponse();
+			systemInfo.setName("HP 3PAR");
+			systemInfo.setSystemVersion("N/A");
+			systemInfo.setIPv4Addr("");
+			systemInfo.setModel("");
+			systemInfo.setTotalCapacityMiB(0);
+		}
 
 		final ConvergedStackComponentDetail detail = new ConvergedStackComponentDetail();
 
@@ -70,19 +84,8 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		detail.setOsVersion(systemInfo.getSystemVersion());
 		detail.setVendorLogoUrl("/app/uploads/openauto/3Par_Icon.png");
 		detail.setMgmtIPAddr(systemInfo.getIPv4Addr());
-		detail.setStatus("OK");
+		detail.setStatus(ok ? "OK" : "Error");
 		detail.setVendorName("HP3PAR");
-
-		// Not sure what this does - almost verbatim copied from the docs but it
-		// doesn't do anything?
-		final List<String> componentSummaryList = new ArrayList<>(6);
-		componentSummaryList.add("Serial Number");
-		componentSummaryList.add(systemInfo.getModel());
-		componentSummaryList.add("Nodes");
-		componentSummaryList.add(Short.toString(systemInfo.getTotalNodes()));
-		componentSummaryList.add("Total Capacity GiB");
-		componentSummaryList.add(Double.toString(systemInfo.getTotalCapacityMiB() / 1024d));
-		detail.setComponentSummaryList(componentSummaryList);
 
 		detail.setLabel("System Name:" + systemInfo.getName());
 

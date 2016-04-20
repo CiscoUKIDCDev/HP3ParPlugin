@@ -64,7 +64,7 @@ public class HP3ParCPG {
 
 		Gson gson = new Gson();
 		this.cpgResponse = gson.fromJson(this.json, CPGResponse.class);
-		this.cpgResponse.setJson(this.json);
+		// this.cpgResponse.setJson(this.json);
 	}
 
 	/**

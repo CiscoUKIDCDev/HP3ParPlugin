@@ -23,8 +23,11 @@ package com.cisco.matday.ucsd.hp3par.account.inventory;
 
 import java.io.IOException;
 
+import javax.jdo.annotations.Column;
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 import org.apache.log4j.Logger;
 
@@ -52,6 +55,11 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
 public class HP3ParInventoryStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@PrimaryKey
+	@Column(name = "ID")
+	private long id;
+
 	@Persistent
 	private String accountName;
 
@@ -59,12 +67,18 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	private long updated = 0;
 
 	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	// @Embedded
 	private VolumeResponse volumeList;
 
 	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	// @Embedded
 	private SystemResponse sysInfo;
 
 	@Persistent(defaultFetchGroup = "true")
+	@Element(dependent = "true")
+	// @Embedded
 	private CPGResponse cpgList;
 
 	/**
