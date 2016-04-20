@@ -165,5 +165,9 @@ public class HP3ParConstants {
 	 * Default 15 minutes (900,000 milliseconds)
 	 */
 	public static final long INVENTORY_LIFE = 900000;
+	/**
+	 * How deep should a fetch manager be for JDO queries
+	 */
+	public static final int JDO_DEPTH = 5;
 
 }

@@ -71,7 +71,7 @@ public class HP3ParInventory {
 		logger.info("Opening persistent store for account: " + accountName);
 		final String queryString = "accountName == '" + accountName + "'";
 		final PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-		pm.getFetchPlan().setFetchSize(3);
+		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
 		final Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
@@ -112,7 +112,7 @@ public class HP3ParInventory {
 
 	private void create(String accountName) {
 		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-		pm.getFetchPlan().setFetchSize(3);
+		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
 		Transaction tx = pm.currentTransaction();
 		try {
 			logger.info("Creating new data store: " + accountName);
@@ -151,7 +151,7 @@ public class HP3ParInventory {
 		final String accountName = this.invStore.getAccountName();
 		final String queryString = "accountName == '" + accountName + "'";
 		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-		// pm.getFetchPlan().setFetchSize(3);
+		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
