@@ -31,6 +31,7 @@ For more screenshots see the [screenshots page](screenshots.md).
 * Action buttons on the volume form list to create/delete and to perform snapshots & copies
 * Create, Delete, Snapshot and Copy volume tasks
 * Full Javadoc in source code
+* Inventory collection and database caching
 
 ### Near-term roadmap
 * More tasks (need suggestions)

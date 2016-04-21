@@ -44,8 +44,8 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_inventory_v9")
-public class HP3ParInventoryStore implements InventoryDBItemIf {
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory_db_v1")
+public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
 	@PrimaryKey
@@ -75,7 +75,7 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 * future
 	 */
 	@Persistent
-	public static final int API_VERSION = 9;
+	public static final int API_VERSION = 1;
 
 	/**
 	 * Initialise inventory with an account name
@@ -83,9 +83,9 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 * @param accountName
 	 *            Name of the account to persist
 	 */
-	public HP3ParInventoryStore(String accountName) {
+	public HP3ParInventoryDBStore(String accountName) {
 		this.accountName = accountName;
-		logger.info("Created persistent entry (API version: " + HP3ParInventoryStore.API_VERSION + ")");
+		logger.info("Created persistent entry (API version: " + HP3ParInventoryDBStore.API_VERSION + ")");
 
 		// Touch everything to ensure persistence
 		if (this.volumeListJson == null) {

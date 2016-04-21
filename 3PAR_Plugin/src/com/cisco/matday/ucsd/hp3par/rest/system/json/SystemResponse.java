@@ -21,10 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.system.json;
 
-import java.io.Serializable;
-
-import javax.jdo.annotations.PersistenceCapable;
-
 /**
  * Object to represent JSON response for a System request on a 3PAR array.
  *
@@ -33,12 +29,7 @@ import javax.jdo.annotations.PersistenceCapable;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_system_response_v2")
-public class SystemResponse implements Serializable {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
+public class SystemResponse {
 	private long id;
 	private String name;
 	private String systemVersion;

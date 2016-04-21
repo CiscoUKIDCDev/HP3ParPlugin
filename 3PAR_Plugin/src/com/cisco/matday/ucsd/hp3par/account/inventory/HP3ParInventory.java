@@ -53,7 +53,7 @@ public class HP3ParInventory {
 
 	private static Logger logger = Logger.getLogger(HP3ParInventory.class);
 
-	private HP3ParInventoryStore invStore = null;
+	private HP3ParInventoryDBStore invStore = null;
 
 	/**
 	 * Create a new inventory instance
@@ -77,7 +77,7 @@ public class HP3ParInventory {
 			// Query query = pm.newQuery(HP3ParInventoryStore.class,
 			// queryString);
 
-			ObjStore<HP3ParInventoryStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
+			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
 
 			// Suppress unchecked cast warnings here as the query has an
 			// explicit class definition
@@ -86,18 +86,14 @@ public class HP3ParInventory {
 			// Collection<HP3ParInventoryStore> invStoreCollection =
 			// (Collection<HP3ParInventoryStore>) query.execute();
 
-			for (HP3ParInventoryStore store : invStoreCollection.query(queryString)) {
+			for (HP3ParInventoryDBStore store : invStoreCollection.query(queryString)) {
 				if (accountName.equals(store.getAccountName())) {
-					logger.info("Account found: " + store.getAccountName());
 					this.invStore = store;
-				}
-				else {
-					logger.info("Found account (not going to use): " + store.getAccountName());
 				}
 			}
 		}
 		catch (Exception e) {
-			logger.info("Exeption when doing this! " + e.getMessage());
+			logger.warn("Exeption when doing this! " + e.getMessage());
 		}
 		if (this.invStore == null) {
 			logger.warn("No account found! Attempting to create and store");
@@ -114,12 +110,13 @@ public class HP3ParInventory {
 
 		// Transaction tx = pm.currentTransaction();
 		try {
-			ObjStore<HP3ParInventoryStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
+			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
 			logger.info("Creating new data store: " + accountName);
-			this.invStore = new HP3ParInventoryStore(accountName);
+			this.invStore = new HP3ParInventoryDBStore(accountName);
 			invStoreCollection.insert(this.invStore);
 		}
 		catch (Exception e) {
+
 			logger.info("Exeption when doing this! " + e.getMessage());
 		}
 	}
@@ -138,7 +135,6 @@ public class HP3ParInventory {
 	private void update(boolean force) throws Exception {
 		final String accountName = this.invStore.getAccountName();
 		final String queryString = "accountName == '" + accountName + "'";
-		logger.info("Updating persistent store for account " + accountName);
 
 		// PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
 
@@ -150,9 +146,17 @@ public class HP3ParInventory {
 			// queryString);
 			// Suppress unchecked cast warnings here as the query has an
 			// explicit class definition
-			ObjStore<HP3ParInventoryStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
-
-			HP3ParInventoryStore store = invStoreCollection.query(queryString).iterator().next();
+			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
+			HP3ParInventoryDBStore store = null;
+			try {
+				store = invStoreCollection.query(queryString).iterator().next();
+			}
+			catch (Exception e) {
+				logger.warn("Possibly stale entry from older API - deleting & re-creating. " + e.getMessage());
+				invStoreCollection.delete(queryString);
+				this.create(accountName);
+				return;
+			}
 
 			if (store == null) {
 				logger.warn("Cannot find " + accountName + " in inventory! Rolling back and creating new");
@@ -165,8 +169,8 @@ public class HP3ParInventory {
 			if ((!force) && ((c - store.getUpdated()) < HP3ParConstants.INVENTORY_LIFE)) {
 				return;
 			}
+			logger.info("Updating persistent store for account " + accountName);
 			store.setUpdated(c);
-
 			final HP3ParVolumeList volumeList = new HP3ParVolumeList(new HP3ParCredentials(store.getAccountName()));
 			store.setVolumeListJson(volumeList.toJson());
 
@@ -178,6 +182,7 @@ public class HP3ParInventory {
 
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
+
 		}
 		catch (Exception e) {
 			logger.warn("Exception updating database! " + e.getMessage());
@@ -261,7 +266,7 @@ public class HP3ParInventory {
 	/**
 	 * @return raw db store
 	 */
-	private HP3ParInventoryStore getStore() {
+	private HP3ParInventoryDBStore getStore() {
 		return this.invStore;
 	}
 
@@ -326,4 +331,5 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update(force);
 	}
+
 }

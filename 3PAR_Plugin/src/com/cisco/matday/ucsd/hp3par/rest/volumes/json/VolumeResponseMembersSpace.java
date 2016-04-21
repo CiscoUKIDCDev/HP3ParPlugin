@@ -21,10 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
-import java.io.Serializable;
-
-import javax.jdo.annotations.PersistenceCapable;
-
 /**
  * REST representation of a 3PAR request
  *
@@ -33,12 +29,8 @@ import javax.jdo.annotations.PersistenceCapable;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_volume_response_member_space_v1")
-public class VolumeResponseMembersSpace implements Serializable {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
+public class VolumeResponseMembersSpace {
+
 	/*
 	 * "snapshotSpace": { "reservedMiB": 0, "rawReservedMiB": 0, "usedMiB": 0,
 	 * "freeMiB": 0 },

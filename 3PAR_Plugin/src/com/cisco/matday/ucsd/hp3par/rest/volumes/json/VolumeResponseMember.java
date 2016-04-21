@@ -21,11 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
-import java.io.Serializable;
-
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-
 /**
  * JSON representation of a 3PAR rest call
  *
@@ -34,12 +29,7 @@ import javax.jdo.annotations.Persistent;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_volume_response_member_v1")
-public class VolumeResponseMember implements Serializable {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
+public class VolumeResponseMember {
 	private int id;
 	private String name;
 	private int provisioningType;
@@ -57,17 +47,13 @@ public class VolumeResponseMember implements Serializable {
 	// private <List> failedStates;
 	// private <List> degradedStates;
 	// private <List> additionalStates;
-	@Persistent(defaultFetchGroup = "true")
 	private VolumeResponseMembersAdminSpace adminSpace;
 
-	@Persistent(defaultFetchGroup = "true")
 	private VolumeResponseMembersSpace snapshotSpace;
 
-	@Persistent(defaultFetchGroup = "true")
 	private VolumeResponseMembersSpace userSpace;
 
 	@SuppressWarnings("javadoc")
-	@Persistent(defaultFetchGroup = "true")
 	public VolumeResponseMembersAdminSpace getAdminSpace() {
 		return this.adminSpace;
 	}
@@ -328,7 +314,6 @@ public class VolumeResponseMember implements Serializable {
 		this.userCPG = userCPG;
 	}
 
-	@Persistent(defaultFetchGroup = "true")
 	private VolumeResponseMembersPolicies policies;
 
 	private String uuid;
