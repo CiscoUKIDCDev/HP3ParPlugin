@@ -63,28 +63,10 @@ public class HP3ParInventory {
 	 *
 	 */
 	private HP3ParInventory(String accountName) throws Exception {
-		logger.info("Opening persistent store for account: " + accountName);
 		final String queryString = "accountName == '" + accountName + "'";
-		// final PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-
-		// pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
-
-		// final Transaction tx = pm.currentTransaction();
-
 		try {
-			// tx.begin();
-
-			// Query query = pm.newQuery(HP3ParInventoryStore.class,
-			// queryString);
 
 			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
-
-			// Suppress unchecked cast warnings here as the query has an
-			// explicit class definition
-			// @SuppressWarnings("unchecked")
-
-			// Collection<HP3ParInventoryStore> invStoreCollection =
-			// (Collection<HP3ParInventoryStore>) query.execute();
 
 			for (HP3ParInventoryDBStore store : invStoreCollection.query(queryString)) {
 				if (accountName.equals(store.getAccountName())) {
@@ -104,11 +86,6 @@ public class HP3ParInventory {
 
 	private void create(String accountName) {
 		logger.info("Creating persistent store for account " + accountName);
-		// PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-
-		// pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
-
-		// Transaction tx = pm.currentTransaction();
 		try {
 			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
 			logger.info("Creating new data store: " + accountName);
@@ -136,16 +113,8 @@ public class HP3ParInventory {
 		final String accountName = this.invStore.getAccountName();
 		final String queryString = "accountName == '" + accountName + "'";
 
-		// PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-
-		// pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
-
-		// Transaction tx = pm.currentTransaction();
 		try {
-			// Query query = pm.newQuery(HP3ParInventoryStore.class,
-			// queryString);
-			// Suppress unchecked cast warnings here as the query has an
-			// explicit class definition
+
 			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
 			HP3ParInventoryDBStore store = null;
 			try {
@@ -236,13 +205,6 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
 
-		// Copy original
-		// final Gson gson = new Gson();
-		// CPGResponse copy = gson.fromJson(inv.getCpg().getJson(),
-		// CPGResponse.class);
-
-		// CPGResponse copy = inv.getCpg();
-
 		for (final CPGResponseMember i : inv.getCpg().getMembers()) {
 			if (cpgName.equals(i.getName())) {
 				return i;
@@ -280,7 +242,6 @@ public class HP3ParInventory {
 	public synchronized static VolumeResponse getVolumeResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		// Copy the object from original JSON
 		return inv.getVol();
 	}
 
@@ -295,11 +256,6 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
 		return inv.getSys();
-		// Copy the object from original JSON
-		// final Gson gson = new Gson();
-		// SystemResponse copy = gson.fromJson(inv.getSys().getJson(),
-		// SystemResponse.class);
-		// return copy;
 	}
 
 	/**
