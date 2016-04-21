@@ -21,11 +21,7 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
-import java.io.IOException;
-
 import javax.jdo.annotations.Column;
-import javax.jdo.annotations.Element;
-import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -34,13 +30,9 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.HP3ParModule;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
-import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cloupia.model.cIM.InventoryDBItemIf;
 
 /**
@@ -52,7 +44,7 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_inventory_v8")
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory_v9")
 public class HP3ParInventoryStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
@@ -67,26 +59,23 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	private long updated = 0;
 
 	@Persistent(defaultFetchGroup = "true")
-	@Element(dependent = "true")
-	@Embedded
-	private VolumeResponse volumeList;
+	@Column(jdbcType = "CLOB")
+	private String volumeListJson;
 
 	@Persistent(defaultFetchGroup = "true")
-	@Element(dependent = "true")
-	@Embedded
-	private SystemResponse sysInfo;
+	@Column(jdbcType = "CLOB")
+	private String sysInfoJson;
 
 	@Persistent(defaultFetchGroup = "true")
-	@Element(dependent = "true")
-	@Embedded
-	private CPGResponse cpgList;
+	@Column(jdbcType = "CLOB")
+	private String cpgListJson;
 
 	/**
 	 * Get the API version in case this database needs to be rebuilt in the
 	 * future
 	 */
 	@Persistent
-	public static final int API_VERSION = 8;
+	public static final int API_VERSION = 9;
 
 	/**
 	 * Initialise inventory with an account name
@@ -99,32 +88,32 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 		logger.info("Created persistent entry (API version: " + HP3ParInventoryStore.API_VERSION + ")");
 
 		// Touch everything to ensure persistence
-		if (this.volumeList == null) {
+		if (this.volumeListJson == null) {
 			logger.info("Setting up volume inventory");
 			HP3ParVolumeList volume;
 			try {
 				volume = new HP3ParVolumeList(new HP3ParCredentials(accountName));
-				this.volumeList = volume.getVolume();
+				this.volumeListJson = volume.toJson();
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		if (this.sysInfo == null) {
+		if (this.sysInfoJson == null) {
 			try {
 				logger.info("Setting up system inventory");
 				final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(accountName));
-				this.sysInfo = systemInfo.getSystem();
+				this.sysInfoJson = systemInfo.toJson();
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		if (this.cpgList == null) {
+		if (this.cpgListJson == null) {
 			try {
 				logger.info("Setting up cpg inventory");
 				final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(accountName));
-				this.cpgList = cpg.getCpg();
+				this.cpgListJson = cpg.toJson();
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -134,33 +123,48 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	}
 
 	/**
-	 * @return the sysinfo
-	 * @throws Exception
-	 * @throws InvalidHP3ParTokenException
-	 * @throws IOException
+	 * @return the cpgListJson
 	 */
-	public SystemResponse getSysInfo() throws Exception {
-		return this.sysInfo;
+	public String getCpgListJson() {
+		return this.cpgListJson;
 	}
 
 	/**
-	 * @return the cpginfo
-	 * @throws Exception
-	 * @throws InvalidHP3ParTokenException
-	 * @throws IOException
+	 * @param cpgListJson
+	 *            the cpgListJson to set
 	 */
-	public CPGResponse getCpgList() throws Exception {
-		return this.cpgList;
+	public void setCpgListJson(String cpgListJson) {
+		this.cpgListJson = cpgListJson;
 	}
 
 	/**
-	 * @return the volumeInfo
-	 * @throws Exception
-	 * @throws InvalidHP3ParTokenException
-	 * @throws IOException
+	 * @return the volumeListJson
 	 */
-	public VolumeResponse getVolumeList() throws Exception {
-		return this.volumeList;
+	public String getVolumeListJson() {
+		return this.volumeListJson;
+	}
+
+	/**
+	 * @param volumeListJson
+	 *            the volumeListJson to set
+	 */
+	public void setVolumeListJson(String volumeListJson) {
+		this.volumeListJson = volumeListJson;
+	}
+
+	/**
+	 * @return the sysInfoJson
+	 */
+	public String getSysInfoJson() {
+		return this.sysInfoJson;
+	}
+
+	/**
+	 * @param sysInfoJson
+	 *            the sysInfoJson to set
+	 */
+	public void setSysInfoJson(String sysInfoJson) {
+		this.sysInfoJson = sysInfoJson;
 	}
 
 	@Override
@@ -187,33 +191,6 @@ public class HP3ParInventoryStore implements InventoryDBItemIf {
 	 */
 	public void setUpdated(long updated) {
 		this.updated = updated;
-	}
-
-	/**
-	 * Set the volume response data
-	 *
-	 * @param volumeInfo
-	 */
-	public void setVolumeList(VolumeResponse volumeInfo) {
-		this.volumeList = volumeInfo;
-	}
-
-	/**
-	 * Set the system response data
-	 *
-	 * @param sysInfo
-	 */
-	public void setSysInfo(SystemResponse sysInfo) {
-		this.sysInfo = sysInfo;
-	}
-
-	/**
-	 * Set the CPG response data
-	 *
-	 * @param cpgInfo
-	 */
-	public void setCpgList(CPGResponse cpgInfo) {
-		this.cpgList = cpgInfo;
 	}
 
 }

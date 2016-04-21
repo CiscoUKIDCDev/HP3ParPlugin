@@ -67,6 +67,17 @@ public class HP3ParVolumeList {
 	}
 
 	/**
+	 * Initialise from JSON
+	 *
+	 * @param json
+	 */
+	public HP3ParVolumeList(String json) {
+		this.json = json;
+		final Gson gson = new Gson();
+		this.volume = gson.fromJson(this.json, VolumeResponse.class);
+	}
+
+	/**
 	 * @return Volumes information
 	 */
 	public VolumeResponse getVolume() {

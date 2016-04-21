@@ -68,6 +68,17 @@ public class HP3ParSystem {
 	}
 
 	/**
+	 * Restore previous system info from JSON
+	 *
+	 * @param json
+	 */
+	public HP3ParSystem(String json) {
+		this.json = json;
+		final Gson gson = new Gson();
+		this.systemResponse = gson.fromJson(this.json, SystemResponse.class);
+	}
+
+	/**
 	 * @return information about the 3PAR system
 	 */
 	public SystemResponse getSystem() {

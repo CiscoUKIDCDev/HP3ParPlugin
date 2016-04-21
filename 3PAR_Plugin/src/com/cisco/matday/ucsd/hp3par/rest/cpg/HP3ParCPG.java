@@ -68,6 +68,15 @@ public class HP3ParCPG {
 	}
 
 	/**
+	 * @param json
+	 */
+	public HP3ParCPG(String json) {
+		this.json = json;
+		final Gson gson = new Gson();
+		this.cpgResponse = gson.fromJson(this.json, CPGResponse.class);
+	}
+
+	/**
 	 * Get the response from the array
 	 *
 	 * @return CPG information from the 3PAR array

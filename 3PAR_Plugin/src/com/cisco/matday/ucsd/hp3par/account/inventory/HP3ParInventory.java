@@ -168,13 +168,14 @@ public class HP3ParInventory {
 			store.setUpdated(c);
 
 			final HP3ParVolumeList volumeList = new HP3ParVolumeList(new HP3ParCredentials(store.getAccountName()));
-			store.setVolumeList(volumeList.getVolume());
+			store.setVolumeListJson(volumeList.toJson());
 
 			final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(store.getAccountName()));
-			store.setSysInfo(systemInfo.getSystem());
+			store.setSysInfoJson(systemInfo.toJson());
 
 			final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(store.getAccountName()));
-			store.setCpgList(cpg.getCpg());
+			store.setCpgListJson(cpg.toJson());
+
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
 		}
@@ -184,15 +185,15 @@ public class HP3ParInventory {
 	}
 
 	private VolumeResponse getVol() throws Exception {
-		return this.getStore().getVolumeList();
+		return new HP3ParVolumeList(this.getStore().getVolumeListJson()).getVolume();
 	}
 
 	private CPGResponse getCpg() throws Exception {
-		return this.getStore().getCpgList();
+		return new HP3ParCPG(this.getStore().getCpgListJson()).getCpg();
 	}
 
 	private SystemResponse getSys() throws Exception {
-		return this.getStore().getSysInfo();
+		return new HP3ParSystem(this.getStore().getSysInfoJson()).getSystem();
 	}
 
 	/**
