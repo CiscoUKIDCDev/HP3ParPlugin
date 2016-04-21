@@ -32,6 +32,9 @@ import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostList;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
@@ -149,6 +152,9 @@ public class HP3ParInventory {
 			final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(store.getAccountName()));
 			store.setCpgListJson(cpg.toJson());
 
+			final HP3ParHostList host = new HP3ParHostList(new HP3ParCredentials(store.getAccountName()));
+			store.setHostListJson(host.toJson());
+
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
 
@@ -168,6 +174,10 @@ public class HP3ParInventory {
 
 	private SystemResponse getSys() throws Exception {
 		return new HP3ParSystem(this.getStore().getSysInfoJson()).getSystem();
+	}
+
+	private HostResponse getHost() throws Exception {
+		return new HP3ParHostList(this.getStore().getHostListJson()).getHost();
 	}
 
 	/**
@@ -211,6 +221,27 @@ public class HP3ParInventory {
 			}
 		}
 		logger.warn("CPG not found in cache: " + cpgName);
+		return null;
+	}
+
+	/**
+	 * Return information on a specific Host
+	 *
+	 * @param accountName
+	 * @param hostName
+	 * @return Volume information
+	 * @throws Exception
+	 */
+	public synchronized static HostResponseMember getHostInfo(String accountName, String hostName) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(accountName);
+		inv.update();
+
+		for (final HostResponseMember i : inv.getHost().getMembers()) {
+			if (hostName.equals(i.getName())) {
+				return i;
+			}
+		}
+		logger.warn("Host not found in cache: " + hostName);
 		return null;
 	}
 
@@ -268,11 +299,20 @@ public class HP3ParInventory {
 	public synchronized static CPGResponse getCPGResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		// final Gson gson = new Gson();
-		// CPGResponse copy = gson.fromJson(inv.getCpg().getJson(),
-		// CPGResponse.class);
-		// return copy;
 		return inv.getCpg();
+	}
+
+	/**
+	 * Get the Host response data
+	 *
+	 * @param accountName
+	 * @return host response list
+	 * @throws Exception
+	 */
+	public synchronized static HostResponse getHostResponse(String accountName) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(accountName);
+		inv.update();
+		return HP3ParInventory.getHostResponse(accountName);
 	}
 
 	/**

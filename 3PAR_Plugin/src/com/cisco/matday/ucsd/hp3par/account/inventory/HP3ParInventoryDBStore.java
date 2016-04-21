@@ -70,6 +70,10 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	@Column(jdbcType = "CLOB")
 	private String cpgListJson;
 
+	@Persistent(defaultFetchGroup = "true")
+	@Column(jdbcType = "CLOB")
+	private String hostListJson;
+
 	/**
 	 * Get the API version in case this database needs to be rebuilt in the
 	 * future
@@ -165,6 +169,20 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 */
 	public void setSysInfoJson(String sysInfoJson) {
 		this.sysInfoJson = sysInfoJson;
+	}
+
+	/**
+	 * @return host list in json
+	 */
+	public String getHostListJson() {
+		return this.hostListJson;
+	}
+
+	/**
+	 * @param hostListJson
+	 */
+	public void setHostListJson(String hostListJson) {
+		this.hostListJson = hostListJson;
 	}
 
 	@Override

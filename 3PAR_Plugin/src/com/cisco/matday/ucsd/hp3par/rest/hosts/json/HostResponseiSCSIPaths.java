@@ -19,18 +19,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.rwhitear.threeParREST.constants;
+package com.cisco.matday.ucsd.hp3par.rest.hosts.json;
 
-// Ignoring javadoc
 @SuppressWarnings("javadoc")
-public class threeParRESTconstants {
+public class HostResponseiSCSIPaths {
+	private String name;
+	private String IPAddr;
+	private int hostSpeed;
 
-	public static final String SESSION_KEY_HEADER = "X-HP3PAR-WSAPI-SessionKey";
+	public String getName() {
+		return this.name;
+	}
 
-	public static final String GET_SESSION_TOKEN_URI = "/api/v1/credentials";
-	public static final String GET_VOLUMES_URI = "/api/v1/volumes";
-	public static final String GET_SYSTEM_URI = "/api/v1/system";
-	public static final String GET_CPG_URI = "/api/v1/cpgs";
-	public static final String GET_HOSTS_URI = "/api/v1/hosts";
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getIPAddr() {
+		return this.IPAddr;
+	}
+
+	public void setIPAddr(String iPAddr) {
+		this.IPAddr = iPAddr;
+	}
+
+	public int getHostSpeed() {
+		return this.hostSpeed;
+	}
+
+	public void setHostSpeed(int hostSpeed) {
+		this.hostSpeed = hostSpeed;
+	}
 
 }

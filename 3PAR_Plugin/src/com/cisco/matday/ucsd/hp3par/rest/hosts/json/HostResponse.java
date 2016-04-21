@@ -19,18 +19,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.rwhitear.threeParREST.constants;
+package com.cisco.matday.ucsd.hp3par.rest.hosts.json;
 
-// Ignoring javadoc
+import java.util.List;
+
+/**
+ * REST representation from 3PAR array when querying hosts
+ *
+ * See the HP3PAR documentation for more detail
+ *
+ * @author Matt Day
+ *
+ */
 @SuppressWarnings("javadoc")
-public class threeParRESTconstants {
+public class HostResponse {
 
-	public static final String SESSION_KEY_HEADER = "X-HP3PAR-WSAPI-SessionKey";
+	private int total;
+	private List<HostResponseMember> members;
 
-	public static final String GET_SESSION_TOKEN_URI = "/api/v1/credentials";
-	public static final String GET_VOLUMES_URI = "/api/v1/volumes";
-	public static final String GET_SYSTEM_URI = "/api/v1/system";
-	public static final String GET_CPG_URI = "/api/v1/cpgs";
-	public static final String GET_HOSTS_URI = "/api/v1/hosts";
+	public int getTotal() {
+		return this.total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	public List<HostResponseMember> getMembers() {
+		return this.members;
+	}
+
+	public void setMembers(List<HostResponseMember> members) {
+		this.members = members;
+	}
 
 }
