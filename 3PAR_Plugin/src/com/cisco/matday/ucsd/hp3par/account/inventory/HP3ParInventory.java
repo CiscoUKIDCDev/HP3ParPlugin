@@ -22,12 +22,7 @@
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Date;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import javax.jdo.Transaction;
 
 import org.apache.log4j.Logger;
 
@@ -42,6 +37,7 @@ import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
+import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
 
 /**
@@ -69,19 +65,28 @@ public class HP3ParInventory {
 	private HP3ParInventory(String accountName) throws Exception {
 		logger.info("Opening persistent store for account: " + accountName);
 		final String queryString = "accountName == '" + accountName + "'";
-		final PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
-		logger.info(
-				"Fetch depth: " + pm.getFetchPlan().getFetchSize() + " (should be " + HP3ParConstants.JDO_DEPTH + ")");
-		final Transaction tx = pm.currentTransaction();
+		// final PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
+
+		// pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
+
+		// final Transaction tx = pm.currentTransaction();
+
 		try {
-			tx.begin();
-			Query query = pm.newQuery(HP3ParInventoryStore.class, queryString);
+			// tx.begin();
+
+			// Query query = pm.newQuery(HP3ParInventoryStore.class,
+			// queryString);
+
+			ObjStore<HP3ParInventoryStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
+
 			// Suppress unchecked cast warnings here as the query has an
 			// explicit class definition
-			@SuppressWarnings("unchecked")
-			Collection<HP3ParInventoryStore> invStoreCollection = (Collection<HP3ParInventoryStore>) query.execute();
-			for (HP3ParInventoryStore store : invStoreCollection) {
+			// @SuppressWarnings("unchecked")
+
+			// Collection<HP3ParInventoryStore> invStoreCollection =
+			// (Collection<HP3ParInventoryStore>) query.execute();
+
+			for (HP3ParInventoryStore store : invStoreCollection.query(queryString)) {
 				if (accountName.equals(store.getAccountName())) {
 					logger.info("Account found: " + store.getAccountName());
 					this.invStore = store;
@@ -90,19 +95,9 @@ public class HP3ParInventory {
 					logger.info("Found account (not going to use): " + store.getAccountName());
 				}
 			}
-			tx.commit();
 		}
 		catch (Exception e) {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
 			logger.info("Exeption when doing this! " + e.getMessage());
-		}
-		finally {
-			if (tx.isActive()) {
-				tx.commit();
-			}
-			pm.close();
 		}
 		if (this.invStore == null) {
 			logger.warn("No account found! Attempting to create and store");
@@ -113,30 +108,19 @@ public class HP3ParInventory {
 
 	private void create(String accountName) {
 		logger.info("Creating persistent store for account " + accountName);
-		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
-		logger.info(
-				"Fetch depth: " + pm.getFetchPlan().getFetchSize() + " (should be " + HP3ParConstants.JDO_DEPTH + ")");
-		Transaction tx = pm.currentTransaction();
+		// PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
+
+		// pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
+
+		// Transaction tx = pm.currentTransaction();
 		try {
+			ObjStore<HP3ParInventoryStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
 			logger.info("Creating new data store: " + accountName);
 			this.invStore = new HP3ParInventoryStore(accountName);
-			tx.begin();
-			pm.makePersistent(this.invStore);
-			tx.commit();
+			invStoreCollection.insert(this.invStore);
 		}
 		catch (Exception e) {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
 			logger.info("Exeption when doing this! " + e.getMessage());
-		}
-		finally {
-			if (tx.isActive()) {
-				tx.commit();
-			}
-			logger.info("Closing connection");
-			pm.close();
 		}
 	}
 
@@ -155,24 +139,23 @@ public class HP3ParInventory {
 		final String accountName = this.invStore.getAccountName();
 		final String queryString = "accountName == '" + accountName + "'";
 		logger.info("Updating persistent store for account " + accountName);
-		PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
-		pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
-		logger.info(
-				"Fetch depth: " + pm.getFetchPlan().getFetchSize() + " (should be " + HP3ParConstants.JDO_DEPTH + ")");
-		Transaction tx = pm.currentTransaction();
+
+		// PersistenceManager pm = ObjStoreHelper.getPersistenceManager();
+
+		// pm.getFetchPlan().setFetchSize(HP3ParConstants.JDO_DEPTH);
+
+		// Transaction tx = pm.currentTransaction();
 		try {
-			tx.begin();
-			Query query = pm.newQuery(HP3ParInventoryStore.class, queryString);
+			// Query query = pm.newQuery(HP3ParInventoryStore.class,
+			// queryString);
 			// Suppress unchecked cast warnings here as the query has an
 			// explicit class definition
-			@SuppressWarnings("unchecked")
-			Collection<HP3ParInventoryStore> invStoreCollection = (Collection<HP3ParInventoryStore>) query.execute();
-			HP3ParInventoryStore store = invStoreCollection.iterator().next();
+			ObjStore<HP3ParInventoryStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryStore.class);
+
+			HP3ParInventoryStore store = invStoreCollection.query(queryString).iterator().next();
+
 			if (store == null) {
 				logger.warn("Cannot find " + accountName + " in inventory! Rolling back and creating new");
-				if (tx.isActive()) {
-					tx.rollback();
-				}
 				// Attempt to create it:
 				this.create(accountName);
 				return;
@@ -180,9 +163,6 @@ public class HP3ParInventory {
 			final Date d = new Date();
 			final long c = d.getTime();
 			if ((!force) && ((c - store.getUpdated()) < HP3ParConstants.INVENTORY_LIFE)) {
-				if (tx.isActive()) {
-					tx.commit();
-				}
 				return;
 			}
 			store.setUpdated(c);
@@ -196,19 +176,10 @@ public class HP3ParInventory {
 			final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(store.getAccountName()));
 			store.setCpgList(cpg.getCpg());
 			this.invStore = store;
-			tx.commit();
+			invStoreCollection.modifySingleObject(queryString, this.invStore);
 		}
 		catch (Exception e) {
 			logger.warn("Exception updating database! " + e.getMessage());
-			if (tx.isActive()) {
-				tx.rollback();
-			}
-		}
-		finally {
-			if (tx.isActive()) {
-				tx.commit();
-			}
-			pm.close();
 		}
 	}
 
