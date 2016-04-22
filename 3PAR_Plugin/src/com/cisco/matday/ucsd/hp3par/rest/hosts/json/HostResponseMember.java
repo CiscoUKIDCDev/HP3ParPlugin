@@ -39,6 +39,8 @@ public class HostResponseMember {
 	private boolean initiatorChapEnabled;
 	private boolean targetChapEnabled;
 
+	private HostResponseDescriptors descriptors;
+
 	public int getId() {
 		return this.id;
 	}
@@ -93,6 +95,21 @@ public class HostResponseMember {
 
 	public void setTargetChapEnabled(boolean targetChapEnabled) {
 		this.targetChapEnabled = targetChapEnabled;
+	}
+
+	/**
+	 * @return the descriptors
+	 */
+	public HostResponseDescriptors getDescriptors() {
+		return this.descriptors;
+	}
+
+	/**
+	 * @param descriptors
+	 *            the descriptors to set
+	 */
+	public void setDescriptors(HostResponseDescriptors descriptors) {
+		this.descriptors = descriptors;
 	}
 
 }

@@ -30,7 +30,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.HP3ParModule;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGList;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostList;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cloupia.model.cIM.InventoryDBItemIf;
@@ -91,7 +92,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 		this.accountName = accountName;
 		logger.info("Created persistent entry (API version: " + HP3ParInventoryDBStore.API_VERSION + ")");
 
-		// Touch everything to ensure persistence
+		// Populate all fields
 		if (this.volumeListJson == null) {
 			logger.info("Setting up volume inventory");
 			HP3ParVolumeList volume;
@@ -116,8 +117,18 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 		if (this.cpgListJson == null) {
 			try {
 				logger.info("Setting up cpg inventory");
-				final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(accountName));
+				final HP3ParCPGList cpg = new HP3ParCPGList(new HP3ParCredentials(accountName));
 				this.cpgListJson = cpg.toJson();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (this.hostListJson == null) {
+			try {
+				logger.info("Setting up host inventory");
+				final HP3ParHostList host = new HP3ParHostList(new HP3ParCredentials(accountName));
+				this.hostListJson = host.toJson();
 			}
 			catch (Exception e) {
 				e.printStackTrace();

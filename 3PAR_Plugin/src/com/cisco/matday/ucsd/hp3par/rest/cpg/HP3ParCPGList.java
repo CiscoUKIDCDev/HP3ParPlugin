@@ -38,7 +38,7 @@ import com.google.gson.Gson;
  * @author Matt Day
  *
  */
-public class HP3ParCPG {
+public class HP3ParCPGList {
 
 	private CPGResponse cpgResponse;
 	private String json;
@@ -51,7 +51,7 @@ public class HP3ParCPG {
 	 * @throws InvalidHP3ParTokenException
 	 *             If the token provided is invalid
 	 */
-	public HP3ParCPG(HP3ParCredentials loginCredentials)
+	public HP3ParCPGList(HP3ParCredentials loginCredentials)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
@@ -70,7 +70,7 @@ public class HP3ParCPG {
 	/**
 	 * @param json
 	 */
-	public HP3ParCPG(String json) {
+	public HP3ParCPGList(String json) {
 		this.json = json;
 		final Gson gson = new Gson();
 		this.cpgResponse = gson.fromJson(this.json, CPGResponse.class);

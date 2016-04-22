@@ -28,7 +28,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.copy.HP3ParCopyRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGList;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
@@ -56,7 +56,7 @@ public class VolumeTest {
 			HP3ParVolumeList list = new HP3ParVolumeList(login);
 
 			HP3ParSystem systemInfo = new HP3ParSystem(login);
-			HP3ParCPG cpgInfo = new HP3ParCPG(login);
+			HP3ParCPGList cpgInfo = new HP3ParCPGList(login);
 			System.out.println("Model: " + systemInfo.getSystem().getModel());
 			System.out.println("Total Volumes: " + list.getVolume().getTotal());
 			System.out.println("Total CPGs: " + cpgInfo.getCpg().getTotal());

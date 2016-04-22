@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPG;
+import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGList;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostList;
@@ -149,7 +149,7 @@ public class HP3ParInventory {
 			final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(store.getAccountName()));
 			store.setSysInfoJson(systemInfo.toJson());
 
-			final HP3ParCPG cpg = new HP3ParCPG(new HP3ParCredentials(store.getAccountName()));
+			final HP3ParCPGList cpg = new HP3ParCPGList(new HP3ParCredentials(store.getAccountName()));
 			store.setCpgListJson(cpg.toJson());
 
 			final HP3ParHostList host = new HP3ParHostList(new HP3ParCredentials(store.getAccountName()));
@@ -169,7 +169,7 @@ public class HP3ParInventory {
 	}
 
 	private CPGResponse getCpg() throws Exception {
-		return new HP3ParCPG(this.getStore().getCpgListJson()).getCpg();
+		return new HP3ParCPGList(this.getStore().getCpgListJson()).getCpg();
 	}
 
 	private SystemResponse getSys() throws Exception {
@@ -312,7 +312,28 @@ public class HP3ParInventory {
 	public synchronized static HostResponse getHostResponse(String accountName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
-		return HP3ParInventory.getHostResponse(accountName);
+		return inv.getHost();
+	}
+
+	/**
+	 * Deletes old persistent data and re-creates on startup
+	 *
+	 * @param accountName
+	 * @throws Exception
+	 */
+	public synchronized static void init(String accountName) throws Exception {
+		logger.info("Initialising inventory for account: " + accountName);
+		final String queryString = "accountName == '" + accountName + "'";
+		try {
+			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
+			logger.warn("Deleting old data");
+			invStoreCollection.delete(queryString);
+		}
+		catch (Exception e) {
+			logger.info("Could not delete old data - maybe it doesn't exist. " + e.getMessage());
+		}
+		HP3ParInventory inv = new HP3ParInventory(accountName);
+		inv.update();
 	}
 
 	/**

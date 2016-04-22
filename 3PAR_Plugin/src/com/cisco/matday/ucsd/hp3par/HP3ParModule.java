@@ -37,6 +37,7 @@ import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
 import com.cisco.matday.ucsd.hp3par.reports.cpg.CPGReport;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.HostReport;
 import com.cisco.matday.ucsd.hp3par.reports.volume.VolumeReport;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyTask;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotTask;
@@ -74,7 +75,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
 		final CloupiaReport[] report = new CloupiaReport[] {
-				new AccountReport(), new VolumeReport(), new CPGReport(),
+				new AccountReport(), new VolumeReport(), new CPGReport(), new HostReport(),
 		};
 		return report;
 	}
@@ -94,23 +95,48 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	public void onStart(CustomFeatureRegistry cfr) {
 		logger.info("HP 3PAR Plugin");
 		try {
+			// Register LOV inputs
 			cfr.registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER, HP3ParAccountSelector.class, "0", "0");
-
 			cfr.registerTabularField(HP3ParConstants.CPG_LIST_FORM_PROVIDER, HP3ParCpgSelector.class, "0", "3");
-
 			cfr.registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_PROVIDER, HP3ParVolumeSelector.class, "0", "2");
 
+			// Register drilldown reports
 			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUME_LIST_DRILLDOWN,
 					HP3ParConstants.VOLUME_LIST_DRILLDOWN_LABEL);
 			ReportContextRegistry.getInstance().register(HP3ParConstants.CPG_LIST_DRILLDOWN,
 					HP3ParConstants.CPG_LIST_DRILLDOWN_LABEL);
+			ReportContextRegistry.getInstance().register(HP3ParConstants.HOST_LIST_DRILLDOWN,
+					HP3ParConstants.HOST_LIST_DRILLDOWN_LABEL);
 
+			// Register workflow inputs
 			WorkflowInputTypeDeclaration.registerWFInputs();
 
+			// Register the account type drilldown
 			ReportContextRegistry.getInstance().register(HP3ParConstants.INFRA_ACCOUNT_TYPE,
 					HP3ParConstants.INFRA_ACCOUNT_LABEL);
 
 			this.createAccountType();
+
+			try {
+				logger.info("Looping through accounts to kick off inventory");
+				final ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
+				final List<InfraAccount> objs = store.queryAll();
+				for (final InfraAccount a : objs) {
+					final PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
+					// Important to check if the account type is null first
+					if ((acc != null) && (acc.getAccountType() != null)
+							&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
+						final String accountName = acc.getAccountName();
+						HP3ParInventory.init(accountName);
+					}
+
+				}
+			}
+			catch (final Exception e) {
+				logger.warn("Could not start initial inventory collection");
+				logger.warn("3PAR inventory collection failed: " + e.getMessage());
+				throw new Exception(e);
+			}
 
 		}
 		catch (final Exception e) {
@@ -193,27 +219,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		catch (final Exception e) {
 			e.printStackTrace();
 		}
-		try {
-			logger.info("Looping through accounts to kick off inventory");
-			final ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
-			final List<InfraAccount> objs = store.queryAll();
-			for (final InfraAccount a : objs) {
-				final PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
-				// Important to check if the account type is null first
-				if ((acc != null) && (acc.getAccountType() != null)
-						&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
-					final String accountName = acc.getAccountName();
-					HP3ParInventory.update(accountName, true);
-					logger.info("Updating inventory for account: " + accountName);
-				}
 
-			}
-		}
-		catch (final Exception e) {
-			logger.warn("Could not start initial inventory collection");
-			logger.warn("3PAR inventory collection failed: " + e.getMessage());
-			throw new Exception(e);
-		}
 	}
 
 	@SuppressWarnings("static-method")

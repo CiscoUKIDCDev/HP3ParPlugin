@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.cpg;
+package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -31,7 +31,7 @@ import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
 /**
- * Configuration task for the 3PAR Volume creation task
+ * Configuration task for the 3PAR Host creation task
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
@@ -39,12 +39,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_create_cpg")
-public class CreateCpgConfig implements TaskConfigIf {
+@PersistenceCapable(detachable = "true", table = "HP3Par_create_host")
+public class CreateHostConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "3PAR Create CPG";
+	public static final String DISPLAY_LABEL = "3PAR Create Host";
 
 	@Persistent
 	private long configEntryId;
@@ -57,12 +57,30 @@ public class CreateCpgConfig implements TaskConfigIf {
 	@Persistent
 	private String account;
 
-	@FormField(label = "CPG Name", help = "Name for your new CPG", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@FormField(label = "Location", help = "Location", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
-	private String cpgName;
+	private String location;
 
-	// TODO need to add logical layout + RAID objects
+	@FormField(label = "IP Address", help = "IP Address", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String ipaddr;
+
+	@FormField(label = "OS", help = "OS", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String os;
+
+	@FormField(label = "Model", help = "Model", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String model;
+
+	@FormField(label = "Contact", help = "Contact", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String contact;
 
 	@FormField(label = "Comment", help = "Comment", mandatory = false)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
@@ -73,7 +91,7 @@ public class CreateCpgConfig implements TaskConfigIf {
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
 	 */
-	public CreateCpgConfig() {
+	public CreateHostConfig() {
 
 	}
 
@@ -105,7 +123,7 @@ public class CreateCpgConfig implements TaskConfigIf {
 	 * Set the account name
 	 *
 	 * @param account
-	 *            The volume to be created
+	 *            The host to be created
 	 */
 	public void setAccount(String account) {
 		this.account = account;
@@ -138,6 +156,81 @@ public class CreateCpgConfig implements TaskConfigIf {
 	@Override
 	public void setConfigEntryId(long configEntryId) {
 		this.configEntryId = configEntryId;
+	}
+
+	/**
+	 * @return the location
+	 */
+	public String getLocation() {
+		return this.location;
+	}
+
+	/**
+	 * @param location
+	 *            the location to set
+	 */
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	/**
+	 * @return the ipaddr
+	 */
+	public String getIpaddr() {
+		return this.ipaddr;
+	}
+
+	/**
+	 * @param ipaddr
+	 *            the ipaddr to set
+	 */
+	public void setIpaddr(String ipaddr) {
+		this.ipaddr = ipaddr;
+	}
+
+	/**
+	 * @return the os
+	 */
+	public String getOs() {
+		return this.os;
+	}
+
+	/**
+	 * @param os
+	 *            the os to set
+	 */
+	public void setOs(String os) {
+		this.os = os;
+	}
+
+	/**
+	 * @return the model
+	 */
+	public String getModel() {
+		return this.model;
+	}
+
+	/**
+	 * @param model
+	 *            the model to set
+	 */
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	/**
+	 * @return the contact
+	 */
+	public String getContact() {
+		return this.contact;
+	}
+
+	/**
+	 * @param contact
+	 *            the contact to set
+	 */
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 }
