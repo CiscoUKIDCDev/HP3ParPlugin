@@ -25,12 +25,15 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
+import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
+import com.google.gson.Gson;
 
 /**
  * Provides the task logic to perform volume actions on a 3PAR array for both
@@ -75,7 +78,36 @@ public class HP3ParVolumeExecute {
 		// Build volume information object:
 		HP3ParVolumeParams volume = new HP3ParVolumeParams(config.getVolumeName(), cpgName, config.getVolume_size(),
 				config.getComment(), config.isThin_provision(), copyCpgName);
-		return HP3ParVolumeRestCall.create(c, volume);
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		// Use defaults for a POST request
+		request.setPostDefaults(gson.toJson(volume));
+		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
 
 	}
 
@@ -100,7 +132,38 @@ public class HP3ParVolumeExecute {
 			throw new Exception("Invalid Volume: " + config.getVolume());
 		}
 		String volName = volInfo[2];
-		return HP3ParVolumeRestCall.delete(c, volName);
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/volumes/" + volName;
+		request.setUri(uri);
+
+		// Use defaults for a DELETE request
+		request.setDeleteDefaults();
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
 
 	}
 
@@ -164,7 +227,40 @@ public class HP3ParVolumeExecute {
 		// Build copy parameter list:
 		HP3ParVolumeEditParams p = new HP3ParVolumeEditParams(newVolName, null, config.getComment(), copyCpgName);
 
-		return HP3ParVolumeRestCall.edit(c, volName, p);
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/volumes/" + volName;
+		request.setUri(uri);
+
+		logger.info("HP 3PAR Edit REST: " + gson.toJson(p));
+
+		// Use defaults for a PUT request
+		request.setPutDefaults(gson.toJson(p));
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
 	}
 
 }

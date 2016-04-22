@@ -24,12 +24,16 @@ package com.cisco.matday.ucsd.hp3par.tasks.cpg;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostMessage;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostConfig;
+import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
+import com.google.gson.Gson;
 
 /**
  * @author Matt Day
@@ -58,7 +62,36 @@ public class HP3ParHostExecute {
 
 		HP3ParHostParams params = new HP3ParHostParams(config.getHostName(), config.getDomain(), desc);
 
-		return HP3ParHostRestCall.create(c, params);
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		// Use defaults for a POST request
+		request.setPostDefaults(gson.toJson(params));
+		request.setUri(threeParRESTconstants.GET_HOSTS_URI);
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParHostMessage message = gson.fromJson(response, HP3ParHostMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				logger.warn("Error updating: " + e.getMessage());
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
 
 	}
 
@@ -79,8 +112,39 @@ public class HP3ParHostExecute {
 			logger.warn("Host didn't return three items! It returned: " + config.getHost());
 			throw new Exception("Invalid Volume: " + config.getHost());
 		}
-		String volName = volInfo[2];
-		return HP3ParHostRestCall.delete(c, volName);
+		String hostName = volInfo[2];
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
+
+		// Use defaults for a DELETE request
+		request.setDeleteDefaults();
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParHostMessage message = gson.fromJson(response, HP3ParHostMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				logger.warn("Error updating: " + e.getMessage());
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
 
 	}
 

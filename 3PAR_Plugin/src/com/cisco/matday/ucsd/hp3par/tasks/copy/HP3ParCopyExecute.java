@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -24,15 +24,20 @@ package com.cisco.matday.ucsd.hp3par.tasks.copy;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.copy.HP3ParCopyRestCall;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
+import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParVolumeAction;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestTask;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
+import com.google.gson.Gson;
 
 /**
  * Provides the task logic to perform copy actions on a 3PAR array for both
  * tasks and action buttons
- * 
+ *
  * @author matt
  *
  */
@@ -41,7 +46,7 @@ public class HP3ParCopyExecute {
 
 	/**
 	 * Copy an existing volume
-	 * 
+	 *
 	 * @param c
 	 *            Credentials for the account to perform this on
 	 * @param config
@@ -59,7 +64,7 @@ public class HP3ParCopyExecute {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
 			throw new Exception("Invalid Volume: " + config.getVolume());
 		}
-		String volName = volInfo[2];
+		final String volName = volInfo[2];
 		// Parse out CPG - it's in the format:
 		// ID@AccountName@Name
 		String[] cpgInfo = config.getCpg().split("@");
@@ -67,7 +72,7 @@ public class HP3ParCopyExecute {
 			logger.warn("CPG didn't return three items! It returned: " + config.getCpg());
 			throw new Exception("Invalid CPG");
 		}
-		String cpgName = cpgInfo[2];
+		final String cpgName = cpgInfo[2];
 
 		String copyCpgName = null;
 
@@ -79,16 +84,49 @@ public class HP3ParCopyExecute {
 		}
 
 		// Build copy parameter list:
-		HP3ParCopyParams p = new HP3ParCopyParams(config.getNewVolumeName(), cpgName, config.isOnline(),
+		final HP3ParCopyParams p = new HP3ParCopyParams(config.getNewVolumeName(), cpgName, config.isOnline(),
 				config.isThinProvision(), copyCpgName);
 
-		return HP3ParCopyRestCall.createCopy(c, volName, p);
+		Gson gson = new Gson();
+		final HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		// Use defaults for a POST request
+		request.setPostDefaults(gson.toJson(new HP3ParVolumeAction("createPhysicalCopy", p)));
+		// Generate URI:
+		final String uri = "/api/v1/volumes/" + volName;
+		request.setUri(uri);
+
+		request.execute();
+		final String response = request.getHttpResponse();
+
+		final HP3ParRequestTask r = gson.fromJson(response, HP3ParRequestTask.class);
+
+		// We should get a task ID back
+		if (!(r.getTaskid() > 0)) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
 
 	}
 
 	/**
 	 * Snapshot an existing volume
-	 * 
+	 *
 	 * @param c
 	 *            Credentials for the account to perform this on
 	 * @param config
@@ -107,12 +145,43 @@ public class HP3ParCopyExecute {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
 			throw new Exception("Invalid Volume: " + config.getVolume());
 		}
-		String volName = volInfo[2];
+		final String volName = volInfo[2];
 
-		HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(),
+		final HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(),
 				config.getComment());
 
-		return HP3ParCopyRestCall.createSnapshot(c, volName, p);
+		Gson gson = new Gson();
+		final HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		// Use defaults for a POST request
+		request.setPostDefaults(gson.toJson(new HP3ParVolumeAction("createSnapshot", p)));
+		// Generate URI:
+		final String uri = "/api/v1/volumes/" + volName;
+		request.setUri(uri);
+
+		request.execute();
+		final String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
 
 	}
 

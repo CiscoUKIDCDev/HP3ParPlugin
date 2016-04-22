@@ -26,9 +26,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
-import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 
 // Don't document this test case, it changes too often
 @SuppressWarnings("javadoc")
@@ -38,7 +36,9 @@ public class VolumeTest {
 	final static String user = "3paradm";
 	final static String password = "3pardata";
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({
+			"deprecation", "unused"
+	})
 	public static void main(String[] args) {
 
 		try {
@@ -58,16 +58,18 @@ public class VolumeTest {
 
 			HP3ParHostParams params = new HP3ParHostParams("API-Test", "", desc);
 
-			HP3ParRequestStatus s = HP3ParHostRestCall.create(login, params);
-			System.out.println(s.getError());
-			System.out.println(s.isSuccess());
-
-			s = HP3ParHostRestCall.delete(login, "Testing");
-			System.out.println(s.getError());
-			System.out.println(s.isSuccess());
+			/*
+			 * HP3ParRequestStatus s = HP3ParHostRestCall.create(login, params);
+			 * System.out.println(s.getError());
+			 * System.out.println(s.isSuccess());
+			 *
+			 * s = HP3ParHostRestCall.delete(login, "Testing");
+			 * System.out.println(s.getError());
+			 * System.out.println(s.isSuccess());
+			 */
 
 		}
-		catch (@SuppressWarnings("unused") Exception e) {
+		catch (Exception e) {
 			// Ignore errors in test case
 		}
 	}
