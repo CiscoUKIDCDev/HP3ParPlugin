@@ -24,19 +24,12 @@ package com.cisco.matday.ucsd.hp3par.reports.paths;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.HostReportImpl;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostAction;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.DeleteHostAction;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostPathReport;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostSummaryReport;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostVlunReport;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
 import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
-import com.cloupia.service.cIM.inframgr.reports.simplified.actions.DrillDownAction;
 
 /**
  * Provides a table for all the volumes in a CPG
@@ -58,14 +51,9 @@ public class PathReport extends DrillableReportWithActions {
 	private final static String REPORT_LABEL = "Paths";
 
 	// This MUST be defined ONCE!
-	private CloupiaReport[] drillable = new CloupiaReport[] {
-			new HostSummaryReport(), new HostPathReport(), new HostVlunReport(),
+	private CloupiaReport[] drillable = new CloupiaReport[] {};
 
-	};
-
-	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateHostAction(), new DeleteHostAction(), new DrillDownAction(),
-	};
+	private CloupiaReportAction[] actions = new CloupiaReportAction[] {};
 
 	/**
 	 * Overridden default constructor which sets the management column (0)
@@ -85,8 +73,8 @@ public class PathReport extends DrillableReportWithActions {
 	}
 
 	@Override
-	public Class<HostReportImpl> getImplementationClass() {
-		return HostReportImpl.class;
+	public Class<PathReportImpl> getImplementationClass() {
+		return PathReportImpl.class;
 	}
 
 	@Override

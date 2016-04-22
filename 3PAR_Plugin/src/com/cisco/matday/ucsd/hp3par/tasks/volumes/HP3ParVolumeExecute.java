@@ -144,10 +144,10 @@ public class HP3ParVolumeExecute {
 			}
 		}
 
-		CPGResponseMember cpg = HP3ParInventory.getCpgInfo(c.getAccountName(), copyCpgName);
+		CPGResponseMember cpg = HP3ParInventory.getCpgInfo(c, copyCpgName);
 		// VolumeResponseMember volinfo = new HP3ParVolumeInfo(c,
 		// config.getOriginalName()).getMember();
-		VolumeResponseMember volinfo = HP3ParInventory.getVolumeInfo(c.getAccountName(), config.getOriginalName());
+		VolumeResponseMember volinfo = HP3ParInventory.getVolumeInfo(c, config.getOriginalName());
 		logger.info("Vol REST Lookup: " + volinfo.getUserCPG());
 		logger.info("CPG REST lookup: " + cpg.getName());
 		logger.info("Copy CPG Name: " + copyCpgName);

@@ -60,7 +60,7 @@ public class VolumeSummaryAllocationPieChartImpl implements SnapshotReportGenera
 		report.setPrecision(0);
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
-		VolumeResponse volumes = HP3ParInventory.getVolumeResponse(credentials.getAccountName());
+		VolumeResponse volumes = HP3ParInventory.getVolumeResponse(credentials);
 
 		double adminSpace = 0;
 		double userSpace = 0;

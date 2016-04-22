@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.api.HP3ParAccountJSONBinder;
 import com.cisco.matday.ucsd.hp3par.account.api.HP3ParJSONBinder;
 import com.cloupia.lib.connector.AbstractInventoryItemHandler;
@@ -98,7 +99,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 		logger.info("Persisting data and querying on schedule");
 
-		HP3ParInventory.update(accountName, true);
+		HP3ParInventory.update(new HP3ParCredentials(accountName), true);
 
 		final String jsonData = null;
 		final ItemResponse bindableResponse = new ItemResponse();

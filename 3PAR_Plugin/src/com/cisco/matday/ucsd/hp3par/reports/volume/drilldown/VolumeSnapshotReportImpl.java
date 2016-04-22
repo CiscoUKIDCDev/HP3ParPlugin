@@ -76,7 +76,7 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 			logger.warn("Could not get ID from context ID: " + context.getId());
 		}
 
-		VolumeResponse list = HP3ParInventory.getVolumeResponse(credentials.getAccountName());
+		VolumeResponse list = HP3ParInventory.getVolumeResponse(credentials);
 
 		for (VolumeResponseMember volume : list.getMembers()) {
 			// Only interested in snapshots here:

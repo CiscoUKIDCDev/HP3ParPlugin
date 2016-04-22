@@ -23,6 +23,7 @@ package com.cisco.matday.ucsd.hp3par.inputs;
 
 import java.util.List;
 
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
@@ -83,7 +84,7 @@ public class HP3ParHostSelector implements TabularReportGeneratorIf {
 			if ((acc != null) && (acc.getAccountType() != null)
 					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
-				HostResponse hostList = HP3ParInventory.getHostResponse(a.getAccountName());
+				HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(a.getAccountName()));
 
 				for (HostResponseMember host : hostList.getMembers()) {
 					// hostid@accountName@hostName

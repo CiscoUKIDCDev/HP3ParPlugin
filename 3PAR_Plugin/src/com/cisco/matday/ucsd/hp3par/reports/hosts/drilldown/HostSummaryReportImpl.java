@@ -35,7 +35,7 @@ import com.cloupia.service.cIM.inframgr.reports.SummaryReportInternalModel;
 
 /**
  * Implementation for a host summary
- * 
+ *
  * @author Matt Day
  *
  */
@@ -74,7 +74,7 @@ public class HostSummaryReportImpl implements TabularReportGeneratorIf {
 		}
 
 		// Get volume info:
-		HostResponseMember host = HP3ParInventory.getHostInfo(credentials.getAccountName(), hostName);
+		HostResponseMember host = HP3ParInventory.getHostInfo(credentials, hostName);
 
 		// Descriptors is optional so may return null, if so initialise with
 		// defaults:

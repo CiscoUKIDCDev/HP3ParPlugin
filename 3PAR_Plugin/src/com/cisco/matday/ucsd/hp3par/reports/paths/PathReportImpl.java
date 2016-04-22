@@ -55,6 +55,7 @@ public class PathReportImpl implements TabularReportGeneratorIf {
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		// Internal ID is hidden from normal view and is used by tasks later
 		model.addTextColumn("Internal ID", "Internal ID", true);
+		model.addTextColumn("HostName", "HostName");
 		model.addTextColumn("WWN/iSCSI Name", "WWN/iSCSI Name");
 		model.addTextColumn("Type", "Type");
 		model.addTextColumn("iSCSI IP Address", "iSCSI IP Address");
@@ -64,19 +65,20 @@ public class PathReportImpl implements TabularReportGeneratorIf {
 		// Internal ID, format:
 		// accountName;hostid@accountName@hostName
 		final String accountName = context.getId().split(";")[0];
+		final HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(context).getAccountName());
+		HostResponse hostList = HP3ParInventory.getHostResponse(credentials);
 
 		for (HostResponseMember host : hostList.getMembers()) {
 			final String hostName = host.getName();
-			List<HostResponseFCPaths> fcPaths = HP3ParInventory.getHostInfo(accountName, hostName).getFCPaths();
-			List<HostResponseiSCSIPaths> scsiPaths = HP3ParInventory.getHostInfo(accountName, hostName).getiSCSIPaths();
+			List<HostResponseFCPaths> fcPaths = HP3ParInventory.getHostInfo(credentials, hostName).getFCPaths();
+			List<HostResponseiSCSIPaths> scsiPaths = HP3ParInventory.getHostInfo(credentials, hostName).getiSCSIPaths();
 
 			for (HostResponseFCPaths path : fcPaths) {
 				// Format
 				// accountName;wwn@type
 				model.addTextValue(accountName + ";" + path.getWwn() + "@fc");
-
+				model.addTextValue(hostName);
 				model.addTextValue(path.getWwn());
 				model.addTextValue("Fibre Channel");
 				model.addTextValue("N/A");
@@ -88,7 +90,7 @@ public class PathReportImpl implements TabularReportGeneratorIf {
 				// Format
 				// accountName;wwn@type
 				model.addTextValue(accountName + ";" + path.getName() + "@iscsi");
-
+				model.addTextValue(hostName);
 				model.addTextValue(path.getName());
 				model.addTextValue("iSCSI");
 				model.addTextValue(path.getIPAddr());

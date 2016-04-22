@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.handler.HP3ParConnectionHandler;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParConvergedStackBuilder;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
@@ -138,7 +139,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 					if ((acc != null) && (acc.getAccountType() != null)
 							&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 						final String accountName = acc.getAccountName();
-						HP3ParInventory.init(accountName);
+						HP3ParInventory.init(new HP3ParCredentials(accountName));
 					}
 
 				}

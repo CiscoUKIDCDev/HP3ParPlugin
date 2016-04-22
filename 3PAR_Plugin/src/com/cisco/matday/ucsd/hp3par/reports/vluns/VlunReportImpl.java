@@ -66,7 +66,7 @@ public class VlunReportImpl implements TabularReportGeneratorIf {
 
 		final HP3ParCredentials credentials = new HP3ParCredentials(context);
 		// Get the list from the internal persistence list:
-		final VlunResponse list = HP3ParInventory.getVlunResponse(credentials.getAccountName());
+		final VlunResponse list = HP3ParInventory.getVlunResponse(credentials);
 
 		for (final VlunResponseMembers vlun : list.getMembers()) {
 

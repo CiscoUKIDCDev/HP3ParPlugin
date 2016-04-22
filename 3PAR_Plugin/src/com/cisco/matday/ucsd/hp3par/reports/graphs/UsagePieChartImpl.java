@@ -59,7 +59,7 @@ public class UsagePieChartImpl implements SnapshotReportGeneratorIf {
 		report.setPrecision(0);
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
-		final SystemResponse systemInfo = HP3ParInventory.getSystemResponse(credentials.getAccountName());
+		final SystemResponse systemInfo = HP3ParInventory.getSystemResponse(credentials);
 		double free = systemInfo.getFreeCapacityMiB();
 		double allocated = systemInfo.getAllocatedCapacityMiB();
 		double failed = systemInfo.getFailedCapacityMiB();

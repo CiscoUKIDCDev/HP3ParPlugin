@@ -23,6 +23,7 @@ package com.cisco.matday.ucsd.hp3par.inputs;
 
 import java.util.List;
 
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
@@ -80,7 +81,7 @@ public class HP3ParVolumeSelector implements TabularReportGeneratorIf {
 			if ((acc != null) && (acc.getAccountType() != null)
 					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
-				VolumeResponse list = HP3ParInventory.getVolumeResponse(a.getAccountName());
+				VolumeResponse list = HP3ParInventory.getVolumeResponse(new HP3ParCredentials(a.getAccountName()));
 
 				for (VolumeResponseMember volume : list.getMembers()) {
 					// Bad but we can use this to parse it all out later

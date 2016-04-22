@@ -71,7 +71,7 @@ public class HostReportImpl implements TabularReportGeneratorIf {
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(context).getAccountName());
+		HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(context));
 
 		for (HostResponseMember host : hostList.getMembers()) {
 

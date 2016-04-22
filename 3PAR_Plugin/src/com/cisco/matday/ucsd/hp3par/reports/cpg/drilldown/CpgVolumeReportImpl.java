@@ -79,7 +79,7 @@ public class CpgVolumeReportImpl implements TabularReportGeneratorIf {
 			logger.warn("Could not get ID from context ID: " + context.getId() + " " + e.getMessage());
 		}
 
-		VolumeResponse list = HP3ParInventory.getVolumeResponse(credentials.getAccountName());
+		VolumeResponse list = HP3ParInventory.getVolumeResponse(credentials);
 
 		for (VolumeResponseMember volume : list.getMembers()) {
 			// Only interested in volumes on this CPG (user or copy)

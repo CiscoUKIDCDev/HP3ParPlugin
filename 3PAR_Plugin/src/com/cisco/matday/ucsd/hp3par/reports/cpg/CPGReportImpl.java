@@ -66,7 +66,7 @@ public class CPGReportImpl implements TabularReportGeneratorIf {
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		CPGResponse cpgList = HP3ParInventory.getCPGResponse(new HP3ParCredentials(context).getAccountName());
+		CPGResponse cpgList = HP3ParInventory.getCPGResponse(new HP3ParCredentials(context));
 
 		for (CPGResponseMember cpg : cpgList.getMembers()) {
 			// Get total

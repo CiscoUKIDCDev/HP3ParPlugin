@@ -78,7 +78,7 @@ public class HP3ParHostRestCall {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(loginCredentials.getAccountName(), true);
+				HP3ParInventory.update(loginCredentials, true);
 			}
 			catch (Exception e) {
 				logger.warn("Error updating: " + e.getMessage());
@@ -129,7 +129,7 @@ public class HP3ParHostRestCall {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(loginCredentials.getAccountName(), true);
+				HP3ParInventory.update(loginCredentials, true);
 			}
 			catch (Exception e) {
 				logger.warn("Error updating: " + e.getMessage());

@@ -83,7 +83,7 @@ public class HP3ParVolumeRestCall {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(loginCredentials.getAccountName(), true);
+				HP3ParInventory.update(loginCredentials, true);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -134,7 +134,7 @@ public class HP3ParVolumeRestCall {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(loginCredentials.getAccountName(), true);
+				HP3ParInventory.update(loginCredentials, true);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -189,7 +189,7 @@ public class HP3ParVolumeRestCall {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(loginCredentials.getAccountName(), true);
+				HP3ParInventory.update(loginCredentials, true);
 			}
 			catch (Exception e) {
 				e.printStackTrace();

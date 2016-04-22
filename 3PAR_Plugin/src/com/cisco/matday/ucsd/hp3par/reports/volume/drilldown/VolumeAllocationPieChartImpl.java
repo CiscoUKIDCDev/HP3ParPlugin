@@ -72,7 +72,7 @@ public class VolumeAllocationPieChartImpl implements SnapshotReportGeneratorIf {
 
 		// VolumeResponseMember volume = new HP3ParVolumeInfo(credentials,
 		// volName).getMember();
-		VolumeResponseMember volume = HP3ParInventory.getVolumeInfo(credentials.getAccountName(), volName);
+		VolumeResponseMember volume = HP3ParInventory.getVolumeInfo(credentials, volName);
 
 		double adminSpace = volume.getAdminSpace().getUsedMiB();
 		double userSpace = volume.getUserSpace().getUsedMiB();

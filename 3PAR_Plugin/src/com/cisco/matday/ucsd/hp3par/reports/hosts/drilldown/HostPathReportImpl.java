@@ -23,6 +23,7 @@ package com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown;
 
 import java.util.List;
 
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseFCPaths;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseiSCSIPaths;
@@ -34,7 +35,7 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
  * Implementation of host paths report
- * 
+ *
  * @author Matt Day
  *
  */
@@ -62,9 +63,10 @@ public class HostPathReportImpl implements TabularReportGeneratorIf {
 		// accountName;hostid@accountName@hostName
 		final String accountName = context.getId().split(";")[0];
 		final String hostName = context.getId().split(";")[1].split("@")[2];
+		final HP3ParCredentials credentials = new HP3ParCredentials(accountName);
 
-		List<HostResponseFCPaths> fcPaths = HP3ParInventory.getHostInfo(accountName, hostName).getFCPaths();
-		List<HostResponseiSCSIPaths> scsiPaths = HP3ParInventory.getHostInfo(accountName, hostName).getiSCSIPaths();
+		List<HostResponseFCPaths> fcPaths = HP3ParInventory.getHostInfo(credentials, hostName).getFCPaths();
+		List<HostResponseiSCSIPaths> scsiPaths = HP3ParInventory.getHostInfo(credentials, hostName).getiSCSIPaths();
 
 		for (HostResponseFCPaths path : fcPaths) {
 			// Format

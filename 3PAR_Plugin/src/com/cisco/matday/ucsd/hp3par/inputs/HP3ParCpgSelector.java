@@ -23,6 +23,7 @@ package com.cisco.matday.ucsd.hp3par.inputs;
 
 import java.util.List;
 
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
@@ -77,7 +78,7 @@ public class HP3ParCpgSelector implements TabularReportGeneratorIf {
 			// Important to check if the account type is null first
 			if ((acc.getAccountType() != null) && (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
-				CPGResponse cpgList = HP3ParInventory.getCPGResponse(a.getAccountName());
+				CPGResponse cpgList = HP3ParInventory.getCPGResponse(new HP3ParCredentials(a.getAccountName()));
 
 				for (CPGResponseMember cpg : cpgList.getMembers()) {
 					// Bad but we can use this to parse it all out later

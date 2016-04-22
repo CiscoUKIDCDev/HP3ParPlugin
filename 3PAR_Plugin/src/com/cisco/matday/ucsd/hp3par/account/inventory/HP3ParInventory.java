@@ -67,7 +67,8 @@ public class HP3ParInventory {
 	 * @throws Exception
 	 *
 	 */
-	private HP3ParInventory(String accountName) throws Exception {
+	private HP3ParInventory(HP3ParCredentials credentials) throws Exception {
+		final String accountName = credentials.getAccountName();
 		final String queryString = "accountName == '" + accountName + "'";
 		try {
 
@@ -84,12 +85,13 @@ public class HP3ParInventory {
 		}
 		if (this.invStore == null) {
 			logger.warn("No account found! Attempting to create and store");
-			this.create(accountName);
+			this.create(credentials);
 		}
 
 	}
 
-	private void create(String accountName) {
+	private void create(HP3ParCredentials credentials) {
+		final String accountName = credentials.getAccountName();
 		logger.info("Creating persistent store for account " + accountName);
 		try {
 			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
@@ -116,6 +118,7 @@ public class HP3ParInventory {
 	 */
 	private void update(boolean force) throws Exception {
 		final String accountName = this.invStore.getAccountName();
+		final HP3ParCredentials login = new HP3ParCredentials(accountName);
 		final String queryString = "accountName == '" + accountName + "'";
 
 		try {
@@ -128,14 +131,14 @@ public class HP3ParInventory {
 			catch (Exception e) {
 				logger.warn("Possibly stale entry from older API - deleting & re-creating. " + e.getMessage());
 				invStoreCollection.delete(queryString);
-				this.create(accountName);
+				this.create(login);
 				return;
 			}
 
 			if (store == null) {
 				logger.warn("Cannot find " + accountName + " in inventory! Rolling back and creating new");
 				// Attempt to create it:
-				this.create(accountName);
+				this.create(login);
 				return;
 			}
 			final Date d = new Date();
@@ -145,8 +148,6 @@ public class HP3ParInventory {
 			}
 			logger.info("Updating persistent store for account " + accountName);
 			store.setUpdated(c);
-
-			HP3ParCredentials login = new HP3ParCredentials(store.getAccountName());
 
 			final HP3ParVolumeList volumeList = new HP3ParVolumeList(login);
 			store.setVolumeListJson(volumeList.toJson());
@@ -195,14 +196,14 @@ public class HP3ParInventory {
 	/**
 	 * Return information on a specific volume
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @param volumeName
 	 * @return Volume information
 	 * @throws Exception
 	 */
-	public synchronized static final VolumeResponseMember getVolumeInfo(String accountName, String volumeName)
-			throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static final VolumeResponseMember getVolumeInfo(HP3ParCredentials credentials,
+			String volumeName) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 
 		for (final VolumeResponseMember i : (inv.getVol().getMembers())) {
@@ -218,13 +219,14 @@ public class HP3ParInventory {
 	/**
 	 * Return information on a specific CPG
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @param cpgName
 	 * @return Volume information
 	 * @throws Exception
 	 */
-	public synchronized static CPGResponseMember getCpgInfo(String accountName, String cpgName) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static CPGResponseMember getCpgInfo(HP3ParCredentials credentials, String cpgName)
+			throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 
 		for (final CPGResponseMember i : inv.getCpg().getMembers()) {
@@ -239,13 +241,14 @@ public class HP3ParInventory {
 	/**
 	 * Return information on a specific Host
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @param hostName
 	 * @return Volume information
 	 * @throws Exception
 	 */
-	public synchronized static HostResponseMember getHostInfo(String accountName, String hostName) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static HostResponseMember getHostInfo(HP3ParCredentials credentials, String hostName)
+			throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 
 		for (final HostResponseMember i : inv.getHost().getMembers()) {
@@ -278,12 +281,12 @@ public class HP3ParInventory {
 	/**
 	 * Get the volume response data
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @return volume response list
 	 * @throws Exception
 	 */
-	public synchronized static VolumeResponse getVolumeResponse(String accountName) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static VolumeResponse getVolumeResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 		return inv.getVol();
 	}
@@ -291,12 +294,12 @@ public class HP3ParInventory {
 	/**
 	 * Get the system response data
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @return volume response list
 	 * @throws Exception
 	 */
-	public synchronized static SystemResponse getSystemResponse(String accountName) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static SystemResponse getSystemResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 		return inv.getSys();
 	}
@@ -304,12 +307,12 @@ public class HP3ParInventory {
 	/**
 	 * Get the CPG response data
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @return volume response list
 	 * @throws Exception
 	 */
-	public synchronized static CPGResponse getCPGResponse(String accountName) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static CPGResponse getCPGResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 		return inv.getCpg();
 	}
@@ -317,12 +320,12 @@ public class HP3ParInventory {
 	/**
 	 * Get the Host response data
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @return host response list
 	 * @throws Exception
 	 */
-	public synchronized static HostResponse getHostResponse(String accountName) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static HostResponse getHostResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 		return inv.getHost();
 	}
@@ -330,12 +333,12 @@ public class HP3ParInventory {
 	/**
 	 * Get the Host response data
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @return host response list
 	 * @throws Exception
 	 */
-	public synchronized static VlunResponse getVlunResponse(String accountName) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static VlunResponse getVlunResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 		return inv.getVlun();
 	}
@@ -343,10 +346,11 @@ public class HP3ParInventory {
 	/**
 	 * Deletes old persistent data and re-creates on startup
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @throws Exception
 	 */
-	public synchronized static void init(String accountName) throws Exception {
+	public synchronized static void init(HP3ParCredentials credentials) throws Exception {
+		final String accountName = credentials.getAccountName();
 		logger.info("Initialising inventory for account: " + accountName);
 		final String queryString = "accountName == '" + accountName + "'";
 		try {
@@ -357,20 +361,20 @@ public class HP3ParInventory {
 		catch (Exception e) {
 			logger.info("Could not delete old data - maybe it doesn't exist. " + e.getMessage());
 		}
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 	}
 
 	/**
 	 * Update from the 3PAR array to the local cache if it's timed out
 	 *
-	 * @param accountName
+	 * @param credentials
 	 * @param force
 	 *            - force the updates
 	 * @throws Exception
 	 */
-	public synchronized static void update(String accountName, boolean force) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(accountName);
+	public synchronized static void update(HP3ParCredentials credentials, boolean force) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update(force);
 	}
 

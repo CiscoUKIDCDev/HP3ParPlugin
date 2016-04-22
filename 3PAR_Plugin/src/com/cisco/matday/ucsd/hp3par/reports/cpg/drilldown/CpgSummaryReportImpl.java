@@ -85,7 +85,7 @@ public class CpgSummaryReportImpl implements TabularReportGeneratorIf {
 		}
 
 		// Get volume info:
-		CPGResponseMember cpg = HP3ParInventory.getCpgInfo(credentials.getAccountName(), cpgName);
+		CPGResponseMember cpg = HP3ParInventory.getCpgInfo(credentials, cpgName);
 
 		// Build the table
 		model.addText("CPG Name", cpgName, CPG_INFO_TABLE);

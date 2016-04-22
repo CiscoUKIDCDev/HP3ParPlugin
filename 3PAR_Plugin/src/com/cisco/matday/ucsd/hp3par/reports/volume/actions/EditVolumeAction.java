@@ -82,7 +82,7 @@ public class EditVolumeAction extends CloupiaPageAction {
 			// Have to do an API lookup as we need the ID which isn't in the
 			// volume REST response:
 			HP3ParCredentials login = new HP3ParCredentials(context);
-			CPGResponseMember cpg = HP3ParInventory.getCpgInfo(login.getAccountName(), copyCpg);
+			CPGResponseMember cpg = HP3ParInventory.getCpgInfo(login, copyCpg);
 			// Build it in the format for the CPG table:
 			// ID@AccountName@CPGName
 			copyCpg = cpg.getId() + "@" + login.getAccountName() + "@" + cpg.getName();

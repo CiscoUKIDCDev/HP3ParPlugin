@@ -19,13 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.cpg.drilldown;
+package com.cisco.matday.ucsd.hp3par.reports.graphs;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.ReportNameValuePair;
 import com.cloupia.model.cIM.SnapshotReport;
@@ -34,14 +35,15 @@ import com.cloupia.service.cIM.inframgr.SnapshotReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 
 /**
- * Implementation of the pie chart
+ * Implements the CPG bar chart
  *
  * @author Matt Day
  *
  */
-public class CpgMappedSpacePieChartImpl implements SnapshotReportGeneratorIf {
+public class PathPieChartReport implements SnapshotReportGeneratorIf {
 
-	private static Logger logger = Logger.getLogger(CpgMappedSpacePieChartImpl.class);
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(PathPieChartReport.class);
 
 	@Override
 	public SnapshotReport getSnapshotReport(ReportRegistryEntry reportEntry, ReportContext context) throws Exception {
@@ -57,33 +59,26 @@ public class CpgMappedSpacePieChartImpl implements SnapshotReportGeneratorIf {
 
 		report.setPrecision(0);
 
-		HP3ParCredentials credentials = new HP3ParCredentials(context);
+		final HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		String cpgName = null;
-		// Split out hidden field in the format:
-		// AccountName;id@AccountName@volumeName
-		try {
-			cpgName = context.getId().split(";")[1].split("@")[2];
+		HostResponse hostList = HP3ParInventory.getHostResponse(credentials);
+
+		int iscsi = 0;
+		int fc = 0;
+
+		for (HostResponseMember host : hostList.getMembers()) {
+			final String hostName = host.getName();
+			fc += HP3ParInventory.getHostInfo(credentials, hostName).getFCPaths().size();
+			iscsi += HP3ParInventory.getHostInfo(credentials, hostName).getiSCSIPaths().size();
 		}
-		catch (Exception e) {
-			logger.warn("Could not get ID from context ID: " + context.getId());
-			throw new Exception("Could not get ID from context: " + e.getMessage());
-		}
 
-		// Get volume info:
-		CPGResponseMember cpg = HP3ParInventory.getCpgInfo(credentials, cpgName);
+		ReportNameValuePair[] rnv = new ReportNameValuePair[2];
+		rnv[0] = new ReportNameValuePair("Fibre Channel", fc);
+		rnv[1] = new ReportNameValuePair("iSCSI", iscsi);
 
-		double userSpace = cpg.getUsrUsage().getTotalMiB();
-		double adminSpace = cpg.getSAUsage().getTotalMiB();
-		double snapSpace = cpg.getSDUsage().getTotalMiB();
-
-		ReportNameValuePair[] rnv = new ReportNameValuePair[3];
-		rnv[0] = new ReportNameValuePair("User Space (GiB)", (userSpace / 1024d));
-		rnv[1] = new ReportNameValuePair("Snapshot Space (GiB)", (snapSpace / 1024d));
-		rnv[2] = new ReportNameValuePair("Admin Space (GiB)", (adminSpace / 1024d));
 		SnapshotReportCategory cat = new SnapshotReportCategory();
 
-		cat.setCategoryName("Mapped Space");
+		cat.setCategoryName("Path Type");
 		cat.setNameValuePairs(rnv);
 
 		report.setCategories(new SnapshotReportCategory[] {
@@ -91,7 +86,6 @@ public class CpgMappedSpacePieChartImpl implements SnapshotReportGeneratorIf {
 		});
 
 		return report;
-
 	}
 
 }

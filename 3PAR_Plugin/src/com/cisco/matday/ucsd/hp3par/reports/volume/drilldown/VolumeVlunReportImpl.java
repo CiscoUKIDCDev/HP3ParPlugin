@@ -60,7 +60,7 @@ public class VolumeVlunReportImpl implements TabularReportGeneratorIf {
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		VlunResponse list = HP3ParInventory.getVlunResponse(credentials.getAccountName());
+		VlunResponse list = HP3ParInventory.getVlunResponse(credentials);
 
 		for (VlunResponseMembers vlun : list.getMembers()) {
 			// We only want to match on this volume's children

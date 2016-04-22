@@ -54,7 +54,7 @@ public class CPGBarChartReportImpl implements SnapshotReportGeneratorIf {
 		report.setValueAxisName("Volumes");
 		report.setPrecision(0);
 
-		CPGResponse cpgList = HP3ParInventory.getCPGResponse(new HP3ParCredentials(context).getAccountName());
+		CPGResponse cpgList = HP3ParInventory.getCPGResponse(new HP3ParCredentials(context));
 
 		ReportNameValuePair[] rnv = new ReportNameValuePair[cpgList.getTotal()];
 		int j = 0;

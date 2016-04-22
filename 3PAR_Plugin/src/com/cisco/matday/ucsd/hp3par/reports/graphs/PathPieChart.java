@@ -19,102 +19,98 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.vluns;
+package com.cisco.matday.ucsd.hp3par.reports.graphs;
+
+import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
+import com.cloupia.model.cIM.ReportDefinition;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
-import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
-import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
-import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
 /**
- * Tabular list of VLUNs with action buttons
+ * Bar chart view to show CPGs by volume
  *
  * @author Matt Day
  *
  */
-public class VlunReport extends DrillableReportWithActions {
+public class PathPieChart extends CloupiaNonTabularReport {
+
+	// private static final String NAME =
+	// "com.cisco.matday.ucsd.hp3par.reports.CPGBarChartReport";
+	private static final String NAME = "com.cisco.matday.ucsd.hp3par.reports.graphs.PathBarChartReport";
+	private static final String LABEL = "Path Types";
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(PathPieChart.class);
 
 	/**
-	 * Unique identifier for this report
+	 * @return BarChartReport implementation class type
 	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.vluns.VlunReport";
-	private final static String REPORT_LABEL = "VLUNs";
-
-	// This MUST be defined ONCE!
-	private CloupiaReport[] drillable = new CloupiaReport[] {
-
-	};
-
-	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-
-	};
+	@Override
+	public Class<PathPieChartReport> getImplementationClass() {
+		return PathPieChartReport.class;
+	}
 
 	/**
-	 * Overridden default constructor which sets the management column (0)
+	 * Initialise and set management column index
 	 */
-	public VlunReport() {
+	public PathPieChart() {
 		super();
-		// This sets what column to use as the context ID for child drilldown
-		// reports
-		this.setMgmtColumnIndex(0);
-		// This sets what to show in the GUI in the top
-		this.setMgmtDisplayColumnIndex(2);
+		// IMPORTANT: this tells the framework which column of this report you
+		// want to pass as the report context id
+		// when there is a UI action being launched in this report
+		this.setMgmtColumnIndex(1);
 	}
 
+	// Returns report type for pie chart as shown below
 	@Override
-	public Class<VlunReportImpl> getImplementationClass() {
-		return VlunReportImpl.class;
-	}
-
-	@Override
-	public CloupiaReport[] getDrilldownReports() {
-		return this.drillable;
-	}
-
-	@Override
-	public CloupiaReportAction[] getActions() {
-		return this.actions;
+	public int getReportType() {
+		return ReportDefinition.REPORT_TYPE_SNAPSHOT;
 	}
 
 	@Override
 	public String getReportLabel() {
-		return VlunReport.REPORT_LABEL;
-	}
-
-	@Override
-	public String getReportName() {
-		return VlunReport.REPORT_NAME;
-	}
-
-	@Override
-	public boolean isEasyReport() {
-		return false;
+		return LABEL;
 	}
 
 	@Override
 	public boolean isLeafReport() {
-		return false;
+		return true;
 	}
 
+	@Override
+	public String getReportName() {
+		return NAME;
+	}
+
+	// Forcing this report into the Physical->Storage part of the GUI.
 	@Override
 	public int getMenuID() {
 		return 51;
 	}
 
+	/**
+	 * @return true if you want this chart to show up in a summary report
+	 */
 	@Override
-	public int getContextLevel() {
-		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.VLUN_LIST_DRILLDOWN);
-		return context.getType();
+	public boolean showInSummary() {
+		return true;
+	}
+
+	// Returns report hint for pie chart as shown below
+	@Override
+	public int getReportHint() {
+		return ReportDefinition.REPORT_HINT_PIECHART;
 	}
 
 	@Override
 	public ContextMapRule[] getMapRules() {
+
 		DynReportContext context = ReportContextRegistry.getInstance()
 				.getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE);
+
 		ContextMapRule rule = new ContextMapRule();
 		rule.setContextName(context.getId());
 		rule.setContextType(context.getType());

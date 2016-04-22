@@ -76,7 +76,7 @@ public class OverviewTableImpl implements TabularReportGeneratorIf {
 		SummaryReportInternalModel model = new SummaryReportInternalModel();
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
-		final SystemResponse systemInfo = HP3ParInventory.getSystemResponse(credentials.getAccountName());
+		final SystemResponse systemInfo = HP3ParInventory.getSystemResponse(credentials);
 
 		// Build the table
 		model.addText("Account Name", getAccountName(context), SYS_INFO_TABLE);

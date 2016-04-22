@@ -86,7 +86,7 @@ public class VolumeSummaryReportImpl implements TabularReportGeneratorIf {
 		}
 
 		// Get volume info:
-		VolumeResponseMember volume = HP3ParInventory.getVolumeInfo(credentials.getAccountName(), volName);
+		VolumeResponseMember volume = HP3ParInventory.getVolumeInfo(credentials, volName);
 
 		String provType = null;
 		if (volume.getProvisioningType() == HP3ParConstants.PROVISION_FULL) {

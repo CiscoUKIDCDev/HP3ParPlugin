@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cloupia.model.cIM.ConvergedStackComponentDetail;
@@ -64,7 +65,7 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		SystemResponse systemInfo = null;
 		boolean ok = false;
 		try {
-			systemInfo = HP3ParInventory.getSystemResponse(accountName);
+			systemInfo = HP3ParInventory.getSystemResponse(new HP3ParCredentials(accountName));
 			ok = true;
 		}
 		catch (Exception e) {

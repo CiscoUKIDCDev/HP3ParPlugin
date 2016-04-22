@@ -34,6 +34,8 @@ For more screenshots see the [screenshots page](screenshots.md).
 * Inventory collection and database caching
 
 ### Near-term roadmap
+* Full support to create/edit/delete VLUNs and Hosts (due for 0.4.0)
+* Support for Host sets and Volume sets
 * More tasks (need suggestions)
 
 Additionally, this plugin is mostly trying to be a clean plugin implementation. 
