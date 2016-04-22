@@ -19,18 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.volume;
+package com.cisco.matday.ucsd.hp3par.reports.paths;
+
+import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeCopyAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeSnapshotAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.DeleteVolumeAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.EditVolumeAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeAllocationPieChart;
-import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeSnapshotReport;
-import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeSummaryReport;
-import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeVlunReport;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.HostReportImpl;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.DeleteHostAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostPathReport;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostSummaryReport;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostVlunReport;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -40,34 +39,38 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithAc
 import com.cloupia.service.cIM.inframgr.reports.simplified.actions.DrillDownAction;
 
 /**
- * Tabular list of volumes with action buttons
+ * Provides a table for all the volumes in a CPG
  *
  * @author Matt Day
  *
  */
-public class VolumeReport extends DrillableReportWithActions {
+public class PathReport extends DrillableReportWithActions {
 
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(PathReport.class);
 	/**
 	 * Unique identifier for this report
 	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.VolumeReport";
-	private final static String REPORT_LABEL = "Volumes";
+	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.paths.PathReport";
+	/**
+	 * User-friendly report name
+	 */
+	private final static String REPORT_LABEL = "Paths";
 
 	// This MUST be defined ONCE!
 	private CloupiaReport[] drillable = new CloupiaReport[] {
-			new VolumeSummaryReport(), new VolumeVlunReport(), new VolumeSnapshotReport(),
-			new VolumeAllocationPieChart()
+			new HostSummaryReport(), new HostPathReport(), new HostVlunReport(),
+
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateVolumeAction(), new EditVolumeAction(), new DeleteVolumeAction(),
-			new CreateVolumeSnapshotAction(), new CreateVolumeCopyAction(), new DrillDownAction(),
+			new CreateHostAction(), new DeleteHostAction(), new DrillDownAction(),
 	};
 
 	/**
 	 * Overridden default constructor which sets the management column (0)
 	 */
-	public VolumeReport() {
+	public PathReport() {
 		super();
 		// This sets what column to use as the context ID for child drilldown
 		// reports
@@ -77,13 +80,13 @@ public class VolumeReport extends DrillableReportWithActions {
 	}
 
 	@Override
-	public Class<VolumeReportImpl> getImplementationClass() {
-		return VolumeReportImpl.class;
+	public CloupiaReport[] getDrilldownReports() {
+		return this.drillable;
 	}
 
 	@Override
-	public CloupiaReport[] getDrilldownReports() {
-		return this.drillable;
+	public Class<HostReportImpl> getImplementationClass() {
+		return HostReportImpl.class;
 	}
 
 	@Override
@@ -93,12 +96,12 @@ public class VolumeReport extends DrillableReportWithActions {
 
 	@Override
 	public String getReportLabel() {
-		return VolumeReport.REPORT_LABEL;
+		return REPORT_LABEL;
 	}
 
 	@Override
 	public String getReportName() {
-		return VolumeReport.REPORT_NAME;
+		return REPORT_NAME;
 	}
 
 	@Override
@@ -119,7 +122,7 @@ public class VolumeReport extends DrillableReportWithActions {
 	@Override
 	public int getContextLevel() {
 		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.VOLUME_LIST_DRILLDOWN);
+				.getContextByName(HP3ParConstants.PATH_LIST_DRILLDOWN);
 		return context.getType();
 	}
 

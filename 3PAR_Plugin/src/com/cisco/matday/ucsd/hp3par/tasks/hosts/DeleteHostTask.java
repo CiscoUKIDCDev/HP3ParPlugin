@@ -19,14 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.copy;
+package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.cpg.HP3ParHostExecute;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -34,69 +33,48 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Holds the actions to copy volumes as static methods - code within action
- * buttons and tasks should use this
- *
+ * Delete a host
+ * 
  * @author Matt Day
  *
  */
-public class CreateVolumeCopyTask extends AbstractTask {
+public class DeleteHostTask extends AbstractTask {
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(CreateVolumeCopyTask.class);
+	private static Logger logger = Logger.getLogger(DeleteHostTask.class);
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
-		// Obtain account information:
-		CreateVolumeCopyConfig config = (CreateVolumeCopyConfig) context.loadConfigObject();
 
+		// Obtain account information:
+		DeleteHostConfig config = (DeleteHostConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		HP3ParRequestStatus s = HP3ParCopyExecute.copy(c, config);
-
-		// If it wasn't created error out
+		// Delete the Host:
+		HP3ParRequestStatus s = HP3ParHostExecute.delete(c, config);
+		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to copy volume: " + s.getError());
-			throw new Exception("Failed to copy volume" + s.getError());
+			ucsdLogger.addError("Failed to delete Host: " + s.getError());
+			throw new Exception("Host deletion failed");
 		}
+		ucsdLogger.addInfo("Deleted Host");
 
-		ucsdLogger.addInfo("Copied volume");
-
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
-				"Undo creation of volume: " + config.getNewVolumeName(), DeleteVolumeConfig.DISPLAY_LABEL,
-				new DeleteVolumeConfig(config));
-
-		try {
-			// Construct Volume name in the format:
-			// id@Account@Volume
-			// Don't know the volume so just use 0 as a workaround
-			String newVolName = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
-			context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, newVolName);
-		}
-		catch (Exception e) {
-			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
-					+ e.getMessage());
-		}
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new CreateVolumeCopyConfig();
+		return new DeleteHostConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		return CreateVolumeCopyConfig.DISPLAY_LABEL;
+		return DeleteHostConfig.DISPLAY_LABEL;
 	}
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		TaskOutputDefinition[] ops = {
-				// Register output type for the volume created
-				new TaskOutputDefinition(HP3ParConstants.VOLUME_LIST_FORM_LABEL,
-						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL),
-		};
-		return ops;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

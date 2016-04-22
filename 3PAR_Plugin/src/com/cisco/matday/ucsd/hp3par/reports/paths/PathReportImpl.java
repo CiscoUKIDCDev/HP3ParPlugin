@@ -19,15 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hosts;
+package com.cisco.matday.ucsd.hp3par.reports.paths;
 
-import org.apache.log4j.Logger;
+import java.util.List;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseFCPaths;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseiSCSIPaths;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -35,15 +36,12 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
- * Implements a host report list
+ * Implementation of host paths report
  *
  * @author Matt Day
  *
  */
-public class HostReportImpl implements TabularReportGeneratorIf {
-
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostReportImpl.class);
+public class PathReportImpl implements TabularReportGeneratorIf {
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -55,63 +53,53 @@ public class HostReportImpl implements TabularReportGeneratorIf {
 		report.setContext(context);
 
 		TabularReportInternalModel model = new TabularReportInternalModel();
+		// Internal ID is hidden from normal view and is used by tasks later
 		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("ID", "ID");
-		model.addTextColumn("Name", "Name");
-		model.addTextColumn("FC Paths", "FC Paths");
-		model.addTextColumn("iSCSI Paths", "iSCSI Paths");
-		model.addTextColumn("Location", "Location");
-		model.addTextColumn("IP Address", "IP Address");
-		model.addTextColumn("Operating System", "Operating System");
-		model.addTextColumn("Model", "Model");
-		model.addTextColumn("Contact", "Contact");
-		model.addTextColumn("Comments", "Comments");
+		model.addTextColumn("WWN/iSCSI Name", "WWN/iSCSI Name");
+		model.addTextColumn("Type", "Type");
+		model.addTextColumn("iSCSI IP Address", "iSCSI IP Address");
 
 		model.completedHeader();
 
-		HP3ParCredentials credentials = new HP3ParCredentials(context);
+		// Internal ID, format:
+		// accountName;hostid@accountName@hostName
+		final String accountName = context.getId().split(";")[0];
 
 		HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(context).getAccountName());
 
 		for (HostResponseMember host : hostList.getMembers()) {
+			final String hostName = host.getName();
+			List<HostResponseFCPaths> fcPaths = HP3ParInventory.getHostInfo(accountName, hostName).getFCPaths();
+			List<HostResponseiSCSIPaths> scsiPaths = HP3ParInventory.getHostInfo(accountName, hostName).getiSCSIPaths();
 
-			// Internal ID, format:
-			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + host.getId() + "@" + credentials.getAccountName()
-					+ "@" + host.getName());
-			// Bad but we can use this to parse it all out later
-			// ID
-			model.addTextValue(Integer.toString(host.getId()));
-			// Name
-			model.addTextValue(host.getName());
+			for (HostResponseFCPaths path : fcPaths) {
+				// Format
+				// accountName;wwn@type
+				model.addTextValue(accountName + ";" + path.getWwn() + "@fc");
 
-			final int fcPaths = host.getFCPaths().size();
-			model.addTextValue(Integer.toString(fcPaths));
-			final int scsiPaths = host.getiSCSIPaths().size();
-			model.addTextValue(Integer.toString(scsiPaths));
+				model.addTextValue(path.getWwn());
+				model.addTextValue("Fibre Channel");
+				model.addTextValue("N/A");
 
-			// Descriptors is optional so may return null, if so initialise with
-			// defaults:
-			HostResponseDescriptors desc = host.getDescriptors();
-			if (desc == null) {
-				desc = new HostResponseDescriptors();
+				model.completedRow();
 			}
 
-			// Descriptors
-			model.addTextValue(desc.getLocation());
-			model.addTextValue(desc.getIPAddr());
-			model.addTextValue(desc.getOs());
-			model.addTextValue(desc.getModel());
-			model.addTextValue(desc.getContact());
-			model.addTextValue(desc.getComment());
+			for (HostResponseiSCSIPaths path : scsiPaths) {
+				// Format
+				// accountName;wwn@type
+				model.addTextValue(accountName + ";" + path.getName() + "@iscsi");
 
-			model.completedRow();
+				model.addTextValue(path.getName());
+				model.addTextValue("iSCSI");
+				model.addTextValue(path.getIPAddr());
+
+				model.completedRow();
+			}
 		}
 
 		model.updateReport(report);
 
 		return report;
-
 	}
 
 }

@@ -19,18 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.volume;
+package com.cisco.matday.ucsd.hp3par.reports.vluns;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeCopyAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeSnapshotAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.DeleteVolumeAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.EditVolumeAction;
-import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeAllocationPieChart;
-import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeSnapshotReport;
-import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeSummaryReport;
-import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeVlunReport;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -40,34 +31,32 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithAc
 import com.cloupia.service.cIM.inframgr.reports.simplified.actions.DrillDownAction;
 
 /**
- * Tabular list of volumes with action buttons
+ * Tabular list of VLUNs with action buttons
  *
  * @author Matt Day
  *
  */
-public class VolumeReport extends DrillableReportWithActions {
+public class VlunReport extends DrillableReportWithActions {
 
 	/**
 	 * Unique identifier for this report
 	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.VolumeReport";
-	private final static String REPORT_LABEL = "Volumes";
+	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.vluns.VlunReport";
+	private final static String REPORT_LABEL = "VLUNs";
 
 	// This MUST be defined ONCE!
 	private CloupiaReport[] drillable = new CloupiaReport[] {
-			new VolumeSummaryReport(), new VolumeVlunReport(), new VolumeSnapshotReport(),
-			new VolumeAllocationPieChart()
+
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateVolumeAction(), new EditVolumeAction(), new DeleteVolumeAction(),
-			new CreateVolumeSnapshotAction(), new CreateVolumeCopyAction(), new DrillDownAction(),
+			new DrillDownAction(),
 	};
 
 	/**
 	 * Overridden default constructor which sets the management column (0)
 	 */
-	public VolumeReport() {
+	public VlunReport() {
 		super();
 		// This sets what column to use as the context ID for child drilldown
 		// reports
@@ -77,8 +66,8 @@ public class VolumeReport extends DrillableReportWithActions {
 	}
 
 	@Override
-	public Class<VolumeReportImpl> getImplementationClass() {
-		return VolumeReportImpl.class;
+	public Class<VlunReportImpl> getImplementationClass() {
+		return VlunReportImpl.class;
 	}
 
 	@Override
@@ -93,12 +82,12 @@ public class VolumeReport extends DrillableReportWithActions {
 
 	@Override
 	public String getReportLabel() {
-		return VolumeReport.REPORT_LABEL;
+		return VlunReport.REPORT_LABEL;
 	}
 
 	@Override
 	public String getReportName() {
-		return VolumeReport.REPORT_NAME;
+		return VlunReport.REPORT_NAME;
 	}
 
 	@Override
@@ -119,7 +108,7 @@ public class VolumeReport extends DrillableReportWithActions {
 	@Override
 	public int getContextLevel() {
 		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.VOLUME_LIST_DRILLDOWN);
+				.getContextByName(HP3ParConstants.VLUN_LIST_DRILLDOWN);
 		return context.getType();
 	}
 

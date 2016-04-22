@@ -37,6 +37,8 @@ import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
+import com.cisco.matday.ucsd.hp3par.rest.vluns.HP3ParVlunList;
+import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.VlunResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
@@ -143,17 +145,23 @@ public class HP3ParInventory {
 			}
 			logger.info("Updating persistent store for account " + accountName);
 			store.setUpdated(c);
-			final HP3ParVolumeList volumeList = new HP3ParVolumeList(new HP3ParCredentials(store.getAccountName()));
+
+			HP3ParCredentials login = new HP3ParCredentials(store.getAccountName());
+
+			final HP3ParVolumeList volumeList = new HP3ParVolumeList(login);
 			store.setVolumeListJson(volumeList.toJson());
 
-			final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(store.getAccountName()));
+			final HP3ParSystem systemInfo = new HP3ParSystem(login);
 			store.setSysInfoJson(systemInfo.toJson());
 
-			final HP3ParCPGList cpg = new HP3ParCPGList(new HP3ParCredentials(store.getAccountName()));
+			final HP3ParCPGList cpg = new HP3ParCPGList(login);
 			store.setCpgListJson(cpg.toJson());
 
-			final HP3ParHostList host = new HP3ParHostList(new HP3ParCredentials(store.getAccountName()));
+			final HP3ParHostList host = new HP3ParHostList(login);
 			store.setHostListJson(host.toJson());
+
+			final HP3ParVlunList vlun = new HP3ParVlunList(login);
+			store.setVlunListJson(vlun.toJson());
 
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
@@ -166,6 +174,10 @@ public class HP3ParInventory {
 
 	private VolumeResponse getVol() throws Exception {
 		return new HP3ParVolumeList(this.getStore().getVolumeListJson()).getVolume();
+	}
+
+	private VlunResponse getVlun() throws Exception {
+		return new HP3ParVlunList(this.getStore().getVlunListJson()).getVlun();
 	}
 
 	private CPGResponse getCpg() throws Exception {
@@ -313,6 +325,19 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(accountName);
 		inv.update();
 		return inv.getHost();
+	}
+
+	/**
+	 * Get the Host response data
+	 *
+	 * @param accountName
+	 * @return host response list
+	 * @throws Exception
+	 */
+	public synchronized static VlunResponse getVlunResponse(String accountName) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(accountName);
+		inv.update();
+		return inv.getVlun();
 	}
 
 	/**

@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.service.cIM.inframgr.customactions.WorkflowInputFieldTypeDeclaration;
@@ -34,7 +35,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.TabularFieldRegistry;
 
 /**
  * Sets up the workflow input types (e.g. account/volume/cpg selection lists)
- * 
+ *
  * @author Matt Day
  *
  */
@@ -51,17 +52,18 @@ public class WorkflowInputTypeDeclaration {
 
 	/**
 	 * This method is used to register Workflow Input Types.
-	 * 
+	 *
 	 */
 	public static void registerWFInputs() {
 		registerAccountPicker();
 		registerCpgList();
 		registerVolumeList();
+		registerHostList();
 	}
 
 	/**
 	 * This method is used to register Workflow input of type tabular.
-	 * 
+	 *
 	 */
 
 	private static void registerAccountPicker() {
@@ -98,6 +100,18 @@ public class WorkflowInputTypeDeclaration {
 		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_NAME,
 				HP3ParVolumeSelector.class, "0", "2");
+	}
+
+	private static void registerHostList() {
+		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.HOST_LIST_FORM_TABLE_NAME,
+				HP3ParConstants.HOST_LIST_FORM_LABEL, FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP,
+				HP3ParConstants.HOST_LIST_FORM_NAME));
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
+		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.HOST_LIST_FORM_NAME,
+				HP3ParHostSelector.class, "0", "2");
 	}
 
 }

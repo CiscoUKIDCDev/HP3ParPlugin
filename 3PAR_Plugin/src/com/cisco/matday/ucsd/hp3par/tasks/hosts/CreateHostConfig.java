@@ -57,6 +57,16 @@ public class CreateHostConfig implements TaskConfigIf {
 	@Persistent
 	private String account;
 
+	@FormField(label = "Host Name", help = "Location", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String hostName;
+
+	@FormField(label = "Domain", help = "Domain", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String domain;
+
 	@FormField(label = "Location", help = "Location", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
@@ -231,6 +241,36 @@ public class CreateHostConfig implements TaskConfigIf {
 	 */
 	public void setContact(String contact) {
 		this.contact = contact;
+	}
+
+	/**
+	 * @return the hostName
+	 */
+	public String getHostName() {
+		return this.hostName;
+	}
+
+	/**
+	 * @param hostName
+	 *            the hostName to set
+	 */
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+
+	/**
+	 * @return the domain
+	 */
+	public String getDomain() {
+		return this.domain;
+	}
+
+	/**
+	 * @param domain
+	 *            the domain to set
+	 */
+	public void setDomain(String domain) {
+		this.domain = domain;
 	}
 
 }

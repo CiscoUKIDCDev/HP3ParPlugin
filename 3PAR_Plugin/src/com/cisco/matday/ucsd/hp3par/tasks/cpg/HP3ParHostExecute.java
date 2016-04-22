@@ -19,9 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.test;
+package com.cisco.matday.ucsd.hp3par.tasks.cpg;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
@@ -29,46 +28,60 @@ import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostRestCall;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostConfig;
 
-// Don't document this test case, it changes too often
-@SuppressWarnings("javadoc")
-public class VolumeTest {
+/**
+ * @author Matt Day
+ *
+ */
+public class HP3ParHostExecute {
+	private static Logger logger = Logger.getLogger(HP3ParHostExecute.class);
 
-	final static String ipAddress = "10.51.8.210";
-	final static String user = "3paradm";
-	final static String password = "3pardata";
+	/**
+	 * Create a 3PAR host
+	 *
+	 * @param c
+	 * @param config
+	 * @return status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus create(HP3ParCredentials c, CreateHostConfig config) throws Exception {
 
-	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {
+		HostResponseDescriptors desc = new HostResponseDescriptors();
+		desc.setComment(config.getComment());
+		desc.setIPAddr(config.getIpaddr());
+		desc.setContact(config.getContact());
+		desc.setLocation(config.getLocation());
+		desc.setModel(config.getModel());
+		desc.setOs(config.getOs());
 
-		try {
+		HP3ParHostParams params = new HP3ParHostParams(config.getHostName(), config.getDomain(), desc);
 
-			Logger.getRootLogger().setLevel(Level.INFO);
+		return HP3ParHostRestCall.create(c, params);
 
-			// Don't warn that I'm using test methods
-			HP3ParCredentials login = new HP3ParCredentials(ipAddress, user, password);
-
-			HostResponseDescriptors desc = new HostResponseDescriptors();
-			desc.setComment("Comment!");
-			desc.setIPAddr("192.168.210.1");
-			desc.setContact("Contact");
-			desc.setLocation("Location");
-			desc.setModel("Model");
-			desc.setOs("Operating System!");
-
-			HP3ParHostParams params = new HP3ParHostParams("API-Test", "", desc);
-
-			HP3ParRequestStatus s = HP3ParHostRestCall.create(login, params);
-			System.out.println(s.getError());
-			System.out.println(s.isSuccess());
-
-			s = HP3ParHostRestCall.delete(login, "Testing");
-			System.out.println(s.getError());
-			System.out.println(s.isSuccess());
-
-		}
-		catch (@SuppressWarnings("unused") Exception e) {
-			// Ignore errors in test case
-		}
 	}
+
+	/**
+	 * Delete a 3PAR host
+	 *
+	 * @param c
+	 * @param config
+	 * @return status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus delete(HP3ParCredentials c, DeleteHostConfig config) throws Exception {
+
+		// Get the volume name, it's in the format:
+		// id@account@name
+		String[] volInfo = config.getHost().split("@");
+		if (volInfo.length != 3) {
+			logger.warn("Host didn't return three items! It returned: " + config.getHost());
+			throw new Exception("Invalid Volume: " + config.getHost());
+		}
+		String volName = volInfo[2];
+		return HP3ParHostRestCall.delete(c, volName);
+
+	}
+
 }

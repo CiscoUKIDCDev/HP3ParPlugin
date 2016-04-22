@@ -19,19 +19,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.rwhitear.threeParREST.constants;
+package com.cisco.matday.ucsd.hp3par.rest.vluns.rest;
 
-// Ignoring javadoc
-@SuppressWarnings("javadoc")
-public class threeParRESTconstants {
+import java.util.List;
 
-	public static final String SESSION_KEY_HEADER = "X-HP3PAR-WSAPI-SessionKey";
+/**
+ * @author Matt Day
+ *
+ */
+public class VlunResponse {
+	private int total;
+	private List<VlunResponseMembers> members;
 
-	public static final String GET_SESSION_TOKEN_URI = "/api/v1/credentials";
-	public static final String GET_VOLUMES_URI = "/api/v1/volumes";
-	public static final String GET_SYSTEM_URI = "/api/v1/system";
-	public static final String GET_CPG_URI = "/api/v1/cpgs";
-	public static final String GET_HOSTS_URI = "/api/v1/hosts";
-	public static final String GET_VLUNS_URI = "/api/v1/vluns";
+	/**
+	 * @return the total
+	 */
+	public int getTotal() {
+		return this.total;
+	}
 
+	/**
+	 * @param total
+	 *            the total to set
+	 */
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	/**
+	 * @return the members
+	 */
+	public List<VlunResponseMembers> getMembers() {
+		return this.members;
+	}
+
+	/**
+	 * @param members
+	 *            the members to set
+	 */
+	public void setMembers(List<VlunResponseMembers> members) {
+		this.members = members;
+	}
 }

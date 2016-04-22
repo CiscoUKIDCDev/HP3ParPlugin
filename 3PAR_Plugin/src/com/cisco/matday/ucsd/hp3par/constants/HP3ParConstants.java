@@ -85,6 +85,26 @@ public class HP3ParConstants {
 	public static final String VOLUME_LIST_FORM_LABEL = "Volume";
 
 	/**
+	 * User-friendly label for Uost list table
+	 */
+	public static final String HOST_LIST_FORM_LABEL = "Host";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String HOST_LIST_FORM_TABLE_NAME = "HP3ParHostList";
+
+	/**
+	 * Account list form name
+	 */
+	public static final String HOST_LIST_FORM_NAME = "HP3ParHostList";
+
+	/**
+	 * Volume list internal UCSD provider name
+	 */
+	public static final String HOST_LIST_FORM_PROVIDER = "HP3ParHostList_provider";
+
+	/**
 	 * Account list form name
 	 */
 	public static final String ACCOUNT_LIST_FORM_NAME = "HP3ParAccountList";
@@ -126,7 +146,28 @@ public class HP3ParConstants {
 	/**
 	 * Volume list drilldown name for global context registry
 	 */
+	public static final String PATH_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.PathList";
+
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String PATH_LIST_DRILLDOWN_LABEL = "Path Details";
+
+	/**
+	 * Volume list drilldown name for global context registry
+	 */
+	public static final String VLUN_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.VlunList";
+
+	/**
+	 * Volume list drilldown name for global context registry
+	 */
 	public static final String VOLUME_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeList";
+
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String VLUN_LIST_DRILLDOWN_LABEL = "VLUN Details";
+
 	/**
 	 * Label for it (not sure what it does)
 	 */

@@ -19,14 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.copy;
-
-import org.apache.log4j.Logger;
+package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.cpg.HP3ParHostExecute;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -34,49 +33,38 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Holds the actions to copy volumes as static methods - code within action
- * buttons and tasks should use this
+ * Create host implementation task
  *
  * @author Matt Day
  *
  */
-public class CreateVolumeCopyTask extends AbstractTask {
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(CreateVolumeCopyTask.class);
+public class CreateHostTask extends AbstractTask {
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
-		// Obtain account information:
-		CreateVolumeCopyConfig config = (CreateVolumeCopyConfig) context.loadConfigObject();
-
+		CreateHostConfig config = (CreateHostConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		HP3ParRequestStatus s = HP3ParCopyExecute.copy(c, config);
+		// HP3ParRequestStatus s = HP3ParCopyExecute.copy(c, config);
+		HP3ParRequestStatus s = HP3ParHostExecute.create(c, config);
 
-		// If it wasn't created error out
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to copy volume: " + s.getError());
-			throw new Exception("Failed to copy volume" + s.getError());
+			ucsdLogger.addError("Failed to create host: " + s.getError());
+			throw new Exception("Failed to create host" + s.getError());
 		}
 
-		ucsdLogger.addInfo("Copied volume");
+		ucsdLogger.addInfo("Created host");
 
 		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
-				"Undo creation of volume: " + config.getNewVolumeName(), DeleteVolumeConfig.DISPLAY_LABEL,
-				new DeleteVolumeConfig(config));
+				"Undo creation of volume: " + config.getHostName(), DeleteHostConfig.DISPLAY_LABEL,
+				new DeleteHostConfig(config));
 
-		try {
-			// Construct Volume name in the format:
-			// id@Account@Volume
-			// Don't know the volume so just use 0 as a workaround
-			String newVolName = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
-			context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, newVolName);
-		}
-		catch (Exception e) {
-			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
-					+ e.getMessage());
-		}
+		// Construct Volume name in the format:
+		// id@Account@Volume
+		// Don't know the volume so just use 0 as a workaround
+		String hostName = "0@" + config.getAccount() + "@" + config.getHostName();
+		context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, hostName);
 	}
 
 	@Override
@@ -86,17 +74,16 @@ public class CreateVolumeCopyTask extends AbstractTask {
 
 	@Override
 	public String getTaskName() {
-		return CreateVolumeCopyConfig.DISPLAY_LABEL;
+		return CreateHostConfig.DISPLAY_LABEL;
 	}
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
 		TaskOutputDefinition[] ops = {
 				// Register output type for the volume created
-				new TaskOutputDefinition(HP3ParConstants.VOLUME_LIST_FORM_LABEL,
-						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL),
+				new TaskOutputDefinition(HP3ParConstants.HOST_LIST_FORM_LABEL,
+						HP3ParConstants.HOST_LIST_FORM_TABLE_NAME, HP3ParConstants.HOST_LIST_FORM_LABEL)
 		};
 		return ops;
 	}
-
 }

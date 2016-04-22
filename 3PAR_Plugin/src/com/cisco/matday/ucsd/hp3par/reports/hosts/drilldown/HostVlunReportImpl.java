@@ -19,15 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hosts;
-
-import org.apache.log4j.Logger;
+package com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.VlunResponse;
+import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.VlunResponseMembers;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -35,15 +32,10 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
- * Implements a host report list
- *
  * @author Matt Day
  *
  */
-public class HostReportImpl implements TabularReportGeneratorIf {
-
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostReportImpl.class);
+public class HostVlunReportImpl implements TabularReportGeneratorIf {
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -55,63 +47,39 @@ public class HostReportImpl implements TabularReportGeneratorIf {
 		report.setContext(context);
 
 		TabularReportInternalModel model = new TabularReportInternalModel();
+		// Internal ID is hidden from normal view and is used by tasks later
 		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("ID", "ID");
-		model.addTextColumn("Name", "Name");
-		model.addTextColumn("FC Paths", "FC Paths");
-		model.addTextColumn("iSCSI Paths", "iSCSI Paths");
-		model.addTextColumn("Location", "Location");
-		model.addTextColumn("IP Address", "IP Address");
-		model.addTextColumn("Operating System", "Operating System");
-		model.addTextColumn("Model", "Model");
-		model.addTextColumn("Contact", "Contact");
-		model.addTextColumn("Comments", "Comments");
+		model.addTextColumn("LUN", "LUN");
+		model.addTextColumn("Volume", "Volume");
+		model.addTextColumn("Status", "Status");
+		model.addTextColumn("WWN", "WWN");
+
+		final String host = context.getId().split(";")[1].split("@")[2];
 
 		model.completedHeader();
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(context).getAccountName());
+		VlunResponse list = HP3ParInventory.getVlunResponse(credentials.getAccountName());
 
-		for (HostResponseMember host : hostList.getMembers()) {
-
-			// Internal ID, format:
-			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + host.getId() + "@" + credentials.getAccountName()
-					+ "@" + host.getName());
-			// Bad but we can use this to parse it all out later
-			// ID
-			model.addTextValue(Integer.toString(host.getId()));
-			// Name
-			model.addTextValue(host.getName());
-
-			final int fcPaths = host.getFCPaths().size();
-			model.addTextValue(Integer.toString(fcPaths));
-			final int scsiPaths = host.getiSCSIPaths().size();
-			model.addTextValue(Integer.toString(scsiPaths));
-
-			// Descriptors is optional so may return null, if so initialise with
-			// defaults:
-			HostResponseDescriptors desc = host.getDescriptors();
-			if (desc == null) {
-				desc = new HostResponseDescriptors();
+		for (VlunResponseMembers vlun : list.getMembers()) {
+			// We only want to match on this volume's children
+			if (!host.equals(vlun.getHostname())) {
+				continue;
 			}
-
-			// Descriptors
-			model.addTextValue(desc.getLocation());
-			model.addTextValue(desc.getIPAddr());
-			model.addTextValue(desc.getOs());
-			model.addTextValue(desc.getModel());
-			model.addTextValue(desc.getContact());
-			model.addTextValue(desc.getComment());
+			// ID format:
+			// accountName;lun@accountName@hostname
+			model.addTextValue(credentials.getAccountName() + ";" + vlun.getLun() + "@" + credentials.getAccountName()
+					+ "@" + vlun.getHostname());
+			model.addTextValue(Integer.toString(vlun.getLun()));
+			model.addTextValue(vlun.getVolumeName());
+			model.addTextValue(vlun.isActive() ? "Active" : "Inactive");
+			model.addTextValue(vlun.getVolumeWWN());
 
 			model.completedRow();
 		}
-
 		model.updateReport(report);
 
 		return report;
-
 	}
-
 }

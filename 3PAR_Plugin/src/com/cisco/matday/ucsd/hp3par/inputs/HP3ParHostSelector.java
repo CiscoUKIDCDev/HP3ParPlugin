@@ -19,15 +19,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hosts;
+package com.cisco.matday.ucsd.hp3par.inputs;
 
-import org.apache.log4j.Logger;
+import java.util.List;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
+import com.cloupia.fw.objstore.ObjStore;
+import com.cloupia.fw.objstore.ObjStoreHelper;
+import com.cloupia.lib.connector.account.AccountUtil;
+import com.cloupia.lib.connector.account.PhysicalInfraAccount;
+import com.cloupia.model.cIM.InfraAccount;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -35,29 +40,32 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
- * Implements a host report list
+ * Table to allow selection of an HP 3PAR volumes - it should not be
+ * instantiated directly but instead used as a form item
  *
  * @author Matt Day
  *
  */
-public class HostReportImpl implements TabularReportGeneratorIf {
-
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostReportImpl.class);
+public class HP3ParHostSelector implements TabularReportGeneratorIf {
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
+
 		TabularReport report = new TabularReport();
 
 		report.setGeneratedTime(System.currentTimeMillis());
 		report.setReportName(reportEntry.getReportLabel());
 		report.setContext(context);
 
+		ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
+		List<InfraAccount> objs = store.queryAll();
+
 		TabularReportInternalModel model = new TabularReportInternalModel();
-		model.addTextColumn("Internal ID", "Internal ID", true);
+		model.addTextColumn("InternalID", "InternalID", true);
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
+		model.addTextColumn("Account", "Account");
 		model.addTextColumn("FC Paths", "FC Paths");
 		model.addTextColumn("iSCSI Paths", "iSCSI Paths");
 		model.addTextColumn("Location", "Location");
@@ -69,49 +77,57 @@ public class HostReportImpl implements TabularReportGeneratorIf {
 
 		model.completedHeader();
 
-		HP3ParCredentials credentials = new HP3ParCredentials(context);
+		for (InfraAccount a : objs) {
+			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
+			// Important to check if the account type is null first
+			if ((acc != null) && (acc.getAccountType() != null)
+					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
-		HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(context).getAccountName());
+				HostResponse hostList = HP3ParInventory.getHostResponse(a.getAccountName());
 
-		for (HostResponseMember host : hostList.getMembers()) {
+				for (HostResponseMember host : hostList.getMembers()) {
+					// hostid@accountName@hostName
+					String internalId = host.getId() + "@" + a.getAccountName() + "@" + host.getName();
 
-			// Internal ID, format:
-			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + host.getId() + "@" + credentials.getAccountName()
-					+ "@" + host.getName());
-			// Bad but we can use this to parse it all out later
-			// ID
-			model.addTextValue(Integer.toString(host.getId()));
-			// Name
-			model.addTextValue(host.getName());
+					// Internal ID
+					model.addTextValue(internalId);
 
-			final int fcPaths = host.getFCPaths().size();
-			model.addTextValue(Integer.toString(fcPaths));
-			final int scsiPaths = host.getiSCSIPaths().size();
-			model.addTextValue(Integer.toString(scsiPaths));
+					// Volume ID
+					model.addTextValue(Integer.toString(host.getId()));
+					// Name of this volume
+					model.addTextValue(host.getName());
 
-			// Descriptors is optional so may return null, if so initialise with
-			// defaults:
-			HostResponseDescriptors desc = host.getDescriptors();
-			if (desc == null) {
-				desc = new HostResponseDescriptors();
+					// Account Name
+					model.addTextValue(a.getAccountName());
+
+					final int fcPaths = host.getFCPaths().size();
+					model.addTextValue(Integer.toString(fcPaths));
+					final int scsiPaths = host.getiSCSIPaths().size();
+					model.addTextValue(Integer.toString(scsiPaths));
+
+					// Descriptors is optional so may return null, if so
+					// initialise with
+					// defaults:
+					HostResponseDescriptors desc = host.getDescriptors();
+					if (desc == null) {
+						desc = new HostResponseDescriptors();
+					}
+
+					// Descriptors
+					model.addTextValue(desc.getLocation());
+					model.addTextValue(desc.getIPAddr());
+					model.addTextValue(desc.getOs());
+					model.addTextValue(desc.getModel());
+					model.addTextValue(desc.getContact());
+					model.addTextValue(desc.getComment());
+
+					model.completedRow();
+				}
 			}
-
-			// Descriptors
-			model.addTextValue(desc.getLocation());
-			model.addTextValue(desc.getIPAddr());
-			model.addTextValue(desc.getOs());
-			model.addTextValue(desc.getModel());
-			model.addTextValue(desc.getContact());
-			model.addTextValue(desc.getComment());
-
-			model.completedRow();
 		}
-
 		model.updateReport(report);
 
 		return report;
-
 	}
 
 }
