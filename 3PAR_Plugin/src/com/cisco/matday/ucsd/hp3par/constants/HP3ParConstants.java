@@ -87,6 +87,26 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for Uost list table
 	 */
+	public static final String VLUN_LIST_FORM_LABEL = "VLUN";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String VLUN_LIST_FORM_TABLE_NAME = "HP3ParVlunList";
+
+	/**
+	 * Account list form name
+	 */
+	public static final String VLUN_LIST_FORM_NAME = "HP3ParVlunList";
+
+	/**
+	 * Volume list internal UCSD provider name
+	 */
+	public static final String VLUN_LIST_FORM_PROVIDER = "HP3ParVlunList_provider";
+
+	/**
+	 * User-friendly label for Uost list table
+	 */
 	public static final String HOST_LIST_FORM_LABEL = "Host";
 
 	/**

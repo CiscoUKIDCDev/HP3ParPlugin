@@ -47,6 +47,7 @@ import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyTask;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostTask;
+import com.cisco.matday.ucsd.hp3par.tasks.vluns.CreateVlunTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeTask;
@@ -94,6 +95,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		final AbstractTask[] task = new AbstractTask[] {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
+				new CreateVlunTask()
 		};
 		return task;
 	}
@@ -107,6 +109,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			cfr.registerTabularField(HP3ParConstants.CPG_LIST_FORM_PROVIDER, HP3ParCpgSelector.class, "0", "3");
 			cfr.registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_PROVIDER, HP3ParVolumeSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.HOST_LIST_FORM_PROVIDER, HP3ParHostSelector.class, "0", "2");
+			cfr.registerTabularField(HP3ParConstants.VLUN_LIST_FORM_PROVIDER, HP3ParHostSelector.class, "0", "2");
 
 			// Register drilldown reports
 			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUME_LIST_DRILLDOWN,

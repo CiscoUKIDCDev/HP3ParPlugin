@@ -24,19 +24,25 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.drilldown;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.vluns.actions.CreateVlunAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
-import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportWithActions;
 
 /**
  * @author Matt Day
  *
  */
-public class VolumeVlunReport extends CloupiaReport {
+public class VolumeVlunReport extends CloupiaReportWithActions {
 
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(VolumeVlunReport.class);
+
+	private CloupiaReportAction[] actions = {
+			new CreateVlunAction()
+	};
 
 	/**
 	 * Unique identifier for this report
@@ -96,6 +102,11 @@ public class VolumeVlunReport extends CloupiaReport {
 		rules[0] = rule;
 
 		return rules;
+	}
+
+	@Override
+	public CloupiaReportAction[] getActions() {
+		return this.actions;
 	}
 
 }
