@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetRequest;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.HP3ParCopyExecute;
@@ -44,7 +44,7 @@ public class HP3ParHostSetExecute {
 			setmembers[i] = hostList[i].split("@")[2];
 		}
 
-		HostSetResponseMember p = new HostSetResponseMember(config.getHostSetName(), setmembers, config.getComment(),
+		HostSetRequest p = new HostSetRequest(config.getHostSetName(), setmembers, config.getComment(),
 				config.getDomain());
 
 		Gson gson = new Gson();

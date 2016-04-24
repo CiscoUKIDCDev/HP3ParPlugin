@@ -25,9 +25,9 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -71,16 +71,14 @@ public class HostsetMemberReportImpl implements TabularReportGeneratorIf {
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 		// accountName;hostid@accountName@hostName
-		final String hostName = context.getId().split(";")[1].split("@")[2];
+		final String hostSetName = context.getId().split(";")[1].split("@")[2];
 
-		HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(context));
+		// HostResponse hostList = HP3ParInventory.getHostResponse(new
+		// HP3ParCredentials(context));
+		HostSetResponseMember hostSetList = HP3ParInventory.getHostSetInfo(credentials, hostSetName);
 
-		for (HostResponseMember host : hostList.getMembers()) {
-			// Skip any other hosts
-			if (!hostName.equals(host.getName())) {
-				logger.info(hostName + " != " + host.getName());
-				continue;
-			}
+		for (String hostName : hostSetList.getSetMembers()) {
+			HostResponseMember host = HP3ParInventory.getHostInfo(credentials, hostName);
 
 			// Internal ID, format:
 			// accountName;hostid@accountName@hostName
