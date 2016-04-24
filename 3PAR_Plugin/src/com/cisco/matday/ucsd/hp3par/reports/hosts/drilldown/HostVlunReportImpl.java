@@ -68,9 +68,9 @@ public class HostVlunReportImpl implements TabularReportGeneratorIf {
 				continue;
 			}
 			// ID format:
-			// accountName;lun@accountName@volumeName@hostname
+			// accountName;lun@accountName@hostName@volumeName
 			model.addTextValue(credentials.getAccountName() + ";" + vlun.getLun() + "@" + credentials.getAccountName()
-					+ "@" + vlun.getVolumeName() + "@" + vlun.getVolumeName());
+					+ "@" + vlun.getHostname() + "@" + vlun.getVolumeName());
 			model.addTextValue(vlun.getVolumeName());
 			model.addTextValue(Integer.toString(vlun.getLun()));
 			model.addTextValue(vlun.isActive() ? "Active" : "Inactive");

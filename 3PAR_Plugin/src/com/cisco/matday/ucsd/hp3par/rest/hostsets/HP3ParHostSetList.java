@@ -29,7 +29,6 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponse;
-import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponse;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
@@ -71,7 +70,7 @@ public class HP3ParHostSetList {
 	public HP3ParHostSetList(String json) {
 		this.json = json;
 		final Gson gson = new Gson();
-		this.hostSets = gson.fromJson(this.json, PortResponse.class);
+		this.hostSets = gson.fromJson(this.json, HostSetResponse.class);
 	}
 
 	/**

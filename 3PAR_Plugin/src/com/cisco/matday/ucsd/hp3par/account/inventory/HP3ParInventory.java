@@ -37,6 +37,7 @@ import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.hostsets.HP3ParHostSetList;
 import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponse;
+import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.ports.HP3ParPortList;
 import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponse;
 import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponseMember;
@@ -205,7 +206,7 @@ public class HP3ParInventory {
 	}
 
 	private HostSetResponse getHostSet() throws Exception {
-		return new HP3ParHostSetList(this.getStore().getHostListJson()).getHostSets();
+		return new HP3ParHostSetList(this.getStore().getHostSetListJson()).getHostSets();
 	}
 
 	private PortResponse getPorts() throws Exception {
@@ -276,6 +277,28 @@ public class HP3ParInventory {
 			}
 		}
 		logger.warn("Host not found in cache: " + hostName);
+		return null;
+	}
+
+	/**
+	 * Return information on a specific Host
+	 *
+	 * @param credentials
+	 * @param hostSetName
+	 * @return Volume information
+	 * @throws Exception
+	 */
+	public synchronized static HostSetResponseMember getHostSetInfo(HP3ParCredentials credentials, String hostSetName)
+			throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		inv.update();
+
+		for (final HostSetResponseMember i : inv.getHostSet().getMembers()) {
+			if (hostSetName.equals(i.getName())) {
+				return i;
+			}
+		}
+		logger.warn("Host set not found in cache: " + hostSetName);
 		return null;
 	}
 

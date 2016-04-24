@@ -19,14 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets;
+package com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponse;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -39,10 +40,10 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
  * @author Matt Day
  *
  */
-public class HostSetReportImpl implements TabularReportGeneratorIf {
+public class HostsetHostReportImpl implements TabularReportGeneratorIf {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostSetReportImpl.class);
+	private static Logger logger = Logger.getLogger(HostsetHostReportImpl.class);
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -57,30 +58,59 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 		model.addTextColumn("Internal ID", "Internal ID", true);
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
-		model.addTextColumn("Members", "Members");
+		model.addTextColumn("FC Paths", "FC Paths");
+		model.addTextColumn("iSCSI Paths", "iSCSI Paths");
+		model.addTextColumn("Location", "Location");
+		model.addTextColumn("IP Address", "IP Address");
+		model.addTextColumn("Operating System", "Operating System");
+		model.addTextColumn("Model", "Model");
+		model.addTextColumn("Contact", "Contact");
+		model.addTextColumn("Comments", "Comments");
 
 		model.completedHeader();
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
+		// accountName;hostid@accountName@hostName
+		final String hostName = context.getId().split(";")[1].split("@")[2];
 
-		HostSetResponse hostSetList = HP3ParInventory.getHostSetResponse(new HP3ParCredentials(context));
+		HostResponse hostList = HP3ParInventory.getHostResponse(new HP3ParCredentials(context));
 
-		for (HostSetResponseMember hostSet : hostSetList.getMembers()) {
+		for (HostResponseMember host : hostList.getMembers()) {
+			// Skip any other hosts
+			if (!hostName.equals(host.getName())) {
+				continue;
+			}
 
 			// Internal ID, format:
 			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@" + credentials.getAccountName()
-					+ "@" + hostSet.getName());
+			model.addTextValue(credentials.getAccountName() + ";" + host.getId() + "@" + credentials.getAccountName()
+					+ "@" + host.getName());
 			// Bad but we can use this to parse it all out later
 			// ID
-			model.addTextValue(Integer.toString(hostSet.getId()));
-			model.addTextValue(hostSet.getName());
-			String members = "";
+			model.addTextValue(Integer.toString(host.getId()));
 			// Name
-			for (String member : hostSet.getSetMembers()) {
-				members += member + ", ";
+			model.addTextValue(host.getName());
+
+			final int fcPaths = host.getFCPaths().size();
+			model.addTextValue(Integer.toString(fcPaths));
+			final int scsiPaths = host.getiSCSIPaths().size();
+			model.addTextValue(Integer.toString(scsiPaths));
+
+			// Descriptors is optional so may return null, if so initialise with
+			// defaults:
+			HostResponseDescriptors desc = host.getDescriptors();
+			if (desc == null) {
+				desc = new HostResponseDescriptors();
 			}
-			model.addTextValue(members);
+
+			// Descriptors
+			model.addTextValue(desc.getLocation());
+			model.addTextValue(desc.getIPAddr());
+			model.addTextValue(desc.getOs());
+			model.addTextValue(desc.getModel());
+			model.addTextValue(desc.getContact());
+			model.addTextValue(desc.getComment());
+
 			model.completedRow();
 		}
 

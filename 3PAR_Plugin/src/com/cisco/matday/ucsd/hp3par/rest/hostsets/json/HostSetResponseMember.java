@@ -21,8 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.hostsets.json;
 
-import java.util.List;
-
 /**
  * 3PAR Host Set list JSON enumeration
  *
@@ -35,7 +33,7 @@ import java.util.List;
 public class HostSetResponseMember {
 	private int id;
 	private String name;
-	private List<String> members;
+	private String[] setmembers;
 
 	public int getId() {
 		return this.id;
@@ -53,12 +51,12 @@ public class HostSetResponseMember {
 		this.name = name;
 	}
 
-	public List<String> getMembers() {
-		return this.members;
+	public String[] getSetMembers() {
+		return (this.setmembers == null) ? new String[] {} : this.setmembers;
 	}
 
-	public void setMembers(List<String> members) {
-		this.members = members;
+	public void setSetMembers(String[] members) {
+		this.setmembers = members;
 	}
 
 }

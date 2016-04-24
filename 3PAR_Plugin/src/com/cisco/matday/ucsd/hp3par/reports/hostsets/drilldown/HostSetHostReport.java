@@ -19,21 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hosts;
+package com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostAction;
 import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.DeleteHostAction;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostPathReport;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostSummaryReport;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown.HostVlunReport;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
 import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
-import com.cloupia.service.cIM.inframgr.reports.simplified.actions.DrillDownAction;
 
 /**
  * Host report
@@ -41,11 +37,11 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.actions.DrillDownActi
  * @author Matt
  *
  */
-public class HostReport extends DrillableReportWithActions {
+public class HostSetHostReport extends DrillableReportWithActions {
 	/**
 	 * Unique identifier for this report
 	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.hosts.HostReport";
+	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown.HostReport";
 	/**
 	 * User-friendly report name
 	 */
@@ -53,18 +49,17 @@ public class HostReport extends DrillableReportWithActions {
 
 	// This MUST be defined ONCE!
 	private CloupiaReport[] drillable = new CloupiaReport[] {
-			new HostSummaryReport(), new HostVlunReport(), new HostPathReport(),
 
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateHostAction(), new DeleteHostAction(), new DrillDownAction(),
+			new CreateHostAction(), new DeleteHostAction()
 	};
 
 	/**
 	 * Create Host report
 	 */
-	public HostReport() {
+	public HostSetHostReport() {
 		super();
 		// This sets what column to use as the context ID for child drilldown
 		// reports
@@ -79,8 +74,8 @@ public class HostReport extends DrillableReportWithActions {
 	}
 
 	@Override
-	public Class<HostReportImpl> getImplementationClass() {
-		return HostReportImpl.class;
+	public Class<HostsetHostReportImpl> getImplementationClass() {
+		return HostsetHostReportImpl.class;
 	}
 
 	@Override
@@ -105,7 +100,7 @@ public class HostReport extends DrillableReportWithActions {
 
 	@Override
 	public boolean isLeafReport() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -114,16 +109,10 @@ public class HostReport extends DrillableReportWithActions {
 	}
 
 	@Override
-	public int getContextLevel() {
-		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.HOST_LIST_DRILLDOWN);
-		return context.getType();
-	}
-
-	@Override
 	public ContextMapRule[] getMapRules() {
 		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE);
+				.getContextByName(HP3ParConstants.HOSTSET_LIST_DRILLDOWN);
+
 		ContextMapRule rule = new ContextMapRule();
 		rule.setContextName(context.getId());
 		rule.setContextType(context.getType());
