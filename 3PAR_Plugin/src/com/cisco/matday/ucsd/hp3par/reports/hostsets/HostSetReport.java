@@ -19,11 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.vluns;
+package com.cisco.matday.ucsd.hp3par.reports.hostsets;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.vluns.actions.CreateVlunAction;
-import com.cisco.matday.ucsd.hp3par.reports.vluns.actions.DeleteVlunAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -32,18 +30,20 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
 import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
 
 /**
- * Tabular list of VLUNs with action buttons
+ * Host report
  *
- * @author Matt Day
+ * @author Matt
  *
  */
-public class VlunReport extends DrillableReportWithActions {
-
+public class HostSetReport extends DrillableReportWithActions {
 	/**
 	 * Unique identifier for this report
 	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.vluns.VlunReport";
-	private final static String REPORT_LABEL = "VLUNs";
+	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.hostsets.HostReport";
+	/**
+	 * User-friendly report name
+	 */
+	private final static String REPORT_LABEL = "Host Sets";
 
 	// This MUST be defined ONCE!
 	private CloupiaReport[] drillable = new CloupiaReport[] {
@@ -51,13 +51,13 @@ public class VlunReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateVlunAction(), new DeleteVlunAction()
+
 	};
 
 	/**
-	 * Overridden default constructor which sets the management column (0)
+	 * Create Host report
 	 */
-	public VlunReport() {
+	public HostSetReport() {
 		super();
 		// This sets what column to use as the context ID for child drilldown
 		// reports
@@ -67,13 +67,13 @@ public class VlunReport extends DrillableReportWithActions {
 	}
 
 	@Override
-	public Class<VlunReportImpl> getImplementationClass() {
-		return VlunReportImpl.class;
+	public CloupiaReport[] getDrilldownReports() {
+		return this.drillable;
 	}
 
 	@Override
-	public CloupiaReport[] getDrilldownReports() {
-		return this.drillable;
+	public Class<HostSetReportImpl> getImplementationClass() {
+		return HostSetReportImpl.class;
 	}
 
 	@Override
@@ -83,12 +83,12 @@ public class VlunReport extends DrillableReportWithActions {
 
 	@Override
 	public String getReportLabel() {
-		return VlunReport.REPORT_LABEL;
+		return REPORT_LABEL;
 	}
 
 	@Override
 	public String getReportName() {
-		return VlunReport.REPORT_NAME;
+		return REPORT_NAME;
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class VlunReport extends DrillableReportWithActions {
 	@Override
 	public int getContextLevel() {
 		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.VLUN_LIST_DRILLDOWN);
+				.getContextByName(HP3ParConstants.HOSTSET_LIST_DRILLDOWN);
 		return context.getType();
 	}
 

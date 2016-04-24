@@ -106,6 +106,18 @@ public class WorkflowInputTypeDeclaration {
 				HP3ParVolumeSelector.class, "0", "2");
 	}
 
+	private static void registerPortList() {
+		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.PORT_LIST_FORM_TABLE_NAME,
+				HP3ParConstants.PORT_LIST_FORM_LABEL, FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP,
+				HP3ParConstants.PORT_LIST_FORM_NAME));
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
+		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.PORT_LIST_FORM_NAME,
+				HP3ParPortSelector.class, "0", "1");
+	}
+
 	private static void registerHostList() {
 		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
 		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.HOST_LIST_FORM_TABLE_NAME,
@@ -128,18 +140,6 @@ public class WorkflowInputTypeDeclaration {
 		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.VLUN_LIST_FORM_NAME,
 				HP3ParVlunSelector.class, "0", "2");
-	}
-
-	private static void registerPortList() {
-		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
-		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.PORT_LIST_FORM_TABLE_NAME,
-				HP3ParConstants.PORT_LIST_FORM_LABEL, FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP,
-				HP3ParConstants.PORT_LIST_FORM_NAME));
-
-		// First item is what we return to the workflow, second is what we
-		// display in the GUI
-		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.PORT_LIST_FORM_NAME,
-				HP3ParPortSelector.class, "0", "2");
 	}
 
 }

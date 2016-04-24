@@ -24,7 +24,6 @@ package com.cisco.matday.ucsd.hp3par.tasks.vluns;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -38,46 +37,26 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext
  * @author Matt Day
  *
  */
-public class CreateVlunTask extends AbstractTask {
+public class DeleteVlunTask extends AbstractTask {
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(CreateVlunTask.class);
+	private static Logger logger = Logger.getLogger(DeleteVlunTask.class);
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
 
 		// Obtain account information:
-		CreateVlunConfig config = (CreateVlunConfig) context.loadConfigObject();
+		DeleteVlunConfig config = (DeleteVlunConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
 		// Create the VLUN
-		HP3ParRequestStatus s = HP3ParVlunExecute.create(c, config);
+		HP3ParRequestStatus s = HP3ParVlunExecute.delete(c, config);
 		// If it wasn't createderror out
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to create VLUN: " + s.getError());
-			throw new Exception("VLUN creation failed");
+			ucsdLogger.addError("Failed to delete VLUN: " + s.getError());
+			throw new Exception("VLUN deletionfailed");
 		}
-		ucsdLogger.addInfo("Created VLUN");
-
-		// Configure rollback
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "VLUN created",
-				"Undo creation of VLUN", DeleteVlunConfig.DISPLAY_LABEL, new DeleteVlunConfig(config));
-
-		// Register output
-		try {
-			// Construct VLUN name in the format:
-			// Format: accountName;lun@accountName@volumeName@hostname
-			final String hostName = config.getHost().split("@")[3];
-			final String volumeName = config.getVolume().split("@")[2];
-
-			String output = config.getAccount() + ";" + config.getLun() + "@" + config.getAccount() + "@" + volumeName
-					+ "@" + hostName;
-			context.saveOutputValue(HP3ParConstants.VLUN_LIST_FORM_LABEL, output);
-		}
-		catch (Exception e) {
-			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
-					+ e.getMessage());
-		}
+		ucsdLogger.addInfo("Deleted VLUN");
 
 	}
 
@@ -93,12 +72,7 @@ public class CreateVlunTask extends AbstractTask {
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		TaskOutputDefinition[] ops = {
-				// Register output type for the volume created
-				new TaskOutputDefinition(HP3ParConstants.VLUN_LIST_FORM_LABEL,
-						HP3ParConstants.VLUN_LIST_FORM_TABLE_NAME, HP3ParConstants.VLUN_LIST_FORM_LABEL),
-		};
-		return ops;
+		return null;
 	}
 
 }

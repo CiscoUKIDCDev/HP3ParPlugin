@@ -47,7 +47,7 @@ public class CreateVlunAction extends CloupiaPageAction {
 	// need to provide a unique string to identify this form and action
 	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.vluns.actions.CreateVlunForm";
 	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.vluns.actions.CreateVlunAction";
-	private static final String LABEL = "Create VLUN";
+	private static final String LABEL = "Create";
 	private static final String DESCRIPTION = "Create a new VLUN";
 
 	@Override
@@ -62,7 +62,33 @@ public class CreateVlunAction extends CloupiaPageAction {
 	 */
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
+		final String query = context.getId();
 		CreateVlunConfig form = new CreateVlunConfig();
+
+		// If it's a volume context then it'll be:
+		// AccountName;VolumeID@....
+		try {
+			if (query.split(";").length > 2) {
+				// Volume drilldown
+				// Construct volume from context:
+				// 3PAR;4@3PAR@CPGTestEdited;FC_r1;FC_r5
+				final String volume = query.split(";")[1];
+				form.setVolume(volume);
+				page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
+
+			}
+			else if (query.split(";")[1].split("@").length == 3) {
+				// Hosts drilldown
+				// Construct volume from context:
+				// 3PAR;1@3PAR@NewHost
+				final String host = query.split(";")[1];
+				form.setHost(host);
+				page.getFlist().getByFieldId(FORM_ID + ".host").setEditable(false);
+			}
+		}
+		catch (@SuppressWarnings("unused") Exception e) {
+			// Do nothing
+		}
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
 

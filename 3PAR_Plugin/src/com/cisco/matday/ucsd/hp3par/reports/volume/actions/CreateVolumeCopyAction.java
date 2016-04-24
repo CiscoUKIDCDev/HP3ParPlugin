@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -36,7 +36,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
 /**
  * Action button implemenation to create a volume
- * 
+ *
  * @author Matt Day
  *
  */
@@ -47,7 +47,7 @@ public class CreateVolumeCopyAction extends CloupiaPageAction {
 	// need to provide a unique string to identify this form and action
 	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeCopyForm";
 	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeCopyAction";
-	private static final String LABEL = "Copy Volume";
+	private static final String LABEL = "Copy";
 	private static final String DESCRIPTION = "Copy Volume";
 
 	@Override
@@ -66,10 +66,10 @@ public class CreateVolumeCopyAction extends CloupiaPageAction {
 		CreateVolumeCopyConfig form = new CreateVolumeCopyConfig();
 		/*
 		 * Unlike CreateVolumeAction, this returns true on isSelectionRequired()
-		 * 
+		 *
 		 * This means the context is whatever's in column 0 of the table. In
 		 * this case it's in the format:
-		 * 
+		 *
 		 * accountName;volumeName
 		 */
 		String volume = query.split(";")[1];
@@ -89,7 +89,7 @@ public class CreateVolumeCopyAction extends CloupiaPageAction {
 	/**
 	 * This should do basic error checking (UCSD will enforce mandatory fields)
 	 * and attempt to execute the task.
-	 * 
+	 *
 	 * Throwing an exception here will show the message as an error dialogue.
 	 */
 	@Override

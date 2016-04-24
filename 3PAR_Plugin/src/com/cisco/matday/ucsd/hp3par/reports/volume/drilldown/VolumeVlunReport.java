@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.reports.vluns.actions.CreateVlunAction;
+import com.cisco.matday.ucsd.hp3par.reports.vluns.actions.DeleteVlunAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -41,7 +42,7 @@ public class VolumeVlunReport extends CloupiaReportWithActions {
 	private static Logger logger = Logger.getLogger(VolumeVlunReport.class);
 
 	private CloupiaReportAction[] actions = {
-			new CreateVlunAction()
+			new CreateVlunAction(), new DeleteVlunAction(),
 	};
 
 	/**

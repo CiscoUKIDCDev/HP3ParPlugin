@@ -47,7 +47,7 @@ public class DeleteHostAction extends CloupiaPageAction {
 	// need to provide a unique string to identify this form and action
 	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.DeleteHostForm";
 	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.DeleteHostAction";
-	private static final String LABEL = "Delete Host";
+	private static final String LABEL = "Delete";
 	private static final String DESCRIPTION = "Delete Host";
 
 	@Override

@@ -42,6 +42,7 @@ import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cisco.matday.ucsd.hp3par.reports.AccountReport;
 import com.cisco.matday.ucsd.hp3par.reports.cpg.CPGReport;
 import com.cisco.matday.ucsd.hp3par.reports.hosts.HostReport;
+import com.cisco.matday.ucsd.hp3par.reports.hostsets.HostSetReport;
 import com.cisco.matday.ucsd.hp3par.reports.paths.PathReport;
 import com.cisco.matday.ucsd.hp3par.reports.vluns.VlunReport;
 import com.cisco.matday.ucsd.hp3par.reports.volume.VolumeReport;
@@ -50,6 +51,7 @@ import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.CreateVlunTask;
+import com.cisco.matday.ucsd.hp3par.tasks.vluns.DeleteVlunTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeTask;
@@ -84,8 +86,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
 		final CloupiaReport[] report = new CloupiaReport[] {
-				new AccountReport(), new VolumeReport(), new CPGReport(), new HostReport(), new VlunReport(),
-				new PathReport(),
+				new AccountReport(), new VolumeReport(), new CPGReport(), new HostReport(), new HostSetReport(),
+				new VlunReport(), new PathReport(),
 		};
 		return report;
 	}
@@ -97,7 +99,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		final AbstractTask[] task = new AbstractTask[] {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
-				new CreateVlunTask()
+				new CreateVlunTask(), new DeleteVlunTask()
 		};
 		return task;
 	}
@@ -110,9 +112,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			cfr.registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER, HP3ParAccountSelector.class, "0", "0");
 			cfr.registerTabularField(HP3ParConstants.CPG_LIST_FORM_PROVIDER, HP3ParCpgSelector.class, "0", "3");
 			cfr.registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_PROVIDER, HP3ParVolumeSelector.class, "0", "2");
+			cfr.registerTabularField(HP3ParConstants.PORT_LIST_FORM_PROVIDER, HP3ParPortSelector.class, "0", "1");
 			cfr.registerTabularField(HP3ParConstants.HOST_LIST_FORM_PROVIDER, HP3ParHostSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.VLUN_LIST_FORM_PROVIDER, HP3ParVlunSelector.class, "0", "2");
-			cfr.registerTabularField(HP3ParConstants.PORT_LIST_FORM_PROVIDER, HP3ParPortSelector.class, "0", "2");
 
 			// Register drilldown reports
 			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUME_LIST_DRILLDOWN,
@@ -125,6 +127,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 					HP3ParConstants.VLUN_LIST_DRILLDOWN_LABEL);
 			ReportContextRegistry.getInstance().register(HP3ParConstants.PATH_LIST_DRILLDOWN,
 					HP3ParConstants.PATH_LIST_DRILLDOWN_LABEL);
+			ReportContextRegistry.getInstance().register(HP3ParConstants.HOSTSET_LIST_DRILLDOWN,
+					HP3ParConstants.HOSTSET_LIST_DRILLDOWN_LABEL);
 
 			// Register workflow inputs
 			WorkflowInputTypeDeclaration.registerWFInputs();

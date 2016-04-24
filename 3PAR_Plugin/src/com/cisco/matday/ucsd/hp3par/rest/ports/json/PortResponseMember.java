@@ -47,6 +47,11 @@ public class PortResponseMember {
 		return this.portPos;
 	}
 
+	public String getPortPosAsString() {
+		// Node, Slot, Port
+		return this.portPos.getNode() + "/" + this.portPos.getSlot() + "/" + this.portPos.getCardPort();
+	}
+
 	public void setPortPos(PortResponsePos portPos) {
 		this.portPos = portPos;
 	}
@@ -194,7 +199,7 @@ public class PortResponseMember {
 	}
 
 	public String getLabel() {
-		return this.label;
+		return (this.label == null) ? "" : this.label;
 	}
 
 	public void setLabel(String label) {

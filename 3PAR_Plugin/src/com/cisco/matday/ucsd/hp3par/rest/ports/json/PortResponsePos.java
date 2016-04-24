@@ -35,6 +35,24 @@ public class PortResponsePos {
 	private int slot;
 	private int cardPort;
 
+	public PortResponsePos() {
+
+	}
+
+	public PortResponsePos(String portPos) throws Exception {
+		// Format: 0@accountName@portPos
+		// Node/Slot/Port
+		try {
+			final String[] split = portPos.split("/");
+			this.node = Integer.parseInt(split[0]);
+			this.slot = Integer.parseInt(split[1]);
+			this.cardPort = Integer.parseInt(split[2]);
+		}
+		catch (Exception e) {
+			throw new Exception("Invalid 3PAR portPos format: " + portPos + " (" + e.getMessage() + ")");
+		}
+	}
+
 	public int getNode() {
 		return this.node;
 	}

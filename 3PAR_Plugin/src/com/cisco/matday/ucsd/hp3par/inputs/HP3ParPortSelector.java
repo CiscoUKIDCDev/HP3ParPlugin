@@ -69,7 +69,6 @@ public class HP3ParPortSelector implements TabularReportGeneratorIf {
 		model.addTextColumn("Protocol", "Protocol");
 		model.addTextColumn("Mode", "Mode");
 		model.addTextColumn("Link State", "Link State");
-		model.addTextColumn("Position", "Position");
 
 		model.completedHeader();
 
@@ -82,14 +81,14 @@ public class HP3ParPortSelector implements TabularReportGeneratorIf {
 				PortResponse portList = HP3ParInventory.getPortResponse(new HP3ParCredentials(a.getAccountName()));
 
 				for (PortResponseMember port : portList.getMembers()) {
-					// 0@accountName@portName
-					String internalId = 0 + "@" + a.getAccountName() + "@" + port.getLabel();
+					// 0@accountName@portPos
+					String internalId = 0 + "@" + a.getAccountName() + "@" + port.getPortPosAsString();
 
 					// Internal ID
 					model.addTextValue(internalId);
 
 					// Label
-					model.addTextValue(port.getLabel());
+					model.addTextValue(port.getLabel() + " (" + port.getPortPosAsString() + ")");
 
 					// Account Name
 					model.addTextValue(a.getAccountName());
@@ -105,10 +104,6 @@ public class HP3ParPortSelector implements TabularReportGeneratorIf {
 
 					// Link State
 					model.addTextValue(port.getLinkStateAsString());
-
-					// Position
-					model.addTextValue(port.getPortPos().getNode() + "/" + port.getPortPos().getSlot() + "/"
-							+ port.getPortPos().getCardPort());
 
 					model.completedRow();
 				}

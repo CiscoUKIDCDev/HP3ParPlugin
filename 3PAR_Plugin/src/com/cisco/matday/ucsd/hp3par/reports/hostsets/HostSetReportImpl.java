@@ -19,14 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.vluns;
+package com.cisco.matday.ucsd.hp3par.reports.hostsets;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.VlunResponse;
-import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.VlunResponseMembers;
+import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponse;
+import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -34,58 +34,60 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
- * Implementation of tabular VLUN list
+ * Implements a host report list
  *
  * @author Matt Day
  *
  */
-public class VlunReportImpl implements TabularReportGeneratorIf {
+public class HostSetReportImpl implements TabularReportGeneratorIf {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(VlunReportImpl.class);
+	private static Logger logger = Logger.getLogger(HostSetReportImpl.class);
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
-		final TabularReport report = new TabularReport();
+		TabularReport report = new TabularReport();
 
 		report.setGeneratedTime(System.currentTimeMillis());
 		report.setReportName(reportEntry.getReportLabel());
 		report.setContext(context);
 
-		final TabularReportInternalModel model = new TabularReportInternalModel();
-		// Internal ID is hidden from normal view and is used by tasks later
+		TabularReportInternalModel model = new TabularReportInternalModel();
 		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("Volume", "Volume");
-		model.addTextColumn("Host", "Host");
-		model.addTextColumn("LUN", "LUN");
-		model.addTextColumn("Status", "Status");
-		model.addTextColumn("WWN", "WWN");
+		model.addTextColumn("ID", "ID");
+		model.addTextColumn("Name", "Name");
+		model.addTextColumn("Members", "Members");
 
 		model.completedHeader();
 
-		final HP3ParCredentials credentials = new HP3ParCredentials(context);
-		// Get the list from the internal persistence list:
-		final VlunResponse list = HP3ParInventory.getVlunResponse(credentials);
+		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		for (final VlunResponseMembers vlun : list.getMembers()) {
+		HostSetResponse hostSetList = HP3ParInventory.getHostSetResponse(new HP3ParCredentials(context));
+
+		for (HostSetResponseMember hostSet : hostSetList.getMembers()) {
 
 			// Internal ID, format:
-			// accountName;lunId@accountName@hostName@volumeName
-			model.addTextValue(credentials.getAccountName() + ";" + vlun.getLun() + "@" + credentials.getAccountName()
-					+ "@" + vlun.getHostname() + "@" + vlun.getVolumeName());
-
-			model.addTextValue(vlun.getVolumeName());
-			model.addTextValue(vlun.getHostname());
-			model.addTextValue(Integer.toString(vlun.getLun()));
-			model.addTextValue(vlun.isActive() ? "Active" : "Inactive");
-			model.addTextValue(vlun.getVolumeWWN());
-
+			// accountName;hostid@accountName@hostName
+			model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@" + credentials.getAccountName()
+					+ "@" + hostSet.getName());
+			// Bad but we can use this to parse it all out later
+			// ID
+			model.addTextValue(Integer.toString(hostSet.getId()));
+			model.addTextValue(hostSet.getName());
+			String members = null;
+			// Name
+			for (String member : hostSet.getMembers()) {
+				members += member + ", ";
+			}
+			model.addTextValue(members);
 			model.completedRow();
 		}
+
 		model.updateReport(report);
 
 		return report;
+
 	}
 
 }

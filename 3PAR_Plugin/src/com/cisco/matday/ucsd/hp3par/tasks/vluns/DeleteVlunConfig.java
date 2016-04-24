@@ -31,7 +31,7 @@ import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
 /**
- * Configuration task for the 3PAR Host creation task
+ * Configuration task for the 3PAR VLUN deletion task
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
@@ -39,7 +39,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3_create_vlun")
+@PersistenceCapable(detachable = "true", table = "HP3Par_delete_vlun")
 public class DeleteVlunConfig implements TaskConfigIf {
 	/**
 	 * Task display label
@@ -52,7 +52,7 @@ public class DeleteVlunConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.VLUN_LIST_FORM_LABEL, help = "Volume", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VLUN_LIST_FORM_PROVIDER)
+	@FormField(label = HP3ParConstants.VLUN_LIST_FORM_LABEL, help = "VLUN", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VLUN_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.VLUN_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String vlun;
@@ -62,6 +62,20 @@ public class DeleteVlunConfig implements TaskConfigIf {
 	 * directly
 	 */
 	public DeleteVlunConfig() {
+
+	}
+
+	/**
+	 * Constructor for rollbacks from creating
+	 *
+	 * @param c
+	 *            Original config
+	 */
+	public DeleteVlunConfig(CreateVlunConfig c) {
+		// Format: accountName;lun@accountName@hostname@volumeName
+		final String hostName = c.getHost().split("@")[3];
+		final String volumeName = c.getVolume().split("@")[2];
+		this.vlun = c.getAccount() + ";" + c.getLun() + "@" + c.getAccount() + "@" + hostName + "@" + volumeName;
 
 	}
 
@@ -90,12 +104,27 @@ public class DeleteVlunConfig implements TaskConfigIf {
 	}
 
 	/**
+	 * @return Account name
+	 */
+	public String getAccount() {
+		return this.vlun.split(";")[0];
+	}
+
+	/**
 	 * @param actionId
 	 *            the actionId to set
 	 */
 	@Override
 	public void setActionId(long actionId) {
 		this.actionId = actionId;
+	}
+
+	public String getVlun() {
+		return this.vlun;
+	}
+
+	public void setVlun(String vlun) {
+		this.vlun = vlun;
 	}
 
 }

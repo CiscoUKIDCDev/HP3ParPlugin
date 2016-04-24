@@ -35,8 +35,11 @@ import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostList;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.hostsets.HP3ParHostSetList;
+import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponse;
 import com.cisco.matday.ucsd.hp3par.rest.ports.HP3ParPortList;
 import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponse;
+import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.matday.ucsd.hp3par.rest.vluns.HP3ParVlunList;
@@ -86,7 +89,7 @@ public class HP3ParInventory {
 			logger.warn("Exeption when doing this! " + e.getMessage());
 		}
 		if (this.invStore == null) {
-			logger.warn("No account found! Attempting to create and store");
+			// Account was deleted most likely during init
 			this.create(credentials);
 		}
 
@@ -163,6 +166,9 @@ public class HP3ParInventory {
 			final HP3ParHostList host = new HP3ParHostList(login);
 			store.setHostListJson(host.toJson());
 
+			final HP3ParHostSetList hostSetList = new HP3ParHostSetList(login);
+			store.setHostSetListJson(hostSetList.toJson());
+
 			final HP3ParVlunList vlun = new HP3ParVlunList(login);
 			store.setVlunListJson(vlun.toJson());
 
@@ -196,6 +202,10 @@ public class HP3ParInventory {
 
 	private HostResponse getHost() throws Exception {
 		return new HP3ParHostList(this.getStore().getHostListJson()).getHost();
+	}
+
+	private HostSetResponse getHostSet() throws Exception {
+		return new HP3ParHostSetList(this.getStore().getHostListJson()).getHostSets();
 	}
 
 	private PortResponse getPorts() throws Exception {
@@ -270,6 +280,28 @@ public class HP3ParInventory {
 	}
 
 	/**
+	 * Return information on a specific port
+	 *
+	 * @param credentials
+	 * @param portPos
+	 * @return Volume information
+	 * @throws Exception
+	 */
+	public synchronized static PortResponseMember getPortInfo(HP3ParCredentials credentials, String portPos)
+			throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		inv.update();
+
+		for (final PortResponseMember i : inv.getPorts().getMembers()) {
+			if (portPos.equals(i.getPortPosAsString())) {
+				return i;
+			}
+		}
+		logger.warn("Port not found in cache: " + portPos);
+		return null;
+	}
+
+	/**
 	 * Update the inventory held in the database if it is not out of date
 	 *
 	 * @throws IOException
@@ -337,6 +369,19 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 		return inv.getHost();
+	}
+
+	/**
+	 * Get the Host Set response data
+	 *
+	 * @param credentials
+	 * @return host response list
+	 * @throws Exception
+	 */
+	public synchronized static HostSetResponse getHostSetResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		inv.update();
+		return inv.getHostSet();
 	}
 
 	/**

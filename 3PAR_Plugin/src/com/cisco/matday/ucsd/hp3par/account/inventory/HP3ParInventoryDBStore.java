@@ -32,6 +32,7 @@ import com.cisco.matday.ucsd.hp3par.HP3ParModule;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGList;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostList;
+import com.cisco.matday.ucsd.hp3par.rest.hostsets.HP3ParHostSetList;
 import com.cisco.matday.ucsd.hp3par.rest.ports.HP3ParPortList;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.vluns.HP3ParVlunList;
@@ -85,6 +86,10 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	@Column(jdbcType = "CLOB")
 	private String portListJson;
 
+	@Persistent(defaultFetchGroup = "true")
+	@Column(jdbcType = "CLOB")
+	private String hostSetListJson;
+
 	/**
 	 * Get the API version in case this database needs to be rebuilt in the
 	 * future
@@ -103,66 +108,38 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 		logger.info("Created persistent entry (API version: " + HP3ParInventoryDBStore.API_VERSION + ")");
 
 		// Populate all fields
-		if (this.volumeListJson == null) {
-			logger.info("Setting up volume inventory");
-			HP3ParVolumeList volume;
-			try {
-				volume = new HP3ParVolumeList(new HP3ParCredentials(accountName));
-				this.volumeListJson = volume.toJson();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+		logger.info("Setting up volume inventory");
+		HP3ParVolumeList volume;
+		try {
+			volume = new HP3ParVolumeList(new HP3ParCredentials(accountName));
+			this.volumeListJson = volume.toJson();
+
+			logger.info("Setting up system inventory");
+			final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(accountName));
+			this.sysInfoJson = systemInfo.toJson();
+
+			logger.info("Setting up cpg inventory");
+			final HP3ParCPGList cpg = new HP3ParCPGList(new HP3ParCredentials(accountName));
+			this.cpgListJson = cpg.toJson();
+
+			logger.info("Setting up host inventory");
+			final HP3ParHostList host = new HP3ParHostList(new HP3ParCredentials(accountName));
+			this.hostListJson = host.toJson();
+
+			logger.info("Setting up host set inventory");
+			final HP3ParHostSetList hostSet = new HP3ParHostSetList(new HP3ParCredentials(accountName));
+			this.hostSetListJson = hostSet.toJson();
+
+			logger.info("Setting up vlun inventory");
+			final HP3ParVlunList vlun = new HP3ParVlunList(new HP3ParCredentials(accountName));
+			this.vlunListJson = vlun.toJson();
+
+			logger.info("Setting up port inventory");
+			final HP3ParPortList ports = new HP3ParPortList(new HP3ParCredentials(accountName));
+			this.portListJson = ports.toJson();
 		}
-		if (this.sysInfoJson == null) {
-			try {
-				logger.info("Setting up system inventory");
-				final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(accountName));
-				this.sysInfoJson = systemInfo.toJson();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if (this.cpgListJson == null) {
-			try {
-				logger.info("Setting up cpg inventory");
-				final HP3ParCPGList cpg = new HP3ParCPGList(new HP3ParCredentials(accountName));
-				this.cpgListJson = cpg.toJson();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if (this.hostListJson == null) {
-			try {
-				logger.info("Setting up host inventory");
-				final HP3ParHostList host = new HP3ParHostList(new HP3ParCredentials(accountName));
-				this.hostListJson = host.toJson();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if (this.vlunListJson == null) {
-			try {
-				logger.info("Setting up VLUN inventory");
-				final HP3ParVlunList vlun = new HP3ParVlunList(new HP3ParCredentials(accountName));
-				this.vlunListJson = vlun.toJson();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if (this.portListJson == null) {
-			try {
-				logger.info("Setting up Port inventory");
-				final HP3ParPortList ports = new HP3ParPortList(new HP3ParCredentials(accountName));
-				this.portListJson = ports.toJson();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -275,11 +252,27 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 
 	/**
 	 * Set the port list JSON
-	 * 
+	 *
 	 * @param portListJson
 	 */
 	public void setPortListJson(String portListJson) {
 		this.portListJson = portListJson;
+	}
+
+	/**
+	 * @return Host Set list in JSON
+	 */
+	public String getHostSetListJson() {
+		return this.hostSetListJson;
+	}
+
+	/**
+	 * Set the Host set list JSON
+	 *
+	 * @param hostSetListJson
+	 */
+	public void setHostSetListJson(String hostSetListJson) {
+		this.hostSetListJson = hostSetListJson;
 	}
 
 }

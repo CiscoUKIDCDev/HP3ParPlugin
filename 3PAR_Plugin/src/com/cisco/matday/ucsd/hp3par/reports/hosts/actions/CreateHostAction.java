@@ -47,7 +47,7 @@ public class CreateHostAction extends CloupiaPageAction {
 	// need to provide a unique string to identify this form and action
 	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostForm";
 	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostAction";
-	private static final String LABEL = "Create Host";
+	private static final String LABEL = "Create";
 	private static final String DESCRIPTION = "Create a new Host";
 
 	@Override

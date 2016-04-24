@@ -53,21 +53,21 @@ public class HP3ParVlunExecute {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
-		String[] volInfo = config.getVolume().split("@");
+		final String[] volInfo = config.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
 			throw new Exception("Invalid Volume: " + config.getVolume());
 		}
-		String volName = volInfo[2];
+		final String volName = volInfo[2];
 
 		// Get the host name, it's in the format:
 		// id@account@name
-		String[] hostInfo = config.getHost().split("@");
+		final String[] hostInfo = config.getHost().split("@");
 		if (hostInfo.length != 3) {
 			logger.warn("Hostname didn't return three items! It returned: " + config.getHost());
 			throw new Exception("Invalid host: " + config.getHost());
 		}
-		String hostName = volInfo[2];
+		final String hostName = hostInfo[2];
 
 		// Build vlun information object:
 		HP3ParVlunParams params = new HP3ParVlunParams(volName, hostName, config.getLun());
@@ -87,6 +87,60 @@ public class HP3ParVlunExecute {
 
 		// Shouldn't get a response if all is good... if we did it's trouble
 		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+
+	}
+
+	/**
+	 * Delete a VLUN
+	 *
+	 * @param c
+	 * @param config
+	 * @return Status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus delete(HP3ParCredentials c, DeleteVlunConfig config) throws Exception {
+
+		// Get needed details from VLUN internal ID:
+		// Format: accountName;lun@accountName@hostname@volumeName
+		final String internalId = config.getVlun().split(";")[1];
+		final int lun = Integer.parseInt(internalId.split("@")[0]);
+		final String hostName = internalId.split("@")[2];
+		final String volumeName = internalId.split("@")[3];
+
+		final String uri = "/api/v1/vluns/" + volumeName + "," + lun + "," + hostName;
+
+		logger.info("Delete URI: " + uri);
+
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		// Use defaults for a POST request
+		request.setDeleteDefaults();
+		request.setUri(uri);
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			final Gson gson = new Gson();
 			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
 			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
 			status.setSuccess(false);

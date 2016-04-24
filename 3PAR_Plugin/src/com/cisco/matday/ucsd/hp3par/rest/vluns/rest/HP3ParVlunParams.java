@@ -21,6 +21,8 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.rest.vluns.rest;
 
+import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponsePos;
+
 /**
  * Enumerates HP3Par VLUN parameters
  *
@@ -33,13 +35,22 @@ package com.cisco.matday.ucsd.hp3par.rest.vluns.rest;
 public class HP3ParVlunParams {
 	private String volumeName;
 	private int lun;
-	private String hostName;
+	private String hostname;
+	PortResponsePos portPos;
 
 	public HP3ParVlunParams(String volumeName, String hostName, int lun) {
 		super();
 		this.volumeName = volumeName;
 		this.lun = lun;
-		this.hostName = hostName;
+		this.hostname = hostName;
+	}
+
+	public HP3ParVlunParams(String volumeName, String hostName, int lun, PortResponsePos portPos) {
+		super();
+		this.volumeName = volumeName;
+		this.lun = lun;
+		this.hostname = hostName;
+		this.portPos = portPos;
 	}
 
 	public String getVolumeName() {
@@ -59,11 +70,11 @@ public class HP3ParVlunParams {
 	}
 
 	public String getHostName() {
-		return this.hostName;
+		return this.hostname;
 	}
 
 	public void setHostName(String hostName) {
-		this.hostName = hostName;
+		this.hostname = hostName;
 	}
 
 }

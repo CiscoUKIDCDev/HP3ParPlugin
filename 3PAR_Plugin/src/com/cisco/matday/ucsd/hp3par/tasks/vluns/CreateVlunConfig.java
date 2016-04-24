@@ -39,7 +39,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3_create_vlun")
+@PersistenceCapable(detachable = "true", table = "HP3Par_create_vlun")
 public class CreateVlunConfig implements TaskConfigIf {
 	/**
 	 * Task display label
@@ -56,11 +56,6 @@ public class CreateVlunConfig implements TaskConfigIf {
 	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String volume;
-
-	@FormField(label = HP3ParConstants.PORT_LIST_FORM_LABEL, help = "Port Set", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.PORT_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.PORT_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private String portSet;
 
 	@FormField(label = HP3ParConstants.HOST_LIST_FORM_LABEL, help = "Host", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOST_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.HOST_LIST_FORM_TABLE_NAME)

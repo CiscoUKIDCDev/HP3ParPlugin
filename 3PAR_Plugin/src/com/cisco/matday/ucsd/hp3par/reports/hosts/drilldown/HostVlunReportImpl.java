@@ -49,8 +49,8 @@ public class HostVlunReportImpl implements TabularReportGeneratorIf {
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		// Internal ID is hidden from normal view and is used by tasks later
 		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("LUN", "LUN");
 		model.addTextColumn("Volume", "Volume");
+		model.addTextColumn("LUN", "LUN");
 		model.addTextColumn("Status", "Status");
 		model.addTextColumn("WWN", "WWN");
 
@@ -68,11 +68,11 @@ public class HostVlunReportImpl implements TabularReportGeneratorIf {
 				continue;
 			}
 			// ID format:
-			// accountName;lun@accountName@hostname
+			// accountName;lun@accountName@volumeName@hostname
 			model.addTextValue(credentials.getAccountName() + ";" + vlun.getLun() + "@" + credentials.getAccountName()
-					+ "@" + vlun.getHostname());
-			model.addTextValue(Integer.toString(vlun.getLun()));
+					+ "@" + vlun.getVolumeName() + "@" + vlun.getVolumeName());
 			model.addTextValue(vlun.getVolumeName());
+			model.addTextValue(Integer.toString(vlun.getLun()));
 			model.addTextValue(vlun.isActive() ? "Active" : "Inactive");
 			model.addTextValue(vlun.getVolumeWWN());
 

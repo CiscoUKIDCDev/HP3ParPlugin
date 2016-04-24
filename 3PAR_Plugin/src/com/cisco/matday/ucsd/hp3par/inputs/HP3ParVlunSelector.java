@@ -63,11 +63,10 @@ public class HP3ParVlunSelector implements TabularReportGeneratorIf {
 
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("LUN", "LUN");
-		model.addTextColumn("Name", "Name");
 		model.addTextColumn("Account", "Account");
 		model.addTextColumn("Volume", "Volume");
 		model.addTextColumn("Host", "Host");
+		model.addTextColumn("LUN", "LUN");
 		model.addTextColumn("Status", "Status");
 		model.addTextColumn("WWN", "WWN");
 		model.completedHeader();
@@ -84,17 +83,16 @@ public class HP3ParVlunSelector implements TabularReportGeneratorIf {
 
 				for (final VlunResponseMembers vlun : list.getMembers()) {
 					// Internal ID, format:
-					// accountName;lunId@accountName@hostName
-					model.addTextValue(credentials.getAccountName() + ";" + vlun.getLun() + "@"
-							+ credentials.getAccountName() + "@" + vlun.getHostname());
-
-					model.addTextValue(Integer.toString(vlun.getLun()));
+					// accountName;lunId@accountName@hostName@volumeName
+					final String internalId = credentials.getAccountName() + ";" + vlun.getLun() + "@"
+							+ credentials.getAccountName() + "@" + vlun.getHostname() + "@" + vlun.getVolumeName();
+					model.addTextValue(internalId);
 
 					// Account Name
 					model.addTextValue(a.getAccountName());
-
 					model.addTextValue(vlun.getVolumeName());
 					model.addTextValue(vlun.getHostname());
+					model.addTextValue(Integer.toString(vlun.getLun()));
 					model.addTextValue(vlun.isActive() ? "Active" : "Inactive");
 					model.addTextValue(vlun.getVolumeWWN());
 

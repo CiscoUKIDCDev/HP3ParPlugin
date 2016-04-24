@@ -19,16 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
+package com.cisco.matday.ucsd.hp3par.reports.vluns.actions;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeConfig;
-import com.cisco.matday.ucsd.hp3par.tasks.volumes.HP3ParVolumeExecute;
+import com.cisco.matday.ucsd.hp3par.tasks.vluns.DeleteVlunConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.vluns.HP3ParVlunExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -37,25 +35,25 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.WizardSession;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
 /**
- * Creates an action button to edit a volume
+ * Action button implemenation to delete a vlun
  *
  * @author Matt Day
  *
  */
-public class EditVolumeAction extends CloupiaPageAction {
+public class DeleteVlunAction extends CloupiaPageAction {
 
-	private static Logger logger = Logger.getLogger(CreateVolumeCopyAction.class);
+	private static Logger logger = Logger.getLogger(DeleteVlunAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.EditVolumeActionForm";
-	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.EditVolumeActionAction";
-	private static final String LABEL = "Edit";
-	private static final String DESCRIPTION = "Edit Volume";
+	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.vluns.actions.DeleteVlunForm";
+	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.vluns.actions.DeleteVlunAction";
+	private static final String LABEL = "Delete";
+	private static final String DESCRIPTION = "Delete";
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
-		// Use the same form (config) as the Create Volume custom task
-		page.bind(FORM_ID, EditVolumeConfig.class);
+		// Use the same form (config) as the Delete Vlun custom task
+		page.bind(FORM_ID, DeleteVlunConfig.class);
 	}
 
 	/**
@@ -64,41 +62,15 @@ public class EditVolumeAction extends CloupiaPageAction {
 	 */
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
-		String query = context.getId();
-		EditVolumeConfig form = new EditVolumeConfig();
-		/*
-		 * Unlike CreateVolumeAction, this returns true on isSelectionRequired()
-		 *
-		 * This means the context is whatever's in column 0 of the table. In
-		 * this case it's in the format:
-		 *
-		 * accountName;volumeName;cpgName;copyCpgName
-		 */
-		String volume = query.split(";")[1];
+		final String query = context.getId();
+		DeleteVlunConfig form = new DeleteVlunConfig();
 
-		// Populate the copy CPG field if it's already set
-		String copyCpg = query.split(";")[3];
-		if (!copyCpg.equals("-")) {
-			// Have to do an API lookup as we need the ID which isn't in the
-			// volume REST response:
-			HP3ParCredentials login = new HP3ParCredentials(context);
-			CPGResponseMember cpg = HP3ParInventory.getCpgInfo(login, copyCpg);
-			// Build it in the format for the CPG table:
-			// ID@AccountName@CPGName
-			copyCpg = cpg.getId() + "@" + login.getAccountName() + "@" + cpg.getName();
-			form.setCopyCpg(copyCpg);
-		}
-
-		// Pre-populate the account, volume and CPG fields:
-		form.setVolume(volume);
-
-		// Pre-populate volume name
-		String volumeName = volume.split("@")[2];
-		form.setNewVolumeName(volumeName);
+		// Pre-populate the VLUN field (context should be the same)
+		form.setVlun(query);
 
 		// Set the account and volume fields to read-only (I couldn't find this
 		// documented anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
+		page.getFlist().getByFieldId(FORM_ID + ".vlun").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
@@ -114,22 +86,21 @@ public class EditVolumeAction extends CloupiaPageAction {
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
 		Object obj = page.unmarshallToSession(FORM_ID);
-		EditVolumeConfig config = (EditVolumeConfig) obj;
+		DeleteVlunConfig config = (DeleteVlunConfig) obj;
 
 		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(context);
-		HP3ParRequestStatus s = HP3ParVolumeExecute.edit(c, config);
+		HP3ParRequestStatus s = HP3ParVlunExecute.delete(c, config);
 
 		// Throwing an exception fails the submit and shows the error in the
 		// window
 		if (!s.isSuccess()) {
-			logger.warn("Failed to edit volume: " + s.getError());
-			throw new Exception("Failed to edit volume: " + s.getError());
+			logger.warn("Failed to delete vlun:" + s.getError());
+			throw new Exception("Failed to delete vlun: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Volume edited OK");
-
+		page.setPageMessage("Vlun deleted OK");
 		return PageIf.STATUS_OK;
 	}
 

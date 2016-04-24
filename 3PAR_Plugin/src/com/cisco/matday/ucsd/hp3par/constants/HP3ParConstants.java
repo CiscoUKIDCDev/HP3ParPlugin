@@ -87,6 +87,26 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for Uost list table
 	 */
+	public static final String HOSTSET_LIST_FORM_LABEL = "Host Sets";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String HOSTSET_LIST_FORM_TABLE_NAME = "HP3ParHostSetList";
+
+	/**
+	 * Account list form name
+	 */
+	public static final String HOSTSET_LIST_FORM_NAME = "HP3ParHostSetList";
+
+	/**
+	 * Volume list internal UCSD provider name
+	 */
+	public static final String HOSTSET_LIST_FORM_PROVIDER = "HP3ParHostSetList_provider";
+
+	/**
+	 * User-friendly label for Uost list table
+	 */
 	public static final String PORT_LIST_FORM_LABEL = "Ports";
 
 	/**
@@ -182,6 +202,16 @@ public class HP3ParConstants {
 	 * Volume list internal UCSD provider name
 	 */
 	public static final String VOLUME_LIST_FORM_PROVIDER = "HP3ParVolumeList_provider";
+
+	/**
+	 * Volume list drilldown name for global context registry
+	 */
+	public static final String HOSTSET_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.HostSetList";
+
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String HOSTSET_LIST_DRILLDOWN_LABEL = "Host Set Details";
 
 	/**
 	 * Volume list drilldown name for global context registry
