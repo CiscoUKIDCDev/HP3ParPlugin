@@ -87,6 +87,26 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for Uost list table
 	 */
+	public static final String PORT_LIST_FORM_LABEL = "Ports";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String PORT_LIST_FORM_TABLE_NAME = "HP3ParPortList";
+
+	/**
+	 * Account list form name
+	 */
+	public static final String PORT_LIST_FORM_NAME = "HP3ParPortList";
+
+	/**
+	 * Volume list internal UCSD provider name
+	 */
+	public static final String PORT_LIST_FORM_PROVIDER = "HP3ParPortList_provider";
+
+	/**
+	 * User-friendly label for Uost list table
+	 */
 	public static final String VLUN_LIST_FORM_LABEL = "VLUN";
 
 	/**

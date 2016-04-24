@@ -19,20 +19,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.rwhitear.threeParREST.constants;
+package com.cisco.matday.ucsd.hp3par.rest.ports.json;
 
-// Ignoring javadoc
+import java.util.List;
+
+/**
+ * 3PAR Port list JSON enumeration
+ *
+ * For more info see the HP 3PAR REST API documentation
+ *
+ * @author Matt Day
+ *
+ */
 @SuppressWarnings("javadoc")
-public class threeParRESTconstants {
+public class PortResponse {
+	private int total;
 
-	public static final String SESSION_KEY_HEADER = "X-HP3PAR-WSAPI-SessionKey";
+	private List<PortResponseMember> members;
 
-	public static final String GET_SESSION_TOKEN_URI = "/api/v1/credentials";
-	public static final String GET_VOLUMES_URI = "/api/v1/volumes";
-	public static final String GET_SYSTEM_URI = "/api/v1/system";
-	public static final String GET_CPG_URI = "/api/v1/cpgs";
-	public static final String GET_HOSTS_URI = "/api/v1/hosts";
-	public static final String GET_VLUNS_URI = "/api/v1/vluns";
-	public static final String GET_PORTS_URI = "/api/v1/ports";
+	public int getTotal() {
+		return this.total;
+	}
 
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	public List<PortResponseMember> getMembers() {
+		return this.members;
+	}
+
+	public void setMembers(List<PortResponseMember> members) {
+		this.members = members;
+	}
 }

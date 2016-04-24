@@ -57,6 +57,11 @@ public class CreateVlunConfig implements TaskConfigIf {
 	@Persistent
 	private String volume;
 
+	@FormField(label = HP3ParConstants.PORT_LIST_FORM_LABEL, help = "Port Set", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.PORT_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.PORT_LIST_FORM_TABLE_NAME)
+	@Persistent
+	private String portSet;
+
 	@FormField(label = HP3ParConstants.HOST_LIST_FORM_LABEL, help = "Host", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOST_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.HOST_LIST_FORM_TABLE_NAME)
 	@Persistent

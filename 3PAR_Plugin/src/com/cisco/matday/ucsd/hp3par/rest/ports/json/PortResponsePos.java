@@ -19,20 +19,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.rwhitear.threeParREST.constants;
+package com.cisco.matday.ucsd.hp3par.rest.ports.json;
 
-// Ignoring javadoc
+/**
+ * 3PAR Port list position JSON enumeration
+ *
+ * For more info see the HP 3PAR REST API documentation
+ *
+ * @author Matt Day
+ *
+ */
 @SuppressWarnings("javadoc")
-public class threeParRESTconstants {
+public class PortResponsePos {
+	private int node;
+	private int slot;
+	private int cardPort;
 
-	public static final String SESSION_KEY_HEADER = "X-HP3PAR-WSAPI-SessionKey";
+	public int getNode() {
+		return this.node;
+	}
 
-	public static final String GET_SESSION_TOKEN_URI = "/api/v1/credentials";
-	public static final String GET_VOLUMES_URI = "/api/v1/volumes";
-	public static final String GET_SYSTEM_URI = "/api/v1/system";
-	public static final String GET_CPG_URI = "/api/v1/cpgs";
-	public static final String GET_HOSTS_URI = "/api/v1/hosts";
-	public static final String GET_VLUNS_URI = "/api/v1/vluns";
-	public static final String GET_PORTS_URI = "/api/v1/ports";
+	public void setNode(int node) {
+		this.node = node;
+	}
 
+	public int getSlot() {
+		return this.slot;
+	}
+
+	public void setSlot(int slot) {
+		this.slot = slot;
+	}
+
+	public int getCardPort() {
+		return this.cardPort;
+	}
+
+	public void setCardPort(int cardPort) {
+		this.cardPort = cardPort;
+	}
 }

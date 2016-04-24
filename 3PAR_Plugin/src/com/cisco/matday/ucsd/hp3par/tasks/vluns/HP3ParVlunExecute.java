@@ -76,6 +76,8 @@ public class HP3ParVlunExecute {
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
 
+		logger.info("REST: " + gson.toJson(params));
+
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(params));
 		request.setUri(threeParRESTconstants.GET_VLUNS_URI);

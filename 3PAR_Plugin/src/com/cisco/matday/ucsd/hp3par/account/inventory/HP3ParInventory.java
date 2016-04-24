@@ -35,6 +35,8 @@ import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostList;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.ports.HP3ParPortList;
+import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponse;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.matday.ucsd.hp3par.rest.vluns.HP3ParVlunList;
@@ -164,6 +166,9 @@ public class HP3ParInventory {
 			final HP3ParVlunList vlun = new HP3ParVlunList(login);
 			store.setVlunListJson(vlun.toJson());
 
+			final HP3ParPortList port = new HP3ParPortList(login);
+			store.setPortListJson(port.toJson());
+
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
 
@@ -191,6 +196,10 @@ public class HP3ParInventory {
 
 	private HostResponse getHost() throws Exception {
 		return new HP3ParHostList(this.getStore().getHostListJson()).getHost();
+	}
+
+	private PortResponse getPorts() throws Exception {
+		return new HP3ParPortList(this.getStore().getPortListJson()).getPorts();
 	}
 
 	/**
@@ -331,7 +340,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Get the Host response data
+	 * Get the VLUN response data
 	 *
 	 * @param credentials
 	 * @return host response list
@@ -341,6 +350,19 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 		return inv.getVlun();
+	}
+
+	/**
+	 * Get the Port response data
+	 *
+	 * @param credentials
+	 * @return host response list
+	 * @throws Exception
+	 */
+	public synchronized static PortResponse getPortResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		inv.update();
+		return inv.getPorts();
 	}
 
 	/**

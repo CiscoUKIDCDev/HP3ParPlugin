@@ -32,6 +32,7 @@ import com.cisco.matday.ucsd.hp3par.HP3ParModule;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGList;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostList;
+import com.cisco.matday.ucsd.hp3par.rest.ports.HP3ParPortList;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.vluns.HP3ParVlunList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
@@ -79,6 +80,10 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	@Persistent(defaultFetchGroup = "true")
 	@Column(jdbcType = "CLOB")
 	private String vlunListJson;
+
+	@Persistent(defaultFetchGroup = "true")
+	@Column(jdbcType = "CLOB")
+	private String portListJson;
 
 	/**
 	 * Get the API version in case this database needs to be rebuilt in the
@@ -149,7 +154,16 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 				e.printStackTrace();
 			}
 		}
-
+		if (this.portListJson == null) {
+			try {
+				logger.info("Setting up Port inventory");
+				final HP3ParPortList ports = new HP3ParPortList(new HP3ParCredentials(accountName));
+				this.portListJson = ports.toJson();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -250,6 +264,22 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 */
 	public void setVlunListJson(String vlunListJson) {
 		this.vlunListJson = vlunListJson;
+	}
+
+	/**
+	 * @return Port list in JSON
+	 */
+	public String getPortListJson() {
+		return this.portListJson;
+	}
+
+	/**
+	 * Set the port list JSON
+	 * 
+	 * @param portListJson
+	 */
+	public void setPortListJson(String portListJson) {
+		this.portListJson = portListJson;
 	}
 
 }
