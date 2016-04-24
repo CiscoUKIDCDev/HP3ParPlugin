@@ -40,10 +40,10 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
  * @author Matt Day
  *
  */
-public class HostsetHostReportImpl implements TabularReportGeneratorIf {
+public class HostsetMemberReportImpl implements TabularReportGeneratorIf {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostsetHostReportImpl.class);
+	private static Logger logger = Logger.getLogger(HostsetMemberReportImpl.class);
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -78,6 +78,7 @@ public class HostsetHostReportImpl implements TabularReportGeneratorIf {
 		for (HostResponseMember host : hostList.getMembers()) {
 			// Skip any other hosts
 			if (!hostName.equals(host.getName())) {
+				logger.info(hostName + " != " + host.getName());
 				continue;
 			}
 

@@ -37,7 +37,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithAc
  * @author Matt
  *
  */
-public class HostSetHostReport extends DrillableReportWithActions {
+public class HostSetMemberReport extends DrillableReportWithActions {
 	/**
 	 * Unique identifier for this report
 	 */
@@ -45,7 +45,7 @@ public class HostSetHostReport extends DrillableReportWithActions {
 	/**
 	 * User-friendly report name
 	 */
-	private final static String REPORT_LABEL = "Hosts";
+	private final static String REPORT_LABEL = "Members";
 
 	// This MUST be defined ONCE!
 	private CloupiaReport[] drillable = new CloupiaReport[] {
@@ -59,7 +59,7 @@ public class HostSetHostReport extends DrillableReportWithActions {
 	/**
 	 * Create Host report
 	 */
-	public HostSetHostReport() {
+	public HostSetMemberReport() {
 		super();
 		// This sets what column to use as the context ID for child drilldown
 		// reports
@@ -74,8 +74,8 @@ public class HostSetHostReport extends DrillableReportWithActions {
 	}
 
 	@Override
-	public Class<HostsetHostReportImpl> getImplementationClass() {
-		return HostsetHostReportImpl.class;
+	public Class<HostsetMemberReportImpl> getImplementationClass() {
+		return HostsetMemberReportImpl.class;
 	}
 
 	@Override

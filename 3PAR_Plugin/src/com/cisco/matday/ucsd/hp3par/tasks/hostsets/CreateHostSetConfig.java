@@ -40,7 +40,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  *
  */
 @PersistenceCapable(detachable = "true", table = "HP3Par_create_host_set")
-public class CreateHostConfig implements TaskConfigIf {
+public class CreateHostSetConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
@@ -62,6 +62,11 @@ public class CreateHostConfig implements TaskConfigIf {
 	@Persistent
 	private String hostSetName;
 
+	@FormField(label = "Hosts", help = "Hosts", multiline = true, mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOST_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.HOST_LIST_FORM_TABLE_NAME)
+	@Persistent
+	private String hosts;
+
 	@FormField(label = "Domain", help = "Domain", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
@@ -76,7 +81,7 @@ public class CreateHostConfig implements TaskConfigIf {
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
 	 */
-	public CreateHostConfig() {
+	public CreateHostSetConfig() {
 
 	}
 
@@ -156,6 +161,22 @@ public class CreateHostConfig implements TaskConfigIf {
 	 */
 	public void setDomain(String domain) {
 		this.domain = domain;
+	}
+
+	public String getHostSetName() {
+		return this.hostSetName;
+	}
+
+	public void setHostSetName(String hostSetName) {
+		this.hostSetName = hostSetName;
+	}
+
+	public String getHosts() {
+		return this.hosts;
+	}
+
+	public void setHosts(String hosts) {
+		this.hosts = hosts;
 	}
 
 }

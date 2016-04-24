@@ -58,6 +58,7 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
 		model.addTextColumn("Members", "Members");
+		model.addTextColumn("Comment", "Comments");
 
 		model.completedHeader();
 
@@ -81,6 +82,8 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 				members += member + ", ";
 			}
 			model.addTextValue(members);
+			model.addTextValue(hostSet.getComment());
+
 			model.completedRow();
 		}
 

@@ -34,6 +34,43 @@ public class HostSetResponseMember {
 	private int id;
 	private String name;
 	private String[] setmembers;
+	private String domain;
+	private String comment;
+
+	public HostSetResponseMember() {
+		// leave default
+	}
+
+	public HostSetResponseMember(String name, String[] setmembers, String comment, String domain) {
+		super();
+		this.name = name;
+		this.setmembers = setmembers;
+		this.domain = ("".equals(domain)) ? null : domain;
+		this.comment = ("".equals(comment)) ? null : comment;
+	}
+
+	public HostSetResponseMember(String name, String[] setmembers, String comment) {
+		super();
+		this.name = name;
+		this.setmembers = setmembers;
+		this.comment = ("".equals(comment)) ? null : comment;
+	}
+
+	public String getComment() {
+		return (this.comment == null) ? "" : this.comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getDomain() {
+		return (this.domain == null) ? "" : this.domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 
 	public int getId() {
 		return this.id;
