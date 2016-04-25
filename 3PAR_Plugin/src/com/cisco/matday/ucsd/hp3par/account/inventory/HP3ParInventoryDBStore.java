@@ -21,6 +21,7 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.annotations.Column;
@@ -94,7 +95,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 
 	@Persistent(defaultFetchGroup = "true")
 	@Column(jdbcType = "CLOB")
-	private List<String> updates;
+	private List<String> polling;
 
 	/**
 	 * Get the API version in case this database needs to be rebuilt in the
@@ -143,10 +144,21 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 			logger.info("Setting up port inventory");
 			final HP3ParPortList ports = new HP3ParPortList(new HP3ParCredentials(accountName));
 			this.portListJson = ports.toJson();
+
+			logger.info("Setting up polling history");
+			this.polling = new ArrayList<>();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<String> getPolling() {
+		return this.polling;
+	}
+
+	public void setPolling(List<String> polling) {
+		this.polling = polling;
 	}
 
 	/**

@@ -202,6 +202,15 @@ public class HP3ParConstants {
 	 * Volume list internal UCSD provider name
 	 */
 	public static final String VOLUME_LIST_FORM_PROVIDER = "HP3ParVolumeList_provider";
+	/**
+	 * Volume list drilldown name for global context registry
+	 */
+	public static final String POLLING_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.PollingList";
+
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String POLLING_LIST_DRILLDOWN_LABEL = "Polling Details";
 
 	/**
 	 * Volume list drilldown name for global context registry

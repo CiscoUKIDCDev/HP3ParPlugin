@@ -21,10 +21,12 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
@@ -152,12 +154,60 @@ public class HP3ParHostSetExecute {
 		}
 
 		// Build add parameter list:
-		HP3ParHostSetEditParams addParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_ADD,
-				config.getHostSetName(), config.getComment(), (String[]) add.toArray());
+		String[] addArray = add.toArray(new String[add.size()]);
+		HP3ParHostSetEditParams addParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
 		// Build add parameter list:
+		String[] removeArray = remove.toArray(new String[remove.size()]);
 		HP3ParHostSetEditParams removeParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,
-				config.getHostSetName(), config.getComment(), (String[]) remove.toArray());
+				removeArray);
+		// Build rename parameter list:
+		HP3ParHostSetEditParams renameParams = new HP3ParHostSetEditParams(config.getHostSetName());
+		HP3ParHostSetEditParams commentParams = new HP3ParHostSetEditParams();
+		commentParams.setComment(config.getComment());
 
+		HP3ParRequestStatus status;
+
+		if (!config.getHostSetName().equals(hostSetName)) {
+			status = doPut(renameParams, hostSetName, c);
+			if (!status.isSuccess()) {
+				return status;
+			}
+		}
+
+		if (addArray.length > 0) {
+			// Use defaults for a PUT request
+			status = doPut(addParams, hostSetName, c);
+			if (!status.isSuccess()) {
+				return status;
+			}
+		}
+
+		if (removeArray.length > 0) {
+			status = doPut(removeParams, hostSetName, c);
+			if (!status.isSuccess()) {
+				return status;
+			}
+		}
+
+		status = doPut(commentParams, hostSetName, c);
+		if (!status.isSuccess()) {
+			return status;
+		}
+
+		// Update the inventory
+		try {
+			HP3ParInventory.update(c, true);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return status;
+
+	}
+
+	private static HP3ParRequestStatus doPut(HP3ParHostSetEditParams params, String hostSetName, HP3ParCredentials c)
+			throws HttpException, IOException {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
@@ -166,42 +216,19 @@ public class HP3ParHostSetExecute {
 		String uri = "/api/v1/hostsets/" + hostSetName;
 		request.setUri(uri);
 
-		logger.info("Add rest: " + gson.toJson(addParams));
-		logger.info("Remove rest: " + gson.toJson(removeParams));
-
-		// Use defaults for a PUT request
-		request.setPutDefaults(gson.toJson(addParams));
+		// Remove anything outstanding
+		request.setPutDefaults(gson.toJson(params));
 		request.execute();
 		String response = request.getHttpResponse();
-
-		// Shouldn't get a response if all is good... if we did it's trouble
 		if (!response.equals("")) {
 			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
 			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
 			status.setSuccess(false);
 			return status;
 		}
+		status.setError("");
+		status.setSuccess(true);
 
-		// Use defaults for a PUT request
-		request.setPutDefaults(gson.toJson(removeParams));
-		request.execute();
-		response = request.getHttpResponse();
-		if (!response.equals("")) {
-			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
-			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
-			status.setSuccess(false);
-		}
-		else {
-			status.setSuccess(true);
-			// Update the inventory
-			try {
-				HP3ParInventory.update(c, true);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		// Return the same reference as passed for convenience and clarity
 		return status;
 	}
 

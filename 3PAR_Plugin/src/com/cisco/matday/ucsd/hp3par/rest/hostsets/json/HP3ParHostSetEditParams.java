@@ -36,13 +36,18 @@ public class HP3ParHostSetEditParams {
 	private String comment;
 	private String[] setmembers;
 
-	public HP3ParHostSetEditParams(int action, String newName, String comment, String[] setmembers) {
+	public HP3ParHostSetEditParams(int action, String[] setmembers) {
 		super();
 		this.action = action;
+		this.setmembers = setmembers;
+	}
+
+	public HP3ParHostSetEditParams(String newName) {
 		// Store as null if empty
 		this.newName = ("".equals(newName)) ? null : newName;
-		this.comment = ("".equals(comment)) ? null : comment;
-		this.setmembers = setmembers;
+	}
+
+	public HP3ParHostSetEditParams() {
 	}
 
 	/**

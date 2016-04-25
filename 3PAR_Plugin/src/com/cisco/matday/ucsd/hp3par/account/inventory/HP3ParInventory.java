@@ -23,6 +23,7 @@ package com.cisco.matday.ucsd.hp3par.account.inventory;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -176,6 +177,9 @@ public class HP3ParInventory {
 			final HP3ParPortList port = new HP3ParPortList(login);
 			store.setPortListJson(port.toJson());
 
+			final String update = c + "@" + d.getTime() + "@" + force + "@" + "Inventory update";
+			store.getPolling().add(update);
+
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
 
@@ -211,6 +215,10 @@ public class HP3ParInventory {
 
 	private PortResponse getPorts() throws Exception {
 		return new HP3ParPortList(this.getStore().getPortListJson()).getPorts();
+	}
+
+	private List<String> getPolling() throws Exception {
+		return this.getStore().getPolling();
 	}
 
 	/**
@@ -418,6 +426,12 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
 		return inv.getVlun();
+	}
+
+	public synchronized static List<String> getPollingResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		inv.update();
+		return inv.getPolling();
 	}
 
 	/**

@@ -96,6 +96,10 @@ public class HP3ParHostSetSelector implements TabularReportGeneratorIf {
 					for (String member : hostSet.getSetMembers()) {
 						members += member + ", ";
 					}
+					// Remove trailing ', '
+					if (members.length() > 0) {
+						members = members.substring(0, members.length() - 2);
+					}
 					model.addTextValue(members);
 					model.addTextValue(hostSet.getComment());
 

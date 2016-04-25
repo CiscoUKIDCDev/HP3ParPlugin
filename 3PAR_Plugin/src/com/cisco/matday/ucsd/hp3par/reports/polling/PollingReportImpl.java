@@ -19,14 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets;
+package com.cisco.matday.ucsd.hp3par.reports.polling;
+
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponse;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -39,10 +39,10 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
  * @author Matt Day
  *
  */
-public class HostSetReportImpl implements TabularReportGeneratorIf {
+public class PollingReportImpl implements TabularReportGeneratorIf {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostSetReportImpl.class);
+	private static Logger logger = Logger.getLogger(PollingReportImpl.class);
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -54,40 +54,25 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 		report.setContext(context);
 
 		TabularReportInternalModel model = new TabularReportInternalModel();
-		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("ID", "ID");
-		model.addTextColumn("Name", "Name");
-		model.addTextColumn("Members", "Members");
-		model.addTextColumn("Comment", "Comments");
+		model.addTimeColumn("Start Time", "Start Time");
+		model.addTextColumn("Type", "Type");
+		model.addTextColumn("Comment", "Comment");
+		model.addTimeColumn("End Time", "End Time");
 
 		model.completedHeader();
 
-		HP3ParCredentials credentials = new HP3ParCredentials(context);
+		List<String> PollingList = HP3ParInventory.getPollingResponse(new HP3ParCredentials(context));
 
-		HostSetResponse hostSetList = HP3ParInventory.getHostSetResponse(new HP3ParCredentials(context));
-
-		for (HostSetResponseMember hostSet : hostSetList.getMembers()) {
-
-			// Internal ID, format:
-			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@" + credentials.getAccountName()
-					+ "@" + hostSet.getName());
-
-			// Bad but we can use this to parse it all out later
-			// ID
-			model.addTextValue(Integer.toString(hostSet.getId()));
-			model.addTextValue(hostSet.getName());
-			String members = "";
-			// Name
-			for (String member : hostSet.getSetMembers()) {
-				members += member + ", ";
-			}
-			// Remove trailing ', '
-			if (members.length() > 0) {
-				members = members.substring(0, members.length() - 2);
-			}
-			model.addTextValue(members);
-			model.addTextValue(hostSet.getComment());
+		for (String poll : PollingList) {
+			// Format:
+			// Start@End@Forced@Comment
+			String[] pollArray = poll.split("@");
+			// Start time
+			model.addTimeValue(Long.parseLong(pollArray[0]));
+			model.addTextValue(pollArray[2]);
+			model.addTextValue(pollArray[3]);
+			// End time
+			model.addTimeValue(Long.parseLong(pollArray[1]));
 
 			model.completedRow();
 		}

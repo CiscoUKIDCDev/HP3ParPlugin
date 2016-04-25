@@ -90,8 +90,7 @@ public class EditHostSetAction extends CloupiaPageAction {
 
 		// Set the account field to read-only (I couldn't find this documented
 		// anywhere, maybe there's a better way to do it?)
-		// page.getFlist().getByFieldId(FORM_ID +
-		// ".hostSet").setEditable(false);
+		page.getFlist().getByFieldId(FORM_ID + ".hostSet").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
