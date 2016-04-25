@@ -75,7 +75,7 @@ public class PollingReportImpl implements TabularReportGeneratorIf {
 			// Start time
 			model.addTimeValue(Long.parseLong(pollArray[0]));
 			if (pollArray[2].equals("false")) {
-				model.addTextValue("Time-based poll");
+				model.addTextValue("Time-based update");
 			}
 			else {
 				model.addTextValue("Event-based update");
