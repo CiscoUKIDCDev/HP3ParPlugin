@@ -32,10 +32,11 @@ For more screenshots see the [screenshots page](screenshots.md).
 * Create, Delete, Snapshot and Copy volume tasks
 * Full Javadoc in source code
 * Inventory collection and database caching
+* Full support to create/delete VLUNs and Hosts
+* Host sets
 
 ### Near-term roadmap
-* Full support to create/edit/delete VLUNs and Hosts (due for 0.4.0)
-* Support for Host sets and Volume sets
+* Volume sets
 * More tasks (need suggestions)
 
 Additionally, this plugin is mostly trying to be a clean plugin implementation. 
