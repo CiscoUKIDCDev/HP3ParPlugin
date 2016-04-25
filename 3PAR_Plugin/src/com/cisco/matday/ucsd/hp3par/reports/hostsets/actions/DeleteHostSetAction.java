@@ -65,10 +65,8 @@ public class DeleteHostSetAction extends CloupiaPageAction {
 		String query = context.getId();
 		DeleteHostSetConfig form = new DeleteHostSetConfig();
 
-		String hostSet = query.split(";")[1];
-
 		// Pre-populate the account and Host fields:
-		form.setHostSet(hostSet);
+		form.setHostSet(query);
 
 		// Set the account field to read-only (I couldn't find this documented
 		// anywhere, maybe there's a better way to do it?)

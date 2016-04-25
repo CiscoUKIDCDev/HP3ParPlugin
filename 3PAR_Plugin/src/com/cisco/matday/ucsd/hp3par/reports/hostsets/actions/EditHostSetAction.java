@@ -24,6 +24,8 @@ package com.cisco.matday.ucsd.hp3par.reports.hostsets.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.EditHostSetConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.HP3ParHostSetExecute;
@@ -65,14 +67,31 @@ public class EditHostSetAction extends CloupiaPageAction {
 		String query = context.getId();
 		EditHostSetConfig form = new EditHostSetConfig();
 
-		String hostSet = query.split(";")[1];
+		final String hostSetName = query.split("@")[2];
 
 		// Pre-populate the account and Host fields:
-		form.setHostSet(hostSet);
+		form.setHostSet(query);
+		HP3ParCredentials credentials = new HP3ParCredentials(context);
+
+		form.setHostSetName(hostSetName);
+		String[] hosts = HP3ParInventory.getHostSetInfo(credentials, hostSetName).getSetMembers();
+
+		String hostString = "";
+
+		for (String host : hosts) {
+			// hostid@accountName@hostName
+			HostResponseMember member = HP3ParInventory.getHostInfo(credentials, host);
+			hostString += member.getId() + "@" + credentials.getAccountName() + "@" + member.getName() + ",";
+		}
+		if (hostString.length() > 0) {
+			// Remove last ','
+			form.setHosts(hostString.substring(0, hostString.length() - 1));
+		}
 
 		// Set the account field to read-only (I couldn't find this documented
 		// anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".hostSet").setEditable(false);
+		// page.getFlist().getByFieldId(FORM_ID +
+		// ".hostSet").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);

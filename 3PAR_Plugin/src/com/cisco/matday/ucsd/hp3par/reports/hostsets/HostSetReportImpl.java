@@ -72,6 +72,7 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 			// accountName;hostid@accountName@hostName
 			model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@" + credentials.getAccountName()
 					+ "@" + hostSet.getName());
+
 			// Bad but we can use this to parse it all out later
 			// ID
 			model.addTextValue(Integer.toString(hostSet.getId()));
@@ -80,6 +81,10 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 			// Name
 			for (String member : hostSet.getSetMembers()) {
 				members += member + ", ";
+			}
+			// Remove trailing ','
+			if (members.length() > 0) {
+				members = members.substring(0, members.length() - 1);
 			}
 			model.addTextValue(members);
 			model.addTextValue(hostSet.getComment());
