@@ -119,10 +119,20 @@ public class DeleteVlunConfig implements TaskConfigIf {
 		this.actionId = actionId;
 	}
 
+	/**
+	 * Get VLUN
+	 *
+	 * @return VLUN
+	 */
 	public String getVlun() {
 		return this.vlun;
 	}
 
+	/**
+	 * Set the VLUN
+	 *
+	 * @param vlun
+	 */
 	public void setVlun(String vlun) {
 		this.vlun = vlun;
 	}

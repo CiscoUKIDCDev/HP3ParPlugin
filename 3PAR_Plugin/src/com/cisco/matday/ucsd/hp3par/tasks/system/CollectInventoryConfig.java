@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
+package com.cisco.matday.ucsd.hp3par.tasks.system;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -39,12 +39,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_edit_host_set")
-public class EditHostSetConfig implements TaskConfigIf {
+@PersistenceCapable(detachable = "true", table = "HP3Par_inventory_collection")
+public class CollectInventoryConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "3PAR Edit Host Set";
+	public static final String DISPLAY_LABEL = "3PAR Collect Inventory";
 
 	@Persistent
 	private long configEntryId;
@@ -52,34 +52,16 @@ public class EditHostSetConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.HOSTSET_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOSTSET_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.HOSTSET_LIST_FORM_TABLE_NAME)
+	@FormField(label = HP3ParConstants.ACCOUNT_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME)
 	@Persistent
-	private String hostSet;
-
-	@FormField(label = "New Host Set Name", help = "Name", type = FormFieldDefinition.FIELD_TYPE_TEXT)
-	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
-	@Persistent
-	private String hostSetName;
-
-	@FormField(label = "Hosts", help = "Hosts", multiline = true, mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOST_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.HOST_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private String hosts;
-
-	@FormField(label = "Comment", help = "Comment", mandatory = false)
-	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
-	@Persistent
-	private String comment;
-
-	@Persistent
-	private String originalName;
+	private String account;
 
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
 	 */
-	public EditHostSetConfig() {
+	public CollectInventoryConfig() {
 
 	}
 
@@ -99,22 +81,22 @@ public class EditHostSetConfig implements TaskConfigIf {
 	}
 
 	/**
-	 * Get the comment
+	 * Get the account name
 	 *
-	 * @return Comment - might be null (and is optional)
+	 * @return Account name to do this on
 	 */
-	public String getComment() {
-		return this.comment;
+	public String getAccount() {
+		return this.account;
 	}
 
 	/**
-	 * Set the comment - this is optional
+	 * Set the account name
 	 *
-	 * @param comment
-	 *            Optional commentary
+	 * @param account
+	 *            The host to be created
 	 */
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 	@Override
@@ -125,55 +107,6 @@ public class EditHostSetConfig implements TaskConfigIf {
 	@Override
 	public void setConfigEntryId(long configEntryId) {
 		this.configEntryId = configEntryId;
-	}
-
-	/**
-	 * @return Account name
-	 */
-	public String getAccount() {
-		return this.hostSet.split(";")[0];
-	}
-
-	/**
-	 * @return Host set
-	 */
-	public String getHostSet() {
-		return this.hostSet;
-	}
-
-	/**
-	 * @param hostSet
-	 */
-	public void setHostSet(String hostSet) {
-		this.hostSet = hostSet;
-	}
-
-	/**
-	 * @return Hostname
-	 */
-	public String getHostSetName() {
-		return this.hostSetName;
-	}
-
-	/**
-	 * @param hostSetName
-	 */
-	public void setHostSetName(String hostSetName) {
-		this.hostSetName = hostSetName;
-	}
-
-	/**
-	 * @return Hosts
-	 */
-	public String getHosts() {
-		return this.hosts;
-	}
-
-	/**
-	 * @param hosts
-	 */
-	public void setHosts(String hosts) {
-		this.hosts = hosts;
 	}
 
 }

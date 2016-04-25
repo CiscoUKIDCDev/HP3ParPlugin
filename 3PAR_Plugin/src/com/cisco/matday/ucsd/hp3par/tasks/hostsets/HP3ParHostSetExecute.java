@@ -167,13 +167,13 @@ public class HP3ParHostSetExecute {
 
 		HP3ParRequestStatus status;
 
-		if (!config.getHostSetName().equals(hostSetName)) {
-			status = doPut(renameParams, hostSetName, c);
-			if (!status.isSuccess()) {
-				return status;
-			}
+		// Update the comment regardless
+		status = doPut(commentParams, hostSetName, c);
+		if (!status.isSuccess()) {
+			return status;
 		}
 
+		// Add new members
 		if (addArray.length > 0) {
 			// Use defaults for a PUT request
 			status = doPut(addParams, hostSetName, c);
@@ -181,17 +181,19 @@ public class HP3ParHostSetExecute {
 				return status;
 			}
 		}
-
+		// Removed unused ones
 		if (removeArray.length > 0) {
 			status = doPut(removeParams, hostSetName, c);
 			if (!status.isSuccess()) {
 				return status;
 			}
 		}
-
-		status = doPut(commentParams, hostSetName, c);
-		if (!status.isSuccess()) {
-			return status;
+		// Rename if needed (must be done LAST)
+		if (!config.getHostSetName().equals(hostSetName)) {
+			status = doPut(renameParams, hostSetName, c);
+			if (!status.isSuccess()) {
+				return status;
+			}
 		}
 
 		// Update the inventory

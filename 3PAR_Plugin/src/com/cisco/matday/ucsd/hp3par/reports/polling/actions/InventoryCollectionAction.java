@@ -19,17 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets.actions;
+package com.cisco.matday.ucsd.hp3par.reports.polling.actions;
+
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
-import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.hostsets.EditHostSetConfig;
-import com.cisco.matday.ucsd.hp3par.tasks.hostsets.HP3ParHostSetExecute;
+import com.cisco.matday.ucsd.hp3par.tasks.system.CollectInventoryConfig;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -38,25 +36,26 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.WizardSession;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
 /**
- * Action button implemenation to edit a Host set
+ * Action button implemenation to create a Host
  *
  * @author Matt Day
  *
  */
-public class EditHostSetAction extends CloupiaPageAction {
+public class InventoryCollectionAction extends CloupiaPageAction {
 
-	private static Logger logger = Logger.getLogger(EditHostSetAction.class);
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(InventoryCollectionAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.EditHostSetForm";
-	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.EditHostSetAction";
-	private static final String LABEL = "Edit";
-	private static final String DESCRIPTION = "Edit Host set";
+	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CollectInventoryForm";
+	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CollectInventoryAction";
+	private static final String LABEL = "Request Inventory Collection";
+	private static final String DESCRIPTION = "Request new inventory";
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
-		// Use the same form (config) as the Edit Host custom task
-		page.bind(FORM_ID, EditHostSetConfig.class);
+		// Use the same form (config) as the Create Host custom task
+		page.bind(FORM_ID, CollectInventoryConfig.class);
 	}
 
 	/**
@@ -66,36 +65,17 @@ public class EditHostSetAction extends CloupiaPageAction {
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
 		String query = context.getId();
-		EditHostSetConfig form = new EditHostSetConfig();
+		CollectInventoryConfig form = new CollectInventoryConfig();
 
-		final String hostSetName = query.split("@")[2];
+		// The form will be in the format Account;Pod - grab the former:
+		String account = query.split(";")[0];
 
-		// Pre-populate the account and Host fields:
-		form.setHostSet(query);
-		HP3ParCredentials credentials = new HP3ParCredentials(context);
-
-		form.setHostSetName(hostSetName);
-		HostSetResponseMember responseMember = HP3ParInventory.getHostSetInfo(credentials, hostSetName);
-
-		form.setComment(responseMember.getComment());
-
-		final String[] hosts = responseMember.getSetMembers();
-
-		String hostString = "";
-
-		for (String host : hosts) {
-			// hostid@accountName@hostName
-			HostResponseMember member = HP3ParInventory.getHostInfo(credentials, host);
-			hostString += member.getId() + "@" + credentials.getAccountName() + "@" + member.getName() + ",";
-		}
-		if (hostString.length() > 0) {
-			// Remove last ','
-			form.setHosts(hostString.substring(0, hostString.length() - 1));
-		}
+		// Pre-populate the account field:
+		form.setAccount(account);
 
 		// Set the account field to read-only (I couldn't find this documented
 		// anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".hostSet").setEditable(false);
+		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
@@ -110,22 +90,13 @@ public class EditHostSetAction extends CloupiaPageAction {
 	 */
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
-		Object obj = page.unmarshallToSession(FORM_ID);
-		EditHostSetConfig config = (EditHostSetConfig) obj;
-
 		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(context);
-		HP3ParRequestStatus s = HP3ParHostSetExecute.edit(c, config);
-
-		// Throwing an exception fails the submit and shows the error in the
-		// window
-		if (!s.isSuccess()) {
-			logger.warn("Failed to edit Host set:" + s.getError());
-			throw new Exception("Failed to edit Host set: " + s.getError());
-		}
+		final Date d = new Date();
+		HP3ParInventory.update(c, true, d.getTime());
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Host " + config.getHostSetName() + " edited OK");
+		page.setPageMessage("Inventory collection requested OK");
 		return PageIf.STATUS_OK;
 	}
 
@@ -146,7 +117,7 @@ public class EditHostSetAction extends CloupiaPageAction {
 
 	@Override
 	public boolean isSelectionRequired() {
-		return true;
+		return false;
 	}
 
 	@Override

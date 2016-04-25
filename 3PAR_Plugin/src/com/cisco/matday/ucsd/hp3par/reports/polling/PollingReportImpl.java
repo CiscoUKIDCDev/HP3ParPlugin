@@ -22,6 +22,7 @@
 package com.cisco.matday.ucsd.hp3par.reports.polling;
 
 import java.util.List;
+import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
 
@@ -61,15 +62,26 @@ public class PollingReportImpl implements TabularReportGeneratorIf {
 
 		model.completedHeader();
 
-		List<String> PollingList = HP3ParInventory.getPollingResponse(new HP3ParCredentials(context));
+		List<String> pollingList = HP3ParInventory.getPollingResponse(new HP3ParCredentials(context));
+		// ListIterator i = PollingList.iterator();
+		ListIterator<String> i = pollingList.listIterator();
 
-		for (String poll : PollingList) {
+		// for (String poll : PollingList) {
+		// Reverse through list (bottom to top)
+		while (i.hasPrevious()) {
+			String poll = i.previous();
+
 			// Format:
 			// Start@End@Forced@Comment
 			String[] pollArray = poll.split("@");
 			// Start time
 			model.addTimeValue(Long.parseLong(pollArray[0]));
-			model.addTextValue(pollArray[2]);
+			if (pollArray[2].equals("false")) {
+				model.addTextValue("Regular poll");
+			}
+			else {
+				model.addTextValue("Forced update");
+			}
 			model.addTextValue(pollArray[3]);
 			// End time
 			model.addTimeValue(Long.parseLong(pollArray[1]));

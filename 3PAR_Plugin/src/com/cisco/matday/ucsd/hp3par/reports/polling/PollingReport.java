@@ -22,6 +22,7 @@
 package com.cisco.matday.ucsd.hp3par.reports.polling;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.polling.actions.InventoryCollectionAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -48,7 +49,9 @@ public class PollingReport extends DrillableReportWithActions {
 	// This MUST be defined ONCE!
 	private CloupiaReport[] drillable = new CloupiaReport[] {};
 
-	private CloupiaReportAction[] actions = new CloupiaReportAction[] {};
+	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
+			new InventoryCollectionAction(),
+	};
 
 	/**
 	 * Create Host report

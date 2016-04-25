@@ -115,9 +115,10 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 		logger.info("Created persistent entry (API version: " + HP3ParInventoryDBStore.API_VERSION + ")");
 
 		// Populate all fields
-		logger.info("Setting up volume inventory");
-		HP3ParVolumeList volume;
+
 		try {
+			logger.info("Setting up volume inventory");
+			HP3ParVolumeList volume;
 			volume = new HP3ParVolumeList(new HP3ParCredentials(accountName));
 			this.volumeListJson = volume.toJson();
 
@@ -153,10 +154,16 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 		}
 	}
 
+	/**
+	 * @return polling data
+	 */
 	public List<String> getPolling() {
 		return this.polling;
 	}
 
+	/**
+	 * @param polling
+	 */
 	public void setPolling(List<String> polling) {
 		this.polling = polling;
 	}

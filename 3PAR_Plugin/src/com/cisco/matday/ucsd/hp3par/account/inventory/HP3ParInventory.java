@@ -119,11 +119,13 @@ public class HP3ParInventory {
 	 * @param force
 	 *            set to true if the inventory should be refreshed even if it's
 	 *            not timed out
+	 * @param c
+	 *            Time
 	 * @throws IOException
 	 * @throws InvalidHP3ParTokenException
 	 * @throws Exception
 	 */
-	private void update(boolean force) throws Exception {
+	private void update(boolean force, long c) throws Exception {
 		final String accountName = this.invStore.getAccountName();
 		final HP3ParCredentials login = new HP3ParCredentials(accountName);
 		final String queryString = "accountName == '" + accountName + "'";
@@ -148,8 +150,7 @@ public class HP3ParInventory {
 				this.create(login);
 				return;
 			}
-			final Date d = new Date();
-			final long c = d.getTime();
+
 			if ((!force) && ((c - store.getUpdated()) < HP3ParConstants.INVENTORY_LIFE)) {
 				return;
 			}
@@ -177,6 +178,7 @@ public class HP3ParInventory {
 			final HP3ParPortList port = new HP3ParPortList(login);
 			store.setPortListJson(port.toJson());
 
+			final Date d = new Date();
 			final String update = c + "@" + d.getTime() + "@" + force + "@" + "Inventory update";
 			store.getPolling().add(update);
 
@@ -340,7 +342,8 @@ public class HP3ParInventory {
 	 * @throws Exception
 	 */
 	private void update() throws Exception {
-		this.update(false);
+		final Date d = new Date();
+		this.update(false, d.getTime());
 	}
 
 	/**
@@ -428,6 +431,13 @@ public class HP3ParInventory {
 		return inv.getVlun();
 	}
 
+	/**
+	 * Get polling log
+	 *
+	 * @param credentials
+	 * @return Get the polling data
+	 * @throws Exception
+	 */
 	public synchronized static List<String> getPollingResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update();
@@ -479,7 +489,23 @@ public class HP3ParInventory {
 	 */
 	public synchronized static void update(HP3ParCredentials credentials, boolean force) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update(force);
+		final Date d = new Date();
+		inv.update(force, d.getTime());
+	}
+
+	/**
+	 * Update from the 3PAR array to the local cache if it's timed out
+	 *
+	 * @param credentials
+	 * @param force
+	 *            Force the updates
+	 * @param c
+	 *            Time from which to source update
+	 * @throws Exception
+	 */
+	public synchronized static void update(HP3ParCredentials credentials, boolean force, long c) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		inv.update(force, c);
 	}
 
 }
