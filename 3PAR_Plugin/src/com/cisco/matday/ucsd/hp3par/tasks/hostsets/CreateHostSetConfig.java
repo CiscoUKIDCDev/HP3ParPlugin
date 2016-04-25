@@ -163,18 +163,30 @@ public class CreateHostSetConfig implements TaskConfigIf {
 		this.domain = domain;
 	}
 
+	/**
+	 * @return Host Set Name
+	 */
 	public String getHostSetName() {
 		return this.hostSetName;
 	}
 
+	/**
+	 * @param hostSetName
+	 */
 	public void setHostSetName(String hostSetName) {
 		this.hostSetName = hostSetName;
 	}
 
+	/**
+	 * @return Hosts
+	 */
 	public String getHosts() {
 		return this.hosts;
 	}
 
+	/**
+	 * @param hosts
+	 */
 	public void setHosts(String hosts) {
 		this.hosts = hosts;
 	}

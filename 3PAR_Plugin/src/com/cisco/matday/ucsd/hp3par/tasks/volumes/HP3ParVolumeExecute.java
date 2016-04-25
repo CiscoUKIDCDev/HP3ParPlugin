@@ -259,7 +259,6 @@ public class HP3ParVolumeExecute {
 				e.printStackTrace();
 			}
 		}
-		// Return the same reference as passed for convenience and clarity
 		return status;
 	}
 

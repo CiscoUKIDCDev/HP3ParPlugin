@@ -290,4 +290,14 @@ public class HP3ParConstants {
 	 */
 	public static final int JDO_DEPTH = 5;
 
+	/**
+	 * 3PAR API for adding to a set
+	 */
+	public static final int SET_ACTION_ADD = 1;
+
+	/**
+	 * 3PAR API for removing from a set
+	 */
+	public static final int SET_ACTION_REMOVE = 2;
+
 }

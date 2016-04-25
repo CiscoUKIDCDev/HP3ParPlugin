@@ -21,6 +21,8 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
+import java.util.List;
+
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -89,6 +91,10 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	@Persistent(defaultFetchGroup = "true")
 	@Column(jdbcType = "CLOB")
 	private String hostSetListJson;
+
+	@Persistent(defaultFetchGroup = "true")
+	@Column(jdbcType = "CLOB")
+	private List<String> updates;
 
 	/**
 	 * Get the API version in case this database needs to be rebuilt in the

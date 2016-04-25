@@ -56,15 +56,15 @@ public class CreateHostTask extends AbstractTask {
 
 		ucsdLogger.addInfo("Created host");
 
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
-				"Undo creation of volume: " + config.getHostName(), DeleteHostConfig.DISPLAY_LABEL,
+		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host created",
+				"Undo creation of host: " + config.getHostName(), DeleteHostConfig.DISPLAY_LABEL,
 				new DeleteHostConfig(config));
 
-		// Construct Volume name in the format:
+		// Construct Host name in the format:
 		// id@Account@Volume
 		// Don't know the volume so just use 0 as a workaround
 		String hostName = "0@" + config.getAccount() + "@" + config.getHostName();
-		context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, hostName);
+		context.saveOutputValue(HP3ParConstants.HOST_LIST_FORM_LABEL, hostName);
 	}
 
 	@Override

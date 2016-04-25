@@ -21,12 +21,12 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.test;
 
+import java.util.HashMap;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
-import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 
 // Don't document this test case, it changes too often
 @SuppressWarnings("javadoc")
@@ -37,7 +37,7 @@ public class VolumeTest {
 	final static String password = "3pardata";
 
 	@SuppressWarnings({
-			"deprecation", "unused"
+			"deprecation", "unused", "boxing"
 	})
 	public static void main(String[] args) {
 
@@ -48,25 +48,43 @@ public class VolumeTest {
 			// Don't warn that I'm using test methods
 			HP3ParCredentials login = new HP3ParCredentials(ipAddress, user, password);
 
-			HostResponseDescriptors desc = new HostResponseDescriptors();
-			desc.setComment("Comment!");
-			desc.setIPAddr("192.168.210.1");
-			desc.setContact("Contact");
-			desc.setLocation("Location");
-			desc.setModel("Model");
-			desc.setOs("Operating System!");
+			HashMap<String, Boolean> keepMap = new HashMap<>();
 
-			HP3ParHostParams params = new HP3ParHostParams("API-Test", "", desc);
+			final String newMembers = "0@3PAR@Member1, 0@3PAR@Member2, 0@3PAR@Member3";
+			final String oldMembers = "0@3PAR@Member9, 0@3PAR@Member2, 0@3PAR@Member8";
 
-			/*
-			 * HP3ParRequestStatus s = HP3ParHostRestCall.create(login, params);
-			 * System.out.println(s.getError());
-			 * System.out.println(s.isSuccess());
-			 *
-			 * s = HP3ParHostRestCall.delete(login, "Testing");
-			 * System.out.println(s.getError());
-			 * System.out.println(s.isSuccess());
-			 */
+			// Should end up with delete list =
+			// Member9, Member8
+			// Create List =
+			// Member 1, Member3
+
+			// Assume we're not keeping anything
+			for (String host : oldMembers.split(",")) {
+				keepMap.put(host.split("@")[2], false);
+			}
+			// Compute which ones to keep
+			for (String host : newMembers.split(",")) {
+				keepMap.put(host.split("@")[2], true);
+			}
+			// Remove anything not matching:
+			for (String host : keepMap.keySet()) {
+				if (!keepMap.get(host)) {
+					System.out.println("Remove: " + host);
+				}
+			}
+			// Assume everything new should be added as new
+			for (String host : newMembers.split(",")) {
+				keepMap.put(host.split("@")[2], true);
+			}
+			// Anything currently in the list should not
+			for (String host : oldMembers.split(",")) {
+				keepMap.put(host.split("@")[2], false);
+			}
+			for (String host : keepMap.keySet()) {
+				if (keepMap.get(host)) {
+					System.out.println("Add: " + host);
+				}
+			}
 
 		}
 		catch (Exception e) {
