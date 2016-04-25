@@ -55,6 +55,7 @@ import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.CreateHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.DeleteHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.EditHostSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.system.CollectInventoryTask;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.CreateVlunTask;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.DeleteVlunTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
@@ -105,7 +106,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
 				new CreateVlunTask(), new DeleteVlunTask(), new CreateHostSetTask(), new EditHostSetTask(),
-				new DeleteHostSetTask()
+				new DeleteHostSetTask(), new CollectInventoryTask(),
 		};
 		return task;
 	}

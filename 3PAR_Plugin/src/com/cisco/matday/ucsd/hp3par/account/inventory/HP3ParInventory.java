@@ -469,7 +469,7 @@ public class HP3ParInventory {
 			logger.info("Could not delete old data - maybe it doesn't exist. " + e.getMessage());
 		}
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update(false, "Periodic inventory collection");
+		inv.update(false, "Initial collection");
 	}
 
 	/**
@@ -487,37 +487,6 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		final Date d = new Date();
 		inv.update(force, d.getTime(), reason);
-	}
-
-	/**
-	 * Update from the 3PAR array to the local cache if it's timed out
-	 *
-	 * @param credentials
-	 * @param force
-	 *            - force the updates
-	 * @throws Exception
-	 */
-	@Deprecated
-	public synchronized static void update(HP3ParCredentials credentials, boolean force) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(credentials);
-		final Date d = new Date();
-		inv.update(force, d.getTime(), "Inventory update");
-	}
-
-	/**
-	 * Update from the 3PAR array to the local cache if it's timed out
-	 *
-	 * @param credentials
-	 * @param force
-	 *            Force the updates
-	 * @param c
-	 *            Time from which to source update
-	 * @throws Exception
-	 */
-	@Deprecated
-	public synchronized static void update(HP3ParCredentials credentials, boolean force, long c) throws Exception {
-		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update(force, c, "Inventory update");
 	}
 
 }
