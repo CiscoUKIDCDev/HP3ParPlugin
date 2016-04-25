@@ -19,12 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.vluns;
-
-import org.apache.log4j.Logger;
+package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -32,47 +31,42 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Create a VLUN
+ * Create host implementation task
  *
  * @author Matt Day
  *
  */
-public class DeleteVlunTask extends AbstractTask {
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(DeleteVlunTask.class);
+public class EditHostSetTask extends AbstractTask {
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
-
-		// Obtain account information:
-		DeleteVlunConfig config = (DeleteVlunConfig) context.loadConfigObject();
+		EditHostSetConfig config = (EditHostSetConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		// Create the VLUN
-		HP3ParRequestStatus s = HP3ParVlunExecute.delete(c, config);
-		// If it wasn't createderror out
-		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to delete VLUN: " + s.getError());
-			throw new Exception("VLUN deletionfailed");
-		}
-		ucsdLogger.addInfo("Deleted VLUN");
+		HP3ParRequestStatus s = HP3ParHostSetExecute.edit(c, config);
 
+		if (!s.isSuccess()) {
+			ucsdLogger.addError("Failed to edit host: " + s.getError());
+			throw new Exception("Failed to edit host: " + s.getError());
+		}
+
+		ucsdLogger.addInfo("Created host set");
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new CreateVlunConfig();
+		return new CreateVolumeCopyConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		return DeleteVlunConfig.DISPLAY_LABEL;
+		return EditHostSetConfig.DISPLAY_LABEL;
 	}
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		return null;
+		TaskOutputDefinition[] ops = {};
+		return ops;
 	}
-
 }

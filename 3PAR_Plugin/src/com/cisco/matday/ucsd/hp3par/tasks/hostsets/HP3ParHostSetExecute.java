@@ -21,6 +21,10 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
@@ -37,7 +41,6 @@ public class HP3ParHostSetExecute {
 	private static Logger logger = Logger.getLogger(HP3ParCopyExecute.class);
 
 	public static HP3ParRequestStatus create(HP3ParCredentials c, CreateHostSetConfig config) throws Exception {
-		logger.info("Hosts: " + config.getHosts());
 		String[] setmembers = new String[config.getHosts().split(",").length];
 		String[] hostList = config.getHosts().split(",");
 		for (int i = 0; i < hostList.length; i++) {
@@ -79,6 +82,22 @@ public class HP3ParHostSetExecute {
 		}
 		// Return the same reference as passed for convenience and clarity
 		return status;
+	}
+
+	public static HP3ParRequestStatus edit(HP3ParCredentials c, EditHostSetConfig config) throws Exception {
+		final String hostSetName = config.getHostSet().split("@")[2];
+
+		List<String> currentMembers = Arrays.asList(HP3ParInventory.getHostSetInfo(c, hostSetName).getSetMembers());
+
+		List<String> keepList = new ArrayList<String>();
+
+		String[] hostList = config.getHosts().split(",");
+		for (String element : hostList) {
+			final String memberName = element.split("@")[2];
+			if (currentMembmemberName)
+		}
+
+		return null;
 	}
 
 }
