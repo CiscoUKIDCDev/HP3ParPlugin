@@ -205,4 +205,55 @@ public class HP3ParHostSetExecute {
 		return status;
 	}
 
+	/**
+	 * Delete an existing host set
+	 *
+	 * @param c
+	 *            Credentials for the account to perform this on
+	 * @param config
+	 *            Configuration settings
+	 * @return Status of the operation
+	 * @throws Exception
+	 *             if the operation was unsuccessful
+	 */
+	public static HP3ParRequestStatus delete(HP3ParCredentials c, DeleteHostSetConfig config) throws Exception {
+
+		// Get the volume name, it's in the format:
+		// id@account@name
+		final String hostSetName = config.getHostSet().split("@")[2];
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/hostsets/" + hostSetName;
+		request.setUri(uri);
+
+		// Use defaults for a DELETE request
+		request.setDeleteDefaults();
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+
+	}
+
 }
