@@ -21,8 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.reports.polling.actions;
 
-import java.util.Date;
-
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
@@ -92,8 +90,7 @@ public class InventoryCollectionAction extends CloupiaPageAction {
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
 		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(context);
-		final Date d = new Date();
-		HP3ParInventory.update(c, true, d.getTime());
+		HP3ParInventory.update(c, true, "Manual Inventory Collection");
 
 		// Set the text for the "OK" prompt and return successfully
 		page.setPageMessage("Inventory collection requested OK");

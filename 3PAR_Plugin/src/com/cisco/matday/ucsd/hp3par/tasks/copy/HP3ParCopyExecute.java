@@ -113,7 +113,7 @@ public class HP3ParCopyExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Volume Copy");
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -174,7 +174,7 @@ public class HP3ParCopyExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Snapshot creation");
 			}
 			catch (Exception e) {
 				e.printStackTrace();

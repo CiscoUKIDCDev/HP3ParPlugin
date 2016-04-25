@@ -84,7 +84,7 @@ public class HP3ParHostExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Host creation");
 			}
 			catch (Exception e) {
 				logger.warn("Error updating: " + e.getMessage());
@@ -137,7 +137,7 @@ public class HP3ParHostExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Host deletion");
 			}
 			catch (Exception e) {
 				logger.warn("Error updating: " + e.getMessage());

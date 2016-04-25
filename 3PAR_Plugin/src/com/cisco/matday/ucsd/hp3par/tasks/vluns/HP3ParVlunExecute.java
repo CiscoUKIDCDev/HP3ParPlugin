@@ -95,7 +95,7 @@ public class HP3ParVlunExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "VLUN Creation");
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -149,7 +149,7 @@ public class HP3ParVlunExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "VLUN deletion");
 			}
 			catch (Exception e) {
 				e.printStackTrace();

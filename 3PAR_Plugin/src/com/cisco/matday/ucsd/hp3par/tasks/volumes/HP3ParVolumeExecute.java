@@ -99,7 +99,7 @@ public class HP3ParVolumeExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Volume creation");
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -155,7 +155,7 @@ public class HP3ParVolumeExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Volume deletion");
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -249,7 +249,7 @@ public class HP3ParVolumeExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Volume edited");
 			}
 			catch (Exception e) {
 				e.printStackTrace();

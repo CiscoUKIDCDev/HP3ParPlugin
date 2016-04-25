@@ -92,7 +92,7 @@ public class HP3ParHostSetExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Host creation");
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -198,7 +198,7 @@ public class HP3ParHostSetExecute {
 
 		// Update the inventory
 		try {
-			HP3ParInventory.update(c, true);
+			HP3ParInventory.update(c, true, "Host set edit");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -274,7 +274,7 @@ public class HP3ParHostSetExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true);
+				HP3ParInventory.update(c, true, "Host set deletion");
 			}
 			catch (Exception e) {
 				e.printStackTrace();

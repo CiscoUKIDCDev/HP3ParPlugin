@@ -21,8 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.tasks.system;
 
-import java.util.Date;
-
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
@@ -45,8 +43,7 @@ public class CollectInventoryTask extends AbstractTask {
 			throws Exception {
 		CollectInventoryConfig config = (CollectInventoryConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
-		final Date d = new Date();
-		HP3ParInventory.update(c, true, d.getTime());
+		HP3ParInventory.update(c, true, "Inventory collection task");
 
 		ucsdLogger.addInfo("Polled Inventory");
 	}

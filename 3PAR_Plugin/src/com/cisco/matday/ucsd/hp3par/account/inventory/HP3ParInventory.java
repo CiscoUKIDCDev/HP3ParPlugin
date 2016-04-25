@@ -112,6 +112,11 @@ public class HP3ParInventory {
 		}
 	}
 
+	private void update(boolean force, String reason) throws Exception {
+		final Date d = new Date();
+		this.update(force, d.getTime(), reason);
+	}
+
 	/**
 	 * Update the inventory held in the database and optionally force a new
 	 * query even if the data is not out of date
@@ -125,7 +130,7 @@ public class HP3ParInventory {
 	 * @throws InvalidHP3ParTokenException
 	 * @throws Exception
 	 */
-	private void update(boolean force, long c) throws Exception {
+	private void update(boolean force, long c, String reason) throws Exception {
 		final String accountName = this.invStore.getAccountName();
 		final HP3ParCredentials login = new HP3ParCredentials(accountName);
 		final String queryString = "accountName == '" + accountName + "'";
@@ -179,7 +184,7 @@ public class HP3ParInventory {
 			store.setPortListJson(port.toJson());
 
 			final Date d = new Date();
-			final String update = c + "@" + d.getTime() + "@" + force + "@" + "Inventory update";
+			final String update = c + "@" + d.getTime() + "@" + force + "@" + reason;
 			store.getPolling().add(update);
 
 			this.invStore = store;
@@ -234,7 +239,7 @@ public class HP3ParInventory {
 	public synchronized static final VolumeResponseMember getVolumeInfo(HP3ParCredentials credentials,
 			String volumeName) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 
 		for (final VolumeResponseMember i : (inv.getVol().getMembers())) {
 			if (volumeName.equals(i.getName())) {
@@ -257,7 +262,7 @@ public class HP3ParInventory {
 	public synchronized static CPGResponseMember getCpgInfo(HP3ParCredentials credentials, String cpgName)
 			throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 
 		for (final CPGResponseMember i : inv.getCpg().getMembers()) {
 			if (cpgName.equals(i.getName())) {
@@ -279,7 +284,7 @@ public class HP3ParInventory {
 	public synchronized static HostResponseMember getHostInfo(HP3ParCredentials credentials, String hostName)
 			throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 
 		for (final HostResponseMember i : inv.getHost().getMembers()) {
 			if (hostName.equals(i.getName())) {
@@ -301,7 +306,7 @@ public class HP3ParInventory {
 	public synchronized static HostSetResponseMember getHostSetInfo(HP3ParCredentials credentials, String hostSetName)
 			throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 
 		for (final HostSetResponseMember i : inv.getHostSet().getMembers()) {
 			if (hostSetName.equals(i.getName())) {
@@ -323,7 +328,7 @@ public class HP3ParInventory {
 	public synchronized static PortResponseMember getPortInfo(HP3ParCredentials credentials, String portPos)
 			throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 
 		for (final PortResponseMember i : inv.getPorts().getMembers()) {
 			if (portPos.equals(i.getPortPosAsString())) {
@@ -332,18 +337,6 @@ public class HP3ParInventory {
 		}
 		logger.warn("Port not found in cache: " + portPos);
 		return null;
-	}
-
-	/**
-	 * Update the inventory held in the database if it is not out of date
-	 *
-	 * @throws IOException
-	 * @throws InvalidHP3ParTokenException
-	 * @throws Exception
-	 */
-	private void update() throws Exception {
-		final Date d = new Date();
-		this.update(false, d.getTime());
 	}
 
 	/**
@@ -362,7 +355,7 @@ public class HP3ParInventory {
 	 */
 	public synchronized static VolumeResponse getVolumeResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 		return inv.getVol();
 	}
 
@@ -375,7 +368,7 @@ public class HP3ParInventory {
 	 */
 	public synchronized static SystemResponse getSystemResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 		return inv.getSys();
 	}
 
@@ -388,7 +381,7 @@ public class HP3ParInventory {
 	 */
 	public synchronized static CPGResponse getCPGResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 		return inv.getCpg();
 	}
 
@@ -401,7 +394,7 @@ public class HP3ParInventory {
 	 */
 	public synchronized static HostResponse getHostResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 		return inv.getHost();
 	}
 
@@ -414,7 +407,7 @@ public class HP3ParInventory {
 	 */
 	public synchronized static HostSetResponse getHostSetResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 		return inv.getHostSet();
 	}
 
@@ -427,7 +420,7 @@ public class HP3ParInventory {
 	 */
 	public synchronized static VlunResponse getVlunResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 		return inv.getVlun();
 	}
 
@@ -440,7 +433,7 @@ public class HP3ParInventory {
 	 */
 	public synchronized static List<String> getPollingResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 		return inv.getPolling();
 	}
 
@@ -453,7 +446,7 @@ public class HP3ParInventory {
 	 */
 	public synchronized static PortResponse getPortResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
 		return inv.getPorts();
 	}
 
@@ -476,7 +469,24 @@ public class HP3ParInventory {
 			logger.info("Could not delete old data - maybe it doesn't exist. " + e.getMessage());
 		}
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update();
+		inv.update(false, "Periodic inventory collection");
+	}
+
+	/**
+	 * Update from the 3PAR array to the local cache if it's timed out
+	 *
+	 * @param credentials
+	 * @param force
+	 *            - force the updates
+	 * @param reason
+	 *            Reason for the update (for the log)
+	 * @throws Exception
+	 */
+	public synchronized static void update(HP3ParCredentials credentials, boolean force, String reason)
+			throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		final Date d = new Date();
+		inv.update(force, d.getTime(), reason);
 	}
 
 	/**
@@ -487,10 +497,11 @@ public class HP3ParInventory {
 	 *            - force the updates
 	 * @throws Exception
 	 */
+	@Deprecated
 	public synchronized static void update(HP3ParCredentials credentials, boolean force) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		final Date d = new Date();
-		inv.update(force, d.getTime());
+		inv.update(force, d.getTime(), "Inventory update");
 	}
 
 	/**
@@ -503,9 +514,10 @@ public class HP3ParInventory {
 	 *            Time from which to source update
 	 * @throws Exception
 	 */
+	@Deprecated
 	public synchronized static void update(HP3ParCredentials credentials, boolean force, long c) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
-		inv.update(force, c);
+		inv.update(force, c, "Inventory update");
 	}
 
 }
