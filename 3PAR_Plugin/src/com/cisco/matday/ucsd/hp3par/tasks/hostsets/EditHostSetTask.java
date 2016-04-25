@@ -22,6 +22,7 @@
 package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
@@ -52,6 +53,11 @@ public class EditHostSetTask extends AbstractTask {
 		}
 
 		ucsdLogger.addInfo("Created host set");
+		// Construct Host name in the format:
+		// id@Account@HosetSet
+		// Don't know the volume so just use 0 as a workaround
+		String hostName = "0@" + config.getAccount() + "@" + config.getHostSetName();
+		context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
 	}
 
 	@Override
@@ -66,7 +72,11 @@ public class EditHostSetTask extends AbstractTask {
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		TaskOutputDefinition[] ops = {};
+		TaskOutputDefinition[] ops = {
+				// Register output type for the host set created
+				new TaskOutputDefinition(HP3ParConstants.HOSTSET_LIST_FORM_LABEL,
+						HP3ParConstants.HOSTSET_LIST_FORM_TABLE_NAME, HP3ParConstants.HOSTSET_LIST_FORM_LABEL)
+		};
 		return ops;
 	}
 }

@@ -63,17 +63,15 @@ public class PollingReportImpl implements TabularReportGeneratorIf {
 		model.completedHeader();
 
 		List<String> pollingList = HP3ParInventory.getPollingResponse(new HP3ParCredentials(context));
-		// ListIterator i = PollingList.iterator();
-		ListIterator<String> i = pollingList.listIterator();
 
-		// for (String poll : PollingList) {
+		// Init iterator on last element to trawl backwards
+		ListIterator<String> i = pollingList.listIterator(pollingList.size());
+
 		// Reverse through list (bottom to top)
 		while (i.hasPrevious()) {
-			String poll = i.previous();
-
 			// Format:
 			// Start@End@Forced@Comment
-			String[] pollArray = poll.split("@");
+			String[] pollArray = i.previous().split("@");
 			// Start time
 			model.addTimeValue(Long.parseLong(pollArray[0]));
 			if (pollArray[2].equals("false")) {

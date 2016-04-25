@@ -65,6 +65,16 @@ public class DeleteHostSetConfig implements TaskConfigIf {
 
 	}
 
+	/**
+	 * Rollback constructor - this method shouldn't be instantiated directly
+	 * 
+	 * @param config
+	 *            Config to rollback
+	 */
+	public DeleteHostSetConfig(CreateHostSetConfig config) {
+		this.hostSet = "0@" + this.getAccount() + "@" + config.getHostSetName();
+	}
+
 	@Override
 	public long getActionId() {
 		return this.actionId;

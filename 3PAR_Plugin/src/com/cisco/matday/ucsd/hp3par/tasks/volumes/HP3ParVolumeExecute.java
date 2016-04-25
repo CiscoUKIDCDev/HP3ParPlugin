@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
-import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
@@ -179,7 +178,6 @@ public class HP3ParVolumeExecute {
 	 *             if the operation was unsuccessful
 	 */
 	public static HP3ParRequestStatus edit(HP3ParCredentials c, EditVolumeConfig config) throws Exception {
-
 		// Get the volume name, it's in the format:
 		// id@account@name
 		String[] volInfo = config.getVolume().split("@");
@@ -207,18 +205,16 @@ public class HP3ParVolumeExecute {
 			}
 		}
 
-		CPGResponseMember cpg = HP3ParInventory.getCpgInfo(c, copyCpgName);
 		// VolumeResponseMember volinfo = new HP3ParVolumeInfo(c,
 		// config.getOriginalName()).getMember();
-		VolumeResponseMember volinfo = HP3ParInventory.getVolumeInfo(c, config.getOriginalName());
+		VolumeResponseMember volinfo = HP3ParInventory.getVolumeInfo(c, volName);
 		logger.info("Vol REST Lookup: " + volinfo.getUserCPG());
-		logger.info("CPG REST lookup: " + cpg.getName());
 		logger.info("Copy CPG Name: " + copyCpgName);
 
 		// If the new copy CPG name is the same as the old one, set it to
 		// null (3PAR will otherwise return an error)
-		if ((!"".equals(copyCpgName)) && (!"-".equals(copyCpgName))) {
-			if (volinfo.getUserCPG().equals(copyCpgName)) {
+		if ((copyCpgName != null) && (!"".equals(copyCpgName)) && (!"-".equals(copyCpgName))) {
+			if (volinfo.getCopyCPG().equals(copyCpgName)) {
 				logger.info("Edited CPG is the same as the old one, setting to null");
 				copyCpgName = null;
 			}
