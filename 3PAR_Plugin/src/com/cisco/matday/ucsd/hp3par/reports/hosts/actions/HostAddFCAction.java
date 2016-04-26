@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddFCWWNHostConfig;
-import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddiSCSIHostConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.HP3ParHostExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
@@ -54,7 +53,7 @@ public class HostAddFCAction extends CloupiaPageAction {
 	@Override
 	public void definePage(Page page, ReportContext context) {
 		// Use the same form (config) as the Delete Host custom task
-		page.bind(FORM_ID, AddiSCSIHostConfig.class);
+		page.bind(FORM_ID, AddFCWWNHostConfig.class);
 	}
 
 	/**

@@ -122,7 +122,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			cfr.registerTabularField(HP3ParConstants.VOLUME_LIST_FORM_PROVIDER, HP3ParVolumeSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.PORT_LIST_FORM_PROVIDER, HP3ParPortSelector.class, "0", "1");
 			cfr.registerTabularField(HP3ParConstants.HOST_LIST_FORM_PROVIDER, HP3ParHostSelector.class, "0", "2");
-			cfr.registerTabularField(HP3ParConstants.VLUN_LIST_FORM_PROVIDER, HP3ParVlunSelector.class, "0", "2");
+			cfr.registerTabularField(HP3ParConstants.VLUN_LIST_FORM_PROVIDER, HP3ParVlunSelector.class, "0", "4");
 			cfr.registerTabularField(HP3ParConstants.HOSTSET_LIST_FORM_PROVIDER, HP3ParHostSetSelector.class, "0", "2");
 
 			// Register drilldown reports

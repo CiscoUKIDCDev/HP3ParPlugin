@@ -184,6 +184,8 @@ public class HP3ParHostExecute {
 			}
 		}
 
+		logger.info("REST: " + gson.toJson(new params(config.getIscsiName())));
+
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new params(config.getIscsiName())));
 
