@@ -205,6 +205,15 @@ public class HP3ParConstants {
 	/**
 	 * Volume list drilldown name for global context registry
 	 */
+	public static final String PORT_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.PortList";
+
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String PORT_LIST_DRILLDOWN_LABEL = "Port Details";
+	/**
+	 * Volume list drilldown name for global context registry
+	 */
 	public static final String POLLING_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.PollingList";
 
 	/**

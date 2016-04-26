@@ -19,20 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.inputs;
-
-import java.util.List;
+package com.cisco.matday.ucsd.hp3par.reports.ports;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponse;
 import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponseMember;
-import com.cloupia.fw.objstore.ObjStore;
-import com.cloupia.fw.objstore.ObjStoreHelper;
-import com.cloupia.lib.connector.account.AccountUtil;
-import com.cloupia.lib.connector.account.PhysicalInfraAccount;
-import com.cloupia.model.cIM.InfraAccount;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -46,72 +38,57 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
  * @author Matt Day
  *
  */
-public class HP3ParPortSelector implements TabularReportGeneratorIf {
+public class PortListReportImpl implements TabularReportGeneratorIf {
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
 
-		TabularReport report = new TabularReport();
+		final TabularReport report = new TabularReport();
 
 		report.setGeneratedTime(System.currentTimeMillis());
 		report.setReportName(reportEntry.getReportLabel());
 		report.setContext(context);
 
-		ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
-		List<InfraAccount> objs = store.queryAll();
-
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		model.addTextColumn("InternalID", "InternalID", true);
 		model.addTextColumn("Label", "Label");
-		model.addTextColumn("Account", "Account");
 		model.addTextColumn("Type", "Type");
 		model.addTextColumn("Protocol", "Protocol");
 		model.addTextColumn("Mode", "Mode");
 		model.addTextColumn("Link State", "Link State");
 
 		model.completedHeader();
+		final HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		for (InfraAccount a : objs) {
-			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
-			// Important to check if the account type is null first
-			if ((acc != null) && (acc.getAccountType() != null)
-					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
+		PortResponse portList = HP3ParInventory.getPortResponse(credentials);
 
-				PortResponse portList = HP3ParInventory.getPortResponse(new HP3ParCredentials(a.getAccountName()));
+		for (PortResponseMember port : portList.getMembers()) {
+			// 0@accountName@portPos
+			String internalId = 0 + "@" + credentials.getAccountName() + "@" + port.getPortPosAsString();
 
-				for (PortResponseMember port : portList.getMembers()) {
-					// 0@accountName@portPos
-					String internalId = 0 + "@" + a.getAccountName() + "@" + port.getPortPosAsString();
+			// Internal ID
+			model.addTextValue(internalId);
 
-					// Internal ID
-					model.addTextValue(internalId);
+			// Label
+			model.addTextValue(
+					("".equals(port.getLabel()) ? "" : port.getLabel() + " ") + "(" + port.getPortPosAsString() + ")");
 
-					// Label
-					model.addTextValue(("".equals(port.getLabel()) ? "" : port.getLabel() + " ") + "("
-							+ port.getPortPosAsString() + ")");
+			// Type
+			model.addTextValue(port.getTypeAsString());
 
-					// Account Name
-					model.addTextValue(a.getAccountName());
+			// Protocol
+			model.addTextValue(port.getProtocolAsString());
 
-					// Type
-					model.addTextValue(port.getTypeAsString());
+			// Mode
+			model.addTextValue(port.getModeAsString());
 
-					// Protocol
-					model.addTextValue(port.getProtocolAsString());
+			// Link State
+			model.addTextValue(port.getLinkStateAsString());
 
-					// Mode
-					model.addTextValue(port.getModeAsString());
-
-					// Link State
-					model.addTextValue(port.getLinkStateAsString());
-
-					model.completedRow();
-				}
-			}
+			model.completedRow();
 		}
 		model.updateReport(report);
-
 		return report;
 	}
 
