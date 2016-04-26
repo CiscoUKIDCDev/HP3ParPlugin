@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -41,7 +41,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * This class extends the in-build UCS Director account storage. Don't use it
  * directly, instead use HP3ParCredentials to obtain and manage this
  * information.
- * 
+ *
  * @author matt
  *
  */
@@ -59,7 +59,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@Persistent
 	@FormField(label = "TCP Port", help = "TCP Port (default is 8080 for https, 8008 for http)", mandatory = true)
-	private int tcp_port = HP3ParConstants.DEFAULT_PORT;
+	private int tcp_port;
 
 	@Persistent
 	@FormField(label = "Username", help = "Username", mandatory = true)
@@ -71,13 +71,15 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 	@Persistent
 	@FormField(label = "Use secure connection (https)", help = "Use secure connection (https)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
-	private boolean https = true;
+	private boolean https;
 
 	/**
 	 * Do not instantiate this directly, let UCSD do that...
 	 */
 	public HP3ParAccount() {
 		super();
+		this.https = true;
+		this.tcp_port = HP3ParConstants.DEFAULT_PORT;
 	}
 
 	@Override
@@ -151,7 +153,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 
 			List<InfraAccount> accList = store.query(cquery);
 
-			if (accList != null && accList.size() > 0) {
+			if ((accList != null) && (accList.size() > 0)) {
 				return accList.get(0);
 			}
 			return null;
