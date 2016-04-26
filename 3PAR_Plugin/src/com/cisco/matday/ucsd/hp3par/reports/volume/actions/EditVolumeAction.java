@@ -27,6 +27,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.HP3ParVolumeExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
@@ -74,14 +75,15 @@ public class EditVolumeAction extends CloupiaPageAction {
 		 *
 		 * accountName;volumeName;cpgName;copyCpgName
 		 */
-		String volume = query.split(";")[1];
+		final String volume = query.split(";")[1];
+		final String volumeName = volume.split("@")[2];
+		final HP3ParCredentials login = new HP3ParCredentials(context);
 
 		// Populate the copy CPG field if it's already set
 		String copyCpg = query.split(";")[3];
 		if (!copyCpg.equals("-")) {
 			// Have to do an API lookup as we need the ID which isn't in the
 			// volume REST response:
-			HP3ParCredentials login = new HP3ParCredentials(context);
 			CPGResponseMember cpg = HP3ParInventory.getCpgInfo(login, copyCpg);
 			// Build it in the format for the CPG table:
 			// ID@AccountName@CPGName
@@ -92,9 +94,13 @@ public class EditVolumeAction extends CloupiaPageAction {
 		// Pre-populate the account, volume and CPG fields:
 		form.setVolume(volume);
 
+		VolumeResponseMember volInfo = HP3ParInventory.getVolumeInfo(login, volumeName);
+
 		// Pre-populate volume name
-		String volumeName = volume.split("@")[2];
+
 		form.setNewVolumeName(volumeName);
+
+		form.setComment(volInfo.getComment());
 
 		// Set the account and volume fields to read-only (I couldn't find this
 		// documented anywhere, maybe there's a better way to do it?)

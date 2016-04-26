@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -23,10 +23,10 @@ package com.cisco.matday.ucsd.hp3par.rest.volumes.json;
 
 /**
  * Creates an object to send to the 3PAR array to create a volume.
- * 
+ *
  * Objects implementing this class should be passed to
  * HP3ParVolumeRestCall.create
- * 
+ *
  * @author Matt Day
  *
  */
@@ -49,7 +49,7 @@ public class HP3ParVolumeEditParams {
 	public HP3ParVolumeEditParams(String newName, String userCpg, String comment, String snapCPG) {
 		this.newName = newName;
 		this.userCPG = userCpg;
-		this.comment = comment;
+		this.comment = (comment == null) ? "" : comment;
 		this.snapCPG = snapCPG;
 	}
 
