@@ -25,8 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.cpg.HP3ParHostExecute;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.hosts.HP3ParHostExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -66,18 +66,8 @@ public class DeleteHostAction extends CloupiaPageAction {
 		String query = context.getId();
 		DeleteHostConfig form = new DeleteHostConfig();
 
-		/*
-		 * Unlike CreateHostAction, this returns true on isSelectionRequired()
-		 *
-		 * This means the context is whatever's in column 0 of the table. In
-		 * this case it's in the format:
-		 *
-		 * accountName;HostName
-		 */
-		String host = query.split(";")[1];
-
 		// Pre-populate the account and Host fields:
-		form.setHost(host);
+		form.setHost(query);
 
 		// Set the account and Host fields to read-only (I couldn't find this
 		// documented anywhere, maybe there's a better way to do it?)

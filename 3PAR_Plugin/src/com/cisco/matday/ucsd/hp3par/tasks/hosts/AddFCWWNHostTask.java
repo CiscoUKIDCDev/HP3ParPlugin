@@ -21,10 +21,10 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 
+import org.apache.log4j.Logger;
+
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -32,57 +32,48 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Create host implementation task
+ * Add iSCSI name to a host
  *
  * @author Matt Day
  *
  */
-public class CreateHostTask extends AbstractTask {
+public class AddFCWWNHostTask extends AbstractTask {
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(AddFCWWNHostTask.class);
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
-		CreateHostConfig config = (CreateHostConfig) context.loadConfigObject();
+
+		// Obtain account information:
+		AddFCWWNHostConfig config = (AddFCWWNHostConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		// HP3ParRequestStatus s = HP3ParCopyExecute.copy(c, config);
-		HP3ParRequestStatus s = HP3ParHostExecute.create(c, config);
-
+		// Delete the Host:
+		HP3ParRequestStatus s = HP3ParHostExecute.addFC(c, config);
+		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to create host: " + s.getError());
-			throw new Exception("Failed to create host" + s.getError());
+			ucsdLogger.addError("Failed to add WWN name: " + s.getError());
+			throw new Exception("Adding WWN to host failed");
 		}
+		ucsdLogger.addInfo("Added WWN name to host");
 
-		ucsdLogger.addInfo("Created host");
-
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host created",
-				"Undo creation of host: " + config.getHostName(), DeleteHostConfig.DISPLAY_LABEL,
-				new DeleteHostConfig(config));
-
-		// Construct Host name in the format:
-		// id@Account@Volume
-		// Don't know the volume so just use 0 as a workaround
-		String hostName = "0@" + config.getAccount() + "@" + config.getHostName();
-		context.saveOutputValue(HP3ParConstants.HOST_LIST_FORM_LABEL, hostName);
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new CreateVolumeCopyConfig();
+		return new AddiSCSIHostConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		return CreateHostConfig.DISPLAY_LABEL;
+		return AddiSCSIHostConfig.DISPLAY_LABEL;
 	}
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		TaskOutputDefinition[] ops = {
-				// Register output type for the volume created
-				new TaskOutputDefinition(HP3ParConstants.HOST_LIST_FORM_LABEL,
-						HP3ParConstants.HOST_LIST_FORM_TABLE_NAME, HP3ParConstants.HOST_LIST_FORM_LABEL)
-		};
-		return ops;
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }

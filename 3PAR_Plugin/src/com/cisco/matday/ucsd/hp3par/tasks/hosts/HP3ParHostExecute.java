@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.cpg;
+package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 
 import org.apache.log4j.Logger;
 
@@ -30,8 +30,6 @@ import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostMessage;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostConfig;
-import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostConfig;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
@@ -138,6 +136,139 @@ public class HP3ParHostExecute {
 			// Update the inventory
 			try {
 				HP3ParInventory.update(c, true, "Host deletion");
+			}
+			catch (Exception e) {
+				logger.warn("Error updating: " + e.getMessage());
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+	}
+
+	/**
+	 * Add an iSCSI Name to a 3PAR host
+	 *
+	 * @param c
+	 * @param config
+	 * @return status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus addiSCSI(HP3ParCredentials c, AddiSCSIHostConfig config) throws Exception {
+
+		// Get the volume name, it's in the format:
+		// id@account@name
+		String[] volInfo = config.getHost().split("@");
+		if (volInfo.length != 3) {
+			logger.warn("Host didn't return three items! It returned: " + config.getHost());
+			throw new Exception("Invalid Volume: " + config.getHost());
+		}
+		String hostName = volInfo[2];
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
+
+		// GSON:
+		@SuppressWarnings("unused")
+		final class params {
+			private String[] iSCSINames;
+			private int pathOperation = 1;
+
+			public params(String iSCSIName) {
+				this.iSCSINames = new String[] {
+						iSCSIName
+				};
+			}
+		}
+
+		// Use defaults for a PUT request
+		request.setPutDefaults(gson.toJson(new params(config.getIscsiName())));
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParHostMessage message = gson.fromJson(response, HP3ParHostMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true, "Host iSCSI addition");
+			}
+			catch (Exception e) {
+				logger.warn("Error updating: " + e.getMessage());
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+
+	}
+
+	/**
+	 * Add an FC Name to a 3PAR host
+	 *
+	 * @param c
+	 * @param config
+	 * @return status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus addFC(HP3ParCredentials c, AddFCWWNHostConfig config) throws Exception {
+
+		// Get the volume name, it's in the format:
+		// id@account@name
+		String[] volInfo = config.getHost().split("@");
+		if (volInfo.length != 3) {
+			logger.warn("Host didn't return three items! It returned: " + config.getHost());
+			throw new Exception("Invalid Volume: " + config.getHost());
+		}
+		String hostName = volInfo[2];
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
+
+		// GSON:
+		@SuppressWarnings("unused")
+		final class params {
+			private String[] FCWWNs;
+			private int pathOperation = 1;
+
+			public params(String FCWWN) {
+				this.FCWWNs = new String[] {
+						FCWWN
+				};
+			}
+		}
+
+		logger.info("REST: " + gson.toJson(new params(config.getWWN())));
+
+		// Use defaults for a PUT request
+		request.setPutDefaults(gson.toJson(new params(config.getWWN())));
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParHostMessage message = gson.fromJson(response, HP3ParHostMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true, "Host iSCSI addition");
 			}
 			catch (Exception e) {
 				logger.warn("Error updating: " + e.getMessage());

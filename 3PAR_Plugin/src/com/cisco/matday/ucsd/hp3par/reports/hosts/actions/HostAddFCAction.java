@@ -25,7 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddFCWWNHostConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddiSCSIHostConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.HP3ParHostExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
@@ -35,49 +36,46 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.WizardSession;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
 /**
- * Action button implemenation to create a Host
+ * Action button implemenation to delete a Host based on context
  *
  * @author Matt Day
  *
  */
-public class CreateHostAction extends CloupiaPageAction {
+public class HostAddFCAction extends CloupiaPageAction {
 
-	private static Logger logger = Logger.getLogger(CreateHostAction.class);
+	private static Logger logger = Logger.getLogger(HostAddFCAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostForm";
-	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostAction";
-	private static final String LABEL = "Create";
-	private static final String DESCRIPTION = "Create a new Host";
+	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddFCForm";
+	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddFCFormAction";
+	private static final String LABEL = "Add FC WWN";
+	private static final String DESCRIPTION = "Add FC WWN";
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
-		// Use the same form (config) as the Create Host custom task
-		page.bind(FORM_ID, CreateHostConfig.class);
+		// Use the same form (config) as the Delete Host custom task
+		page.bind(FORM_ID, AddiSCSIHostConfig.class);
 	}
 
 	/**
 	 * This sets up the initial fields and provides default values (in this case
-	 * the account name)
+	 * the account and Host names)
 	 */
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
+
 		String query = context.getId();
-		CreateHostConfig form = new CreateHostConfig();
+		AddFCWWNHostConfig form = new AddFCWWNHostConfig();
 
-		// The form will be in the format Account;Pod - grab the former:
-		String account = query.split(";")[0];
+		// Pre-populate the account and Host fields:
+		form.setHost(query);
 
-		// Pre-populate the account field:
-		form.setAccount(account);
-
-		// Set the account field to read-only (I couldn't find this documented
-		// anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
+		// Set the account and Host fields to read-only (I couldn't find this
+		// documented anywhere, maybe there's a better way to do it?)
+		page.getFlist().getByFieldId(FORM_ID + ".host").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
-
 	}
 
 	/**
@@ -89,21 +87,23 @@ public class CreateHostAction extends CloupiaPageAction {
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
 		Object obj = page.unmarshallToSession(FORM_ID);
-		CreateHostConfig config = (CreateHostConfig) obj;
+		AddFCWWNHostConfig config = (AddFCWWNHostConfig) obj;
 
 		// Get credentials from the current context
-		HP3ParCredentials c = new HP3ParCredentials(context);
-		HP3ParRequestStatus s = HP3ParHostExecute.create(c, config);
+		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		// Throwing an exception fails the submit and shows the error in the
-		// window
+		// Delete the Host:
+		HP3ParRequestStatus s = HP3ParHostExecute.addFC(c, config);
+
+		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
-			logger.warn("Failed to create Host:" + s.getError());
-			throw new Exception("Failed to create Host: " + s.getError());
+			logger.warn("Failed to edit Host: " + s.getError());
+			// The exception warning here is used as the failure message
+			throw new Exception("Host editing failed: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Host " + config.getHostName() + " created OK");
+		page.setPageMessage("Added " + config.getWWN() + " to Host");
 		return PageIf.STATUS_OK;
 	}
 
@@ -124,7 +124,7 @@ public class CreateHostAction extends CloupiaPageAction {
 
 	@Override
 	public boolean isSelectionRequired() {
-		return false;
+		return true;
 	}
 
 	@Override
