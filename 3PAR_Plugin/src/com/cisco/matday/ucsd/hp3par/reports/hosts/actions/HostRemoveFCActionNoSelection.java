@@ -40,13 +40,13 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
  * @author Matt Day
  *
  */
-public class HostRemoveFCAction extends CloupiaPageAction {
+public class HostRemoveFCActionNoSelection extends CloupiaPageAction {
 
 	private static Logger logger = Logger.getLogger(HostRemoveFCAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCForm";
-	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCFormAction";
+	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCActionNoSelection";
+	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCActionNoSelection";
 	private static final String LABEL = "Remove FC WWN";
 	private static final String DESCRIPTION = "Remove FC WWN";
 
@@ -114,7 +114,7 @@ public class HostRemoveFCAction extends CloupiaPageAction {
 
 	@Override
 	public boolean isSelectionRequired() {
-		return true;
+		return false;
 	}
 
 	@Override

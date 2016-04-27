@@ -67,8 +67,11 @@ public class HP3ParFCSelector implements TabularReportGeneratorIf {
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		// Internal ID is hidden from normal view and is used by tasks later
 		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("HostName", "HostName");
-		model.addTextColumn("WWN/iSCSI Name", "WWN/iSCSI Name");
+
+		// Don't show host name if it's selected in context
+		model.addTextColumn("HostName", "HostName", (context.getId().contains("@")) ? true : false);
+
+		model.addTextColumn("WWN", "WWN");
 		model.addTextColumn("Type", "Type");
 		model.addTextColumn("iSCSI IP Address", "iSCSI IP Address");
 		model.completedHeader();

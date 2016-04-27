@@ -73,6 +73,31 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for CPG list table
 	 */
+	public static final String FCWWN_LIST_FORM_LABEL = "FC WWN";
+
+	/**
+	 * User-friendly label for copy CPG list table
+	 */
+	public static final String FCWWN_CPG_LIST_FORM_LABEL = "FC WWN";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String FCWWN_LIST_FORM_TABLE_NAME = "HP3ParFCWWNList";
+
+	/**
+	 * Account list form name
+	 */
+	public static final String FCWWN_LIST_FORM_NAME = "HP3ParFCWWNList";
+
+	/**
+	 * Volume list internal UCSD provider name
+	 */
+	public static final String FCWWN_LIST_FORM_PROVIDER = "HP3ParFCWWNList_provider";
+
+	/**
+	 * User-friendly label for CPG list table
+	 */
 	public static final String CPG_LIST_FORM_LABEL = "CPG";
 
 	/**

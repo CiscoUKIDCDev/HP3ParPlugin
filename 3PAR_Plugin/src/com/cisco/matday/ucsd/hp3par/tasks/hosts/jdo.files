@@ -4,3 +4,6 @@
 +CreateHostConfig
 +DeleteHostConfig
 +AddiSCSIHostConfig
++AddFCWWNHostConfig
++RemoveFCWWNHostConfig
++RemoveiSCSIHostConfig

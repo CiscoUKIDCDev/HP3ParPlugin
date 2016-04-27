@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParFCSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPortSelector;
@@ -67,6 +68,7 @@ public class WorkflowInputTypeDeclaration {
 		registerPortList();
 		registerHostSetList();
 		registeriSCSIList();
+		registerfCWWNList();
 	}
 
 	/**
@@ -168,5 +170,17 @@ public class WorkflowInputTypeDeclaration {
 		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.ISCSI_LIST_FORM_NAME,
 				HP3PariSCSISelector.class, "0", "2");
+	}
+
+	private static void registerfCWWNList() {
+		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.FCWWN_LIST_FORM_TABLE_NAME,
+				HP3ParConstants.FCWWN_LIST_FORM_LABEL, FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP,
+				HP3ParConstants.FCWWN_LIST_FORM_NAME));
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
+		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.FCWWN_LIST_FORM_NAME,
+				HP3ParFCSelector.class, "0", "2");
 	}
 }

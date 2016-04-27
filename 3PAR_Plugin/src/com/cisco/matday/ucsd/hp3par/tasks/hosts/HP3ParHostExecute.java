@@ -175,10 +175,6 @@ public class HP3ParHostExecute {
 		String uri = "/api/v1/hosts/" + hostName;
 		request.setUri(uri);
 
-		// GSON:
-
-		logger.info("REST: " + gson.toJson(new HostiSCSINameParams(config.getIscsiName(), ADD)));
-
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new HostiSCSINameParams(config.getIscsiName(), ADD)));
 
@@ -232,9 +228,6 @@ public class HP3ParHostExecute {
 		String uri = "/api/v1/hosts/" + hostName;
 		request.setUri(uri);
 
-		// GSON:
-		logger.info("REST: " + gson.toJson(new HostFCNameParams(config.getWWN(), ADD)));
-
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new HostFCNameParams(config.getWWN(), ADD)));
 
@@ -263,7 +256,7 @@ public class HP3ParHostExecute {
 	}
 
 	/**
-	 * Add an FC Name to a 3PAR host
+	 * Remove iSCSI from a host
 	 *
 	 * @param c
 	 * @param config
@@ -286,11 +279,59 @@ public class HP3ParHostExecute {
 		String uri = "/api/v1/hosts/" + hostName;
 		request.setUri(uri);
 
-		// GSON:
-		logger.info("REST: " + gson.toJson(new HostiSCSINameParams(iSCSIName, REMOVE)));
-
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new HostiSCSINameParams(iSCSIName, REMOVE)));
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParHostMessage message = gson.fromJson(response, HP3ParHostMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true, "Host FC addition");
+			}
+			catch (Exception e) {
+				logger.warn("Error updating: " + e.getMessage());
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+
+	}
+
+	/**
+	 * Remove FC from a host
+	 *
+	 * @param c
+	 * @param config
+	 * @return status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus removeFC(HP3ParCredentials c, RemoveFCWWNHostConfig config) throws Exception {
+
+		// Get the volume name, it's in the format:
+		// id@account@name
+		// Format
+		// accountName;hostName@Wwn@fc
+		final String hostName = config.getFcWWN().split(";")[1].split("@")[0];
+		final String iSCSIName = config.getFcWWN().split(";")[1].split("@")[1];
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
+
+		// Use defaults for a PUT request
+		request.setPutDefaults(gson.toJson(new HostFCNameParams(iSCSIName, REMOVE)));
 
 		request.execute();
 		String response = request.getHttpResponse();
