@@ -72,7 +72,8 @@ public class EditHostSetAction extends CloupiaPageAction {
 
 		// Pre-populate the account and Host fields:
 		form.setHostSet(query);
-		HP3ParCredentials credentials = new HP3ParCredentials(context);
+		final HP3ParCredentials credentials = new HP3ParCredentials(context);
+		final String accountName = credentials.getAccountName();
 
 		form.setHostSetName(hostSetName);
 		HostSetResponseMember responseMember = HP3ParInventory.getHostSetInfo(credentials, hostSetName);
@@ -86,7 +87,8 @@ public class EditHostSetAction extends CloupiaPageAction {
 		for (String host : hosts) {
 			// hostid@accountName@hostName
 			HostResponseMember member = HP3ParInventory.getHostInfo(credentials, host);
-			hostString += member.getId() + "@" + credentials.getAccountName() + "@" + member.getName() + ",";
+			hostString += accountName + ";" + member.getId() + "@" + credentials.getAccountName() + "@"
+					+ member.getName() + ",";
 		}
 		if (hostString.length() > 0) {
 			// Remove last ','
