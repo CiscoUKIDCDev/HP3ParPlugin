@@ -28,6 +28,7 @@ import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostMessage;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.EditHostNameParams;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostFCNameParams;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostiSCSINameParams;
@@ -332,6 +333,67 @@ public class HP3ParHostExecute {
 
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new HostFCNameParams(iSCSIName, REMOVE)));
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParHostMessage message = gson.fromJson(response, HP3ParHostMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true, "Host FC addition");
+			}
+			catch (Exception e) {
+				logger.warn("Error updating: " + e.getMessage());
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+
+	}
+
+	/**
+	 * Edit a host
+	 *
+	 * @param c
+	 * @param config
+	 * @return status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus edit(HP3ParCredentials c, EditHostConfig config) throws Exception {
+
+		// Get the volume name, it's in the format:
+		// id@account@name
+		// Format
+		// accountName;hostName@Wwn@fc
+		final String hostName = config.getHost().split(";")[1].split("@")[2];
+
+		final HostResponseDescriptors descriptor = new HostResponseDescriptors();
+
+		descriptor.setComment(config.getComment());
+		descriptor.setContact(config.getContact());
+		descriptor.setIPAddr(config.getIpaddr());
+		descriptor.setLocation(config.getLocation());
+		descriptor.setModel(config.getModel());
+		descriptor.setOs(config.getOs());
+
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
+		logger.info("URI:  " + uri);
+		logger.info("REST: " + gson.toJson(new EditHostNameParams(descriptor, hostName, config.getNewName())));
+		// Use defaults for a PUT request
+		request.setPutDefaults(gson.toJson(new EditHostNameParams(descriptor, hostName, config.getNewName())));
 
 		request.execute();
 		String response = request.getHttpResponse();

@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.hosts;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostAction;
 import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.DeleteHostAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.EditHostAction;
 import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddFCAction;
 import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddiSCSIAction;
 import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCAction;
@@ -62,8 +63,8 @@ public class HostReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateHostAction(), new DeleteHostAction(), new HostAddFCAction(), new HostRemoveFCAction(),
-			new HostAddiSCSIAction(), new HostRemoveiSCSIAction(), new DrillDownAction(),
+			new CreateHostAction(), new EditHostAction(), new DeleteHostAction(), new HostAddFCAction(),
+			new HostRemoveFCAction(), new HostAddiSCSIAction(), new HostRemoveiSCSIAction(), new DrillDownAction(),
 	};
 
 	/**
