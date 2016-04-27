@@ -87,6 +87,26 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for Uost list table
 	 */
+	public static final String ISCSI_LIST_FORM_LABEL = "iSCSI Names";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String ISCSI_LIST_FORM_TABLE_NAME = "HP3PariSCSIList";
+
+	/**
+	 * Account list form name
+	 */
+	public static final String ISCSI_LIST_FORM_NAME = "HP3PariSCSIList";
+
+	/**
+	 * Volume list internal UCSD provider name
+	 */
+	public static final String ISCSI_LIST_FORM_PROVIDER = "HP3PariSCSIList_provider";
+
+	/**
+	 * User-friendly label for Uost list table
+	 */
 	public static final String HOSTSET_LIST_FORM_LABEL = "Host Sets";
 
 	/**

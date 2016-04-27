@@ -31,6 +31,7 @@ import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPortSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVlunSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3PariSCSISelector;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.service.cIM.inframgr.customactions.WorkflowInputFieldTypeDeclaration;
 import com.cloupia.service.cIM.inframgr.customactions.WorkflowInputTypeRegistry;
@@ -65,6 +66,7 @@ public class WorkflowInputTypeDeclaration {
 		registerVlunList();
 		registerPortList();
 		registerHostSetList();
+		registeriSCSIList();
 	}
 
 	/**
@@ -154,5 +156,17 @@ public class WorkflowInputTypeDeclaration {
 		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.HOSTSET_LIST_FORM_NAME,
 				HP3ParHostSetSelector.class, "0", "2");
+	}
+
+	private static void registeriSCSIList() {
+		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(HP3ParConstants.ISCSI_LIST_FORM_TABLE_NAME,
+				HP3ParConstants.ISCSI_LIST_FORM_LABEL, FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP,
+				HP3ParConstants.ISCSI_LIST_FORM_NAME));
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
+		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.ISCSI_LIST_FORM_NAME,
+				HP3PariSCSISelector.class, "0", "2");
 	}
 }

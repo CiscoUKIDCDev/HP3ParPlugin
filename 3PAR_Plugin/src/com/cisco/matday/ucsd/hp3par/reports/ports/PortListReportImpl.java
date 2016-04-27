@@ -64,8 +64,9 @@ public class PortListReportImpl implements TabularReportGeneratorIf {
 		PortResponse portList = HP3ParInventory.getPortResponse(credentials);
 
 		for (PortResponseMember port : portList.getMembers()) {
-			// 0@accountName@portPos
-			String internalId = 0 + "@" + credentials.getAccountName() + "@" + port.getPortPosAsString();
+			// accountName;0@accountName@portPos
+			String internalId = credentials.getAccountName() + ";" + "0@" + credentials.getAccountName() + "@"
+					+ port.getPortPosAsString();
 
 			// Internal ID
 			model.addTextValue(internalId);

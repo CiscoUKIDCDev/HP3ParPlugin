@@ -28,7 +28,9 @@ import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostMessage;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostFCNameParams;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostiSCSINameParams;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
@@ -40,6 +42,9 @@ import com.google.gson.Gson;
 public class HP3ParHostExecute {
 	private static Logger logger = Logger.getLogger(HP3ParHostExecute.class);
 
+	private final static int ADD = 1;
+	private final static int REMOVE = 2;
+
 	/**
 	 * Create a 3PAR host
 	 *
@@ -49,7 +54,6 @@ public class HP3ParHostExecute {
 	 * @throws Exception
 	 */
 	public static HP3ParRequestStatus create(HP3ParCredentials c, CreateHostConfig config) throws Exception {
-
 		HostResponseDescriptors desc = new HostResponseDescriptors();
 		desc.setComment(config.getComment());
 		desc.setIPAddr(config.getIpaddr());
@@ -172,22 +176,11 @@ public class HP3ParHostExecute {
 		request.setUri(uri);
 
 		// GSON:
-		@SuppressWarnings("unused")
-		final class params {
-			private String[] iSCSINames;
-			private int pathOperation = 1;
 
-			public params(String iSCSIName) {
-				this.iSCSINames = new String[] {
-						iSCSIName
-				};
-			}
-		}
-
-		logger.info("REST: " + gson.toJson(new params(config.getIscsiName())));
+		logger.info("REST: " + gson.toJson(new HostiSCSINameParams(config.getIscsiName(), ADD)));
 
 		// Use defaults for a PUT request
-		request.setPutDefaults(gson.toJson(new params(config.getIscsiName())));
+		request.setPutDefaults(gson.toJson(new HostiSCSINameParams(config.getIscsiName(), ADD)));
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -240,22 +233,10 @@ public class HP3ParHostExecute {
 		request.setUri(uri);
 
 		// GSON:
-		@SuppressWarnings("unused")
-		final class params {
-			private String[] FCWWNs;
-			private int pathOperation = 1;
-
-			public params(String FCWWN) {
-				this.FCWWNs = new String[] {
-						FCWWN
-				};
-			}
-		}
-
-		logger.info("REST: " + gson.toJson(new params(config.getWWN())));
+		logger.info("REST: " + gson.toJson(new HostFCNameParams(config.getWWN(), ADD)));
 
 		// Use defaults for a PUT request
-		request.setPutDefaults(gson.toJson(new params(config.getWWN())));
+		request.setPutDefaults(gson.toJson(new HostFCNameParams(config.getWWN(), ADD)));
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -270,7 +251,61 @@ public class HP3ParHostExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true, "Host iSCSI addition");
+				HP3ParInventory.update(c, true, "Host FC addition");
+			}
+			catch (Exception e) {
+				logger.warn("Error updating: " + e.getMessage());
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+
+	}
+
+	/**
+	 * Add an FC Name to a 3PAR host
+	 *
+	 * @param c
+	 * @param config
+	 * @return status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus removeiSCSI(HP3ParCredentials c, RemoveiSCSIHostConfig config) throws Exception {
+
+		// Get the volume name, it's in the format:
+		// id@account@name
+		// Format
+		// accountName;hostName@Wwn@fc
+		final String hostName = config.getiSCSIName().split(";")[1].split("@")[0];
+		final String iSCSIName = config.getiSCSIName().split(";")[1].split("@")[1];
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
+
+		// GSON:
+		logger.info("REST: " + gson.toJson(new HostiSCSINameParams(iSCSIName, REMOVE)));
+
+		// Use defaults for a PUT request
+		request.setPutDefaults(gson.toJson(new HostiSCSINameParams(iSCSIName, REMOVE)));
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParHostMessage message = gson.fromJson(response, HP3ParHostMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true, "Host FC addition");
 			}
 			catch (Exception e) {
 				logger.warn("Error updating: " + e.getMessage());

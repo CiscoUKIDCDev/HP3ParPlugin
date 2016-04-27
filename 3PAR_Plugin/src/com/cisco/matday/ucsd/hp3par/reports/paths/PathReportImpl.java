@@ -77,7 +77,7 @@ public class PathReportImpl implements TabularReportGeneratorIf {
 			for (HostResponseFCPaths path : fcPaths) {
 				// Format
 				// accountName;wwn@type
-				model.addTextValue(accountName + ";" + path.getWwn() + "@fc");
+				model.addTextValue(accountName + ";" + hostName + "@" + path.getWwn() + "@fc");
 				model.addTextValue(hostName);
 				model.addTextValue(path.getWwn());
 				model.addTextValue("Fibre Channel");
@@ -89,7 +89,7 @@ public class PathReportImpl implements TabularReportGeneratorIf {
 			for (HostResponseiSCSIPaths path : scsiPaths) {
 				// Format
 				// accountName;wwn@type
-				model.addTextValue(accountName + ";" + path.getName() + "@iscsi");
+				model.addTextValue(accountName + ";" + hostName + "@" + path.getName() + "@iscsi");
 				model.addTextValue(hostName);
 				model.addTextValue(path.getName());
 				model.addTextValue("iSCSI");
