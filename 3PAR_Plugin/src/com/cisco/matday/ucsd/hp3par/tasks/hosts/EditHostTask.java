@@ -32,42 +32,42 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Remove iSCSI name to a host
+ * Edit a host
  *
  * @author Matt Day
  *
  */
-public class RemoveiSCSIHostTask extends AbstractTask {
+public class EditHostTask extends AbstractTask {
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(RemoveiSCSIHostTask.class);
+	private static Logger logger = Logger.getLogger(EditHostTask.class);
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
 
 		// Obtain account information:
-		RemoveiSCSIHostConfig config = (RemoveiSCSIHostConfig) context.loadConfigObject();
+		EditHostConfig config = (EditHostConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		// Delete the Host:
-		HP3ParRequestStatus s = HP3ParHostExecute.removeiSCSI(c, config);
-		// If it wasn't deleted error out
+		// Edit the Host:
+		HP3ParRequestStatus s = HP3ParHostExecute.edit(c, config);
+		// If it wasn't editd error out
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to remove iSCSI name: " + s.getError());
-			throw new Exception("Removing iSCSI to host failed");
+			ucsdLogger.addError("Failed to edit Host: " + s.getError());
+			throw new Exception("Host deletion failed");
 		}
-		ucsdLogger.addInfo("Removed iSCSI name to host");
+		ucsdLogger.addInfo("Edited Host");
 
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new RemoveiSCSIHostConfig();
+		return new EditHostConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		return RemoveiSCSIHostConfig.DISPLAY_LABEL;
+		return EditHostConfig.DISPLAY_LABEL;
 	}
 
 	@Override

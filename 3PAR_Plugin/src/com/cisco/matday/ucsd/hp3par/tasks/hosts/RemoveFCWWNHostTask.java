@@ -32,42 +32,42 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Remove iSCSI name to a host
+ * Remove FCWWN name to a host
  *
  * @author Matt Day
  *
  */
-public class RemoveiSCSIHostTask extends AbstractTask {
+public class RemoveFCWWNHostTask extends AbstractTask {
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(RemoveiSCSIHostTask.class);
+	private static Logger logger = Logger.getLogger(RemoveFCWWNHostTask.class);
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
 
 		// Obtain account information:
-		RemoveiSCSIHostConfig config = (RemoveiSCSIHostConfig) context.loadConfigObject();
+		RemoveFCWWNHostConfig config = (RemoveFCWWNHostConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
 		// Delete the Host:
-		HP3ParRequestStatus s = HP3ParHostExecute.removeiSCSI(c, config);
+		HP3ParRequestStatus s = HP3ParHostExecute.removeFC(c, config);
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to remove iSCSI name: " + s.getError());
-			throw new Exception("Removing iSCSI to host failed");
+			ucsdLogger.addError("Failed to remove FCWWN name: " + s.getError());
+			throw new Exception("Removing FCWWN to host failed");
 		}
-		ucsdLogger.addInfo("Removed iSCSI name to host");
+		ucsdLogger.addInfo("Removed FCWWN name to host");
 
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new RemoveiSCSIHostConfig();
+		return new RemoveFCWWNHostConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		return RemoveiSCSIHostConfig.DISPLAY_LABEL;
+		return RemoveFCWWNHostConfig.DISPLAY_LABEL;
 	}
 
 	@Override

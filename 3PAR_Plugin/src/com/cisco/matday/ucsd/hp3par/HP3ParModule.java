@@ -35,6 +35,7 @@ import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryListener;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParFCSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPortSelector;
@@ -56,6 +57,8 @@ import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddFCWWNHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddiSCSIHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostTask;
+import com.cisco.matday.ucsd.hp3par.tasks.hosts.EditHostTask;
+import com.cisco.matday.ucsd.hp3par.tasks.hosts.RemoveFCWWNHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.RemoveiSCSIHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.CreateHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.DeleteHostSetTask;
@@ -111,8 +114,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
 				new CreateVlunTask(), new DeleteVlunTask(), new CreateHostSetTask(), new EditHostSetTask(),
-				new DeleteHostSetTask(), new CollectInventoryTask(), new AddFCWWNHostTask(), new AddiSCSIHostTask(),
-				new RemoveiSCSIHostTask(),
+				new DeleteHostSetTask(), new CollectInventoryTask(), new AddFCWWNHostTask(), new RemoveFCWWNHostTask(),
+				new AddiSCSIHostTask(), new RemoveiSCSIHostTask(), new EditHostTask(),
 		};
 		return task;
 	}
@@ -130,6 +133,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			cfr.registerTabularField(HP3ParConstants.VLUN_LIST_FORM_PROVIDER, HP3ParVlunSelector.class, "0", "4");
 			cfr.registerTabularField(HP3ParConstants.HOSTSET_LIST_FORM_PROVIDER, HP3ParHostSetSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.ISCSI_LIST_FORM_PROVIDER, HP3PariSCSISelector.class, "0", "2");
+			cfr.registerTabularField(HP3ParConstants.FCWWN_LIST_FORM_PROVIDER, HP3ParFCSelector.class, "0", "2");
 
 			// Register drilldown reports
 			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUME_LIST_DRILLDOWN,
