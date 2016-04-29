@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -24,21 +24,29 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.drilldown;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeSnapshotActionNoSelection;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.DeleteVolumeAction;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.EditVolumeAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
-import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportWithActions;
 
 /**
  * Tabular list of volumes with action buttons
- * 
+ *
  * @author Matt Day
  *
  */
-public class VolumeSnapshotReport extends CloupiaReport {
+public class VolumeSnapshotReport extends CloupiaReportWithActions {
 
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(VolumeSnapshotReport.class);
+
+	private CloupiaReportAction[] actions = {
+			new CreateVolumeSnapshotActionNoSelection(), new EditVolumeAction(), new DeleteVolumeAction()
+	};
 
 	/**
 	 * Unique identifier for this report
@@ -98,6 +106,11 @@ public class VolumeSnapshotReport extends CloupiaReport {
 		rules[0] = rule;
 
 		return rules;
+	}
+
+	@Override
+	public CloupiaReportAction[] getActions() {
+		return this.actions;
 	}
 
 }

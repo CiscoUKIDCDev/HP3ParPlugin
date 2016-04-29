@@ -205,6 +205,10 @@ public class HP3ParVolumeExecute {
 			}
 		}
 
+		if (copyCpgName == null) {
+			copyCpgName = "";
+		}
+
 		// VolumeResponseMember volinfo = new HP3ParVolumeInfo(c,
 		// config.getOriginalName()).getMember();
 		VolumeResponseMember volinfo = HP3ParInventory.getVolumeInfo(c, volName);
@@ -213,11 +217,9 @@ public class HP3ParVolumeExecute {
 
 		// If the new copy CPG name is the same as the old one, set it to
 		// null (3PAR will otherwise return an error)
-		if ((copyCpgName != null) && (!"".equals(copyCpgName)) && (!"-".equals(copyCpgName))) {
-			if (volinfo.getCopyCPG().equals(copyCpgName)) {
-				logger.info("Edited CPG is the same as the old one, setting to null");
-				copyCpgName = null;
-			}
+		if (volinfo.getCopyCPG().equals(copyCpgName)) {
+			logger.info("Edited CPG is the same as the old one, setting to null");
+			copyCpgName = null;
 		}
 
 		// Build copy parameter list:

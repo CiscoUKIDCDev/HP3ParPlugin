@@ -19,14 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hosts.actions;
+package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.hosts.HP3ParHostExecute;
-import com.cisco.matday.ucsd.hp3par.tasks.hosts.RemoveFCWWNHostConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.HP3ParCopyExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -35,37 +35,48 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.WizardSession;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
 /**
- * Action button implemenation to delete a Host based on context
+ * Action button implemenation to create a volume
  *
  * @author Matt Day
  *
  */
-public class HostRemoveFCAction extends CloupiaPageAction {
+public class CreateVolumeSnapshotActionNoSelection extends CloupiaPageAction {
 
-	private static Logger logger = Logger.getLogger(HostRemoveFCAction.class);
+	private static Logger logger = Logger.getLogger(CreateVolumeSnapshotActionNoSelection.class);
 
 	// need to provide a unique string to identify this form and action
-	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCForm";
-	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCFormAction";
-	private static final String LABEL = "Remove FC WWN";
-	private static final String DESCRIPTION = "Remove FC WWN";
+	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeSnapshotFormNoSelection";
+	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeSnapshotActionNoSelection";
+	private static final String LABEL = "Snapshot";
+	private static final String DESCRIPTION = "Create Snapshot";
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
-		// Use the same form (config) as the Delete Host custom task
-		page.bind(FORM_ID, RemoveFCWWNHostConfig.class);
+		// Use the same form (config) as the Create Volume custom task
+		page.bind(FORM_ID, CreateVolumeSnapshotConfig.class);
 	}
 
 	/**
 	 * This sets up the initial fields and provides default values (in this case
-	 * the account and Host names)
+	 * the account name)
 	 */
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
-		RemoveFCWWNHostConfig form = new RemoveFCWWNHostConfig();
+		String query = context.getId();
+		CreateVolumeSnapshotConfig form = new CreateVolumeSnapshotConfig();
+
+		String volume = query.split(";")[1];
+
+		// Pre-populate the account and volume fields:
+		form.setVolume(volume);
+
+		// Set the account and volume fields to read-only (I couldn't find this
+		// documented anywhere, maybe there's a better way to do it?)
+		page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
 		page.marshallFromSession(FORM_ID);
+
 	}
 
 	/**
@@ -77,23 +88,22 @@ public class HostRemoveFCAction extends CloupiaPageAction {
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
 		Object obj = page.unmarshallToSession(FORM_ID);
-		RemoveFCWWNHostConfig config = (RemoveFCWWNHostConfig) obj;
+		CreateVolumeSnapshotConfig config = (CreateVolumeSnapshotConfig) obj;
 
-		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		// Delete the Host:
-		HP3ParRequestStatus s = HP3ParHostExecute.removeFC(c, config);
+		HP3ParRequestStatus s = HP3ParCopyExecute.snapshot(c, config);
 
-		// If it wasn't deleted error out
+		// Throwing an exception fails the submit and shows the error in the
+		// window
 		if (!s.isSuccess()) {
-			logger.warn("Failed to edit Host: " + s.getError());
-			// The exception warning here is used as the failure message
-			throw new Exception("Host editing failed: " + s.getError());
+			logger.warn("Failed to copy volume: " + s.getError());
+			throw new Exception("Failed to copy volume: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Removed WWN from Host");
+		page.setPageMessage("Volume " + config.getSnapshotName() + " copied OK");
+
 		return PageIf.STATUS_OK;
 	}
 
@@ -114,7 +124,7 @@ public class HostRemoveFCAction extends CloupiaPageAction {
 
 	@Override
 	public boolean isSelectionRequired() {
-		return true;
+		return false;
 	}
 
 	@Override

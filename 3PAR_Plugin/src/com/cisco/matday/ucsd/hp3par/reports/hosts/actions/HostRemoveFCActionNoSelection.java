@@ -93,7 +93,7 @@ public class HostRemoveFCActionNoSelection extends CloupiaPageAction {
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Removed " + config.getFcWWN() + " to Host");
+		page.setPageMessage("Removed WWN from to Host");
 		return PageIf.STATUS_OK;
 	}
 
