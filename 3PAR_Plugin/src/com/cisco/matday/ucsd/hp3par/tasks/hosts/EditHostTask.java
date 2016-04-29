@@ -52,7 +52,7 @@ public class EditHostTask extends AbstractTask {
 
 		// Edit the Host:
 		HP3ParRequestStatus s = HP3ParHostExecute.edit(c, config);
-		// If it wasn't editd error out
+		// If it wasn't edited error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to edit Host: " + s.getError());
 			throw new Exception("Host deletion failed");

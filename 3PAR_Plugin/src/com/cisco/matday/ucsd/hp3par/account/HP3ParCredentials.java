@@ -51,6 +51,7 @@ public class HP3ParCredentials {
 	private String array_address;
 	private String username;
 	private String password;
+	// This MUST be intialised (thus is final):
 	private final String accountName;
 
 	static Logger logger = Logger.getLogger(HP3ParCredentials.class);
@@ -129,21 +130,20 @@ public class HP3ParCredentials {
 	 *             If the account isn't found
 	 */
 	public HP3ParCredentials(ReportContext context) throws Exception {
-		String contextId = context.getId();
-		if (contextId != null) {
-			// As the contextId returns as: "account Name;POD Name"
-			this.accountName = contextId.split(";")[0];
-		}
-		else {
-			this.accountName = null;
-		}
+		final String contextId = context.getId();
+		// If the context ID isn't null, use it to get the account name:
+		this.accountName = (contextId == null) ? null : contextId.split(";")[0];
+
 		if (this.accountName == null) {
 			throw new Exception("Account not found");
 		}
+
 		PhysicalInfraAccount acc = AccountUtil.getAccountByName(this.accountName);
+
 		if (acc == null) {
 			throw new Exception("Unable to find the account:" + this.accountName);
 		}
+
 		this.initFromAccount(acc);
 	}
 
@@ -156,6 +156,8 @@ public class HP3ParCredentials {
 		return this.accountName;
 	}
 
+	// Do the needed to get the account details from a PhysicalInfraAccount
+	// object
 	private void initFromAccount(PhysicalInfraAccount acc) throws Exception {
 		String json = acc.getCredential();
 		HP3ParAccountJsonObject account = (HP3ParAccountJsonObject) JSON.jsonToJavaObject(json,
@@ -177,6 +179,7 @@ public class HP3ParCredentials {
 		return (this.https) ? "https" : "http";
 	}
 
+	// Used for testing purposes only
 	private void init(String initArrayAddress, String initUsername, String initPassword, boolean initHttps,
 			int http_port) {
 		this.array_address = initArrayAddress;
@@ -282,7 +285,8 @@ public class HP3ParCredentials {
 	}
 
 	/**
-	 * Returns the internal HP3Par account information based on the account name
+	 * Returns the internal HP3Par account information based on the account
+	 * name. Used for specific areas such as logging, connection testing etc.
 	 *
 	 * @param accountName
 	 * @return UCS Director account information
