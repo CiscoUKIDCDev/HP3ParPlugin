@@ -24,45 +24,93 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 import java.util.List;
 
 /**
- * REST object representation of the HP3PAR CPG list. See the HP 3PAR REST
+ * REST object representation of the HP3PAR LDLayout. See the HP 3PAR REST
  * documentation for detail on these methods and values
  *
  * @author Matt Day
  *
  */
-public class CPGResponse {
-	private int total;
+public class CPGResponseLDLayout {
 
-	private List<CPGResponseMember> members;
+	private int RAIDType;
+	private int setSize;
+	private int HA;
+	private int chunkletPosPref;
+	private List<CPGResponseDiskPatterns> diskPatterns;
 
 	/**
-	 * @return the total
+	 * @return the rAIDType
 	 */
-	public int getTotal() {
-		return this.total;
+	public int getRAIDType() {
+		return this.RAIDType;
 	}
 
 	/**
-	 * @param total
-	 *            the total to set
+	 * @param rAIDType
+	 *            the rAIDType to set
 	 */
-	public void setTotal(int total) {
-		this.total = total;
+	public void setRAIDType(int rAIDType) {
+		this.RAIDType = rAIDType;
 	}
 
 	/**
-	 * @return the members
+	 * @return the setSize
 	 */
-	public List<CPGResponseMember> getMembers() {
-		return this.members;
+	public int getSetSize() {
+		return this.setSize;
 	}
 
 	/**
-	 * @param members
-	 *            the members to set
+	 * @param setSize
+	 *            the setSize to set
 	 */
-	public void setMembers(List<CPGResponseMember> members) {
-		this.members = members;
+	public void setSetSize(int setSize) {
+		this.setSize = setSize;
+	}
+
+	/**
+	 * @return the hA
+	 */
+	public int getHA() {
+		return this.HA;
+	}
+
+	/**
+	 * @param hA
+	 *            the hA to set
+	 */
+	public void setHA(int hA) {
+		this.HA = hA;
+	}
+
+	/**
+	 * @return the chunkletPosPref
+	 */
+	public int getChunkletPosPref() {
+		return this.chunkletPosPref;
+	}
+
+	/**
+	 * @param chunkletPosPref
+	 *            the chunkletPosPref to set
+	 */
+	public void setChunkletPosPref(int chunkletPosPref) {
+		this.chunkletPosPref = chunkletPosPref;
+	}
+
+	/**
+	 * @return the diskPatterns
+	 */
+	public List<CPGResponseDiskPatterns> getDiskPatterns() {
+		return this.diskPatterns;
+	}
+
+	/**
+	 * @param diskPatterns
+	 *            the diskPatterns to set
+	 */
+	public void setDiskPatterns(List<CPGResponseDiskPatterns> diskPatterns) {
+		this.diskPatterns = diskPatterns;
 	}
 
 }

@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -35,11 +35,11 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
- * 
+ *
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_create_volume_snapshot")
+@PersistenceCapable(detachable = "true", table = "HP3Par_create_volume_copy")
 public class CreateVolumeCopyConfig implements TaskConfigIf {
 	/**
 	 * Task display label
@@ -127,7 +127,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 
 	/**
 	 * Get the account name
-	 * 
+	 *
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
@@ -137,7 +137,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 
 	/**
 	 * Get the Volume name
-	 * 
+	 *
 	 * @return Volume details (formatted id@account@volumeName)
 	 */
 	public String getVolume() {
@@ -146,7 +146,7 @@ public class CreateVolumeCopyConfig implements TaskConfigIf {
 
 	/**
 	 * Set the Volume name
-	 * 
+	 *
 	 * @param volume
 	 *            Must be formatted id@account@volumeName
 	 */

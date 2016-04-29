@@ -32,7 +32,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Create a VLUN
+ * Delete a VLUN
  *
  * @author Matt Day
  *
@@ -49,9 +49,9 @@ public class DeleteVlunTask extends AbstractTask {
 		DeleteVlunConfig config = (DeleteVlunConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		// Create the VLUN
+		// Delete the VLUN
 		HP3ParRequestStatus s = HP3ParVlunExecute.delete(c, config);
-		// If it wasn't createderror out
+		// If it wasn't delted error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to delete VLUN: " + s.getError());
 			throw new Exception("VLUN deletionfailed");
@@ -62,7 +62,7 @@ public class DeleteVlunTask extends AbstractTask {
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new CreateVlunConfig();
+		return new DeleteVlunConfig();
 	}
 
 	@Override

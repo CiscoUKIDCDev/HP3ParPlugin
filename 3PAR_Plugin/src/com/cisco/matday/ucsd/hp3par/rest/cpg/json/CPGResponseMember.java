@@ -28,7 +28,30 @@ package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
  * @author Matt Day
  *
  */
+@SuppressWarnings("javadoc")
 public class CPGResponseMember {
+
+	private String uuid;
+
+	private String name;
+
+	private int numFPVVs;
+
+	private int numTPVVs;
+
+	private CPGResponseSpace UsrUsage;
+
+	private CPGResponseSpace SAUsage;
+
+	private CPGResponseSpace SDUsage;
+
+	private int state;
+
+	private int id;
+
+	private CPGResponseGrowth SAGrowth;
+
+	private CPGResponseGrowth SDGrowth;
 
 	/**
 	 * Raid level 0
@@ -64,24 +87,6 @@ public class CPGResponseMember {
 	private static final String[] diskTypeNames = {
 			"N/A", "Fibre Channel", "Near Line", "SSD"
 	};
-
-	private String uuid;
-
-	private String name;
-
-	private int numFPVVs;
-
-	private int numTPVVs;
-
-	private CPGResponseSpace UsrUsage;
-
-	private CPGResponseSpace SAUsage;
-
-	private CPGResponseSpace SDUsage;
-
-	private int state;
-
-	private int id;
 
 	/**
 	 * Get the raid level symbol from the member (e.g. R0, R1 etc)
@@ -125,94 +130,106 @@ public class CPGResponseMember {
 		return diskTypeNames[diskType];
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getId() {
 		return this.id;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	@SuppressWarnings("javadoc")
 	public String getUuid() {
 		return this.uuid;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 
-	@SuppressWarnings("javadoc")
 	public String getName() {
 		return this.name;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getNumFPVVs() {
 		return this.numFPVVs;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setNumFPVVs(int numFPVVs) {
 		this.numFPVVs = numFPVVs;
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getNumTPVVs() {
 		return this.numTPVVs;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setNumTPVVs(int numTPVVs) {
 		this.numTPVVs = numTPVVs;
 	}
 
-	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getUsrUsage() {
 		return this.UsrUsage;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setUsrUsage(CPGResponseSpace usrUsage) {
 		this.UsrUsage = usrUsage;
 	}
 
-	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getSAUsage() {
 		return this.SAUsage;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setSAUsage(CPGResponseSpace sAUsage) {
 		this.SAUsage = sAUsage;
 	}
 
-	@SuppressWarnings("javadoc")
 	public CPGResponseSpace getSDUsage() {
 		return this.SDUsage;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setSDUsage(CPGResponseSpace sDUsage) {
 		this.SDUsage = sDUsage;
 	}
 
-	@SuppressWarnings("javadoc")
 	public int getState() {
 		return this.state;
 	}
 
-	@SuppressWarnings("javadoc")
 	public void setState(int state) {
 		this.state = state;
+	}
+
+	/**
+	 * @return the sAGrowth
+	 */
+	public CPGResponseGrowth getSAGrowth() {
+		return this.SAGrowth;
+	}
+
+	/**
+	 * @param sAGrowth
+	 *            the sAGrowth to set
+	 */
+	public void setSAGrowth(CPGResponseGrowth sAGrowth) {
+		this.SAGrowth = sAGrowth;
+	}
+
+	/**
+	 * @return the sDGrowth
+	 */
+	public CPGResponseGrowth getSDGrowth() {
+		return this.SDGrowth;
+	}
+
+	/**
+	 * @param sDGrowth
+	 *            the sDGrowth to set
+	 */
+	public void setSDGrowth(CPGResponseGrowth sDGrowth) {
+		this.SDGrowth = sDGrowth;
 	}
 
 }

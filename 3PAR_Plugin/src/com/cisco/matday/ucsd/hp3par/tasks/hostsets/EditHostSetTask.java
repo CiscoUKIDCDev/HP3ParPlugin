@@ -24,7 +24,6 @@ package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -62,7 +61,7 @@ public class EditHostSetTask extends AbstractTask {
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new CreateVolumeCopyConfig();
+		return new EditHostSetConfig();
 	}
 
 	@Override

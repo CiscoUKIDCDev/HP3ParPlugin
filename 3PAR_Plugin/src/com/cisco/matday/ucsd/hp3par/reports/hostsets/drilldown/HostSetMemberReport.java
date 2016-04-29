@@ -53,7 +53,7 @@ public class HostSetMemberReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateHostAction(), new DeleteHostAction(), new DeleteHostAction()
+			new CreateHostAction(), new DeleteHostAction()
 	};
 
 	/**

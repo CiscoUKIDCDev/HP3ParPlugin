@@ -21,7 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGList;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
@@ -68,7 +66,8 @@ public class HP3ParInventory {
 	private HP3ParInventoryDBStore invStore = null;
 
 	/**
-	 * Create a new inventory instance
+	 * The constructor is private meaning you can only access this via the
+	 * static members
 	 *
 	 * @param accountName
 	 * @throws Exception
@@ -97,6 +96,7 @@ public class HP3ParInventory {
 
 	}
 
+	// Create a new inventory store in the DB (i.e. when creating a new account)
 	private void create(HP3ParCredentials credentials) {
 		final String accountName = credentials.getAccountName();
 		logger.info("Creating persistent store for account " + accountName);
@@ -112,24 +112,21 @@ public class HP3ParInventory {
 		}
 	}
 
+	// Update account in the database - the boolean force means it will upgrade
+	// regardless of timeout (e.g. you'd want to force an update after creating
+	// a new Volume so it reflects in the inventory)
 	private void update(boolean force, String reason) throws Exception {
 		final Date d = new Date();
 		this.update(force, d.getTime(), reason);
 	}
 
-	/**
-	 * Update the inventory held in the database and optionally force a new
-	 * query even if the data is not out of date
-	 *
-	 * @param force
-	 *            set to true if the inventory should be refreshed even if it's
-	 *            not timed out
-	 * @param c
-	 *            Time
-	 * @throws IOException
-	 * @throws InvalidHP3ParTokenException
-	 * @throws Exception
-	 */
+	// Update account in the database - the boolean force means it will upgrade
+	// regardless of timeout (e.g. you'd want to force an update after creating
+	// a new Volume so it reflects in the inventory)
+
+	// You can also pass the time the update was requested to this method if you
+	// wish to have it different from the current system time for whatever
+	// reason
 	private void update(boolean force, long c, String reason) throws Exception {
 		final String accountName = this.invStore.getAccountName();
 		final HP3ParCredentials login = new HP3ParCredentials(accountName);
@@ -196,40 +193,60 @@ public class HP3ParInventory {
 		}
 	}
 
+	// Return the full JSON representation of a volume query
 	private VolumeResponse getVol() throws Exception {
 		return new HP3ParVolumeList(this.getStore().getVolumeListJson()).getVolume();
 	}
 
+	// Return the full JSON representation of a VLUN query
 	private VlunResponse getVlun() throws Exception {
 		return new HP3ParVlunList(this.getStore().getVlunListJson()).getVlun();
 	}
 
+	// Return the full JSON representation of a CPG query
 	private CPGResponse getCpg() throws Exception {
 		return new HP3ParCPGList(this.getStore().getCpgListJson()).getCpg();
 	}
 
+	// Return the full JSON representation of a system query
 	private SystemResponse getSys() throws Exception {
 		return new HP3ParSystem(this.getStore().getSysInfoJson()).getSystem();
 	}
 
+	// Return the full JSON representation of a host query
 	private HostResponse getHost() throws Exception {
 		return new HP3ParHostList(this.getStore().getHostListJson()).getHost();
 	}
 
+	// Return the full JSON representation of a host set query
 	private HostSetResponse getHostSet() throws Exception {
 		return new HP3ParHostSetList(this.getStore().getHostSetListJson()).getHostSets();
 	}
 
+	// Return the full JSON representation of a port query
 	private PortResponse getPorts() throws Exception {
 		return new HP3ParPortList(this.getStore().getPortListJson()).getPorts();
 	}
 
+	// Return all the polling data
 	private List<String> getPolling() throws Exception {
 		return this.getStore().getPolling();
 	}
 
 	/**
+	 * Return the HP3ParInventoryDBStore object which contains all the
+	 * variables. This should not be passed directly outside of this class
+	 *
+	 * @return raw db store
+	 */
+	private HP3ParInventoryDBStore getStore() {
+		return this.invStore;
+	}
+
+	/**
 	 * Return information on a specific volume
+	 *
+	 * It will return null if the volume is not found
 	 *
 	 * @param credentials
 	 * @param volumeName
@@ -254,6 +271,9 @@ public class HP3ParInventory {
 	/**
 	 * Return information on a specific CPG
 	 *
+	 * It will return null if it is not found
+	 *
+	 *
 	 * @param credentials
 	 * @param cpgName
 	 * @return Volume information
@@ -276,6 +296,8 @@ public class HP3ParInventory {
 	/**
 	 * Return information on a specific Host
 	 *
+	 * It will return null if it is not found
+	 *
 	 * @param credentials
 	 * @param hostName
 	 * @return Volume information
@@ -296,7 +318,9 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Return information on a specific Host
+	 * Return information on a specific host set
+	 *
+	 * It will return null if it is not found
 	 *
 	 * @param credentials
 	 * @param hostSetName
@@ -320,6 +344,8 @@ public class HP3ParInventory {
 	/**
 	 * Return information on a specific port
 	 *
+	 * It will return null if it is not found
+	 *
 	 * @param credentials
 	 * @param portPos
 	 * @return Volume information
@@ -340,14 +366,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * @return raw db store
-	 */
-	private HP3ParInventoryDBStore getStore() {
-		return this.invStore;
-	}
-
-	/**
-	 * Get the volume response data
+	 * Return information on all volumes
 	 *
 	 * @param credentials
 	 * @return volume response list
@@ -360,7 +379,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Get the system response data
+	 * Return system information
 	 *
 	 * @param credentials
 	 * @return volume response list
@@ -373,7 +392,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Get the CPG response data
+	 * Return information on all CPGs
 	 *
 	 * @param credentials
 	 * @return volume response list
@@ -386,7 +405,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Get the Host response data
+	 * Return information on all hosts
 	 *
 	 * @param credentials
 	 * @return host response list
@@ -399,7 +418,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Get the Host Set response data
+	 * Return information on all host sets
 	 *
 	 * @param credentials
 	 * @return host response list
@@ -412,7 +431,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Get the VLUN response data
+	 * Return information on all VLUNs
 	 *
 	 * @param credentials
 	 * @return host response list
@@ -425,7 +444,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Get polling log
+	 * Get the inventory polling log
 	 *
 	 * @param credentials
 	 * @return Get the polling data
@@ -438,7 +457,7 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Get the Port response data
+	 * Return information on all ports
 	 *
 	 * @param credentials
 	 * @return host response list
@@ -451,7 +470,14 @@ public class HP3ParInventory {
 	}
 
 	/**
-	 * Deletes old persistent data and re-creates on startup
+	 * Deletes any previous data stored by the plugin and re-creates. Used on
+	 * startup as we don't want to persist anything between system reloads (and
+	 * it makes upgrading/API changes easier)
+	 * <p>
+	 *
+	 * This should generally only be called during plugin initialisation. You
+	 * should use this.update(credentials, true) otherwise to force a new
+	 * collection
 	 *
 	 * @param credentials
 	 * @throws Exception
@@ -477,7 +503,9 @@ public class HP3ParInventory {
 	 *
 	 * @param credentials
 	 * @param force
-	 *            - force the updates
+	 *            Set to true in order to update regardless of whether the data
+	 *            was out of date - for example after creating a volume you want
+	 *            to ensure you have all the details in the inventory
 	 * @param reason
 	 *            Reason for the update (for the log)
 	 * @throws Exception

@@ -81,8 +81,7 @@ public class CreateVlunAction extends CloupiaPageAction {
 				// Hosts drilldown
 				// Construct volume from context:
 				// 3PAR;1@3PAR@NewHost
-				final String host = query.split(";")[1];
-				form.setHost(host);
+				form.setHost(query);
 				page.getFlist().getByFieldId(FORM_ID + ".host").setEditable(false);
 			}
 		}

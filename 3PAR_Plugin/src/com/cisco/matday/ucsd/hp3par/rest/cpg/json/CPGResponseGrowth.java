@@ -19,47 +19,79 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.system;
-
-import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cloupia.service.cIM.inframgr.AbstractTask;
-import com.cloupia.service.cIM.inframgr.TaskConfigIf;
-import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
-import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
-import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
+package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
 /**
- * Create host implementation task
+ * REST object representation of the HP3PAR CPG growth. See the HP 3PAR REST
+ * documentation for detail on these methods and values
  *
  * @author Matt Day
  *
  */
-public class CollectInventoryTask extends AbstractTask {
+public class CPGResponseGrowth {
+	private int warningMiB;
+	private int limitMiB;
+	private int incrementMiB;
+	private CPGResponseLDLayout LDLayout;
 
-	@Override
-	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
-			throws Exception {
-		CollectInventoryConfig config = (CollectInventoryConfig) context.loadConfigObject();
-		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
-		HP3ParInventory.update(c, true, "Inventory collection task");
-
-		ucsdLogger.addInfo("Polled Inventory");
+	/**
+	 * @return the warningMiB
+	 */
+	public int getWarningMiB() {
+		return this.warningMiB;
 	}
 
-	@Override
-	public TaskConfigIf getTaskConfigImplementation() {
-		return new CollectInventoryConfig();
+	/**
+	 * @param warningMiB
+	 *            the warningMiB to set
+	 */
+	public void setWarningMiB(int warningMiB) {
+		this.warningMiB = warningMiB;
 	}
 
-	@Override
-	public String getTaskName() {
-		return CollectInventoryConfig.DISPLAY_LABEL;
+	/**
+	 * @return the limitMiB
+	 */
+	public int getLimitMiB() {
+		return this.limitMiB;
 	}
 
-	@Override
-	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		TaskOutputDefinition[] ops = {};
-		return ops;
+	/**
+	 * @param limitMiB
+	 *            the limitMiB to set
+	 */
+	public void setLimitMiB(int limitMiB) {
+		this.limitMiB = limitMiB;
 	}
+
+	/**
+	 * @return the incrementMiB
+	 */
+	public int getIncrementMiB() {
+		return this.incrementMiB;
+	}
+
+	/**
+	 * @param incrementMiB
+	 *            the incrementMiB to set
+	 */
+	public void setIncrementMiB(int incrementMiB) {
+		this.incrementMiB = incrementMiB;
+	}
+
+	/**
+	 * @return the lDLayout
+	 */
+	public CPGResponseLDLayout getLDLayout() {
+		return this.LDLayout;
+	}
+
+	/**
+	 * @param lDLayout
+	 *            the lDLayout to set
+	 */
+	public void setLDLayout(CPGResponseLDLayout lDLayout) {
+		this.LDLayout = lDLayout;
+	}
+
 }
