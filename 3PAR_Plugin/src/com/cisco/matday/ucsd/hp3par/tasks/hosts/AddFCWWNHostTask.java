@@ -62,7 +62,7 @@ public class AddFCWWNHostTask extends AbstractTask {
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new AddiSCSIHostConfig();
+		return new AddFCWWNHostConfig();
 	}
 
 	@Override

@@ -52,7 +52,7 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_inventory_db_v1")
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory_db_v2")
 public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
