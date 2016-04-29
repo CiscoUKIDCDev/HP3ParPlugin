@@ -90,9 +90,11 @@ public class VolumeSnapshotReportImpl implements TabularReportGeneratorIf {
 			}
 
 			// Internal ID, format:
-			// accountName;volumeid@accountName@volumeName
+			// accountName;volumeid@accountName@volumeName;cpgname;copycpgname
+			// TODO This needs cleaning up and/or putting in its own library
+			// (e.g. GetInternalId.volume(context))
 			model.addTextValue(credentials.getAccountName() + ";" + volume.getId() + "@" + credentials.getAccountName()
-					+ "@" + volume.getName());
+					+ "@" + volume.getName() + ";" + volume.getUserCPG() + ";" + volume.getCopyCPG());
 			// Volume ID
 			model.addTextValue(Integer.toString(volume.getId()));
 			// Name of this volume

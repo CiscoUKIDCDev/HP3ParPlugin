@@ -47,7 +47,7 @@ public class CreateVolumeSnapshotActionNoSelection extends CloupiaPageAction {
 	// need to provide a unique string to identify this form and action
 	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeSnapshotFormNoSelection";
 	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.actions.CreateVolumeSnapshotActionNoSelection";
-	private static final String LABEL = "Snapshot";
+	private static final String LABEL = "Create";
 	private static final String DESCRIPTION = "Create Snapshot";
 
 	@Override
