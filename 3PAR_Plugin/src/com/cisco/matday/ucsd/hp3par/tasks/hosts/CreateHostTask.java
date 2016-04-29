@@ -61,7 +61,7 @@ public class CreateHostTask extends AbstractTask {
 		// Construct Host name in the format:
 		// id@Account@Volume
 		// Don't know the volume so just use 0 as a workaround
-		String hostName = "0@" + config.getAccount() + "@" + config.getHostName();
+		String hostName = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getHostName();
 		context.saveOutputValue(HP3ParConstants.HOST_LIST_FORM_LABEL, hostName);
 	}
 

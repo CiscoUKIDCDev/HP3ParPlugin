@@ -39,7 +39,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_create_volume_copy")
+@PersistenceCapable(detachable = "true", table = "HP3Par_create_volume_copyv2")
 public class CreateVolumeCopyConfig implements TaskConfigIf {
 	/**
 	 * Task display label

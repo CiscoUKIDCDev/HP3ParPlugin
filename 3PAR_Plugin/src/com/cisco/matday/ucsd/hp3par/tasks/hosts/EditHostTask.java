@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -58,6 +59,12 @@ public class EditHostTask extends AbstractTask {
 		}
 		ucsdLogger.addInfo("Edited Host");
 
+		// Construct Host name in the format:
+		// id@Account@Volume
+		// Don't know the volume so just use 0 as a workaround
+		String hostName = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getNewName();
+		context.saveOutputValue(HP3ParConstants.HOST_LIST_FORM_LABEL, hostName);
+
 	}
 
 	@Override
@@ -72,8 +79,12 @@ public class EditHostTask extends AbstractTask {
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		// TODO Auto-generated method stub
-		return null;
+		TaskOutputDefinition[] ops = {
+				// Register output type for the volume created
+				new TaskOutputDefinition(HP3ParConstants.HOST_LIST_FORM_LABEL,
+						HP3ParConstants.HOST_LIST_FORM_TABLE_NAME, HP3ParConstants.HOST_LIST_FORM_LABEL)
+		};
+		return ops;
 	}
 
 }
