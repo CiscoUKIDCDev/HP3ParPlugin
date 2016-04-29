@@ -39,12 +39,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_remove_iscsi_host")
+@PersistenceCapable(detachable = "true", table = "HP3Par_remove_fc_wwn")
 public class RemoveFCWWNHostConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "3PAR Remove iSCSI Name from Host";
+	public static final String DISPLAY_LABEL = "3PAR Remove FC WWN from Host";
 
 	@Persistent
 	private long configEntryId;
@@ -52,10 +52,10 @@ public class RemoveFCWWNHostConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.ISCSI_LIST_FORM_LABEL, help = "iSCSI Name to remove", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ISCSI_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.ISCSI_LIST_FORM_TABLE_NAME)
+	@FormField(label = HP3ParConstants.FCWWN_LIST_FORM_LABEL, help = "FC WWN to remove", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.FCWWN_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.FCWWN_LIST_FORM_TABLE_NAME)
 	@Persistent
-	private String iSCSIName;
+	private String fcWWN;
 
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
@@ -69,7 +69,7 @@ public class RemoveFCWWNHostConfig implements TaskConfigIf {
 	 * @return Account name
 	 */
 	public String getAccount() {
-		return this.iSCSIName.split(";")[0];
+		return this.fcWWN.split(";")[0];
 	}
 
 	@Override
@@ -100,16 +100,16 @@ public class RemoveFCWWNHostConfig implements TaskConfigIf {
 	/**
 	 * @return the iSCSIName
 	 */
-	public String getiSCSIName() {
-		return this.iSCSIName;
+	public String getFcWWN() {
+		return this.fcWWN;
 	}
 
 	/**
-	 * @param iSCSIName
-	 *            the iSCSIName to set
+	 * @param wwn
+	 *            the wwn to set
 	 */
-	public void setiSCSIName(String iSCSIName) {
-		this.iSCSIName = iSCSIName;
+	public void setFcWWN(String wwn) {
+		this.fcWWN = wwn;
 	}
 
 }
