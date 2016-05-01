@@ -64,7 +64,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	private String accountName;
 
 	@Persistent
-	private long updated = 0;
+	private long updated;
 
 	// CLOB is an SQL data type of unlimited length strings; perfect for JSON
 	@Persistent(defaultFetchGroup = "true")
@@ -104,7 +104,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 * future
 	 */
 	@Persistent
-	protected static final int API_VERSION = 2;
+	public static final int API_VERSION = 2;
 
 	/**
 	 * Initialise inventory with an account name
@@ -112,7 +112,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 * @param accountName
 	 *            Name of the account to persist
 	 */
-	protected HP3ParInventoryDBStore(String accountName) {
+	public HP3ParInventoryDBStore(String accountName) {
 		this.accountName = accountName;
 		logger.info("Created persistent entry (DB version: " + HP3ParInventoryDBStore.API_VERSION + ")");
 
@@ -159,21 +159,21 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	/**
 	 * @return polling data
 	 */
-	protected List<String> getPolling() {
+	public List<String> getPolling() {
 		return this.polling;
 	}
 
 	/**
 	 * @param polling
 	 */
-	protected void setPolling(List<String> polling) {
+	public void setPolling(List<String> polling) {
 		this.polling = polling;
 	}
 
 	/**
 	 * @return the cpgListJson
 	 */
-	protected String getCpgListJson() {
+	public String getCpgListJson() {
 		return this.cpgListJson;
 	}
 
@@ -181,14 +181,14 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 * @param cpgListJson
 	 *            the cpgListJson to set
 	 */
-	protected void setCpgListJson(String cpgListJson) {
+	public void setCpgListJson(String cpgListJson) {
 		this.cpgListJson = cpgListJson;
 	}
 
 	/**
 	 * @return the volumeListJson
 	 */
-	protected String getVolumeListJson() {
+	public String getVolumeListJson() {
 		return this.volumeListJson;
 	}
 
@@ -196,14 +196,14 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 * @param volumeListJson
 	 *            the volumeListJson to set
 	 */
-	protected void setVolumeListJson(String volumeListJson) {
+	public void setVolumeListJson(String volumeListJson) {
 		this.volumeListJson = volumeListJson;
 	}
 
 	/**
 	 * @return the sysInfoJson
 	 */
-	protected String getSysInfoJson() {
+	public String getSysInfoJson() {
 		return this.sysInfoJson;
 	}
 
@@ -211,21 +211,21 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 * @param sysInfoJson
 	 *            the sysInfoJson to set
 	 */
-	protected void setSysInfoJson(String sysInfoJson) {
+	public void setSysInfoJson(String sysInfoJson) {
 		this.sysInfoJson = sysInfoJson;
 	}
 
 	/**
 	 * @return host list in json
 	 */
-	protected String getHostListJson() {
+	public String getHostListJson() {
 		return this.hostListJson;
 	}
 
 	/**
 	 * @param hostListJson
 	 */
-	protected void setHostListJson(String hostListJson) {
+	public void setHostListJson(String hostListJson) {
 		this.hostListJson = hostListJson;
 	}
 
@@ -242,7 +242,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	/**
 	 * @return when this was last updated in the DB
 	 */
-	protected long getUpdated() {
+	public long getUpdated() {
 		return this.updated;
 	}
 
@@ -251,14 +251,14 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 *
 	 * @param updated
 	 */
-	protected void setUpdated(long updated) {
+	public void setUpdated(long updated) {
 		this.updated = updated;
 	}
 
 	/**
 	 * @return the vlunListJson
 	 */
-	protected String getVlunListJson() {
+	public String getVlunListJson() {
 		return this.vlunListJson;
 	}
 
@@ -266,14 +266,14 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 * @param vlunListJson
 	 *            the vlunListJson to set
 	 */
-	protected void setVlunListJson(String vlunListJson) {
+	public void setVlunListJson(String vlunListJson) {
 		this.vlunListJson = vlunListJson;
 	}
 
 	/**
 	 * @return Port list in JSON
 	 */
-	protected String getPortListJson() {
+	public String getPortListJson() {
 		return this.portListJson;
 	}
 
@@ -282,14 +282,14 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 *
 	 * @param portListJson
 	 */
-	protected void setPortListJson(String portListJson) {
+	public void setPortListJson(String portListJson) {
 		this.portListJson = portListJson;
 	}
 
 	/**
 	 * @return Host Set list in JSON
 	 */
-	protected String getHostSetListJson() {
+	public String getHostSetListJson() {
 		return this.hostSetListJson;
 	}
 
@@ -298,7 +298,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 *
 	 * @param hostSetListJson
 	 */
-	protected void setHostSetListJson(String hostSetListJson) {
+	public void setHostSetListJson(String hostSetListJson) {
 		this.hostSetListJson = hostSetListJson;
 	}
 
