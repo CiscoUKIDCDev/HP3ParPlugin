@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.HP3ParVlunParams;
@@ -47,16 +49,19 @@ public class HP3ParVlunExecute {
 	 * @param c
 	 * @param config
 	 * @return Status
+	 * @throws HP3ParVolumeException
+	 * @throws HP3ParHostException
 	 * @throws Exception
 	 */
-	public static HP3ParRequestStatus create(HP3ParCredentials c, CreateVlunConfig config) throws Exception {
+	public static HP3ParRequestStatus create(HP3ParCredentials c, CreateVlunConfig config)
+			throws HP3ParVolumeException, HP3ParHostException, Exception {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
 		final String[] volInfo = config.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
+			throw new HP3ParVolumeException("Invalid Volume: " + config.getVolume());
 		}
 		final String volName = volInfo[2];
 
@@ -65,7 +70,7 @@ public class HP3ParVlunExecute {
 		final String[] hostInfo = config.getHost().split("@");
 		if (hostInfo.length != 3) {
 			logger.warn("Hostname didn't return three items! It returned: " + config.getHost());
-			throw new Exception("Invalid host: " + config.getHost());
+			throw new HP3ParHostException("Invalid host: " + config.getHost());
 		}
 		final String hostName = hostInfo[2];
 

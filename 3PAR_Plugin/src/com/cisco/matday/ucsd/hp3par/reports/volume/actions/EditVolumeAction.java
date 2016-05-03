@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
@@ -80,15 +81,20 @@ public class EditVolumeAction extends CloupiaPageAction {
 		final HP3ParCredentials login = new HP3ParCredentials(context);
 
 		// Populate the copy CPG field if it's already set
-		String copyCpg = query.split(";")[3];
-		if (!copyCpg.equals("-")) {
-			// Have to do an API lookup as we need the ID which isn't in the
-			// volume REST response:
-			CPGResponseMember cpg = HP3ParInventory.getCpgInfo(login, copyCpg);
-			// Build it in the format for the CPG table:
-			// ID@AccountName@CPGName
-			copyCpg = cpg.getId() + "@" + login.getAccountName() + "@" + cpg.getName();
-			form.setCopyCpg(copyCpg);
+		try {
+			String copyCpg = query.split(";")[3];
+			if (!copyCpg.equals("")) {
+				// Have to do an API lookup as we need the ID which isn't in the
+				// volume REST response:
+				CPGResponseMember cpg = HP3ParInventory.getCpgInfo(login, copyCpg);
+				// Build it in the format for the CPG table:
+				// ID@AccountName@CPGName
+				copyCpg = cpg.getId() + "@" + login.getAccountName() + "@" + cpg.getName();
+				form.setCopyCpg(copyCpg);
+			}
+		}
+		catch (@SuppressWarnings("unused") ArrayIndexOutOfBoundsException e) {
+			// Do nothing if this field is null
 		}
 
 		// Pre-populate the account, volume and CPG fields:
@@ -130,7 +136,7 @@ public class EditVolumeAction extends CloupiaPageAction {
 		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to edit volume: " + s.getError());
-			throw new Exception("Failed to edit volume: " + s.getError());
+			throw new HP3ParVolumeException("Failed to edit volume: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

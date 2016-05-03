@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.tasks.vluns;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVlunException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -54,7 +55,7 @@ public class DeleteVlunTask extends AbstractTask {
 		// If it wasn't delted error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to delete VLUN: " + s.getError());
-			throw new Exception("VLUN deletionfailed");
+			throw new HP3ParVlunException("VLUN deletion failed");
 		}
 		ucsdLogger.addInfo("Deleted VLUN");
 

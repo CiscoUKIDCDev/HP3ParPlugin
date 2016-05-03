@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVlunException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -55,7 +56,7 @@ public class CreateVlunTask extends AbstractTask {
 		// If it wasn't createderror out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to create VLUN: " + s.getError());
-			throw new Exception("VLUN creation failed");
+			throw new HP3ParVlunException("VLUN creation failed");
 		}
 		ucsdLogger.addInfo("Created VLUN");
 

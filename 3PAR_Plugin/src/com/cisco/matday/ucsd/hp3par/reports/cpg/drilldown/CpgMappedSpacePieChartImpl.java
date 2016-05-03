@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParCpgException;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.ReportNameValuePair;
@@ -67,7 +68,7 @@ public class CpgMappedSpacePieChartImpl implements SnapshotReportGeneratorIf {
 		}
 		catch (Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
-			throw new Exception("Could not get ID from context: " + e.getMessage());
+			throw new HP3ParCpgException("Could not get ID from context: " + e.getMessage());
 		}
 
 		// Get volume info:

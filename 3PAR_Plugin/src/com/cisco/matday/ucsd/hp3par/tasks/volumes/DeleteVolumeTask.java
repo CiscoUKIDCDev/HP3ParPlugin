@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -25,6 +25,7 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -35,7 +36,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext
 /**
  * Executes a task to delete a volume. This should not generally be instantiated
  * by anything other than UCS Director's internal libraries
- * 
+ *
  * @author Matt Day
  *
  */
@@ -45,7 +46,7 @@ public class DeleteVolumeTask extends AbstractTask {
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
-			throws Exception {
+			throws HP3ParVolumeException, Exception {
 
 		// Obtain account information:
 		DeleteVolumeConfig config = (DeleteVolumeConfig) context.loadConfigObject();
@@ -56,7 +57,7 @@ public class DeleteVolumeTask extends AbstractTask {
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to delete Volume: " + s.getError());
-			throw new Exception("Volume deletion failed");
+			throw new HP3ParVolumeException("Volume deletion failed");
 		}
 		ucsdLogger.addInfo("Deleted volume");
 

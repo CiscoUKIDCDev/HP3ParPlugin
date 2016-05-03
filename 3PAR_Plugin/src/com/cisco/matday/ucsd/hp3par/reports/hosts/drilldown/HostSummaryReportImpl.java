@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cloupia.model.cIM.ReportContext;
@@ -70,7 +71,7 @@ public class HostSummaryReportImpl implements TabularReportGeneratorIf {
 		}
 		catch (Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
-			throw new Exception("Could not get ID from context" + e.getMessage());
+			throw new HP3ParHostException("Could not get ID from context" + e.getMessage());
 		}
 
 		// Get volume info:

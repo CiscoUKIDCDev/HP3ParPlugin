@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParCpgException;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
@@ -52,17 +54,22 @@ public class HP3ParCopyExecute {
 	 * @param config
 	 *            Configuration settings
 	 * @return Status of the operation
+	 * @throws HP3ParVolumeException
+	 *             If the volume was invalid
 	 * @throws Exception
 	 *             if the operation was unsuccessful
+	 * @throws HP3ParCpgException
+	 *             if the CPG is invalid
 	 */
-	public static HP3ParRequestStatus copy(HP3ParCredentials c, CreateVolumeCopyConfig config) throws Exception {
+	public static HP3ParRequestStatus copy(HP3ParCredentials c, CreateVolumeCopyConfig config)
+			throws HP3ParVolumeException, HP3ParCpgException, Exception {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
 		String[] volInfo = config.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
+			throw new HP3ParVolumeException("Invalid Volume: " + config.getVolume());
 		}
 		final String volName = volInfo[2];
 		// Parse out CPG - it's in the format:
@@ -70,7 +77,7 @@ public class HP3ParCopyExecute {
 		String[] cpgInfo = config.getCpg().split("@");
 		if (cpgInfo.length != 3) {
 			logger.warn("CPG didn't return three items! It returned: " + config.getCpg());
-			throw new Exception("Invalid CPG");
+			throw new HP3ParCpgException("Invalid CPG");
 		}
 		final String cpgName = cpgInfo[2];
 
@@ -134,16 +141,18 @@ public class HP3ParCopyExecute {
 	 * @return Status of the operation
 	 * @throws Exception
 	 *             if the operation was unsuccessful
+	 * @throws HP3ParVolumeException
+	 *             If the volume is invalid
 	 */
 	public static HP3ParRequestStatus snapshot(HP3ParCredentials c, CreateVolumeSnapshotConfig config)
-			throws Exception {
+			throws HP3ParVolumeException, Exception {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
 		String[] volInfo = config.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
+			throw new HP3ParVolumeException("Invalid Volume: " + config.getVolume());
 		}
 		final String volName = volInfo[2];
 

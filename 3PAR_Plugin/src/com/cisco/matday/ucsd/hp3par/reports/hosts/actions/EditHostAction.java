@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.EditHostConfig;
@@ -118,7 +119,7 @@ public class EditHostAction extends CloupiaPageAction {
 		if (!s.isSuccess()) {
 			logger.warn("Failed to edit Host: " + s.getError());
 			// The exception warning here is used as the failure message
-			throw new Exception("Host deletion failed: " + s.getError());
+			throw new HP3ParHostException("Deleting host failed: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

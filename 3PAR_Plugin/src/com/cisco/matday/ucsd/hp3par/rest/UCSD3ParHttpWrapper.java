@@ -27,6 +27,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.InvalidHP3ParTokenException;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.rwhitear.ucsdHttpRequest.UCSDHttpRequest;
 import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;

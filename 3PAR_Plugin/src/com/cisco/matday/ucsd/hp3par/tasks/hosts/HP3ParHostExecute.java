@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostMessage;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
@@ -105,17 +106,19 @@ public class HP3ParHostExecute {
 	 * @param config
 	 * @return status
 	 * @throws Exception
+	 * @throws HP3ParHostException
 	 */
-	public static HP3ParRequestStatus delete(HP3ParCredentials c, DeleteHostConfig config) throws Exception {
+	public static HP3ParRequestStatus delete(HP3ParCredentials c, DeleteHostConfig config)
+			throws HP3ParHostException, Exception {
 
-		// Get the volume name, it's in the format:
+		// Get the host name, it's in the format:
 		// id@account@name
-		String[] volInfo = config.getHost().split("@");
-		if (volInfo.length != 3) {
+		String[] hostInfo = config.getHost().split("@");
+		if (hostInfo.length != 3) {
 			logger.warn("Host didn't return three items! It returned: " + config.getHost());
-			throw new Exception("Invalid Volume: " + config.getHost());
+			throw new HP3ParHostException("Invalid host: " + config.getHost());
 		}
-		String hostName = volInfo[2];
+		String hostName = hostInfo[2];
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
@@ -157,17 +160,19 @@ public class HP3ParHostExecute {
 	 * @param config
 	 * @return status
 	 * @throws Exception
+	 * @throws HP3ParHostException
 	 */
-	public static HP3ParRequestStatus addiSCSI(HP3ParCredentials c, AddiSCSIHostConfig config) throws Exception {
+	public static HP3ParRequestStatus addiSCSI(HP3ParCredentials c, AddiSCSIHostConfig config)
+			throws HP3ParHostException, Exception {
 
-		// Get the volume name, it's in the format:
+		// Get the host name, it's in the format:
 		// id@account@name
-		String[] volInfo = config.getHost().split("@");
-		if (volInfo.length != 3) {
+		String[] hostInfo = config.getHost().split("@");
+		if (hostInfo.length != 3) {
 			logger.warn("Host didn't return three items! It returned: " + config.getHost());
-			throw new Exception("Invalid Volume: " + config.getHost());
+			throw new HP3ParHostException("Invalid host: " + config.getHost());
 		}
-		String hostName = volInfo[2];
+		String hostName = hostInfo[2];
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
@@ -210,17 +215,19 @@ public class HP3ParHostExecute {
 	 * @param config
 	 * @return status
 	 * @throws Exception
+	 * @throws HP3ParHostException
 	 */
-	public static HP3ParRequestStatus addFC(HP3ParCredentials c, AddFCWWNHostConfig config) throws Exception {
+	public static HP3ParRequestStatus addFC(HP3ParCredentials c, AddFCWWNHostConfig config)
+			throws HP3ParHostException, Exception {
 
-		// Get the volume name, it's in the format:
+		// Get the host name, it's in the format:
 		// id@account@name
-		String[] volInfo = config.getHost().split("@");
-		if (volInfo.length != 3) {
+		String[] hostInfo = config.getHost().split("@");
+		if (hostInfo.length != 3) {
 			logger.warn("Host didn't return three items! It returned: " + config.getHost());
-			throw new Exception("Invalid Volume: " + config.getHost());
+			throw new HP3ParHostException("Invalid Volume: " + config.getHost());
 		}
-		String hostName = volInfo[2];
+		String hostName = hostInfo[2];
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 

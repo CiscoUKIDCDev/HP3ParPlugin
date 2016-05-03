@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParCpgException;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
@@ -52,16 +54,19 @@ public class HP3ParVolumeExecute {
 	 * @param config
 	 *            Configuration settings
 	 * @return Status of the operation
+	 * @throws HP3ParCpgException
+	 *             if the CPG specified is invalid
 	 * @throws Exception
 	 *             if the operation was unsuccessful
 	 */
-	public static HP3ParRequestStatus create(HP3ParCredentials c, CreateVolumeConfig config) throws Exception {
+	public static HP3ParRequestStatus create(HP3ParCredentials c, CreateVolumeConfig config)
+			throws HP3ParCpgException, Exception {
 		// Parse out CPG - it's in the format:
 		// ID@AccountName@Name
 		String[] cpgInfo = config.getCpg().split("@");
 		if (cpgInfo.length != 3) {
 			logger.warn("CPG didn't return three items! It returned: " + config.getCpg());
-			throw new Exception("Invalid CPG");
+			throw new HP3ParCpgException("Invalid CPG");
 		}
 		String cpgName = cpgInfo[2];
 
@@ -118,17 +123,20 @@ public class HP3ParVolumeExecute {
 	 * @param config
 	 *            Configuration settings
 	 * @return Status of the operation
+	 * @throws HP3ParVolumeException
+	 *             if the volume was incorrect
 	 * @throws Exception
 	 *             if the operation was unsuccessful
 	 */
-	public static HP3ParRequestStatus delete(HP3ParCredentials c, DeleteVolumeConfig config) throws Exception {
+	public static HP3ParRequestStatus delete(HP3ParCredentials c, DeleteVolumeConfig config)
+			throws HP3ParVolumeException, Exception {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
 		String[] volInfo = config.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
+			throw new HP3ParVolumeException("Invalid Volume: " + config.getVolume());
 		}
 		String volName = volInfo[2];
 		Gson gson = new Gson();
@@ -174,16 +182,19 @@ public class HP3ParVolumeExecute {
 	 * @param config
 	 *            Configuration settings
 	 * @return Status of the operation
+	 * @throws HP3ParVolumeException
+	 *             If the volume is invalid
 	 * @throws Exception
 	 *             if the operation was unsuccessful
 	 */
-	public static HP3ParRequestStatus edit(HP3ParCredentials c, EditVolumeConfig config) throws Exception {
+	public static HP3ParRequestStatus edit(HP3ParCredentials c, EditVolumeConfig config)
+			throws HP3ParVolumeException, Exception {
 		// Get the volume name, it's in the format:
 		// id@account@name
 		String[] volInfo = config.getVolume().split("@");
 		if (volInfo.length != 3) {
 			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new Exception("Invalid Volume: " + config.getVolume());
+			throw new HP3ParVolumeException("Invalid Volume: " + config.getVolume());
 		}
 		String volName = volInfo[2];
 

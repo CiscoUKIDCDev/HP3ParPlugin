@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostSetException;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
@@ -123,7 +124,7 @@ public class EditHostSetAction extends CloupiaPageAction {
 		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to edit Host set:" + s.getError());
-			throw new Exception("Failed to edit Host set: " + s.getError());
+			throw new HP3ParHostSetException("Failed to edit Host set: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

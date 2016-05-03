@@ -29,8 +29,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
-import com.cisco.matday.ucsd.hp3par.rest.InvalidHP3ParTokenException;
 import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.cIaaS.netapp.model.StorageAccountStatus;
 import com.cloupia.lib.connector.account.AccountUtil;

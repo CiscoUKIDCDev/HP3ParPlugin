@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.hosts.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.HP3ParHostExecute;
@@ -98,7 +99,7 @@ public class DeleteHostAction extends CloupiaPageAction {
 		if (!s.isSuccess()) {
 			logger.warn("Failed to delete Host: " + s.getError());
 			// The exception warning here is used as the failure message
-			throw new Exception("Host deletion failed: " + s.getError());
+			throw new HP3ParHostException("Host deletion failed: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

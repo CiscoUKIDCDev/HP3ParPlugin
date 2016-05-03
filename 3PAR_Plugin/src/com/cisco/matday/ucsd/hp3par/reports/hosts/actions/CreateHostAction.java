@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.hosts.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.HP3ParHostExecute;
@@ -99,7 +100,7 @@ public class CreateHostAction extends CloupiaPageAction {
 		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to create Host:" + s.getError());
-			throw new Exception("Failed to create Host: " + s.getError());
+			throw new HP3ParHostException("Failed to create Host: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

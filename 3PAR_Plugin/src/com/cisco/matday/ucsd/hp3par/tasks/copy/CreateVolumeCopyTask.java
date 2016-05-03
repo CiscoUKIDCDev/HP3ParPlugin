@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
@@ -57,7 +58,7 @@ public class CreateVolumeCopyTask extends AbstractTask {
 		// If it wasn't created error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to copy volume: " + s.getError());
-			throw new Exception("Failed to copy volume" + s.getError());
+			throw new HP3ParVolumeException("Failed to copy volume" + s.getError());
 		}
 
 		ucsdLogger.addInfo("Copied volume");

@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.HP3ParCopyExecute;
@@ -105,7 +106,7 @@ public class CreateVolumeSnapshotAction extends CloupiaPageAction {
 		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to copy volume: " + s.getError());
-			throw new Exception("Failed to copy volume: " + s.getError());
+			throw new HP3ParVolumeException("Failed to copy volume: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

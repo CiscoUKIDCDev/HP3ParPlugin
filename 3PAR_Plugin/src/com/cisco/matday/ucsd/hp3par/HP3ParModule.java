@@ -33,6 +33,7 @@ import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryItemHandler;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventoryListener;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParAccountException;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParFCSelector;
@@ -180,7 +181,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			catch (final Exception e) {
 				logger.warn("Could not start initial inventory collection");
 				logger.warn("3PAR inventory collection failed: " + e.getMessage());
-				throw new Exception(e);
+				throw new HP3ParAccountException(e.getMessage());
 			}
 
 		}

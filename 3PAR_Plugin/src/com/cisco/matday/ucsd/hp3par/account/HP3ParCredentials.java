@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.cuic.api.client.JSON;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParAccountException;
 import com.cloupia.lib.connector.account.AbstractInfraAccount;
 import com.cloupia.lib.connector.account.AccountUtil;
 import com.cloupia.lib.connector.account.PhysicalInfraAccount;
@@ -104,16 +105,21 @@ public class HP3ParCredentials {
 	 *
 	 * @param accountName
 	 *            Account name specified by user
-	 * @throws Exception
+	 * @throws HP3ParAccountException
 	 *             If the account isn't found
 	 */
-	public HP3ParCredentials(String accountName) throws Exception {
+	public HP3ParCredentials(String accountName) throws HP3ParAccountException {
 		this.accountName = accountName;
-		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
-		if (acc == null) {
-			throw new Exception("Unable to find the account:" + accountName);
+		try {
+			PhysicalInfraAccount acc = AccountUtil.getAccountByName(this.accountName);
+			if (acc == null) {
+				throw new HP3ParAccountException("Unable to find the account:" + this.accountName);
+			}
+			this.initFromAccount(acc);
 		}
-		this.initFromAccount(acc);
+		catch (@SuppressWarnings("unused") Exception e) {
+			throw new HP3ParAccountException("Unable to find the account:" + this.accountName);
+		}
 	}
 
 	/**
@@ -126,25 +132,28 @@ public class HP3ParCredentials {
 	 *
 	 * @param context
 	 *            Current context
-	 * @throws Exception
+	 * @throws HP3ParAccountException
 	 *             If the account isn't found
 	 */
-	public HP3ParCredentials(ReportContext context) throws Exception {
+	public HP3ParCredentials(ReportContext context) throws HP3ParAccountException {
 		final String contextId = context.getId();
 		// If the context ID isn't null, use it to get the account name:
 		this.accountName = (contextId == null) ? null : contextId.split(";")[0];
 
 		if (this.accountName == null) {
-			throw new Exception("Account not found");
+			throw new HP3ParAccountException("Account not found");
+		}
+		try {
+			PhysicalInfraAccount acc = AccountUtil.getAccountByName(this.accountName);
+			if (acc == null) {
+				throw new HP3ParAccountException("Unable to find the account:" + this.accountName);
+			}
+			this.initFromAccount(acc);
+		}
+		catch (@SuppressWarnings("unused") Exception e) {
+			throw new HP3ParAccountException("Unable to find the account:" + this.accountName);
 		}
 
-		PhysicalInfraAccount acc = AccountUtil.getAccountByName(this.accountName);
-
-		if (acc == null) {
-			throw new Exception("Unable to find the account:" + this.accountName);
-		}
-
-		this.initFromAccount(acc);
 	}
 
 	/**

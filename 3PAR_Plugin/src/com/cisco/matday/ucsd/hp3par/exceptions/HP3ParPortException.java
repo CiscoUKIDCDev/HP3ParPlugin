@@ -19,63 +19,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.rest.ports.json;
-
-import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParPortException;
+package com.cisco.matday.ucsd.hp3par.exceptions;
 
 /**
- * 3PAR Port list position JSON enumeration
- *
- * For more info see the HP 3PAR REST API documentation
+ * Throw when a requested port set is invalid. Reasons might include:
+ * <p>
+ * - Format given is invalid
  *
  * @author Matt Day
  *
  */
-@SuppressWarnings("javadoc")
-public class PortResponsePos {
-	private int node;
-	private int slot;
-	private int cardPort;
+public class HP3ParPortException extends Exception {
 
-	public PortResponsePos() {
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Throw new token invalid exception
+	 *
+	 * @param args
+	 */
+	public HP3ParPortException(String args) {
+		super(args);
 	}
 
-	public PortResponsePos(String portPos) throws Exception {
-		// Format: 0@accountName@portPos
-		// Node/Slot/Port
-		try {
-			final String[] split = portPos.split("/");
-			this.node = Integer.parseInt(split[0]);
-			this.slot = Integer.parseInt(split[1]);
-			this.cardPort = Integer.parseInt(split[2]);
-		}
-		catch (Exception e) {
-			throw new HP3ParPortException("Invalid 3PAR port format: " + portPos + " (" + e.getMessage() + ")");
-		}
-	}
-
-	public int getNode() {
-		return this.node;
-	}
-
-	public void setNode(int node) {
-		this.node = node;
-	}
-
-	public int getSlot() {
-		return this.slot;
-	}
-
-	public void setSlot(int slot) {
-		this.slot = slot;
-	}
-
-	public int getCardPort() {
-		return this.cardPort;
-	}
-
-	public void setCardPort(int cardPort) {
-		this.cardPort = cardPort;
-	}
 }

@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.HP3ParVolumeExecute;
@@ -107,7 +108,7 @@ public class CreateVolumeAction extends CloupiaPageAction {
 		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to create volume:" + s.getError());
-			throw new Exception("Failed to create volume: " + s.getError());
+			throw new HP3ParVolumeException("Failed to create volume: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

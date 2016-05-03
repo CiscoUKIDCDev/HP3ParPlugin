@@ -23,6 +23,7 @@ package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -49,7 +50,7 @@ public class CreateHostTask extends AbstractTask {
 
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to create host: " + s.getError());
-			throw new Exception("Failed to create host" + s.getError());
+			throw new HP3ParHostException("Failed to create host" + s.getError());
 		}
 
 		ucsdLogger.addInfo("Created host");

@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.hostsets.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.DeleteHostSetConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.HP3ParHostSetExecute;
@@ -96,7 +97,7 @@ public class DeleteHostSetAction extends CloupiaPageAction {
 		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to delete Host set:" + s.getError());
-			throw new Exception("Failed to delete Host set: " + s.getError());
+			throw new HP3ParHostSetException("Failed to delete Host set: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

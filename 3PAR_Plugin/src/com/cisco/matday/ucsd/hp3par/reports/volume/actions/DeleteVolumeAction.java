@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.HP3ParVolumeExecute;
@@ -108,7 +109,7 @@ public class DeleteVolumeAction extends CloupiaPageAction {
 		if (!s.isSuccess()) {
 			logger.warn("Failed to delete Volume: " + s.getError());
 			// The exception warning here is used as the failure message
-			throw new Exception("Volume deletion failed: " + s.getError());
+			throw new HP3ParVolumeException("Volume deletion failed: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

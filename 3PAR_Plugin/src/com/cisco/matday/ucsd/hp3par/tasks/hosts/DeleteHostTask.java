@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -33,7 +34,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext
 
 /**
  * Delete a host
- * 
+ *
  * @author Matt Day
  *
  */
@@ -54,7 +55,7 @@ public class DeleteHostTask extends AbstractTask {
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to delete Host: " + s.getError());
-			throw new Exception("Host deletion failed");
+			throw new HP3ParHostException("Host deletion failed");
 		}
 		ucsdLogger.addInfo("Deleted Host");
 

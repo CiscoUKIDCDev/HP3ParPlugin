@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.ReportNameValuePair;
@@ -67,7 +68,7 @@ public class VolumeAllocationPieChartImpl implements SnapshotReportGeneratorIf {
 		}
 		catch (@SuppressWarnings("unused") Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
-			throw new Exception("Could not get ID from context");
+			throw new HP3ParVolumeException("Could not get volume from context");
 		}
 
 		// VolumeResponseMember volume = new HP3ParVolumeInfo(credentials,

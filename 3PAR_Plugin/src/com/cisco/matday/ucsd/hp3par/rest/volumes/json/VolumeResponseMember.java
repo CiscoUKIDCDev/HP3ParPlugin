@@ -287,25 +287,16 @@ public class VolumeResponseMember {
 
 	@SuppressWarnings("javadoc")
 	public String getUserCPG() {
-		if (this.userCPG == null) {
-			return "-";
-		}
 		return this.userCPG;
 	}
 
 	@SuppressWarnings("javadoc")
 	public String getComment() {
-		if (this.comment == null) {
-			return "-";
-		}
 		return this.comment;
 	}
 
 	@SuppressWarnings("javadoc")
 	public String getCopyCPG() {
-		if (this.snapCPG == null) {
-			return "-";
-		}
 		return this.snapCPG;
 	}
 

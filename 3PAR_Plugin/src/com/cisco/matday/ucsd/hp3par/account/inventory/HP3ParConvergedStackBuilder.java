@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParAccountException;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cloupia.model.cIM.ConvergedStackComponentDetail;
 import com.cloupia.model.cIM.ReportContextRegistry;
@@ -52,14 +53,15 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 	 * @return: returns ConvergedStackComponentDetail instance
 	 */
 	@Override
-	public ConvergedStackComponentDetail buildConvergedStackComponent(String contextId) throws Exception {
+	public ConvergedStackComponentDetail buildConvergedStackComponent(String contextId)
+			throws HP3ParAccountException, Exception {
 		String accountName = null;
 		if (contextId != null) {
 			// As the contextId returns as: "account Name;POD Name"
 			accountName = contextId.split(";")[0];
 		}
 		if (accountName == null) {
-			throw new Exception("Unable to find the account name");
+			throw new HP3ParAccountException("Unable to find the account name");
 		}
 
 		SystemResponse systemInfo = null;

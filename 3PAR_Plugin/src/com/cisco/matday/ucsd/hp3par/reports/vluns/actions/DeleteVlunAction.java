@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.vluns.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVlunException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.DeleteVlunConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.HP3ParVlunExecute;
@@ -96,7 +97,7 @@ public class DeleteVlunAction extends CloupiaPageAction {
 		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to delete vlun:" + s.getError());
-			throw new Exception("Failed to delete vlun: " + s.getError());
+			throw new HP3ParVlunException("Failed to delete vlun: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

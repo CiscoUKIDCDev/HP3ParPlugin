@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -54,7 +55,7 @@ public class RemoveiSCSIHostTask extends AbstractTask {
 		// If it wasn't deleted error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to remove iSCSI name: " + s.getError());
-			throw new Exception("Removing iSCSI to host failed");
+			throw new HP3ParHostException("Removing iSCSI to host failed");
 		}
 		ucsdLogger.addInfo("Removed iSCSI name to host");
 

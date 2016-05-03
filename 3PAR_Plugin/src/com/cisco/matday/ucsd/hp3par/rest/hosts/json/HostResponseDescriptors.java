@@ -41,7 +41,7 @@ public class HostResponseDescriptors {
 	 * @return the location
 	 */
 	public String getLocation() {
-		return (this.location == null) ? "-" : this.location;
+		return this.location;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class HostResponseDescriptors {
 	 * @return the iPAddr
 	 */
 	public String getIPAddr() {
-		return (this.IPAddr == null) ? "-" : this.IPAddr;
+		return this.IPAddr;
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class HostResponseDescriptors {
 	 * @return the model
 	 */
 	public String getModel() {
-		return (this.model == null) ? "-" : this.model;
+		return this.model;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class HostResponseDescriptors {
 	 * @return the contact
 	 */
 	public String getContact() {
-		return (this.contact == null) ? "-" : this.contact;
+		return this.contact;
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class HostResponseDescriptors {
 	 * @return the comment
 	 */
 	public String getComment() {
-		return (this.comment == null) ? "-" : this.comment;
+		return this.comment;
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class HostResponseDescriptors {
 	 * @return the os
 	 */
 	public String getOs() {
-		return (this.os == null) ? "-" : this.os;
+		return this.os;
 	}
 
 	/**

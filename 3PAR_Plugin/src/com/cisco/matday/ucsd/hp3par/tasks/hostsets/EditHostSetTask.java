@@ -23,6 +23,7 @@ package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -48,7 +49,7 @@ public class EditHostSetTask extends AbstractTask {
 
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to edit host: " + s.getError());
-			throw new Exception("Failed to edit host: " + s.getError());
+			throw new HP3ParHostSetException("Failed to edit host: " + s.getError());
 		}
 
 		ucsdLogger.addInfo("Created host set");

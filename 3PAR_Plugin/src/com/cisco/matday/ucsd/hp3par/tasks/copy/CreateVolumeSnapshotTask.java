@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -35,7 +36,7 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext
 /**
  * Executes a task to create a volume. This should not generally be instantiated
  * by anything other than UCS Director's internal libraries
- * 
+ *
  * @author Matt Day
  *
  */
@@ -54,8 +55,8 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 
 		// If it wasn't created error out
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to create volume:" + s.getError());
-			throw new Exception("Failed to create volume");
+			ucsdLogger.addError("Failed to create volume snapshot:" + s.getError());
+			throw new HP3ParVolumeException("Failed to create volume snapshot");
 		}
 
 		ucsdLogger.addInfo("Created volume snapshot: " + config.getSnapshotName());
