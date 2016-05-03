@@ -46,15 +46,22 @@ public class CreateHostSetAction extends CloupiaPageAction {
 	private static Logger logger = Logger.getLogger(CreateHostSetAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostSetForm";
-	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostSetAction";
-	private static final String LABEL = "Create";
-	private static final String DESCRIPTION = "Create a new Host set";
+	private final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.CreateHostSetForm";
+	private final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.CreateHostSetForm_ACTION";
+	private final String LABEL = "Create";
+	private final String DESCRIPTION = "Create a new Host set";
+
+	/**
+	 * Create a new host set
+	 *
+	 */
+	public CreateHostSetAction() {
+	}
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
 		// Use the same form (config) as the Create Host custom task
-		page.bind(FORM_ID, CreateHostSetConfig.class);
+		page.bind(this.FORM_ID, CreateHostSetConfig.class);
 	}
 
 	/**
@@ -74,10 +81,10 @@ public class CreateHostSetAction extends CloupiaPageAction {
 
 		// Set the account field to read-only (I couldn't find this documented
 		// anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".account").setEditable(false);
+		page.getFlist().getByFieldId(this.FORM_ID + ".account").setEditable(false);
 
-		session.getSessionAttributes().put(FORM_ID, form);
-		page.marshallFromSession(FORM_ID);
+		session.getSessionAttributes().put(this.FORM_ID, form);
+		page.marshallFromSession(this.FORM_ID);
 
 	}
 
@@ -89,7 +96,7 @@ public class CreateHostSetAction extends CloupiaPageAction {
 	 */
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
-		Object obj = page.unmarshallToSession(FORM_ID);
+		Object obj = page.unmarshallToSession(this.FORM_ID);
 		CreateHostSetConfig config = (CreateHostSetConfig) obj;
 
 		// Get credentials from the current context
@@ -130,7 +137,7 @@ public class CreateHostSetAction extends CloupiaPageAction {
 
 	@Override
 	public String getActionId() {
-		return ACTION_ID;
+		return this.ACTION_ID;
 	}
 
 	@Override
@@ -140,22 +147,22 @@ public class CreateHostSetAction extends CloupiaPageAction {
 
 	@Override
 	public String getDescription() {
-		return DESCRIPTION;
+		return this.DESCRIPTION;
 	}
 
 	@Override
 	public String getFormId() {
-		return FORM_ID;
+		return this.FORM_ID;
 	}
 
 	@Override
 	public String getLabel() {
-		return LABEL;
+		return this.LABEL;
 	}
 
 	@Override
 	public String getTitle() {
-		return LABEL;
+		return this.LABEL;
 	}
 
 }

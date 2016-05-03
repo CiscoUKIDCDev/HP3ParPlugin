@@ -63,8 +63,9 @@ public class HostReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateHostAction(), new EditHostAction(), new DeleteHostAction(), new HostAddFCAction(),
-			new HostRemoveFCAction(), new HostAddiSCSIAction(), new HostRemoveiSCSIAction(), new DrillDownAction(),
+			new CreateHostAction("Create", "create"), new EditHostAction(), new DeleteHostAction("Delete", "delete"),
+			new HostAddFCAction(), new HostRemoveFCAction(), new HostAddiSCSIAction(), new HostRemoveiSCSIAction(),
+			new DrillDownAction(),
 	};
 
 	/**
