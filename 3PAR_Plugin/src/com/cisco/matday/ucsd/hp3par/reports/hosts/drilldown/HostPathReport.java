@@ -24,10 +24,10 @@ package com.cisco.matday.ucsd.hp3par.reports.hosts.drilldown;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddFCActionNoSelection;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddiSCSIActionNoSelection;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCActionNoSelection;
-import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveiSCSIActionNoSelection;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddFCAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddiSCSIAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveiSCSIAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -56,8 +56,8 @@ public class HostPathReport extends DrillableReportWithActions {
 	private final static String REPORT_LABEL = "Paths";
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new HostAddFCActionNoSelection(), new HostRemoveFCActionNoSelection(), new HostAddiSCSIActionNoSelection(),
-			new HostRemoveiSCSIActionNoSelection(),
+			new HostAddFCAction(false, true), new HostRemoveFCAction(false, true), new HostAddiSCSIAction(false, true),
+			new HostRemoveiSCSIAction(false, true),
 	};
 
 	/**

@@ -46,15 +46,47 @@ public class HostAddiSCSIAction extends CloupiaPageAction {
 	private static Logger logger = Logger.getLogger(HostAddiSCSIAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddiSCSIForm";
-	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddiSCSIAction";
+	private final static String PREFIX = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddiSCSIAction";
+	private String FORM_ID;
+	private String ACTION_ID;
 	private static final String LABEL = "Add iSCSI Name";
 	private static final String DESCRIPTION = "Add iSCSI Name";
+
+	private boolean selection;
+	private boolean needsContext;
+
+	/**
+	 * Initialise host selection action with default values
+	 */
+	public HostAddiSCSIAction() {
+		this.init(true, true);
+	}
+
+	/**
+	 * Initialise host selection action with specified values
+	 *
+	 * @param selection
+	 *            If this should be active on selection
+	 * @param needsContext
+	 *            if this should load context
+	 *
+	 */
+	public HostAddiSCSIAction(boolean selection, boolean needsContext) {
+		this.init(selection, needsContext);
+	}
+
+	private void init(boolean sel, boolean context) {
+		this.selection = sel;
+		this.needsContext = context;
+		this.FORM_ID = PREFIX + this.needsContext + this.selection;
+		this.ACTION_ID = this.FORM_ID + "_ACTION";
+		logger.info("FORM ID " + this.FORM_ID);
+	}
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
 		// Use the same form (config) as the Delete Host custom task
-		page.bind(FORM_ID, AddiSCSIHostConfig.class);
+		page.bind(this.FORM_ID, AddiSCSIHostConfig.class);
 	}
 
 	/**
@@ -66,16 +98,18 @@ public class HostAddiSCSIAction extends CloupiaPageAction {
 
 		String query = context.getId();
 		AddiSCSIHostConfig form = new AddiSCSIHostConfig();
+		if (this.needsContext) {
+			// Pre-populate the account and Host fields:
+			form.setHost(query);
 
-		// Pre-populate the account and Host fields:
-		form.setHost(query);
+			// Set the account and Host fields to read-only (I couldn't find
+			// this
+			// documented anywhere, maybe there's a better way to do it?)
+			page.getFlist().getByFieldId(this.FORM_ID + ".host").setEditable(false);
+		}
 
-		// Set the account and Host fields to read-only (I couldn't find this
-		// documented anywhere, maybe there's a better way to do it?)
-		page.getFlist().getByFieldId(FORM_ID + ".host").setEditable(false);
-
-		session.getSessionAttributes().put(FORM_ID, form);
-		page.marshallFromSession(FORM_ID);
+		session.getSessionAttributes().put(this.FORM_ID, form);
+		page.marshallFromSession(this.FORM_ID);
 	}
 
 	/**
@@ -86,7 +120,7 @@ public class HostAddiSCSIAction extends CloupiaPageAction {
 	 */
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
-		Object obj = page.unmarshallToSession(FORM_ID);
+		Object obj = page.unmarshallToSession(this.FORM_ID);
 		AddiSCSIHostConfig config = (AddiSCSIHostConfig) obj;
 
 		// Get credentials from the current context
@@ -124,12 +158,12 @@ public class HostAddiSCSIAction extends CloupiaPageAction {
 
 	@Override
 	public boolean isSelectionRequired() {
-		return true;
+		return this.selection;
 	}
 
 	@Override
 	public String getActionId() {
-		return ACTION_ID;
+		return this.ACTION_ID;
 	}
 
 	@Override
@@ -144,7 +178,7 @@ public class HostAddiSCSIAction extends CloupiaPageAction {
 
 	@Override
 	public String getFormId() {
-		return FORM_ID;
+		return this.FORM_ID;
 	}
 
 	@Override

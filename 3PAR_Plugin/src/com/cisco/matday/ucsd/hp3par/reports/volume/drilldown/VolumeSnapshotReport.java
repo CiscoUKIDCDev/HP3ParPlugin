@@ -24,7 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.volume.drilldown;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeSnapshotActionNoSelection;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeSnapshotAction;
 import com.cisco.matday.ucsd.hp3par.reports.volume.actions.DeleteVolumeAction;
 import com.cisco.matday.ucsd.hp3par.reports.volume.actions.EditVolumeAction;
 import com.cloupia.model.cIM.DynReportContext;
@@ -45,7 +45,7 @@ public class VolumeSnapshotReport extends CloupiaReportWithActions {
 	private static Logger logger = Logger.getLogger(VolumeSnapshotReport.class);
 
 	private CloupiaReportAction[] actions = {
-			new CreateVolumeSnapshotActionNoSelection(), new EditVolumeAction(), new DeleteVolumeAction()
+			new CreateVolumeSnapshotAction(false, true), new EditVolumeAction(), new DeleteVolumeAction()
 	};
 
 	/**

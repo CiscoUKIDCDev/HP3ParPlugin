@@ -46,15 +46,47 @@ public class HostRemoveiSCSIAction extends CloupiaPageAction {
 	private static Logger logger = Logger.getLogger(HostRemoveiSCSIAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private static final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveiSCSIForm";
-	private static final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveiSCSIAction";
+	private final static String PREFIX = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.RemoveiSCSIAction";
+	private String FORM_ID;
+	private String ACTION_ID;
 	private static final String LABEL = "Remove iSCSI Name";
 	private static final String DESCRIPTION = "Remove iSCSI Name";
+
+	private boolean selection;
+	private boolean needsContext;
+
+	/**
+	 * Initialise host selection action with default values
+	 */
+	public HostRemoveiSCSIAction() {
+		this.init(true, false);
+	}
+
+	/**
+	 * Initialise host selection action with specified values
+	 *
+	 * @param selection
+	 *            If this should be active on selection
+	 * @param needsContext
+	 *            if this should load context
+	 *
+	 */
+	public HostRemoveiSCSIAction(boolean selection, boolean needsContext) {
+		this.init(selection, needsContext);
+	}
+
+	private void init(boolean sel, boolean context) {
+		this.selection = sel;
+		this.needsContext = context;
+		this.FORM_ID = PREFIX + this.needsContext + this.selection;
+		this.ACTION_ID = this.FORM_ID + "_ACTION";
+		logger.info("FORM ID " + this.FORM_ID);
+	}
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
 		// Use the same form (config) as the Delete Host custom task
-		page.bind(FORM_ID, RemoveiSCSIHostConfig.class);
+		page.bind(this.FORM_ID, RemoveiSCSIHostConfig.class);
 	}
 
 	/**
@@ -67,8 +99,14 @@ public class HostRemoveiSCSIAction extends CloupiaPageAction {
 		// String query = context.getId();
 		RemoveiSCSIHostConfig form = new RemoveiSCSIHostConfig();
 
-		session.getSessionAttributes().put(FORM_ID, form);
-		page.marshallFromSession(FORM_ID);
+		if (this.needsContext) {
+			form.setiSCSIName(context.getId());
+
+			page.getFlist().getByFieldId(this.FORM_ID + ".iSCSIName").setEditable(false);
+		}
+
+		session.getSessionAttributes().put(this.FORM_ID, form);
+		page.marshallFromSession(this.FORM_ID);
 	}
 
 	/**
@@ -79,7 +117,7 @@ public class HostRemoveiSCSIAction extends CloupiaPageAction {
 	 */
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
-		Object obj = page.unmarshallToSession(FORM_ID);
+		Object obj = page.unmarshallToSession(this.FORM_ID);
 		RemoveiSCSIHostConfig config = (RemoveiSCSIHostConfig) obj;
 
 		// Get credentials from the current context
@@ -117,12 +155,12 @@ public class HostRemoveiSCSIAction extends CloupiaPageAction {
 
 	@Override
 	public boolean isSelectionRequired() {
-		return true;
+		return this.selection;
 	}
 
 	@Override
 	public String getActionId() {
-		return ACTION_ID;
+		return this.ACTION_ID;
 	}
 
 	@Override
@@ -137,7 +175,7 @@ public class HostRemoveiSCSIAction extends CloupiaPageAction {
 
 	@Override
 	public String getFormId() {
-		return FORM_ID;
+		return this.FORM_ID;
 	}
 
 	@Override

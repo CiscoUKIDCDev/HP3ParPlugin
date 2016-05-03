@@ -24,6 +24,10 @@ package com.cisco.matday.ucsd.hp3par.reports.paths;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddFCAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostAddiSCSIAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveFCAction;
+import com.cisco.matday.ucsd.hp3par.reports.hosts.actions.HostRemoveiSCSIAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -45,6 +49,7 @@ public class PathReport extends DrillableReportWithActions {
 	 * Unique identifier for this report
 	 */
 	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.paths.PathReport";
+
 	/**
 	 * User-friendly report name
 	 */
@@ -53,7 +58,10 @@ public class PathReport extends DrillableReportWithActions {
 	// This MUST be defined ONCE!
 	private CloupiaReport[] drillable = new CloupiaReport[] {};
 
-	private CloupiaReportAction[] actions = new CloupiaReportAction[] {};
+	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
+			new HostAddFCAction(false, false), new HostRemoveFCAction(false, true),
+			new HostAddiSCSIAction(false, false), new HostRemoveiSCSIAction(false, true),
+	};
 
 	/**
 	 * Overridden default constructor which sets the management column (0)
