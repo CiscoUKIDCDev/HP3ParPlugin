@@ -65,7 +65,7 @@ public class CreateVolumeSnapshotConfig implements TaskConfigIf {
 	@FormField(label = "Read Only", help = "Read Only", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
 	@UserInputField(type = "Boolean")
 	@Persistent
-	private boolean readOnly = false;
+	private boolean readOnly;
 
 	@FormField(label = "Comment", help = "Comment", mandatory = false)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
