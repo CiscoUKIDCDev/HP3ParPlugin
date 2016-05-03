@@ -71,8 +71,9 @@ public class PathReportImpl implements TabularReportGeneratorIf {
 
 		for (HostResponseMember host : hostList.getMembers()) {
 			final String hostName = host.getName();
-			List<HostResponseFCPaths> fcPaths = HP3ParInventory.getHostInfo(credentials, hostName).getFCPaths();
-			List<HostResponseiSCSIPaths> scsiPaths = HP3ParInventory.getHostInfo(credentials, hostName).getiSCSIPaths();
+
+			List<HostResponseFCPaths> fcPaths = host.getFCPaths();
+			List<HostResponseiSCSIPaths> scsiPaths = host.getiSCSIPaths();
 
 			for (HostResponseFCPaths path : fcPaths) {
 				// Format

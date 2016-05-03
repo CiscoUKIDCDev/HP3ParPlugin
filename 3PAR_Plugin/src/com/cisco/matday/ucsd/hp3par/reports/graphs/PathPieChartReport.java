@@ -67,9 +67,8 @@ public class PathPieChartReport implements SnapshotReportGeneratorIf {
 		int fc = 0;
 
 		for (HostResponseMember host : hostList.getMembers()) {
-			final String hostName = host.getName();
-			fc += HP3ParInventory.getHostInfo(credentials, hostName).getFCPaths().size();
-			iscsi += HP3ParInventory.getHostInfo(credentials, hostName).getiSCSIPaths().size();
+			fc += host.getFCPaths().size();
+			iscsi += host.getiSCSIPaths().size();
 		}
 
 		ReportNameValuePair[] rnv = new ReportNameValuePair[2];
