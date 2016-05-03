@@ -83,7 +83,7 @@ public class EditVolumeAction extends CloupiaPageAction {
 		// Populate the copy CPG field if it's already set
 		try {
 			String copyCpg = query.split(";")[3];
-			if (!copyCpg.equals("")) {
+			if (copyCpg != null) {
 				// Have to do an API lookup as we need the ID which isn't in the
 				// volume REST response:
 				CPGResponseMember cpg = HP3ParInventory.getCpgInfo(login, copyCpg);
