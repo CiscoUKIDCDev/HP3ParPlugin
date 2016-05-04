@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.hostsets.CreateHostSetConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.hostsets.EditHostSetConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.HP3ParHostSetExecute;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
@@ -48,14 +48,16 @@ public class AddHostToHostSetAction extends CloupiaPageAction {
 	@Override
 	public void definePage(Page page, ReportContext context) {
 		// Use the same form (config) as the Create Host custom task
-		page.bind(this.FORM_ID, CreateHostSetConfig.class);
+		page.bind(this.FORM_ID, EditHostSetConfig.class);
 
 	}
 
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
 		String query = context.getId();
-		CreateHostSetConfig form = new CreateHostSetConfig();
+		EditHostSetConfig form = new EditHostSetConfig();
+
+		form.setHosts(query);
 
 		// The form will be in the format Account;Pod - grab the former:
 		// String account = query.split(";")[0];
@@ -76,11 +78,13 @@ public class AddHostToHostSetAction extends CloupiaPageAction {
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
 		Object obj = page.unmarshallToSession(this.FORM_ID);
-		CreateHostSetConfig config = (CreateHostSetConfig) obj;
+		EditHostSetConfig config = (EditHostSetConfig) obj;
 
 		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(context);
-		HP3ParRequestStatus s = HP3ParHostSetExecute.create(c, config);
+		// TODO this is broken - it will delete anything not included - should
+		// create an add method
+		HP3ParRequestStatus s = HP3ParHostSetExecute.edit(c, config);
 
 		// Throwing an exception fails the submit and shows the error in the
 		// window
