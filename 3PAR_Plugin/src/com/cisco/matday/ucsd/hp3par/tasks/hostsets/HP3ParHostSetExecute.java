@@ -103,6 +103,84 @@ public class HP3ParHostSetExecute {
 	}
 
 	/**
+	 * Add a host to an existing host set
+	 *
+	 * @param c
+	 * @param config
+	 * @return Status
+	 * @throws Exception
+	 */
+	@SuppressWarnings("boxing")
+	public static HP3ParRequestStatus add(HP3ParCredentials c, AddHostToHostSetConfig config) throws Exception {
+		final String hostSetName = config.getHostSet().split("@")[2];
+
+		HashMap<String, Boolean> keepMap = new HashMap<>();
+
+		final String newMembers = config.getHosts();
+		final String[] oldMembers = HP3ParInventory.getHostSetInfo(c, hostSetName).getSetMembers();
+
+		List<String> remove = new ArrayList<>();
+		List<String> add = new ArrayList<>();
+
+		// The 3PAR array edit/remove MUST not contain elements already in the
+		// array, so we need to jump through some hoops
+
+		// Assume we're not keeping anything
+		for (String host : oldMembers) {
+			keepMap.put(host, false);
+		}
+		// Compute which ones to keep
+		for (String host : newMembers.split(",")) {
+			keepMap.put(host.split("@")[2], true);
+		}
+		// Remove anything not matching:
+		for (String host : keepMap.keySet()) {
+			if (!keepMap.get(host)) {
+				remove.add(host);
+			}
+		}
+		// Assume everything new should be added as new
+		for (String host : newMembers.split(",")) {
+			keepMap.put(host.split("@")[2], true);
+		}
+		// Anything currently in the list should not
+		for (String host : oldMembers) {
+			keepMap.put(host, false);
+		}
+		for (String host : keepMap.keySet()) {
+			if (keepMap.get(host)) {
+				add.add(host);
+			}
+		}
+
+		// Build add parameter list:
+		String[] addArray = add.toArray(new String[add.size()]);
+		HP3ParHostSetEditParams addParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
+
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		// Add new members
+		if (addArray.length > 0) {
+			// Use defaults for a PUT request
+			status = doPut(addParams, hostSetName, c);
+			if (!status.isSuccess()) {
+				return status;
+			}
+		}
+
+		// Update the inventory
+		try {
+			HP3ParInventory.update(c, true, "Added host to host set");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return status;
+
+	}
+
+	/**
 	 * Edit an existing host set
 	 *
 	 * @param c
