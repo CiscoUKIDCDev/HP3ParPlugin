@@ -3,16 +3,18 @@ This is an Open Automation plug-in which adds 3PAR support to Cisco UCS Director
 
 You can **[download the latest releases here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/releases)**.
 
-Right now it's in maintenence mode. It's considered alpha, but no new features will be added directly without community request. If you wish to request a feature, use the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues) and create a new issue with your request.
+The plugin is being actively developed on an ad-hoc basis. Upcoming features are documented over in the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues). You can also create requests there if you'd like new features or have found bugs.
+
+The project is released under a generous [MIT-style license](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/LICENSE) which means you can download it, change it and even charge for it provided the copyright is maintained. I'd request kindly that you send back any bugfixes as pull requests, but you have no obligation to do so.
 
 For installation instructions see the bottom of this page.
-
-This plugin is licensed under an [MIT-style license](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/LICENSE).
 
 ## Warning
 This plugin has never been tested in a production environment before!
 
-There is no support or warranty. It is a community plugin. If you need new features or bugfixes, ask nicely. The code is there too, so you can fix it yourself (and ideally send those back as a pull request!).
+There is no support or warranty - implied or otherwise. If you need new features or bugfixes, ask nicely in the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues). The code is there too, so you can fix it yourself (and ideally send those back as a pull request!).
+
+You should back-up your UCS Director database before using this plugin and test any new releases before deploying.
 
 ## Screenshots
 ![Converged view screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-summary-page)
@@ -37,11 +39,7 @@ For more screenshots see the [screenshots page](screenshots.md).
 
 ### Near-term roadmap
 * Volume sets
-* More tasks (need suggestions)
-
-Additionally, this plugin is mostly trying to be a clean plugin implementation. 
-
-That means there is almost no "dummy" SDK code in here (except a few boilerplate cases). If you wish to hack on this you will need to download the SDK from Cisco's website, especially to add new features.
+* More tasks (need suggestions - use the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues) to do so)
 
 ## Using
 ### Configuring the WSAPI on your 3PAR array
