@@ -49,19 +49,17 @@ public class CreateHostAction extends CloupiaPageAction {
 	private final static String PREFIX = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostForm";
 	private final String FORM_ID;
 	private final String ACTION_ID;
-	private final String LABEL;
+	private final String LABEL = "Create";
 	private static final String DESCRIPTION = "Create a new Host";
 
 	/**
 	 * Create a new host action
 	 *
-	 * @param label
 	 * @param id
 	 */
-	public CreateHostAction(String label, String id) {
+	public CreateHostAction(String id) {
 		this.FORM_ID = PREFIX + "_" + id;
 		this.ACTION_ID = this.FORM_ID + "_ACTION";
-		this.LABEL = label;
 	}
 
 	@Override
