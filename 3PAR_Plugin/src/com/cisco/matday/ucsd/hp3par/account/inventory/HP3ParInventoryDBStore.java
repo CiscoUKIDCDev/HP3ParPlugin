@@ -21,7 +21,7 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.account.inventory;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.annotations.Column;
@@ -52,7 +52,7 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_inventory_db_v2")
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory_db_v3")
 public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
@@ -97,7 +97,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 
 	@Persistent(defaultFetchGroup = "true")
 	@Column(jdbcType = "CLOB")
-	private List<String> polling;
+	private LinkedList<String> polling;
 
 	/**
 	 * Get the API version in case this database needs to be rebuilt in the
@@ -149,7 +149,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 			this.portListJson = ports.toJson();
 
 			logger.info("Setting up polling history");
-			this.polling = new ArrayList<>();
+			this.polling = new LinkedList<>();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -166,7 +166,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	/**
 	 * @param polling
 	 */
-	public void setPolling(List<String> polling) {
+	public void setPolling(LinkedList<String> polling) {
 		this.polling = polling;
 	}
 

@@ -184,6 +184,11 @@ public class HP3ParInventory {
 			final String update = c + "@" + d.getTime() + "@" + force + "@" + reason;
 			store.getPolling().add(update);
 
+			// Remove oldest entry if longer than the allowed log length
+			if (store.getPolling().size() > HP3ParConstants.MAX_POLLING_LOG_ENTRIES) {
+				store.getPolling().remove(0);
+			}
+
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
 
