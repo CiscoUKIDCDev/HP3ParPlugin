@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParAccountException;
 import com.cisco.matday.ucsd.hp3par.reports.volume.VolumeReportImpl;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
@@ -77,13 +78,14 @@ public class CpgVolumeReportImpl implements TabularReportGeneratorIf {
 		}
 		catch (Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId() + " " + e.getMessage());
+			throw new HP3ParAccountException("Could not get ID from context: " + context.getId());
 		}
 
 		VolumeResponse list = HP3ParInventory.getVolumeResponse(credentials);
 
 		for (VolumeResponseMember volume : list.getMembers()) {
 			// Only interested in volumes on this CPG (user or copy)
-			if ((!volume.getUserCPG().equals(cpgName)) && (!volume.getCopyCPG().equals(cpgName))) {
+			if ((!cpgName.equals(volume.getUserCPG())) && (!cpgName.equals(volume.getCopyCPG()))) {
 				continue;
 			}
 

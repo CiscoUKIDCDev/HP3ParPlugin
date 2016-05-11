@@ -363,4 +363,9 @@ public class HP3ParConstants {
 	 */
 	public static final int SET_ACTION_REMOVE = 2;
 
+	/**
+	 * Maximum number of polling log entries
+	 */
+	public static final int MAX_POLLING_LOG_ENTRIES = 200;
+
 }
