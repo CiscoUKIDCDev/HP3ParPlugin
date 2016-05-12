@@ -85,8 +85,10 @@ public class VolumeReportImpl implements TabularReportGeneratorIf {
 			// accountName;volumeid@accountName@volumeName;cpgname;copycpgname
 			// TODO This needs cleaning up and/or putting in its own library
 			// (e.g. GetInternalId.volume())
+			String copyCpg = (volume.getCopyCPG() == null) ? "" : volume.getCopyCPG();
+
 			model.addTextValue(credentials.getAccountName() + ";" + volume.getId() + "@" + credentials.getAccountName()
-					+ "@" + volume.getName() + ";" + volume.getUserCPG() + ";" + volume.getCopyCPG());
+					+ "@" + volume.getName() + ";" + volume.getUserCPG() + ";" + copyCpg);
 			// Volume ID
 			model.addTextValue(Integer.toString(volume.getId()));
 			// Name of this volume

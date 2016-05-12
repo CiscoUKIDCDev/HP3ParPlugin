@@ -46,10 +46,10 @@ public class CreateHostAction extends CloupiaPageAction {
 	private static Logger logger = Logger.getLogger(CreateHostAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private final static String PREFIX = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHostForm";
+	private final static String PREFIX = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.CreateHost";
 	private final String FORM_ID;
 	private final String ACTION_ID;
-	private final String LABEL = "Create";
+	private final static String LABEL = "Create";
 	private static final String DESCRIPTION = "Create a new Host";
 
 	/**
@@ -161,12 +161,12 @@ public class CreateHostAction extends CloupiaPageAction {
 
 	@Override
 	public String getLabel() {
-		return this.LABEL;
+		return CreateHostAction.LABEL;
 	}
 
 	@Override
 	public String getTitle() {
-		return this.LABEL;
+		return CreateHostAction.LABEL;
 	}
 
 }
