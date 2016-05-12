@@ -61,10 +61,19 @@ public class CreateVolumeSnapshotAction extends CloupiaPageAction {
 		page.bind(this.FORM_ID, CreateVolumeSnapshotConfig.class);
 	}
 
+	/**
+	 * Create a volume snapshot (with defaults)
+	 */
 	public CreateVolumeSnapshotAction() {
 		this.init(true, true);
 	}
 
+	/**
+	 * Create a volume snapshot (with defaults)
+	 * 
+	 * @param selection
+	 * @param needsContext
+	 */
 	public CreateVolumeSnapshotAction(boolean selection, boolean needsContext) {
 		this.init(selection, needsContext);
 	}

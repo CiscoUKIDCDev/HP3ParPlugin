@@ -35,6 +35,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.PageIf;
 import com.cloupia.service.cIM.inframgr.forms.wizard.WizardSession;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
 
+/**
+ * Add a host to a host selection
+ * 
+ * @author Matt Day
+ *
+ */
 public class AddHostToHostSetAction extends CloupiaPageAction {
 
 	private static Logger logger = Logger.getLogger(CreateHostSetAction.class);

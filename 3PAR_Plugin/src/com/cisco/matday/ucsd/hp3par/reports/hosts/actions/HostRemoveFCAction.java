@@ -49,7 +49,7 @@ public class HostRemoveFCAction extends CloupiaPageAction {
 	private final static String PREFIX = "com.cisco.matday.ucsd.hp3par.reports.hosts.actions.RemoveFCAction";
 	private String FORM_ID;
 	private String ACTION_ID;
-	private static final String LABEL = "Remove FC WWN";
+	private final static String LABEL = "Remove FC WWN";
 	private static final String DESCRIPTION = "Remove FC WWN";
 
 	private boolean selection;
@@ -99,7 +99,6 @@ public class HostRemoveFCAction extends CloupiaPageAction {
 
 		if (this.needsContext) {
 			form.setFcWWN(context.getId());
-
 			page.getFlist().getByFieldId(this.FORM_ID + ".fcWWN").setEditable(false);
 		}
 
@@ -178,12 +177,12 @@ public class HostRemoveFCAction extends CloupiaPageAction {
 
 	@Override
 	public String getLabel() {
-		return LABEL;
+		return HostRemoveFCAction.LABEL;
 	}
 
 	@Override
 	public String getTitle() {
-		return LABEL;
+		return HostRemoveFCAction.LABEL;
 	}
 
 }

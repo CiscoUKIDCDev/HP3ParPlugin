@@ -56,8 +56,8 @@ public class HostPathReport extends DrillableReportWithActions {
 	private final static String REPORT_LABEL = "Paths";
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new HostAddFCAction(false, true), new HostRemoveFCAction(false, true), new HostAddiSCSIAction(false, true),
-			new HostRemoveiSCSIAction(false, true),
+			new HostAddFCAction(false, true), new HostAddiSCSIAction(false, true), new HostRemoveFCAction(true, true),
+			new HostRemoveiSCSIAction(true, true),
 	};
 
 	/**

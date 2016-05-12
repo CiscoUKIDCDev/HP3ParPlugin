@@ -51,7 +51,6 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
  */
 public class HP3ParFCSelector implements TabularReportGeneratorIf {
 
-	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(HP3ParFCSelector.class);
 
 	@Override
@@ -76,6 +75,8 @@ public class HP3ParFCSelector implements TabularReportGeneratorIf {
 		model.addTextColumn("iSCSI IP Address", "iSCSI IP Address");
 		model.completedHeader();
 
+		logger.warn("Context: " + context.getId());
+
 		// Check if this is for a single host or all of them
 		if (context.getId().contains("@")) {
 			model = generateForSpecificHost(model, context);
@@ -91,7 +92,7 @@ public class HP3ParFCSelector implements TabularReportGeneratorIf {
 	private static TabularReportInternalModel generateForSpecificHost(TabularReportInternalModel model,
 			ReportContext context) throws Exception {
 		final String accountName = context.getId().split(";")[0];
-		final String hostName = context.getId().split("@")[2];
+		final String hostName = context.getId().split(";")[1].split("@")[0];
 		final HP3ParCredentials credentials = new HP3ParCredentials(accountName);
 		List<HostResponseFCPaths> fcPaths = HP3ParInventory.getHostInfo(credentials, hostName).getFCPaths();
 

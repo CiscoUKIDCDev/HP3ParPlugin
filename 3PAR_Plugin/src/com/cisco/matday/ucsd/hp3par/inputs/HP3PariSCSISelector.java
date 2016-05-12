@@ -91,7 +91,7 @@ public class HP3PariSCSISelector implements TabularReportGeneratorIf {
 	private static TabularReportInternalModel generateForSpecificHost(TabularReportInternalModel model,
 			ReportContext context) throws Exception {
 		final String accountName = context.getId().split(";")[0];
-		final String hostName = context.getId().split("@")[2];
+		final String hostName = context.getId().split(";")[1].split("@")[0];
 		final HP3ParCredentials credentials = new HP3ParCredentials(accountName);
 		List<HostResponseiSCSIPaths> scsiPaths = HP3ParInventory.getHostInfo(credentials, hostName).getiSCSIPaths();
 
