@@ -66,8 +66,9 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 
 		SystemResponse systemInfo = null;
 		boolean ok = false;
+		HP3ParCredentials credentials = new HP3ParCredentials(accountName);
 		try {
-			systemInfo = HP3ParInventory.getSystemResponse(new HP3ParCredentials(accountName));
+			systemInfo = HP3ParInventory.getSystemResponse(credentials);
 			ok = true;
 		}
 		catch (Exception e) {
@@ -99,16 +100,19 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		// setting context value that should be passed to report implementation
 		detail.setContextValue(contextId);
 		detail.setLayerType(3);
-		detail.setComponentSummaryList(this.getSummaryReports());
+		detail.setComponentSummaryList(HP3ParConvergedStackBuilder.getSummaryReports(systemInfo, credentials));
 		return detail;
 	}
 
-	@SuppressWarnings("static-method")
-	private List<String> getSummaryReports() throws Exception {
-
+	private static List<String> getSummaryReports(SystemResponse systemInfo, HP3ParCredentials credentials)
+			throws Exception {
 		final List<String> rpSummaryList = new ArrayList<>();
-		rpSummaryList.add("Nodes");
-		rpSummaryList.add("5");
+		rpSummaryList.add("System Name ," + systemInfo.getName());
+		rpSummaryList.add("Account Name ," + credentials.getAccountName());
+		rpSummaryList.add("Nodes ," + systemInfo.getTotalNodes());
+		rpSummaryList.add("Capacity (GiB) ," + (systemInfo.getTotalCapacityMiB() / 1024d));
+		rpSummaryList.add("Free (GiB) ," + (systemInfo.getFreeCapacityMiB() / 1024d));
+
 		return rpSummaryList;
 
 	}

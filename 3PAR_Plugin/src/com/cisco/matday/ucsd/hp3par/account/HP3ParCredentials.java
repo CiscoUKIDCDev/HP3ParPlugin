@@ -301,13 +301,13 @@ public class HP3ParCredentials {
 	 * @return UCS Director account information
 	 * @throws Exception
 	 */
-	public static HP3ParAccount getInternalCredential(String accountName) throws Exception {
+	public static HP3ParAccountDBStore getInternalCredential(String accountName) throws Exception {
 		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
 		String json = acc.getCredential();
-		AbstractInfraAccount specificAcc = (AbstractInfraAccount) JSON.jsonToJavaObject(json, HP3ParAccount.class);
+		AbstractInfraAccount specificAcc = (AbstractInfraAccount) JSON.jsonToJavaObject(json, HP3ParAccountDBStore.class);
 		specificAcc.setAccount(acc);
 
-		return (HP3ParAccount) specificAcc;
+		return (HP3ParAccountDBStore) specificAcc;
 
 	}
 

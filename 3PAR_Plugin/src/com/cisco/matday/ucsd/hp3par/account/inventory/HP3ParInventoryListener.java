@@ -23,7 +23,7 @@ package com.cisco.matday.ucsd.hp3par.account.inventory;
 
 import org.apache.log4j.Logger;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
+import com.cisco.matday.ucsd.hp3par.account.HP3ParAccountDBStore;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.util.HP3ParAccountPersistenceUtil;
 import com.cloupia.lib.connector.InventoryContext;
@@ -52,7 +52,7 @@ public class HP3ParInventoryListener implements InventoryEventListener {
 			connectivityStatus = entry.getTestConnectionHandler().testConnection(accountName);
 		}
 
-		final HP3ParAccount acc = HP3ParCredentials.getInternalCredential(accountName);
+		final HP3ParAccountDBStore acc = HP3ParCredentials.getInternalCredential(accountName);
 
 		if ((acc != null) && (connectivityStatus != null)) {
 			logger.info("Inventory collected successfully");

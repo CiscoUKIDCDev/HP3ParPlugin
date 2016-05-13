@@ -27,7 +27,7 @@ import javax.jdo.Transaction;
 
 import org.apache.log4j.Logger;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
+import com.cisco.matday.ucsd.hp3par.account.HP3ParAccountDBStore;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.exceptions.InvalidHP3ParTokenException;
 import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
@@ -54,7 +54,7 @@ public class StorageAccountStatusSummary {
 	 * @throws Exception
 	 */
 	public static void accountSummary(String accountName) throws Exception {
-		HP3ParAccount acc = HP3ParCredentials.getInternalCredential(accountName);
+		HP3ParAccountDBStore acc = HP3ParCredentials.getInternalCredential(accountName);
 		PhysicalInfraAccount infraAccount = AccountUtil.getAccountByName(accountName);
 		@SuppressWarnings("unused")
 		PhysicalConnectivityStatus status = new PhysicalConnectivityStatus(infraAccount);

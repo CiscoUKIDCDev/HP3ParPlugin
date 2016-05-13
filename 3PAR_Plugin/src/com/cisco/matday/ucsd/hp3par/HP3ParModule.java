@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParAccount;
+import com.cisco.matday.ucsd.hp3par.account.HP3ParAccountDBStore;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.handler.HP3ParConnectionHandler;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParConvergedStackBuilder;
@@ -203,7 +203,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		final AccountTypeEntry entry = new AccountTypeEntry();
 
 		// This is mandatory, hold the information for device credential details
-		entry.setCredentialClass(HP3ParAccount.class);
+		entry.setCredentialClass(HP3ParAccountDBStore.class);
 
 		// This is mandatory, type of the Account will be shown in GUI as drill
 		// down box

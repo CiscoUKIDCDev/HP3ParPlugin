@@ -46,9 +46,9 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  *
  */
 @PersistenceCapable(detachable = "true", table = "hp3par_account")
-public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCredential {
+public class HP3ParAccountDBStore extends AbstractInfraAccount implements ConnectorCredential {
 
-	static Logger logger = Logger.getLogger(HP3ParAccount.class);
+	static Logger logger = Logger.getLogger(HP3ParAccountDBStore.class);
 
 	@Persistent
 	private boolean isCredentialPolicy = false;
@@ -76,7 +76,7 @@ public class HP3ParAccount extends AbstractInfraAccount implements ConnectorCred
 	/**
 	 * Do not instantiate this directly, let UCSD do that...
 	 */
-	public HP3ParAccount() {
+	public HP3ParAccountDBStore() {
 		super();
 		this.https = true;
 		this.tcp_port = HP3ParConstants.DEFAULT_PORT;
