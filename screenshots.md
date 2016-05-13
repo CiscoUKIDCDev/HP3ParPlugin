@@ -1,6 +1,6 @@
 # Screenshots
 Summary page:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-summary-page)
+![Converged view screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-summary-page-new)
 
 Volume List
 ![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-volume-list)
@@ -15,7 +15,7 @@ CPG drilldown report
 ![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-cpg-details)
 
 3PAR workflow tasks
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-workflow-tasks)
+![Workflow task screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-workflow-tasks-new)
 
 Creating a volume
 ![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-create-volume)
