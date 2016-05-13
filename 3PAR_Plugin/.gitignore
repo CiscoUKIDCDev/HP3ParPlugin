@@ -1,3 +1,4 @@
-bin
-build
-HP3Par-plugin.zip
+.DS_Store
+.metadata
+.recommenders
+copyrightLog.txt
