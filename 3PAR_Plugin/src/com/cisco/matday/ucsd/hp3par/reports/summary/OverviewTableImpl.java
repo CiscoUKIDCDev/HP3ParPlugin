@@ -87,6 +87,7 @@ public class OverviewTableImpl implements TabularReportGeneratorIf {
 		model.addText("Total Nodes", Short.toString(systemInfo.getTotalNodes()), SYS_INFO_TABLE);
 		model.addText("Total Capacity (GiB)", Double.toString(systemInfo.getTotalCapacityMiB() / 1024d),
 				SYS_INFO_TABLE);
+		model.addText("Free Capacity (GiB)", Double.toString(systemInfo.getFreeCapacityMiB() / 1024d), SYS_INFO_TABLE);
 
 		// finally perform last clean up steps
 		model.setGroupOrder(GROUP_ORDER);
