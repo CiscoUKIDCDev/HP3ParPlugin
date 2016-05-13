@@ -1,27 +1,31 @@
 # Screenshots
 Summary page:
-![Converged view screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-summary-page-new)
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-summary.png)
 
-Volume List
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-volume-list)
+Volume list:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Volumes.png)
 
-Volume drilldown report
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-volume-drilldown)
+Creating a volume:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Create-Volume.png)
 
-CPG list
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-cpg-list)
+Volume drilldown:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Volume-Drilldown.png)
 
-CPG drilldown report
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-cpg-details)
+Volume snapshot:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Volume-Snapshots.png)
 
-3PAR workflow tasks
-![Workflow task screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-workflow-tasks-new)
+CPG Summary:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-CPG-Summary.png)
 
-Creating a volume
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-create-volume)
+CPG Drilldown Volume view:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Cpg-Volumes.png)
 
-Copying a volume
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-copy-volume)
+Host list:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Hosts.png)
 
-Creating a snapshot
-![Screenshot](https://matt.fragilegeek.com/ucsd/3par-plugin-create-snapshot)
+VLUN list:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-VLUNs.png)
+
+Custom task and Workflow list:
+![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Workflow.png)
+
