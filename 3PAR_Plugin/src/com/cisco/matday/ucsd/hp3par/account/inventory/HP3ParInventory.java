@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.HP3ParCPGList;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponse;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
@@ -49,6 +50,9 @@ import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
+import com.cloupia.lib.connector.account.AccountUtil;
+import com.cloupia.lib.connector.account.PhysicalConnectivityStatus;
+import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 
 /**
  * Manages inventory data including storing and managing it
@@ -97,17 +101,26 @@ public class HP3ParInventory {
 	}
 
 	// Create a new inventory store in the DB (i.e. when creating a new account)
-	private void create(HP3ParCredentials credentials) {
+	private void create(HP3ParCredentials credentials) throws Exception {
+		PhysicalInfraAccount infraAccount = AccountUtil.getAccountByName(credentials.getAccountName());
+		PhysicalConnectivityStatus status = new PhysicalConnectivityStatus(infraAccount);
+
 		final String accountName = credentials.getAccountName();
 		logger.info("Creating persistent store for account " + accountName);
 		try {
+			// Test token:
+			HP3ParToken token = new HP3ParToken(credentials);
+			if (token.getToken() == null) {
+				token.release();
+			}
 			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
 			logger.info("Creating new data store: " + accountName);
 			this.invStore = new HP3ParInventoryDBStore(accountName);
 			invStoreCollection.insert(this.invStore);
+			status.setConnectionOK(true);
 		}
 		catch (Exception e) {
-
+			status.setConnectionOK(false);
 			logger.info("Exeption when doing this! " + e.getMessage());
 		}
 	}
@@ -131,6 +144,9 @@ public class HP3ParInventory {
 		final String accountName = this.invStore.getAccountName();
 		final HP3ParCredentials login = new HP3ParCredentials(accountName);
 		final String queryString = "accountName == '" + accountName + "'";
+
+		PhysicalInfraAccount infraAccount = AccountUtil.getAccountByName(accountName);
+		PhysicalConnectivityStatus status = new PhysicalConnectivityStatus(infraAccount);
 
 		try {
 
@@ -192,9 +208,12 @@ public class HP3ParInventory {
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
 
+			status.setConnectionOK(true);
+
 		}
 		catch (Exception e) {
 			logger.warn("Exception updating database! " + e.getMessage());
+			status.setConnectionOK(false);
 		}
 	}
 

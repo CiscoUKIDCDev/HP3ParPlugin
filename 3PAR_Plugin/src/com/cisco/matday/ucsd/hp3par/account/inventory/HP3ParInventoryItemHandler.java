@@ -74,7 +74,7 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 	 */
 	@Override
 	public void doInventory(String accountName, Object obj) throws Exception {
-		// TODO Auto-generated method stub
+		this.doInventory(accountName);
 
 	}
 
