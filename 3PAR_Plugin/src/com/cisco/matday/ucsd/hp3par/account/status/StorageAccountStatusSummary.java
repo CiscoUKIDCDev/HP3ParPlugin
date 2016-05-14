@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -39,24 +39,23 @@ import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 
 /**
  * Shows the account summary in the converged view
- * 
+ *
  * @author Matt Day
  *
  */
 public class StorageAccountStatusSummary {
-	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(StorageAccountStatusSummary.class);
 
 	/**
 	 * Obtain account summary information
-	 * 
+	 *
 	 * @param accountName
 	 * @throws Exception
 	 */
 	public static void accountSummary(String accountName) throws Exception {
+		logger.info("Checking account status: " + accountName);
 		HP3ParAccountDBStore acc = HP3ParCredentials.getInternalCredential(accountName);
 		PhysicalInfraAccount infraAccount = AccountUtil.getAccountByName(accountName);
-		@SuppressWarnings("unused")
 		PhysicalConnectivityStatus status = new PhysicalConnectivityStatus(infraAccount);
 
 		StorageAccountStatus accStatus = new StorageAccountStatus();
@@ -68,20 +67,28 @@ public class StorageAccountStatusSummary {
 			if (token != null) {
 				accStatus.setReachable(true);
 				t.release();
+				logger.info("Connection OK: " + accountName);
 				accStatus.setLastMessage("Connection OK");
+				status.setConnectionOK(true);
 			}
 			else {
+				logger.info("Connection failed: " + accountName);
 				accStatus.setReachable(false);
+				status.setConnectionOK(false);
 				accStatus.setLastMessage("Could not connect (check username/password)");
 			}
 		}
 		catch (@SuppressWarnings("unused") InvalidHP3ParTokenException e) {
+			logger.info("Connection failed: " + accountName);
 			accStatus.setLastMessage("Could not connect (check username/password)");
 			accStatus.setReachable(false);
+			status.setConnectionOK(false);
 		}
 		catch (@SuppressWarnings("unused") Exception e) {
+			logger.info("Connection failed: " + accountName);
 			accStatus.setLastMessage("Could not connect (is the array down?)");
 			accStatus.setReachable(false);
+			status.setConnectionOK(false);
 		}
 
 		accStatus.setLicense("");
@@ -95,7 +102,7 @@ public class StorageAccountStatusSummary {
 
 	/**
 	 * Not sure what this does - adding from SDK boilerplate
-	 * 
+	 *
 	 * @param ac
 	 * @throws Exception
 	 */

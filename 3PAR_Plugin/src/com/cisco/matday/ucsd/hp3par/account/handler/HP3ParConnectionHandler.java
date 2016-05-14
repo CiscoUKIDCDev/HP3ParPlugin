@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -36,7 +36,7 @@ import com.cloupia.lib.connector.account.PhysicalInfraAccount;
 /**
  * Used to test if the array is reachable, especially when creating a new
  * account
- * 
+ *
  * @author Matt Day
  *
  */
@@ -52,10 +52,6 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 		status.setConnectionOK(false);
 		if (infraAccount != null) {
 			if (infraAccount.getAccountType() != null) {
-				logger.info(infraAccount.getAccountType());
-
-				// Instead of Nimble Account , real account type needs to
-				// specified.
 				if (infraAccount.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE)) {
 					logger.debug("Testing connectivity for account " + HP3ParConstants.INFRA_ACCOUNT_TYPE);
 					HP3ParCredentials t = new HP3ParCredentials(accountName);
@@ -74,12 +70,14 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 						logger.warn("Couldn't get token from system - probably invalid credentials");
 						status.setConnectionOK(false);
 						status.setErrorMsg("Could not get authentication token (check credentials)");
+						return status;
 					}
 					catch (@SuppressWarnings("unused") Exception e) {
 						logger.warn("Exception raised testing connection - probably wrong IP address or unreachable");
 						// Didn't get a token
 						status.setConnectionOK(false);
 						status.setErrorMsg("Array not found (check IP address or hostname)");
+						return status;
 					}
 
 				}

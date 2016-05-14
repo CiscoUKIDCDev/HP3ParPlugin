@@ -111,8 +111,11 @@ public class HP3ParInventory {
 			// Test token:
 			HP3ParToken token = new HP3ParToken(credentials);
 			if (token.getToken() == null) {
-				token.release();
+				status.setConnectionOK(false);
+				logger.warn("Could not get valid token - marking connection as invalid");
+				return;
 			}
+			token.release();
 			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
 			logger.info("Creating new data store: " + accountName);
 			this.invStore = new HP3ParInventoryDBStore(accountName);
