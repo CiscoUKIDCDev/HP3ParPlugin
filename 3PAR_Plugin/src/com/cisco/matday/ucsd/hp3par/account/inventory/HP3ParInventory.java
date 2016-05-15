@@ -201,12 +201,8 @@ public class HP3ParInventory {
 
 			final Date d = new Date();
 			final String update = c + "@" + d.getTime() + "@" + force + "@" + reason;
-			store.getPolling().add(update);
 
-			// Remove oldest entry if longer than the allowed log length
-			if (store.getPolling().size() > HP3ParConstants.MAX_POLLING_LOG_ENTRIES) {
-				store.getPolling().remove(0);
-			}
+			log(store, update);
 
 			this.invStore = store;
 			invStoreCollection.modifySingleObject(queryString, this.invStore);
@@ -216,7 +212,17 @@ public class HP3ParInventory {
 		}
 		catch (Exception e) {
 			logger.warn("Exception updating database! " + e.getMessage());
+
 			status.setConnectionOK(false);
+		}
+	}
+
+	private static void log(HP3ParInventoryDBStore store, String message) {
+		store.getPolling().add(message);
+
+		// Remove oldest entry if longer than the allowed log length
+		if (store.getPolling().size() > HP3ParConstants.MAX_POLLING_LOG_ENTRIES) {
+			store.getPolling().remove(0);
 		}
 	}
 

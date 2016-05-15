@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParAccountException;
+import com.cisco.matday.ucsd.hp3par.rest.HP3ParToken;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cloupia.model.cIM.ConvergedStackComponentDetail;
 import com.cloupia.model.cIM.ReportContextRegistry;
@@ -65,11 +66,24 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		}
 
 		SystemResponse systemInfo = null;
-		boolean ok = false;
+
 		HP3ParCredentials credentials = new HP3ParCredentials(accountName);
+
+		// Test connectivity
+		boolean ok = false;
+		try {
+			HP3ParToken token = new HP3ParToken(credentials);
+			if (token.getToken() != null) {
+				ok = true;
+				token.release();
+			}
+		}
+		catch (@SuppressWarnings("unused") Exception e) {
+			// Do nothing; status is already 'false'
+		}
+
 		try {
 			systemInfo = HP3ParInventory.getSystemResponse(credentials);
-			ok = true;
 		}
 		catch (Exception e) {
 			logger.warn("Couldn't populate account: " + e.getMessage());
@@ -88,7 +102,7 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		detail.setOsVersion(systemInfo.getSystemVersion());
 		detail.setVendorLogoUrl("/app/uploads/openauto/3Par_Icon.png");
 		detail.setMgmtIPAddr(systemInfo.getIPv4Addr());
-		detail.setStatus(ok ? "OK" : "Error");
+		detail.setStatus(ok ? "OK" : "Down");
 		detail.setVendorName("HP3PAR");
 
 		detail.setLabel("System Name:" + systemInfo.getName());
