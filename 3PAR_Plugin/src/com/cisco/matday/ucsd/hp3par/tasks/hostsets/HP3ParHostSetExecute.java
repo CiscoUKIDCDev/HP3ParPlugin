@@ -112,9 +112,10 @@ public class HP3ParHostSetExecute {
 	 */
 	public static HP3ParRequestStatus add(HP3ParCredentials c, AddHostToHostSetConfig config) throws Exception {
 		final String hostSetName = config.getHostSet().split("@")[2];
+		final String hostName = config.getHost().split("@")[2];
 
 		final String[] addArray = {
-				hostSetName
+				hostName
 		};
 
 		HP3ParHostSetEditParams addParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
@@ -152,8 +153,10 @@ public class HP3ParHostSetExecute {
 	 */
 	public static HP3ParRequestStatus remove(HP3ParCredentials c, RemoveHostFromHostSetConfig config) throws Exception {
 		final String hostSetName = config.getHostSet().split("@")[2];
+		final String hostName = config.getHost().split("@")[2];
+
 		final String[] removeArray = {
-				hostSetName
+				hostName
 		};
 
 		HP3ParHostSetEditParams removeParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,

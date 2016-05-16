@@ -85,8 +85,8 @@ public class HostsetMemberReportImpl implements TabularReportGeneratorIf {
 			// accountName;hostid@accountName@hostName
 
 			final String internalId = credentials.getAccountName() + ";" + host.getId() + "@"
-					+ credentials.getAccountName() + "@" + host.getName() + ";" + credentials.getAccountName() + ";"
-					+ hostSetId + "@" + credentials.getAccountName() + "@" + hostSetName;
+					+ credentials.getAccountName() + "@" + host.getName() + ";" + hostSetId + "@"
+					+ credentials.getAccountName() + "@" + hostSetName;
 
 			model.addTextValue(internalId);
 

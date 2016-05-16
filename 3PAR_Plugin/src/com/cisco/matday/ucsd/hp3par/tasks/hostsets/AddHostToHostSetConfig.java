@@ -53,7 +53,7 @@ public class AddHostToHostSetConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.HOSTSET_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOSTSET_LIST_FORM_PROVIDER)
+	@FormField(label = HP3ParConstants.HOSTSET_LIST_FORM_LABEL, help = "Host set", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOSTSET_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.HOSTSET_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String hostSet;
