@@ -5,3 +5,4 @@
 +EditHostSetConfig
 +DeleteHostSetConfig
 +AddHostToHostSetConfig
++RemoveHostFromHostSetConfig

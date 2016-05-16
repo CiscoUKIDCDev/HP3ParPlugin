@@ -61,9 +61,11 @@ import com.cisco.matday.ucsd.hp3par.tasks.hosts.DeleteHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.EditHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.RemoveFCWWNHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.RemoveiSCSIHostTask;
+import com.cisco.matday.ucsd.hp3par.tasks.hostsets.AddHostToHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.CreateHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.DeleteHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.EditHostSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.hostsets.RemoveHostFromHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.system.CollectInventoryTask;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.CreateVlunTask;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.DeleteVlunTask;
@@ -116,7 +118,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
 				new CreateVlunTask(), new DeleteVlunTask(), new CreateHostSetTask(), new EditHostSetTask(),
 				new DeleteHostSetTask(), new CollectInventoryTask(), new AddFCWWNHostTask(), new RemoveFCWWNHostTask(),
-				new AddiSCSIHostTask(), new RemoveiSCSIHostTask(), new EditHostTask(),
+				new AddiSCSIHostTask(), new RemoveiSCSIHostTask(), new EditHostTask(), new AddHostToHostSetTask(),
+				new RemoveHostFromHostSetTask()
 		};
 		return task;
 	}

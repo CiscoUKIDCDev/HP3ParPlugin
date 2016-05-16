@@ -110,51 +110,13 @@ public class HP3ParHostSetExecute {
 	 * @return Status
 	 * @throws Exception
 	 */
-	@SuppressWarnings("boxing")
 	public static HP3ParRequestStatus add(HP3ParCredentials c, AddHostToHostSetConfig config) throws Exception {
 		final String hostSetName = config.getHostSet().split("@")[2];
 
-		HashMap<String, Boolean> keepMap = new HashMap<>();
+		final String[] addArray = {
+				hostSetName
+		};
 
-		final String newMembers = config.getHosts();
-		final String[] oldMembers = HP3ParInventory.getHostSetInfo(c, hostSetName).getSetMembers();
-
-		List<String> remove = new ArrayList<>();
-		List<String> add = new ArrayList<>();
-
-		// The 3PAR array edit/remove MUST not contain elements already in the
-		// array, so we need to jump through some hoops
-
-		// Assume we're not keeping anything
-		for (String host : oldMembers) {
-			keepMap.put(host, false);
-		}
-		// Compute which ones to keep
-		for (String host : newMembers.split(",")) {
-			keepMap.put(host.split("@")[2], true);
-		}
-		// Remove anything not matching:
-		for (String host : keepMap.keySet()) {
-			if (!keepMap.get(host)) {
-				remove.add(host);
-			}
-		}
-		// Assume everything new should be added as new
-		for (String host : newMembers.split(",")) {
-			keepMap.put(host.split("@")[2], true);
-		}
-		// Anything currently in the list should not
-		for (String host : oldMembers) {
-			keepMap.put(host, false);
-		}
-		for (String host : keepMap.keySet()) {
-			if (keepMap.get(host)) {
-				add.add(host);
-			}
-		}
-
-		// Build add parameter list:
-		String[] addArray = add.toArray(new String[add.size()]);
 		HP3ParHostSetEditParams addParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
 
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
@@ -171,6 +133,45 @@ public class HP3ParHostSetExecute {
 		// Update the inventory
 		try {
 			HP3ParInventory.update(c, true, "Added host to host set");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return status;
+
+	}
+
+	/**
+	 * Remove a host from an existing host set
+	 *
+	 * @param c
+	 * @param config
+	 * @return Status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus remove(HP3ParCredentials c, RemoveHostFromHostSetConfig config) throws Exception {
+		final String hostSetName = config.getHostSet().split("@")[2];
+		final String[] removeArray = {
+				hostSetName
+		};
+
+		HP3ParHostSetEditParams removeParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,
+				removeArray);
+
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		// Remove members
+		if (removeArray.length > 0) {
+			status = doPut(removeParams, hostSetName, c);
+			if (!status.isSuccess()) {
+				return status;
+			}
+		}
+
+		// Update the inventory
+		try {
+			HP3ParInventory.update(c, true, "Removed host from host set");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -301,6 +302,7 @@ public class HP3ParHostSetExecute {
 		request.execute();
 		String response = request.getHttpResponse();
 		if (!response.equals("")) {
+			logger.warn("JSON: " + gson.toJson(params));
 			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
 			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
 			status.setSuccess(false);

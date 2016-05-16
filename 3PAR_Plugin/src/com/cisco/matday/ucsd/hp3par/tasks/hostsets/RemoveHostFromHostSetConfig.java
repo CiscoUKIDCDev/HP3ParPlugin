@@ -39,13 +39,13 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_add_host_to_host_set")
-public class AddHostToHostSetConfig implements TaskConfigIf {
+@PersistenceCapable(detachable = "true", table = "HP3Par_remove_host_from_host_set")
+public class RemoveHostFromHostSetConfig implements TaskConfigIf {
 
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "3PAR Add to Host Set";
+	public static final String DISPLAY_LABEL = "3PAR Remove from Host Set";
 
 	@Persistent
 	private long configEntryId;
@@ -62,6 +62,24 @@ public class AddHostToHostSetConfig implements TaskConfigIf {
 	@UserInputField(type = HP3ParConstants.HOST_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String host;
+
+	/**
+	 * Default constructor (not for rollback)
+	 */
+	public RemoveHostFromHostSetConfig() {
+		super();
+	}
+
+	/**
+	 * For rollback command
+	 *
+	 * @param c
+	 *            configuration
+	 */
+	public RemoveHostFromHostSetConfig(AddHostToHostSetConfig c) {
+		this.hostSet = c.getHostSet();
+		this.host = c.getHost();
+	}
 
 	@Override
 	public long getActionId() {
@@ -114,7 +132,7 @@ public class AddHostToHostSetConfig implements TaskConfigIf {
 	 * @param host
 	 *            the hosts to set
 	 */
-	public void setHosts(String host) {
+	public void setHost(String host) {
 		this.host = host;
 	}
 

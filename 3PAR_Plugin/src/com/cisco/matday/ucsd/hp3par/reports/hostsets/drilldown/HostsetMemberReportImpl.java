@@ -71,6 +71,7 @@ public class HostsetMemberReportImpl implements TabularReportGeneratorIf {
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 		// accountName;hostid@accountName@hostName
+		final String hostSetId = context.getId().split(";")[1].split("@")[0];
 		final String hostSetName = context.getId().split(";")[1].split("@")[2];
 
 		// HostResponse hostList = HP3ParInventory.getHostResponse(new
@@ -82,8 +83,13 @@ public class HostsetMemberReportImpl implements TabularReportGeneratorIf {
 
 			// Internal ID, format:
 			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + host.getId() + "@" + credentials.getAccountName()
-					+ "@" + host.getName());
+
+			final String internalId = credentials.getAccountName() + ";" + host.getId() + "@"
+					+ credentials.getAccountName() + "@" + host.getName() + ";" + credentials.getAccountName() + ";"
+					+ hostSetId + "@" + credentials.getAccountName() + "@" + hostSetName;
+
+			model.addTextValue(internalId);
+
 			// Bad but we can use this to parse it all out later
 			// ID
 			model.addTextValue(Integer.toString(host.getId()));

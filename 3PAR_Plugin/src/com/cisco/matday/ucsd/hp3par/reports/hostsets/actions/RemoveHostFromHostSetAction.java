@@ -26,8 +26,8 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.hostsets.AddHostToHostSetConfig;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.HP3ParHostSetExecute;
+import com.cisco.matday.ucsd.hp3par.tasks.hostsets.RemoveHostFromHostSetConfig;
 import com.cloupia.model.cIM.ConfigTableAction;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.service.cIM.inframgr.forms.wizard.Page;
@@ -41,30 +41,36 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaPageAction;
  * @author Matt Day
  *
  */
-public class AddHostToHostSetAction extends CloupiaPageAction {
+public class RemoveHostFromHostSetAction extends CloupiaPageAction {
 
 	private static Logger logger = Logger.getLogger(CreateHostSetAction.class);
 
 	// need to provide a unique string to identify this form and action
-	private final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.AddHostToHostSetAction";
-	private final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.AddHostToHostSetAction";
-	private final String LABEL = "Add";
-	private final String DESCRIPTION = "Add host to host set";
+	private final String FORM_ID = "com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.RemoveHostFromHostSetAction";
+	private final String ACTION_ID = "com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.RemoveHostFromHostSetAction";
+	private final String LABEL = "Remove";
+	private final String DESCRIPTION = "Remove host from host set";
 
 	@Override
 	public void definePage(Page page, ReportContext context) {
 		// Use the same form (config) as the Create Host custom task
-		page.bind(this.FORM_ID, AddHostToHostSetConfig.class);
+		page.bind(this.FORM_ID, RemoveHostFromHostSetConfig.class);
 
 	}
 
 	@Override
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
-		AddHostToHostSetConfig form = new AddHostToHostSetConfig();
+		String query = context.getId();
+		RemoveHostFromHostSetConfig form = new RemoveHostFromHostSetConfig();
 
-		form.setHostSet(context.getId());
+		final String host = query.split(";")[0] + query.split(";")[1];
+		final String hostSet = query.split(";")[0] + query.split(";")[2];
+
+		form.setHost(host);
+		form.setHostSet(hostSet);
 
 		page.getFlist().getByFieldId(this.FORM_ID + ".hostSet").setEditable(false);
+		page.getFlist().getByFieldId(this.FORM_ID + ".host").setEditable(false);
 
 		session.getSessionAttributes().put(this.FORM_ID, form);
 		page.marshallFromSession(this.FORM_ID);
@@ -74,23 +80,23 @@ public class AddHostToHostSetAction extends CloupiaPageAction {
 	@Override
 	public int validatePageData(Page page, ReportContext context, WizardSession session) throws Exception {
 		Object obj = page.unmarshallToSession(this.FORM_ID);
-		AddHostToHostSetConfig config = (AddHostToHostSetConfig) obj;
+		RemoveHostFromHostSetConfig config = (RemoveHostFromHostSetConfig) obj;
 
 		// Get credentials from the current context
 		HP3ParCredentials c = new HP3ParCredentials(context);
 		// TODO this is broken - it will delete anything not included - should
 		// create an add method
-		HP3ParRequestStatus s = HP3ParHostSetExecute.add(c, config);
+		HP3ParRequestStatus s = HP3ParHostSetExecute.remove(c, config);
 
 		// Throwing an exception fails the submit and shows the error in the
 		// window
 		if (!s.isSuccess()) {
-			logger.warn("Failed to add Host:" + s.getError());
-			throw new HP3ParHostSetException("Failed to add Host: " + s.getError());
+			logger.warn("Failed to remove Host:" + s.getError());
+			throw new HP3ParHostSetException("Failed to remove Host: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Host " + config.getHost() + " added OK");
+		page.setPageMessage("Host " + config.getHost() + " removed OK");
 		return PageIf.STATUS_OK;
 	}
 
@@ -111,7 +117,7 @@ public class AddHostToHostSetAction extends CloupiaPageAction {
 
 	@Override
 	public boolean isSelectionRequired() {
-		return false;
+		return true;
 	}
 
 	@Override

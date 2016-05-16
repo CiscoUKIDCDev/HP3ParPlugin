@@ -22,6 +22,8 @@
 package com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.AddHostToHostSetAction;
+import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.RemoveHostFromHostSetAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -51,7 +53,7 @@ public class HostSetMemberReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-
+			new AddHostToHostSetAction(), new RemoveHostFromHostSetAction()
 	};
 
 	/**
