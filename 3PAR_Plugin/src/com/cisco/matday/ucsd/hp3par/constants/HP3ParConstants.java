@@ -348,6 +348,12 @@ public class HP3ParConstants {
 	 * Default 15 minutes (900,000 milliseconds)
 	 */
 	public static final long INVENTORY_LIFE = 900000;
+
+	/**
+	 * Constant to convert from milliseconds to minutes
+	 */
+	public static final int MILLISECOND_TO_MINUTES = 60000;
+
 	/**
 	 * How deep should a fetch manager be for JDO queries
 	 */

@@ -74,7 +74,7 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	private boolean https;
 
 	@Persistent
-	@FormField(label = "Poll Interval", help = "Between 1 and 60 minutes - inventory will always be polled after an action is taken", type = FormFieldDefinition.FIELD_TYPE_NUMBER)
+	@FormField(label = "Poll Interval (minutes)", help = "Between 1 and 60 minutes - inventory will always be polled after an action is taken", type = FormFieldDefinition.FIELD_TYPE_NUMBER)
 	private int polling;
 
 	/**
@@ -84,7 +84,7 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 		super();
 		this.https = true;
 		this.tcp_port = HP3ParConstants.DEFAULT_PORT;
-		this.polling = (int) (HP3ParConstants.INVENTORY_LIFE / 6000);
+		this.polling = (int) (HP3ParConstants.INVENTORY_LIFE / HP3ParConstants.MILLISECOND_TO_MINUTES);
 	}
 
 	@Override
@@ -272,7 +272,7 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	 */
 	public int getPolling() {
 		if (this.polling == 0) {
-			return (int) (HP3ParConstants.INVENTORY_LIFE / 6000);
+			return (int) (HP3ParConstants.INVENTORY_LIFE / HP3ParConstants.MILLISECOND_TO_MINUTES);
 		}
 		return this.polling;
 	}

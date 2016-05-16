@@ -173,7 +173,8 @@ public class HP3ParInventory {
 			}
 
 			// Get user configured inventory lifespan
-			final long inventoryLife = HP3ParCredentials.getInternalCredential(accountName).getPolling() * 6000;
+			final long inventoryLife = HP3ParCredentials.getInternalCredential(accountName).getPolling()
+					* HP3ParConstants.MILLISECOND_TO_MINUTES;
 
 			if ((!force) && ((c - store.getUpdated()) < inventoryLife)) {
 				return;
