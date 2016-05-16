@@ -63,8 +63,8 @@ public class RemoveHostFromHostSetAction extends CloupiaPageAction {
 		String query = context.getId();
 		RemoveHostFromHostSetConfig form = new RemoveHostFromHostSetConfig();
 
-		final String host = query.split(";")[0] + query.split(";")[1];
-		final String hostSet = query.split(";")[0] + query.split(";")[2];
+		final String host = query.split(";")[0] + ";" + query.split(";")[1];
+		final String hostSet = query.split(";")[0] + ";" + query.split(";")[2];
 
 		form.setHost(host);
 		form.setHostSet(hostSet);
