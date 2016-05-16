@@ -172,7 +172,10 @@ public class HP3ParInventory {
 				return;
 			}
 
-			if ((!force) && ((c - store.getUpdated()) < HP3ParConstants.INVENTORY_LIFE)) {
+			// Get user configured inventory lifespan
+			final long inventoryLife = HP3ParCredentials.getInternalCredential(accountName).getPolling() * 6000;
+
+			if ((!force) && ((c - store.getUpdated()) < inventoryLife)) {
 				return;
 			}
 			logger.info("Updating persistent store for account " + accountName);

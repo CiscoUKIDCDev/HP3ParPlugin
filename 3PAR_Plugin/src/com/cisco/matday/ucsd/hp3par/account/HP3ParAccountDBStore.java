@@ -73,6 +73,10 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	@FormField(label = "Use secure connection (https)", help = "Use secure connection (https)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
 	private boolean https;
 
+	@Persistent
+	@FormField(label = "Poll Interval", help = "Between 1 and 60 minutes - inventory will always be polled after an action is taken", type = FormFieldDefinition.FIELD_TYPE_NUMBER)
+	private int polling;
+
 	/**
 	 * Do not instantiate this directly, let UCSD do that...
 	 */
@@ -80,6 +84,7 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 		super();
 		this.https = true;
 		this.tcp_port = HP3ParConstants.DEFAULT_PORT;
+		this.polling = (int) (HP3ParConstants.INVENTORY_LIFE / 6000);
 	}
 
 	@Override
@@ -245,6 +250,39 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	@Override
 	public void setUsername(String userName) {
 		this.username = userName;
+	}
+
+	/**
+	 * @return the logger
+	 */
+	public static Logger getLogger() {
+		return logger;
+	}
+
+	/**
+	 * @param logger
+	 *            the logger to set
+	 */
+	public static void setLogger(Logger logger) {
+		HP3ParAccountDBStore.logger = logger;
+	}
+
+	/**
+	 * @return the polling interval in minutes
+	 */
+	public int getPolling() {
+		if (this.polling == 0) {
+			return (int) (HP3ParConstants.INVENTORY_LIFE / 6000);
+		}
+		return this.polling;
+	}
+
+	/**
+	 * @param polling
+	 *            the polling to set in minutes
+	 */
+	public void setPolling(int polling) {
+		this.polling = polling;
 	}
 
 }
