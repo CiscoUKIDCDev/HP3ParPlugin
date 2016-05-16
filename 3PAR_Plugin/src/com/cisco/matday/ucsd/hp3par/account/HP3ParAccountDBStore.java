@@ -74,7 +74,7 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	private boolean https;
 
 	@Persistent
-	@FormField(label = "Poll Interval (minutes)", help = "Between 1 and 60 minutes - inventory will always be polled after an action is taken", type = FormFieldDefinition.FIELD_TYPE_NUMBER)
+	@FormField(label = "Poll Interval (minutes)", help = "Between 1 and 60 minutes. -1 to disable (not recommended). Inventory will always be polled after an action.", type = FormFieldDefinition.FIELD_TYPE_NUMBER)
 	private int polling;
 
 	/**
