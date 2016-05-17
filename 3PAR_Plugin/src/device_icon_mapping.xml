@@ -11,7 +11,7 @@
 		isn't that important, if you implemented it properly, you should never need 
 		to use this -->
 	<CategoryDefault>
-		<IconURL>/app/uploads/openauto/3Par_Icon.png</IconURL>
+		<IconURL>/app/uploads/openauto/3Par_Vendor_Icon.png</IconURL>
 	</CategoryDefault>
 
 	<!-- there can be one or more VendorDefault tags. One instance per each 
@@ -19,7 +19,7 @@
 		never need to use this -->
 	<VendorDefault>
 		<Vendor>HP Enterprise</Vendor>
-		<IconURL>/app/uploads/openauto/3Par_Icon.png</IconURL>
+		<IconURL>/app/uploads/openauto/3Par_Vendor_Icon.png</IconURL>
 	</VendorDefault>
 
 	<!-- typically there can be any number of Device tags, one per each Vendor+DeviceType 
@@ -31,28 +31,28 @@
 	<Device>
 		<DeviceType>HP_3PAR 7200</DeviceType>
 		<Vendor>HP Enterprise</Vendor>
-		<IconURL>/app/uploads/openauto/3Par_Icon.png</IconURL>
+		<IconURL>/app/uploads/openauto/3Par_Vendor_Icon.png</IconURL>
 		<Description>HP 3PAR 7200</Description>
 		<IsSupported>true</IsSupported>
 	</Device>
 	<Device>
 		<DeviceType>HP_3PAR 7200</DeviceType>
 		<Vendor>HP3PAR</Vendor>
-		<IconURL>/app/uploads/openauto/3Par_Icon.png</IconURL>
+		<IconURL>/app/uploads/openauto/3Par_Vendor_Icon.png</IconURL>
 		<Description>HP 3PAR 7200</Description>
 		<IsSupported>true</IsSupported>
 	</Device>
 	<Device>
 		<DeviceType>HP 3PAR Pod</DeviceType>
 		<Vendor>HP Enterprise</Vendor>
-		<IconURL>/app/uploads/openauto/3Par_Icon.png</IconURL>
+		<IconURL>/app/uploads/openauto/3Par_Vendor_Icon.png</IconURL>
 		<Description>HP 3PAR 7200</Description>
 		<IsSupported>true</IsSupported>
 	</Device>
 	<Device>
 		<DeviceType>HP3PAR</DeviceType>
 		<Vendor>HP Enterprise</Vendor>
-		<IconURL>/app/uploads/openauto/3Par_Icon.png</IconURL>
+		<IconURL>/app/uploads/openauto/3Par_Vendor_Icon.png</IconURL>
 		<Description>HP 3PAR 7200</Description>
 		<IsSupported>true</IsSupported>
 	</Device>

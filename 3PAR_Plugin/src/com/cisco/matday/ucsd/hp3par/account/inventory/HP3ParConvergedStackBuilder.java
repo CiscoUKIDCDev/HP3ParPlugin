@@ -100,14 +100,14 @@ public class HP3ParConvergedStackBuilder implements ConvergedStackComponentBuild
 		detail.setModel(systemInfo.getModel());
 
 		detail.setOsVersion(systemInfo.getSystemVersion());
-		detail.setVendorLogoUrl("/app/uploads/openauto/3Par_Icon.png");
+		detail.setVendorLogoUrl("/app/uploads/openauto/3Par_Vendor_Icon.png");
 		detail.setMgmtIPAddr(systemInfo.getIPv4Addr());
 		detail.setStatus(ok ? "OK" : "Down");
 		detail.setVendorName("HP3PAR");
 
 		detail.setLabel("System Name:" + systemInfo.getName());
 
-		detail.setIconUrl("/app/uploads/openauto/3Par_Icon.png");
+		detail.setIconUrl("/app/uploads/openauto/3Par_Vendor_Icon.png");
 		// setting account context type
 		detail.setContextType(
 				ReportContextRegistry.getInstance().getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE).getType());
