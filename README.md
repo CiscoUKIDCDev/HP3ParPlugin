@@ -24,15 +24,12 @@ You should back-up your UCS Director database before using this plugin and test 
 For more screenshots see the [screenshots page](screenshots.md).
 
 ## Features
-
-### Implemented
 * Ability to add a 3PAR physical storage account (and converged stack based on it)
 * Converged/Physical view tab (list of volumes, CPGs and some graphs)
-* Drilldown reports (double-click on CPGs and Volumes to see more information and graphs)
-* Form lists to pick 3PAR accounts, CPGs and Volumes
-* Action buttons on the volume form list to create/delete and to perform snapshots & copies
-* Create, Delete, Snapshot and Copy volume tasks
-* Full Javadoc in source code
+* Drilldown reports (double-click on items to see more information and graphs)
+* List of values to pick various 3PAR assets for tasks
+* Action buttons to perform each task via the GUI
+* Over 25 tasks
 * Inventory collection and database caching
 * Full support to create/delete VLUNs and Hosts
 * Host sets
