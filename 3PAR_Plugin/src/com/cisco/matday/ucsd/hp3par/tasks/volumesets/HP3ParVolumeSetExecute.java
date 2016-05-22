@@ -32,7 +32,10 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
+import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParVolumeAction;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.sets.json.HP3ParSetEditParams;
 import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetRequest;
@@ -356,6 +359,62 @@ public class HP3ParVolumeSetExecute {
 			// Update the inventory
 			try {
 				HP3ParInventory.update(c, true, "Volume set deletion");
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Return the same reference as passed for convenience and clarity
+		return status;
+
+	}
+
+	/**
+	 * Snapshot an existing volume set
+	 *
+	 * @param c
+	 *            Credentials for the account to perform this on
+	 * @param config
+	 *            Configuration settings
+	 * @return Status of the operation
+	 * @throws Exception
+	 *             if the operation was unsuccessful
+	 * @throws HP3ParVolumeException
+	 *             If the volume is invalid
+	 */
+	public static HP3ParRequestStatus snapshot(HP3ParCredentials c, CreateVolumeSetSnapshotConfig config)
+			throws HP3ParVolumeException, Exception {
+
+		final String volumeSetName = config.getVolumeSet().split("@")[2];
+
+		final HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(),
+				config.getComment());
+
+		Gson gson = new Gson();
+		final HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		// Use defaults for a POST request
+		request.setPostDefaults(gson.toJson(new HP3ParVolumeAction("createSnapshot", p)));
+		// Generate URI:
+		final String uri = "/api/v1/volumesets/" + volumeSetName;
+		request.setUri(uri);
+
+		request.execute();
+		final String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true, "Volume set snapshot creation");
 			}
 			catch (Exception e) {
 				e.printStackTrace();

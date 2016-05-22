@@ -6,3 +6,4 @@
 +DeleteVolumeSetConfig
 +AddVolumeToVolumeSetConfig
 +RemoveVolumeFromVolumeSetConfig
++CreateVolumeSetSnapshotConfig
