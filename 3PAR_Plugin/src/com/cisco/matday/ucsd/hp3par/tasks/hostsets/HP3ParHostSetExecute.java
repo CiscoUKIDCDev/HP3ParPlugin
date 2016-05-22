@@ -33,9 +33,9 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HP3ParHostSetEditParams;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetRequest;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.HP3ParSetEditParams;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetRequest;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.HP3ParCopyExecute;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
@@ -65,7 +65,7 @@ public class HP3ParHostSetExecute {
 			setmembers[i] = hostList[i].split("@")[2];
 		}
 
-		HostSetRequest p = new HostSetRequest(config.getHostSetName(), setmembers, config.getComment(),
+		SetRequest p = new SetRequest(config.getHostSetName(), setmembers, config.getComment(),
 				config.getDomain());
 
 		Gson gson = new Gson();
@@ -118,7 +118,7 @@ public class HP3ParHostSetExecute {
 				hostName
 		};
 
-		HP3ParHostSetEditParams addParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
+		HP3ParSetEditParams addParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
 
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
@@ -159,7 +159,7 @@ public class HP3ParHostSetExecute {
 				hostName
 		};
 
-		HP3ParHostSetEditParams removeParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,
+		HP3ParSetEditParams removeParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,
 				removeArray);
 
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
@@ -237,14 +237,14 @@ public class HP3ParHostSetExecute {
 
 		// Build add parameter list:
 		String[] addArray = add.toArray(new String[add.size()]);
-		HP3ParHostSetEditParams addParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
+		HP3ParSetEditParams addParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
 		// Build add parameter list:
 		String[] removeArray = remove.toArray(new String[remove.size()]);
-		HP3ParHostSetEditParams removeParams = new HP3ParHostSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,
+		HP3ParSetEditParams removeParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,
 				removeArray);
 		// Build rename parameter list:
-		HP3ParHostSetEditParams renameParams = new HP3ParHostSetEditParams(config.getHostSetName());
-		HP3ParHostSetEditParams commentParams = new HP3ParHostSetEditParams();
+		HP3ParSetEditParams renameParams = new HP3ParSetEditParams(config.getHostSetName());
+		HP3ParSetEditParams commentParams = new HP3ParSetEditParams();
 		commentParams.setComment(config.getComment());
 
 		HP3ParRequestStatus status;
@@ -290,7 +290,7 @@ public class HP3ParHostSetExecute {
 
 	}
 
-	private static HP3ParRequestStatus doPut(HP3ParHostSetEditParams params, String hostSetName, HP3ParCredentials c)
+	private static HP3ParRequestStatus doPut(HP3ParSetEditParams params, String hostSetName, HP3ParCredentials c)
 			throws HttpException, IOException {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();

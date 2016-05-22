@@ -19,10 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.rest.hostsets.json;
+package com.cisco.matday.ucsd.hp3par.rest.sets.json;
 
 /**
- * 3PAR Host Set list JSON enumeration
+ * 3PAR volume/host Set list JSON enumeration
  *
  * For more info see the HP 3PAR REST API documentation
  *
@@ -30,17 +30,17 @@ package com.cisco.matday.ucsd.hp3par.rest.hostsets.json;
  *
  */
 @SuppressWarnings("javadoc")
-public class HostSetRequest {
+public class SetRequest {
 	private String name;
 	private String[] setmembers;
 	private String domain;
 	private String comment;
 
-	public HostSetRequest() {
+	public SetRequest() {
 		// leave default
 	}
 
-	public HostSetRequest(String name, String[] setmembers, String comment, String domain) {
+	public SetRequest(String name, String[] setmembers, String comment, String domain) {
 		super();
 		this.name = name;
 		this.setmembers = setmembers;
@@ -48,7 +48,7 @@ public class HostSetRequest {
 		this.comment = ("".equals(comment)) ? null : comment;
 	}
 
-	public HostSetRequest(String name, String[] setmembers, String comment) {
+	public SetRequest(String name, String[] setmembers, String comment) {
 		super();
 		this.name = name;
 		this.setmembers = setmembers;

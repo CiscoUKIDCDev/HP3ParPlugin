@@ -19,12 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.rest.hostsets.json;
+package com.cisco.matday.ucsd.hp3par.rest.sets.json;
 
 import java.util.List;
 
 /**
- * 3PAR Host Set list JSON enumeration
+ * 3PAR volume/host Set list JSON enumeration
  *
  * For more info see the HP 3PAR REST API documentation
  *
@@ -32,9 +32,9 @@ import java.util.List;
  *
  */
 @SuppressWarnings("javadoc")
-public class HostSetResponse {
+public class SetResponse {
 	private int total;
-	private List<HostSetResponseMember> members;
+	private List<SetResponseMember> members;
 
 	public int getTotal() {
 		return this.total;
@@ -44,11 +44,11 @@ public class HostSetResponse {
 		this.total = total;
 	}
 
-	public List<HostSetResponseMember> getMembers() {
+	public List<SetResponseMember> getMembers() {
 		return this.members;
 	}
 
-	public void setMembers(List<HostSetResponseMember> members) {
+	public void setMembers(List<SetResponseMember> members) {
 		this.members = members;
 	}
 

@@ -19,99 +19,94 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown;
+package com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown;
+
+import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.AddHostToHostSetAction;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.RemoveHostFromHostSetAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
+import com.cloupia.model.cIM.ReportDefinition;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
-import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
-import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
-import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularReport;
 
 /**
- * Host report
+ * Summary for volume view drilldown
  *
- * @author Matt
+ * @author Matt Day
  *
  */
-public class HostSetMemberReport extends DrillableReportWithActions {
-	/**
-	 * Unique identifier for this report
-	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown.HostReport";
-	/**
-	 * User-friendly report name
-	 */
-	private final static String REPORT_LABEL = "Members";
+public class VolumeSetSummaryReport extends CloupiaNonTabularReport {
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(VolumeSetSummaryReport.class);
 
-	// This MUST be defined ONCE!
-	private CloupiaReport[] drillable = new CloupiaReport[] {
-
-	};
-
-	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new AddHostToHostSetAction(), new RemoveHostFromHostSetAction()
-	};
+	private final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown";
+	private static final String REPORT_LABEL = "Summary";
 
 	/**
-	 * Create Host report
+	 * Creates the account summary report and passes the account name, magic
+	 * number and storage category to the implementing class
 	 */
-	public HostSetMemberReport() {
+	public VolumeSetSummaryReport() {
 		super();
-		// This sets what column to use as the context ID for child drilldown
-		// reports
-		this.setMgmtColumnIndex(0);
-		// This sets what to show in the GUI in the top
-		this.setMgmtDisplayColumnIndex(2);
+		this.setMgmtColumnIndex(1);
 	}
 
-	@Override
-	public CloupiaReport[] getDrilldownReports() {
-		return this.drillable;
-	}
-
-	@Override
-	public Class<HostSetMemberReportImpl> getImplementationClass() {
-		return HostSetMemberReportImpl.class;
-	}
-
-	@Override
-	public CloupiaReportAction[] getActions() {
-		return this.actions;
-	}
-
+	/**
+	 * This method returns the report label to be display in UI
+	 *
+	 * @return label of report
+	 */
 	@Override
 	public String getReportLabel() {
 		return REPORT_LABEL;
 	}
 
+	/**
+	 * @return This method returns report name ,each report should have unique
+	 *         name
+	 */
 	@Override
 	public String getReportName() {
 		return REPORT_NAME;
 	}
 
 	@Override
-	public boolean isEasyReport() {
-		return false;
+	public Class<VolumeSetSummaryReportImpl> getImplementationClass() {
+		// TODO Auto-generated method stub
+		return VolumeSetSummaryReportImpl.class;
 	}
 
+	/**
+	 * @return This method returns type of report like summary/pie chart/Line
+	 *         chart/tabular etc
+	 */
 	@Override
-	public boolean isLeafReport() {
+	public int getReportType() {
+		return ReportDefinition.REPORT_TYPE_SUMMARY;
+	}
+
+	/**
+	 * @return This method returns type of report
+	 */
+	@Override
+	public int getReportHint() {
+		return ReportDefinition.REPORT_HINT_VERTICAL_TABLE_WITH_GRAPHS;
+	}
+
+	/**
+	 * @return This method returns boolean value true/false. if it returns true
+	 *         then only form will be shown in UI
+	 */
+	@Override
+	public boolean isManagementReport() {
 		return true;
-	}
-
-	@Override
-	public int getMenuID() {
-		return 51;
 	}
 
 	@Override
 	public ContextMapRule[] getMapRules() {
 		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.HOSTSET_LIST_DRILLDOWN);
+				.getContextByName(HP3ParConstants.VOLUMESET_LIST_DRILLDOWN);
 
 		ContextMapRule rule = new ContextMapRule();
 		rule.setContextName(context.getId());

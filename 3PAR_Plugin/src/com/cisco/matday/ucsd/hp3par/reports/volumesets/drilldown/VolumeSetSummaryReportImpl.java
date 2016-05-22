@@ -19,83 +19,74 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets;
+package com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponse;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
 import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
 import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
-import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
+import com.cloupia.service.cIM.inframgr.reports.SummaryReportInternalModel;
 
 /**
- * Implements a host report list
+ * Implementation for a volume summary
  *
  * @author Matt Day
  *
  */
-public class HostSetReportImpl implements TabularReportGeneratorIf {
+public class VolumeSetSummaryReportImpl implements TabularReportGeneratorIf {
+	private static Logger logger = Logger.getLogger(VolumeSetSummaryReportImpl.class);
 
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostSetReportImpl.class);
+	private static final String VOLUMESET_INFO_TABLE = "Overview";
+
+	private static final String[] GROUP_ORDER = {
+			VOLUMESET_INFO_TABLE
+	};
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
 		TabularReport report = new TabularReport();
-
+		report.setContext(context);
 		report.setGeneratedTime(System.currentTimeMillis());
 		report.setReportName(reportEntry.getReportLabel());
-		report.setContext(context);
 
-		TabularReportInternalModel model = new TabularReportInternalModel();
-		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("ID", "ID");
-		model.addTextColumn("Name", "Name");
-		model.addTextColumn("Members", "Members");
-		model.addTextColumn("Comment", "Comments");
-
-		model.completedHeader();
+		// showing how to add two tables to your summary panel
+		// the tables in summary panel are always two column tables
+		SummaryReportInternalModel model = new SummaryReportInternalModel();
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		SetResponse hostSetList = HP3ParInventory.getHostSetResponse(new HP3ParCredentials(context));
-
-		for (SetResponseMember hostSet : hostSetList.getMembers()) {
-
-			// Internal ID, format:
-			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@" + credentials.getAccountName()
-					+ "@" + hostSet.getName());
-
-			// Bad but we can use this to parse it all out later
-			// ID
-			model.addTextValue(Integer.toString(hostSet.getId()));
-			model.addTextValue(hostSet.getName());
-			String members = "";
-			// Name
-			for (String member : hostSet.getSetMembers()) {
-				members += member + ", ";
-			}
-			// Remove trailing ', '
-			if (members.length() > 0) {
-				members = members.substring(0, members.length() - 2);
-			}
-			model.addTextValue(members);
-			model.addTextValue(hostSet.getComment());
-
-			model.completedRow();
+		String volumeSetName = null;
+		// Split out hidden field in the format:
+		// AccountName;id@AccountName@volumeName
+		try {
+			volumeSetName = context.getId().split(";")[1].split("@")[2];
+		}
+		catch (Exception e) {
+			logger.warn("Could not get ID from context ID: " + context.getId());
+			throw new HP3ParSetException("Could not get ID from context" + e.getMessage());
 		}
 
+		// Get volume info:
+		SetResponseMember volumeSet = HP3ParInventory.getVolumeSetInfo(credentials, volumeSetName);
+
+		// Build the table
+		model.addText("Set Name", volumeSetName, VOLUMESET_INFO_TABLE);
+		model.addNumber("ID", volumeSet.getId(), VOLUMESET_INFO_TABLE);
+		// Descriptors
+		model.addText("Members", Integer.toString(volumeSet.getSetMembers().length), VOLUMESET_INFO_TABLE);
+
+		// finally perform last clean up steps
+		model.setGroupOrder(GROUP_ORDER);
 		model.updateReport(report);
 
 		return report;
-
 	}
 
 }

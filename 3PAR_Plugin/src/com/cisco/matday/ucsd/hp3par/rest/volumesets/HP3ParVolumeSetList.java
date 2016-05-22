@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.rest.hostsets;
+package com.cisco.matday.ucsd.hp3par.rest.volumesets;
 
 import java.io.IOException;
 
@@ -33,14 +33,16 @@ import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 import com.google.gson.Gson;
 
 /**
- * Gets a list of every host set
+ * Gets a list of every volume set
+ *
+ * It implements the same logic as the host set list, so use that...
  *
  * @author Matt Day
  *
  */
-public class HP3ParHostSetList {
-	private final SetResponse hostSets;
+public class HP3ParVolumeSetList {
 	private final String json;
+	private final SetResponse volumeSets;
 
 	/**
 	 * @param loginCredentials
@@ -50,16 +52,16 @@ public class HP3ParHostSetList {
 	 * @throws InvalidHP3ParTokenException
 	 *             if the token is invalid or cannot be obtained
 	 */
-	public HP3ParHostSetList(HP3ParCredentials loginCredentials)
+	public HP3ParVolumeSetList(HP3ParCredentials loginCredentials)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
 		// Use defaults for GET method
 		request.setGetDefaults();
-		request.setUri(threeParRESTconstants.GET_HOSTSETS_URI);
+		request.setUri(threeParRESTconstants.GET_VOLUMESETS_URI);
 		request.execute();
 		this.json = request.getHttpResponse();
 		final Gson gson = new Gson();
-		this.hostSets = gson.fromJson(this.json, SetResponse.class);
+		this.volumeSets = gson.fromJson(this.json, SetResponse.class);
 	}
 
 	/**
@@ -67,17 +69,17 @@ public class HP3ParHostSetList {
 	 *
 	 * @param json
 	 */
-	public HP3ParHostSetList(String json) {
+	public HP3ParVolumeSetList(String json) {
 		this.json = json;
 		final Gson gson = new Gson();
-		this.hostSets = gson.fromJson(this.json, SetResponse.class);
+		this.volumeSets = gson.fromJson(this.json, SetResponse.class);
 	}
 
 	/**
 	 * @return host set information
 	 */
-	public SetResponse getHostSets() {
-		return this.hostSets;
+	public SetResponse getVolumeSets() {
+		return this.volumeSets;
 	}
 
 	/**
@@ -86,5 +88,4 @@ public class HP3ParHostSetList {
 	public String toJson() {
 		return this.json;
 	}
-
 }

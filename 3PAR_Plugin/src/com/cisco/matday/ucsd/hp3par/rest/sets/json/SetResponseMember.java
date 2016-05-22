@@ -19,95 +19,81 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.rest.hostsets.json;
+package com.cisco.matday.ucsd.hp3par.rest.sets.json;
 
 /**
- * HP 3PAR host set editing enumeration
+ * 3PAR volume/host Set list JSON enumeration
  *
- * See the 3PAR API docs for more info
+ * For more info see the HP 3PAR REST API documentation
  *
  * @author Matt Day
  *
  */
 @SuppressWarnings("javadoc")
-public class HP3ParHostSetEditParams {
-	private int action;
-	private String newName;
-	private String comment;
+public class SetResponseMember {
+	private int id;
+	private String name;
 	private String[] setmembers;
+	private String domain;
+	private String comment;
 
-	public HP3ParHostSetEditParams(int action, String[] setmembers) {
+	public SetResponseMember() {
+		// leave default
+	}
+
+	public SetResponseMember(String name, String[] setmembers, String comment, String domain) {
 		super();
-		this.action = action;
+		this.name = name;
 		this.setmembers = setmembers;
+		this.domain = ("".equals(domain)) ? null : domain;
+		this.comment = ("".equals(comment)) ? null : comment;
 	}
 
-	public HP3ParHostSetEditParams(String newName) {
-		// Store as null if empty
-		this.newName = ("".equals(newName)) ? null : newName;
+	public SetResponseMember(String name, String[] setmembers, String comment) {
+		super();
+		this.name = name;
+		this.setmembers = setmembers;
+		this.comment = ("".equals(comment)) ? null : comment;
 	}
 
-	public HP3ParHostSetEditParams() {
-	}
-
-	/**
-	 * @return the action
-	 */
-	public int getAction() {
-		return this.action;
-	}
-
-	/**
-	 * @param action
-	 *            the action to set
-	 */
-	public void setAction(int action) {
-		this.action = action;
-	}
-
-	/**
-	 * @return the newName
-	 */
-	public String getNewName() {
-		return this.newName;
-	}
-
-	/**
-	 * @param newName
-	 *            the newName to set
-	 */
-	public void setNewName(String newName) {
-		this.newName = newName;
-	}
-
-	/**
-	 * @return the comment
-	 */
 	public String getComment() {
-		return this.comment;
+		return (this.comment == null) ? "" : this.comment;
 	}
 
-	/**
-	 * @param comment
-	 *            the comment to set
-	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
-	/**
-	 * @return the setmembers
-	 */
-	public String[] getSetmembers() {
-		return this.setmembers;
+	public String getDomain() {
+		return (this.domain == null) ? "" : this.domain;
 	}
 
-	/**
-	 * @param setmembers
-	 *            the setmembers to set
-	 */
-	public void setSetmembers(String[] setmembers) {
-		this.setmembers = setmembers;
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String[] getSetMembers() {
+		return (this.setmembers == null) ? new String[] {} : this.setmembers;
+	}
+
+	public void setSetMembers(String[] members) {
+		this.setmembers = members;
 	}
 
 }

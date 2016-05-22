@@ -22,7 +22,7 @@
 package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostSetException;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -48,7 +48,7 @@ public class DeleteHostSetTask extends AbstractTask {
 
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to delete host: " + s.getError());
-			throw new HP3ParHostSetException("Failed to delete host: " + s.getError());
+			throw new HP3ParSetException("Failed to delete host: " + s.getError());
 		}
 
 		ucsdLogger.addInfo("Created host set");

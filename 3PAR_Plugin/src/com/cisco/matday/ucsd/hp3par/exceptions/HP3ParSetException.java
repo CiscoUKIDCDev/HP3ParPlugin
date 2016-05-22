@@ -33,7 +33,7 @@ package com.cisco.matday.ucsd.hp3par.exceptions;
  * @author Matt Day
  *
  */
-public class HP3ParHostSetException extends Exception {
+public class HP3ParSetException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,7 +42,7 @@ public class HP3ParHostSetException extends Exception {
 	 *
 	 * @param args
 	 */
-	public HP3ParHostSetException(String args) {
+	public HP3ParSetException(String args) {
 		super(args);
 	}
 

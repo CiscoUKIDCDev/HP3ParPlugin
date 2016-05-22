@@ -19,11 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown;
+package com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.AddHostToHostSetAction;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.RemoveHostFromHostSetAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -32,16 +30,16 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
 import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
 
 /**
- * Host report
+ * Volume report
  *
  * @author Matt
  *
  */
-public class HostSetMemberReport extends DrillableReportWithActions {
+public class VolumeSetMemberReport extends DrillableReportWithActions {
 	/**
 	 * Unique identifier for this report
 	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown.HostReport";
+	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown.VolumeReport";
 	/**
 	 * User-friendly report name
 	 */
@@ -53,13 +51,14 @@ public class HostSetMemberReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new AddHostToHostSetAction(), new RemoveHostFromHostSetAction()
+			// new AddVolumeToVolumeSetAction(), new
+			// RemoveVolumeFromVolumeSetAction()
 	};
 
 	/**
-	 * Create Host report
+	 * Create Volume report
 	 */
-	public HostSetMemberReport() {
+	public VolumeSetMemberReport() {
 		super();
 		// This sets what column to use as the context ID for child drilldown
 		// reports
@@ -74,8 +73,8 @@ public class HostSetMemberReport extends DrillableReportWithActions {
 	}
 
 	@Override
-	public Class<HostSetMemberReportImpl> getImplementationClass() {
-		return HostSetMemberReportImpl.class;
+	public Class<VolumeSetMemberReportImpl> getImplementationClass() {
+		return VolumeSetMemberReportImpl.class;
 	}
 
 	@Override
@@ -111,7 +110,7 @@ public class HostSetMemberReport extends DrillableReportWithActions {
 	@Override
 	public ContextMapRule[] getMapRules() {
 		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.HOSTSET_LIST_DRILLDOWN);
+				.getContextByName(HP3ParConstants.VOLUMESET_LIST_DRILLDOWN);
 
 		ContextMapRule rule = new ContextMapRule();
 		rule.setContextName(context.getId());

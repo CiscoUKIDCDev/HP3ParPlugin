@@ -19,14 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets;
+package com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown;
 
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponse;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -34,15 +35,15 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
- * Implements a host report list
+ * Implements a volume report list
  *
  * @author Matt Day
  *
  */
-public class HostSetReportImpl implements TabularReportGeneratorIf {
+public class VolumeSetMemberReportImpl implements TabularReportGeneratorIf {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostSetReportImpl.class);
+	private static Logger logger = Logger.getLogger(VolumeSetMemberReportImpl.class);
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -57,37 +58,59 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 		model.addTextColumn("Internal ID", "Internal ID", true);
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
-		model.addTextColumn("Members", "Members");
-		model.addTextColumn("Comment", "Comments");
+		model.addTextColumn("Size GiB", "Size GiB");
+		model.addTextColumn("Provisioning", "Provisioning");
+		model.addTextColumn("User CPG", "User CPG");
+		model.addTextColumn("Copy CPG", "Copy CPG");
+		model.addTextColumn("Protection", "Protection");
+		model.addTextColumn("Comment", "Comment");
 
 		model.completedHeader();
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
+		// accountName;volumeid@accountName@volumeName
+		final String volumeSetId = context.getId().split(";")[1].split("@")[0];
+		final String volumeSetName = context.getId().split(";")[1].split("@")[2];
 
-		SetResponse hostSetList = HP3ParInventory.getHostSetResponse(new HP3ParCredentials(context));
+		// VolumeResponse volumeList = HP3ParInventory.getVolumeResponse(new
+		// HP3ParCredentials(context));
+		SetResponseMember volumeSetList = HP3ParInventory.getVolumeSetInfo(credentials, volumeSetName);
 
-		for (SetResponseMember hostSet : hostSetList.getMembers()) {
+		for (String volumeName : volumeSetList.getSetMembers()) {
+			VolumeResponseMember volume = HP3ParInventory.getVolumeInfo(credentials, volumeName);
 
-			// Internal ID, format:
-			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@" + credentials.getAccountName()
-					+ "@" + hostSet.getName());
-
-			// Bad but we can use this to parse it all out later
-			// ID
-			model.addTextValue(Integer.toString(hostSet.getId()));
-			model.addTextValue(hostSet.getName());
-			String members = "";
-			// Name
-			for (String member : hostSet.getSetMembers()) {
-				members += member + ", ";
+			// Don't show snapshots in this view - that's for the drilldown
+			// report
+			if (volume.getProvisioningType() == HP3ParConstants.PROVISION_SNAPSHOT) {
+				continue;
 			}
-			// Remove trailing ', '
-			if (members.length() > 0) {
-				members = members.substring(0, members.length() - 2);
-			}
-			model.addTextValue(members);
-			model.addTextValue(hostSet.getComment());
+
+			final String internalId = credentials.getAccountName() + ";" + volume.getId() + "@"
+					+ credentials.getAccountName() + "@" + volume.getName() + ";" + volumeSetId + "@"
+					+ credentials.getAccountName() + "@" + volumeSetName;
+
+			model.addTextValue(internalId);
+
+			// Volume ID
+			model.addTextValue(Integer.toString(volume.getId()));
+			// Name of this volume
+			model.addTextValue(volume.getName());
+
+			// Round off the size to gb with double precision
+			final double volSize = (volume.getSizeMiB() / 1024d);
+			model.addTextValue(Double.toString(volSize));
+
+			model.addTextValue(volume.getProvisioningTypeAsText());
+
+			model.addTextValue(volume.getUserCPG());
+
+			model.addTextValue(volume.getCopyCPG());
+
+			model.addTextValue(volume.isReadOnlyAsText());
+
+			model.addTextValue(volume.getComment());
+
+			model.completedRow();
 
 			model.completedRow();
 		}

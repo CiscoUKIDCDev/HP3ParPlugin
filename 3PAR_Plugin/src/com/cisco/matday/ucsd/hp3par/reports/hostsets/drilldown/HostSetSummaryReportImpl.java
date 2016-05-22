@@ -25,8 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostSetException;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -70,11 +70,11 @@ public class HostSetSummaryReportImpl implements TabularReportGeneratorIf {
 		}
 		catch (Exception e) {
 			logger.warn("Could not get ID from context ID: " + context.getId());
-			throw new HP3ParHostSetException("Could not get ID from context" + e.getMessage());
+			throw new HP3ParSetException("Could not get ID from context" + e.getMessage());
 		}
 
 		// Get volume info:
-		HostSetResponseMember hostSet = HP3ParInventory.getHostSetInfo(credentials, hostSetName);
+		SetResponseMember hostSet = HP3ParInventory.getHostSetInfo(credentials, hostSetName);
 
 		// Build the table
 		model.addText("Set Name", hostSetName, HOSTSET_INFO_TABLE);

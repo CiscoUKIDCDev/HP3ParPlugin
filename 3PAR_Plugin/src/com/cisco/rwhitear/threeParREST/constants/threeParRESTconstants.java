@@ -37,4 +37,6 @@ public class threeParRESTconstants {
 
 	public static final String GET_HOSTSETS_URI = "/api/v1/hostsets";
 
+	public static final String GET_VOLUMESETS_URI = "/api/v1/volumesets";
+
 }

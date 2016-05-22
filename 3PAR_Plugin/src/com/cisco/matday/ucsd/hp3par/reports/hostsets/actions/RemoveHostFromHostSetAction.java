@@ -24,7 +24,7 @@ package com.cisco.matday.ucsd.hp3par.reports.hostsets.actions;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostSetException;
+import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.HP3ParHostSetExecute;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.RemoveHostFromHostSetConfig;
@@ -92,7 +92,7 @@ public class RemoveHostFromHostSetAction extends CloupiaPageAction {
 		// window
 		if (!s.isSuccess()) {
 			logger.warn("Failed to remove Host:" + s.getError());
-			throw new HP3ParHostSetException("Failed to remove Host: " + s.getError());
+			throw new HP3ParSetException("Failed to remove Host: " + s.getError());
 		}
 
 		// Set the text for the "OK" prompt and return successfully

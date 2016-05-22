@@ -27,7 +27,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -40,10 +40,10 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
  * @author Matt Day
  *
  */
-public class HostsetMemberReportImpl implements TabularReportGeneratorIf {
+public class HostSetMemberReportImpl implements TabularReportGeneratorIf {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostsetMemberReportImpl.class);
+	private static Logger logger = Logger.getLogger(HostSetMemberReportImpl.class);
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -76,7 +76,7 @@ public class HostsetMemberReportImpl implements TabularReportGeneratorIf {
 
 		// HostResponse hostList = HP3ParInventory.getHostResponse(new
 		// HP3ParCredentials(context));
-		HostSetResponseMember hostSetList = HP3ParInventory.getHostSetInfo(credentials, hostSetName);
+		SetResponseMember hostSetList = HP3ParInventory.getHostSetInfo(credentials, hostSetName);
 
 		for (String hostName : hostSetList.getSetMembers()) {
 			HostResponseMember host = HP3ParInventory.getHostInfo(credentials, hostName);

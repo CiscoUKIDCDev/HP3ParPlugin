@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets;
+package com.cisco.matday.ucsd.hp3par.reports.volumesets;
 
 import org.apache.log4j.Logger;
 
@@ -34,15 +34,15 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
- * Implements a host report list
+ * Implements a volume report list
  *
  * @author Matt Day
  *
  */
-public class HostSetReportImpl implements TabularReportGeneratorIf {
+public class VolumeSetReportImpl implements TabularReportGeneratorIf {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HostSetReportImpl.class);
+	private static Logger logger = Logger.getLogger(VolumeSetReportImpl.class);
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -64,22 +64,22 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		SetResponse hostSetList = HP3ParInventory.getHostSetResponse(new HP3ParCredentials(context));
+		SetResponse volumeSetList = HP3ParInventory.getVolumeSetResponse(new HP3ParCredentials(context));
 
-		for (SetResponseMember hostSet : hostSetList.getMembers()) {
+		for (SetResponseMember volumeSet : volumeSetList.getMembers()) {
 
 			// Internal ID, format:
-			// accountName;hostid@accountName@hostName
-			model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@" + credentials.getAccountName()
-					+ "@" + hostSet.getName());
+			// accountName;volumeid@accountName@volumeName
+			model.addTextValue(credentials.getAccountName() + ";" + volumeSet.getId() + "@"
+					+ credentials.getAccountName() + "@" + volumeSet.getName());
 
 			// Bad but we can use this to parse it all out later
 			// ID
-			model.addTextValue(Integer.toString(hostSet.getId()));
-			model.addTextValue(hostSet.getName());
+			model.addTextValue(Integer.toString(volumeSet.getId()));
+			model.addTextValue(volumeSet.getName());
 			String members = "";
 			// Name
-			for (String member : hostSet.getSetMembers()) {
+			for (String member : volumeSet.getSetMembers()) {
 				members += member + ", ";
 			}
 			// Remove trailing ', '
@@ -87,7 +87,7 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 				members = members.substring(0, members.length() - 2);
 			}
 			model.addTextValue(members);
-			model.addTextValue(hostSet.getComment());
+			model.addTextValue(volumeSet.getComment());
 
 			model.completedRow();
 		}

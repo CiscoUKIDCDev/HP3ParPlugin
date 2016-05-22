@@ -52,6 +52,7 @@ import com.cisco.matday.ucsd.hp3par.reports.polling.PollingReport;
 import com.cisco.matday.ucsd.hp3par.reports.ports.PortListReport;
 import com.cisco.matday.ucsd.hp3par.reports.vluns.VlunReport;
 import com.cisco.matday.ucsd.hp3par.reports.volume.VolumeReport;
+import com.cisco.matday.ucsd.hp3par.reports.volumesets.VolumeSetReport;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyTask;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddFCWWNHostTask;
@@ -103,8 +104,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	public CloupiaReport[] getReports() {
 		logger.info("Adding reports");
 		final CloupiaReport[] report = new CloupiaReport[] {
-				new AccountReport(), new PollingReport(), new VolumeReport(), new CPGReport(), new HostReport(),
-				new HostSetReport(), new VlunReport(), new PortListReport(), new PathReport(),
+				new AccountReport(), new PollingReport(), new VolumeReport(), new VolumeSetReport(), new CPGReport(),
+				new HostReport(), new HostSetReport(), new VlunReport(), new PortListReport(), new PathReport(),
 		};
 		return report;
 	}
@@ -150,6 +151,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 					HP3ParConstants.VLUN_LIST_DRILLDOWN_LABEL);
 			ReportContextRegistry.getInstance().register(HP3ParConstants.PATH_LIST_DRILLDOWN,
 					HP3ParConstants.PATH_LIST_DRILLDOWN_LABEL);
+			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUMESET_LIST_DRILLDOWN,
+					HP3ParConstants.VOLUMESET_LIST_DRILLDOWN_LABEL);
 			ReportContextRegistry.getInstance().register(HP3ParConstants.HOSTSET_LIST_DRILLDOWN,
 					HP3ParConstants.HOSTSET_LIST_DRILLDOWN_LABEL);
 			ReportContextRegistry.getInstance().register(HP3ParConstants.POLLING_LIST_DRILLDOWN,

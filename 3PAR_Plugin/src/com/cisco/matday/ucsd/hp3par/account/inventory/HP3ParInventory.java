@@ -36,11 +36,11 @@ import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostList;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.hostsets.HP3ParHostSetList;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponse;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.ports.HP3ParPortList;
 import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponse;
 import com.cisco.matday.ucsd.hp3par.rest.ports.json.PortResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponse;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponseMember;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.system.json.SystemResponse;
 import com.cisco.matday.ucsd.hp3par.rest.vluns.HP3ParVlunList;
@@ -48,6 +48,7 @@ import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.VlunResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponse;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.volumesets.HP3ParVolumeSetList;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.connector.account.AccountUtil;
@@ -185,6 +186,9 @@ public class HP3ParInventory {
 			final HP3ParVolumeList volumeList = new HP3ParVolumeList(login);
 			store.setVolumeListJson(volumeList.toJson());
 
+			final HP3ParVolumeSetList volumeSetList = new HP3ParVolumeSetList(login);
+			store.setVolumeSetListJson(volumeSetList.toJson());
+
 			final HP3ParSystem systemInfo = new HP3ParSystem(login);
 			store.setSysInfoJson(systemInfo.toJson());
 
@@ -235,6 +239,11 @@ public class HP3ParInventory {
 		return new HP3ParVolumeList(this.getStore().getVolumeListJson()).getVolume();
 	}
 
+	// Return the full JSON representation of a volume set query
+	private SetResponse getVolumeSet() throws Exception {
+		return new HP3ParVolumeSetList(this.getStore().getVolumeSetListJson()).getVolumeSets();
+	}
+
 	// Return the full JSON representation of a VLUN query
 	private VlunResponse getVlun() throws Exception {
 		return new HP3ParVlunList(this.getStore().getVlunListJson()).getVlun();
@@ -256,7 +265,7 @@ public class HP3ParInventory {
 	}
 
 	// Return the full JSON representation of a host set query
-	private HostSetResponse getHostSet() throws Exception {
+	private SetResponse getHostSet() throws Exception {
 		return new HP3ParHostSetList(this.getStore().getHostSetListJson()).getHostSets();
 	}
 
@@ -355,6 +364,30 @@ public class HP3ParInventory {
 	}
 
 	/**
+	 * Return information on a specific volume set
+	 *
+	 * It will return null if it is not found
+	 *
+	 * @param credentials
+	 * @param volumeSetName
+	 * @return Volume information
+	 * @throws Exception
+	 */
+	public synchronized static SetResponseMember getVolumeSetInfo(HP3ParCredentials credentials, String volumeSetName)
+			throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		inv.update(false, "Periodic inventory collection");
+
+		for (final SetResponseMember i : inv.getVolumeSet().getMembers()) {
+			if (volumeSetName.equals(i.getName())) {
+				return i;
+			}
+		}
+		logger.warn("Volume set not found in cache: " + volumeSetName);
+		return null;
+	}
+
+	/**
 	 * Return information on a specific host set
 	 *
 	 * It will return null if it is not found
@@ -364,12 +397,12 @@ public class HP3ParInventory {
 	 * @return Volume information
 	 * @throws Exception
 	 */
-	public synchronized static HostSetResponseMember getHostSetInfo(HP3ParCredentials credentials, String hostSetName)
+	public synchronized static SetResponseMember getHostSetInfo(HP3ParCredentials credentials, String hostSetName)
 			throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update(false, "Periodic inventory collection");
 
-		for (final HostSetResponseMember i : inv.getHostSet().getMembers()) {
+		for (final SetResponseMember i : inv.getHostSet().getMembers()) {
 			if (hostSetName.equals(i.getName())) {
 				return i;
 			}
@@ -413,6 +446,19 @@ public class HP3ParInventory {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update(false, "Periodic inventory collection");
 		return inv.getVol();
+	}
+
+	/**
+	 * Return information on all volume sets
+	 *
+	 * @param credentials
+	 * @return host response list
+	 * @throws Exception
+	 */
+	public synchronized static SetResponse getVolumeSetResponse(HP3ParCredentials credentials) throws Exception {
+		HP3ParInventory inv = new HP3ParInventory(credentials);
+		inv.update(false, "Periodic inventory collection");
+		return inv.getVolumeSet();
 	}
 
 	/**
@@ -461,7 +507,7 @@ public class HP3ParInventory {
 	 * @return host response list
 	 * @throws Exception
 	 */
-	public synchronized static HostSetResponse getHostSetResponse(HP3ParCredentials credentials) throws Exception {
+	public synchronized static SetResponse getHostSetResponse(HP3ParCredentials credentials) throws Exception {
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update(false, "Periodic inventory collection");
 		return inv.getHostSet();

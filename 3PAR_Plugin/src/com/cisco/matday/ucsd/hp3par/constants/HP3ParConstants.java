@@ -277,6 +277,16 @@ public class HP3ParConstants {
 	public static final String HOSTSET_LIST_DRILLDOWN_LABEL = "Host Set Details";
 
 	/**
+	 * Volume set list drilldown name for global context registry
+	 */
+	public static final String VOLUMESET_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeSetList";
+
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String VOLUMESET_LIST_DRILLDOWN_LABEL = "Volume Set Details";
+
+	/**
 	 * Volume list drilldown name for global context registry
 	 */
 	public static final String PATH_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.PathList";

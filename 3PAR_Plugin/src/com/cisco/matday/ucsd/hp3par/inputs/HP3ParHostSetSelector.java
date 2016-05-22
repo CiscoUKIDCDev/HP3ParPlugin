@@ -26,8 +26,8 @@ import java.util.List;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponse;
-import com.cisco.matday.ucsd.hp3par.rest.hostsets.json.HostSetResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponse;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponseMember;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
 import com.cloupia.lib.connector.account.AccountUtil;
@@ -77,11 +77,11 @@ public class HP3ParHostSetSelector implements TabularReportGeneratorIf {
 			if ((acc != null) && (acc.getAccountType() != null)
 					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
-				HostSetResponse list = HP3ParInventory.getHostSetResponse(new HP3ParCredentials(a.getAccountName()));
+				SetResponse list = HP3ParInventory.getHostSetResponse(new HP3ParCredentials(a.getAccountName()));
 
 				final HP3ParCredentials credentials = new HP3ParCredentials(a.getAccountName());
 
-				for (HostSetResponseMember hostSet : list.getMembers()) {
+				for (SetResponseMember hostSet : list.getMembers()) {
 					// Internal ID, format:
 					// accountName;hostid@accountName@hostName
 					model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@"

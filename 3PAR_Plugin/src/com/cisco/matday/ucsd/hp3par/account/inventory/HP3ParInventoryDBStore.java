@@ -40,6 +40,7 @@ import com.cisco.matday.ucsd.hp3par.rest.ports.HP3ParPortList;
 import com.cisco.matday.ucsd.hp3par.rest.system.HP3ParSystem;
 import com.cisco.matday.ucsd.hp3par.rest.vluns.HP3ParVlunList;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.HP3ParVolumeList;
+import com.cisco.matday.ucsd.hp3par.rest.volumesets.HP3ParVolumeSetList;
 import com.cloupia.model.cIM.InventoryDBItemIf;
 
 /**
@@ -97,6 +98,10 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 
 	@Persistent(defaultFetchGroup = "true")
 	@Column(jdbcType = "CLOB")
+	private String volumeSetListJson;
+
+	@Persistent(defaultFetchGroup = "true")
+	@Column(jdbcType = "CLOB")
 	private LinkedList<String> polling;
 
 	/**
@@ -123,6 +128,10 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 			HP3ParVolumeList volume;
 			volume = new HP3ParVolumeList(new HP3ParCredentials(accountName));
 			this.volumeListJson = volume.toJson();
+
+			logger.info("Setting up volume set inventory");
+			final HP3ParVolumeSetList volumeSet = new HP3ParVolumeSetList(new HP3ParCredentials(accountName));
+			this.volumeSetListJson = volumeSet.toJson();
 
 			logger.info("Setting up system inventory");
 			final HP3ParSystem systemInfo = new HP3ParSystem(new HP3ParCredentials(accountName));
@@ -300,6 +309,21 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 */
 	public void setHostSetListJson(String hostSetListJson) {
 		this.hostSetListJson = hostSetListJson;
+	}
+
+	/**
+	 * @return the volumeSetListJson
+	 */
+	public String getVolumeSetListJson() {
+		return this.volumeSetListJson;
+	}
+
+	/**
+	 * @param volumeSetListJson
+	 *            the volumeSetListJson to set
+	 */
+	public void setVolumeSetListJson(String volumeSetListJson) {
+		this.volumeSetListJson = volumeSetListJson;
 	}
 
 }
