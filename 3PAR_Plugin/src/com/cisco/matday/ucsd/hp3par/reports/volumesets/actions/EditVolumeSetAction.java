@@ -74,7 +74,6 @@ public class EditVolumeSetAction extends CloupiaPageAction {
 		// Pre-populate the account and Volume fields:
 		form.setVolumeSet(query);
 		final HP3ParCredentials credentials = new HP3ParCredentials(context);
-		final String accountName = credentials.getAccountName();
 
 		form.setVolumeSetName(volumeSetName);
 		SetResponseMember responseMember = HP3ParInventory.getVolumeSetInfo(credentials, volumeSetName);
@@ -88,16 +87,13 @@ public class EditVolumeSetAction extends CloupiaPageAction {
 		for (String volume : volumes) {
 			// volumeid@accountName@volumeName
 			VolumeResponseMember member = HP3ParInventory.getVolumeInfo(credentials, volume);
-			volumeString += accountName + ";" + member.getId() + "@" + credentials.getAccountName() + "@"
-					+ member.getName() + ",";
+			volumeString += member.getId() + "@" + credentials.getAccountName() + "@" + member.getName() + ",";
 		}
 		if (volumeString.length() > 0) {
 			// Remove last ','
 			form.setVolumes(volumeString.substring(0, volumeString.length() - 1));
 		}
 
-		// Set the account field to read-only (I couldn't find this documented
-		// anywhere, maybe there's a better way to do it?)
 		page.getFlist().getByFieldId(FORM_ID + ".volumeSet").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);

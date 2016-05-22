@@ -63,7 +63,7 @@ public class RemoveVolumeFromVolumeSetAction extends CloupiaPageAction {
 		String query = context.getId();
 		RemoveVolumeFromVolumeSetConfig form = new RemoveVolumeFromVolumeSetConfig();
 
-		final String volume = query.split(";")[0] + ";" + query.split(";")[1];
+		final String volume = query.split(";")[1];
 		final String volumeSet = query.split(";")[0] + ";" + query.split(";")[2];
 
 		form.setVolume(volume);

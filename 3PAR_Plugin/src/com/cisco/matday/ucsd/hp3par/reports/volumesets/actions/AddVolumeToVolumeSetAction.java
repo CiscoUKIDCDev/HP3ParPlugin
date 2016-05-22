@@ -62,9 +62,15 @@ public class AddVolumeToVolumeSetAction extends CloupiaPageAction {
 	public void loadDataToPage(Page page, ReportContext context, WizardSession session) throws Exception {
 		AddVolumeToVolumeSetConfig form = new AddVolumeToVolumeSetConfig();
 
+		// Context will be in this format:
+		// accountName;id@accountName@volumeName;setid@accountName@setName
+
+		// Volume will be in this format:
+		// id@accountName@volumeName
+
 		form.setVolumeSet(context.getId());
 
-		page.getFlist().getByFieldId(this.FORM_ID + ".VolumeSet").setEditable(false);
+		page.getFlist().getByFieldId(this.FORM_ID + ".volumeSet").setEditable(false);
 
 		session.getSessionAttributes().put(this.FORM_ID, form);
 		page.marshallFromSession(this.FORM_ID);

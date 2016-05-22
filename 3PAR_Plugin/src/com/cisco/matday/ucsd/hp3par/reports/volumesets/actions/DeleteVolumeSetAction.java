@@ -66,11 +66,15 @@ public class DeleteVolumeSetAction extends CloupiaPageAction {
 		String query = context.getId();
 		DeleteVolumeSetConfig form = new DeleteVolumeSetConfig();
 
+		// Picker is in this format:
+		// accountName;setId@accountName@setName
+
+		// Selection is in this format:
+		// accountName;setId@accountName@setName
+
 		// Pre-populate the account and Volume fields:
 		form.setVolumeSet(query);
 
-		// Set the account field to read-only (I couldn't find this documented
-		// anywhere, maybe there's a better way to do it?)
 		page.getFlist().getByFieldId(FORM_ID + ".volumeSet").setEditable(false);
 
 		session.getSessionAttributes().put(FORM_ID, form);
