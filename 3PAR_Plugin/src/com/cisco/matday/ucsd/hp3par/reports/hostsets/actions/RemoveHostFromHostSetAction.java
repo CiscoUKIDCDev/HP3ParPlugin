@@ -96,7 +96,7 @@ public class RemoveHostFromHostSetAction extends CloupiaPageAction {
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Host " + config.getHost() + " removed OK");
+		page.setPageMessage("Host removed OK");
 		return PageIf.STATUS_OK;
 	}
 

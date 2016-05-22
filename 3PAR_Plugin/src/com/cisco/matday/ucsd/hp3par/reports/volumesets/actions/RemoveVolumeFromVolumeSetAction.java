@@ -96,7 +96,7 @@ public class RemoveVolumeFromVolumeSetAction extends CloupiaPageAction {
 		}
 
 		// Set the text for the "OK" prompt and return successfully
-		page.setPageMessage("Volume " + config.getVolume() + " removed OK");
+		page.setPageMessage("Volume removed OK");
 		return PageIf.STATUS_OK;
 	}
 
