@@ -52,13 +52,13 @@ public class CreateVlunConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.VOLUME_LIST_FORM_LABEL, help = "Volume", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
+	@FormField(label = HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, help = "Volume or Volume Set", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String volume;
 
-	@FormField(label = HP3ParConstants.HOST_LIST_FORM_LABEL, help = "Host", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOST_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.HOST_LIST_FORM_TABLE_NAME)
+	@FormField(label = HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, help = "Host or Host Set", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String host;
 

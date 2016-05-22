@@ -58,21 +58,21 @@ public class HP3ParVlunExecute {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
-		final String[] volInfo = config.getVolume().split("@");
-		if (volInfo.length != 3) {
-			logger.warn("Volume didn't return three items! It returned: " + config.getVolume());
-			throw new HP3ParVolumeException("Invalid Volume: " + config.getVolume());
-		}
-		final String volName = volInfo[2];
+		String volName = config.getVolume().split("@")[2];
 
-		// Get the host name, it's in the format:
-		// id@account@name
-		final String[] hostInfo = config.getHost().split("@");
-		if (hostInfo.length != 3) {
-			logger.warn("Hostname didn't return three items! It returned: " + config.getHost());
-			throw new HP3ParHostException("Invalid host: " + config.getHost());
+		final String volType = config.getVolume().split("@")[1];
+
+		String hostName = config.getHost().split("@")[2];
+
+		final String hostType = config.getHost().split("@")[1];
+
+		if (hostType.equals("set")) {
+			hostName = "set:" + hostName;
 		}
-		final String hostName = hostInfo[2];
+
+		if (volType.equals("set")) {
+			volName = "set:" + volName;
+		}
 
 		// Build vlun information object:
 		HP3ParVlunParams params = new HP3ParVlunParams(volName, hostName, config.getLun());

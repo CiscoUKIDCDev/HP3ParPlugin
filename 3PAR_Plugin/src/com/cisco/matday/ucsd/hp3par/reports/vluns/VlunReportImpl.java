@@ -60,6 +60,7 @@ public class VlunReportImpl implements TabularReportGeneratorIf {
 		model.addTextColumn("Host", "Host");
 		model.addTextColumn("LUN", "LUN");
 		model.addTextColumn("Status", "Status");
+		model.addTextColumn("Type", "Type");
 		model.addTextColumn("WWN", "WWN");
 
 		model.completedHeader();
@@ -79,6 +80,29 @@ public class VlunReportImpl implements TabularReportGeneratorIf {
 			model.addTextValue(vlun.getHostname());
 			model.addTextValue(Integer.toString(vlun.getLun()));
 			model.addTextValue(vlun.isActive() ? "Active" : "Inactive");
+			String type;
+			switch (vlun.getType()) {
+			case 1:
+				type = "Empty";
+				break;
+			case 2:
+				type = "Port";
+				break;
+			case 3:
+				type = "Host";
+				break;
+			case 4:
+				type = "Matched set";
+				break;
+			case 5:
+				type = "Host set";
+				break;
+			default:
+				type = "Unknown";
+			}
+
+			model.addTextValue(type);
+
 			model.addTextValue(vlun.getVolumeWWN());
 
 			model.completedRow();

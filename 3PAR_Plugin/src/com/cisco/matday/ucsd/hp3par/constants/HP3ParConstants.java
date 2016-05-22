@@ -172,7 +172,7 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for VOLUME list table
 	 */
-	public static final String VOLUME_AND_VOLUMESET_LIST_FORM_LABEL = "Volume and Volume Sets";
+	public static final String VOLUME_AND_VOLUMESET_LIST_FORM_LABEL = "Volume or Volume Set";
 
 	/**
 	 * Account list internal UCSD data type name
@@ -191,7 +191,7 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for Host list table
 	 */
-	public static final String HOST_AND_HOSTSET_LIST_FORM_LABEL = "Host and Host Sets";
+	public static final String HOST_AND_HOSTSET_LIST_FORM_LABEL = "Host or Host Set";
 
 	/**
 	 * Account list internal UCSD data type name
