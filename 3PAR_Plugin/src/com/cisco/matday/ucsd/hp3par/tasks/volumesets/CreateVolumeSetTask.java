@@ -19,9 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
+package com.cisco.matday.ucsd.hp3par.tasks.volumesets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
@@ -31,45 +32,55 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Create host implementation task
+ * Create volume implementation task
  *
  * @author Matt Day
  *
  */
-public class AddHostToHostSetTask extends AbstractTask {
+public class CreateVolumeSetTask extends AbstractTask {
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
-		AddHostToHostSetConfig config = (AddHostToHostSetConfig) context.loadConfigObject();
+		CreateVolumeSetConfig config = (CreateVolumeSetConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		HP3ParRequestStatus s = HP3ParHostSetExecute.add(c, config);
+		HP3ParRequestStatus s = HP3ParVolumeSetExecute.create(c, config);
 
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to add to host set: " + s.getError());
-			throw new HP3ParSetException("Failed to add to host set: " + s.getError());
+			ucsdLogger.addError("Failed to create volume set: " + s.getError());
+			throw new HP3ParSetException("Failed to create volume set: " + s.getError());
 		}
 
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host added",
-				"Undo addition of host: " + config.getHost(), RemoveHostFromHostSetConfig.DISPLAY_LABEL,
-				new RemoveHostFromHostSetConfig(config));
+		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+				"Undo creation of volume: " + config.getVolumeSetName(), DeleteVolumeSetConfig.DISPLAY_LABEL,
+				new DeleteVolumeSetConfig(config));
 
-		ucsdLogger.addInfo("Added to host set");
+		ucsdLogger.addInfo("Created volume set");
+		// Construct Volume name in the format:
+		// id@Account@HosetSet
+		// Don't know the volume so just use 0 as a workaround
+		String volumeName = "0@" + config.getAccount() + "@" + config.getVolumeSetName();
+		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeName);
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new AddHostToHostSetConfig();
+		return new CreateVolumeSetConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		return AddHostToHostSetConfig.DISPLAY_LABEL;
+		return CreateVolumeSetConfig.DISPLAY_LABEL;
 	}
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
-		return null;
+		TaskOutputDefinition[] ops = {
+				// Register output type for the volume set created
+				new TaskOutputDefinition(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL,
+						HP3ParConstants.VOLUMESET_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUMESET_LIST_FORM_LABEL)
+		};
+		return ops;
 	}
 }

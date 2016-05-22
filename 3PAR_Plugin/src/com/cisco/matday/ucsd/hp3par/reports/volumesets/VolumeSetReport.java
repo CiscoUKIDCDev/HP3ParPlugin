@@ -30,6 +30,7 @@ import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
 import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
+import com.cloupia.service.cIM.inframgr.reports.simplified.actions.DrillDownAction;
 
 /**
  * Volume report
@@ -53,8 +54,9 @@ public class VolumeSetReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
+			new DrillDownAction(),
 			// new CreateVolumeSetAction(), new EditVolumeSetAction(), new
-			// DeleteVolumeSetAction(), new DrillDownAction()
+			// DeleteVolumeSetAction(),
 	};
 
 	/**

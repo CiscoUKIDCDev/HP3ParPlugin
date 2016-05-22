@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
+package com.cisco.matday.ucsd.hp3par.tasks.volumesets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
@@ -31,41 +31,37 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Create host implementation task
+ * Create volume implementation task
  *
  * @author Matt Day
  *
  */
-public class AddHostToHostSetTask extends AbstractTask {
+public class RemoveVolumeFromVolumeSetTask extends AbstractTask {
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
-		AddHostToHostSetConfig config = (AddHostToHostSetConfig) context.loadConfigObject();
+		RemoveVolumeFromVolumeSetConfig config = (RemoveVolumeFromVolumeSetConfig) context.loadConfigObject();
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		HP3ParRequestStatus s = HP3ParHostSetExecute.add(c, config);
+		HP3ParRequestStatus s = HP3ParVolumeSetExecute.remove(c, config);
 
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to add to host set: " + s.getError());
-			throw new HP3ParSetException("Failed to add to host set: " + s.getError());
+			ucsdLogger.addError("Failed to remove from volume set: " + s.getError());
+			throw new HP3ParSetException("Failed to remove from volume set: " + s.getError());
 		}
 
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host added",
-				"Undo addition of host: " + config.getHost(), RemoveHostFromHostSetConfig.DISPLAY_LABEL,
-				new RemoveHostFromHostSetConfig(config));
-
-		ucsdLogger.addInfo("Added to host set");
+		ucsdLogger.addInfo("Removed from volume set");
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new AddHostToHostSetConfig();
+		return new RemoveVolumeFromVolumeSetConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		return AddHostToHostSetConfig.DISPLAY_LABEL;
+		return RemoveVolumeFromVolumeSetConfig.DISPLAY_LABEL;
 	}
 
 	@Override

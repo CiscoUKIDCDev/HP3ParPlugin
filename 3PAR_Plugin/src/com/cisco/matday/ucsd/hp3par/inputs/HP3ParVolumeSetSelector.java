@@ -19,15 +19,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown;
+package com.cisco.matday.ucsd.hp3par.inputs;
 
-import org.apache.log4j.Logger;
+import java.util.List;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponse;
 import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponseMember;
-import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
+import com.cloupia.fw.objstore.ObjStore;
+import com.cloupia.fw.objstore.ObjStoreHelper;
+import com.cloupia.lib.connector.account.AccountUtil;
+import com.cloupia.lib.connector.account.PhysicalInfraAccount;
+import com.cloupia.model.cIM.InfraAccount;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -35,88 +40,76 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
- * Implements a volume report list
+ * Table to allow selection of an HP 3PAR volumes - it should not be
+ * instantiated directly but instead used as a form item
  *
  * @author Matt Day
  *
  */
-public class VolumeSetMemberReportImpl implements TabularReportGeneratorIf {
-
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(VolumeSetMemberReportImpl.class);
+public class HP3ParVolumeSetSelector implements TabularReportGeneratorIf {
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
+
 		TabularReport report = new TabularReport();
 
 		report.setGeneratedTime(System.currentTimeMillis());
 		report.setReportName(reportEntry.getReportLabel());
 		report.setContext(context);
 
+		ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
+		List<InfraAccount> objs = store.queryAll();
+
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		model.addTextColumn("Internal ID", "Internal ID", true);
 		model.addTextColumn("ID", "ID");
 		model.addTextColumn("Name", "Name");
-		model.addTextColumn("Size GiB", "Size GiB");
-		model.addTextColumn("Provisioning", "Provisioning");
-		model.addTextColumn("User CPG", "User CPG");
-		model.addTextColumn("Copy CPG", "Copy CPG");
-		model.addTextColumn("Protection", "Protection");
-		model.addTextColumn("Comment", "Comment");
+		model.addTextColumn("Account", "Account");
+		model.addTextColumn("Members", "Members");
+		model.addTextColumn("Comment", "Comments");
 
 		model.completedHeader();
 
-		HP3ParCredentials credentials = new HP3ParCredentials(context);
-		// accountName;volumeid@accountName@volumeName
-		final String volumeSetId = context.getId().split(";")[1].split("@")[0];
-		final String volumeSetName = context.getId().split(";")[1].split("@")[2];
+		for (InfraAccount a : objs) {
+			PhysicalInfraAccount acc = AccountUtil.getAccountByName(a.getAccountName());
+			// Important to check if the account type is null first
+			if ((acc != null) && (acc.getAccountType() != null)
+					&& (acc.getAccountType().equals(HP3ParConstants.INFRA_ACCOUNT_TYPE))) {
 
-		// VolumeResponse volumeList = HP3ParInventory.getVolumeResponse(new
-		// HP3ParCredentials(context));
-		SetResponseMember volumeSetList = HP3ParInventory.getVolumeSetInfo(credentials, volumeSetName);
+				SetResponse list = HP3ParInventory.getVolumeSetResponse(new HP3ParCredentials(a.getAccountName()));
 
-		for (String volumeName : volumeSetList.getSetMembers()) {
-			VolumeResponseMember volume = HP3ParInventory.getVolumeInfo(credentials, volumeName);
+				final HP3ParCredentials credentials = new HP3ParCredentials(a.getAccountName());
 
-			// Don't show snapshots in this view - that's for the drilldown
-			// report
-			if (volume.getProvisioningType() == HP3ParConstants.PROVISION_SNAPSHOT) {
-				continue;
+				for (SetResponseMember volumeSet : list.getMembers()) {
+					// Internal ID, format:
+					// accountName;volumeid@accountName@volumeName
+					model.addTextValue(credentials.getAccountName() + ";" + volumeSet.getId() + "@"
+							+ credentials.getAccountName() + "@" + volumeSet.getName());
+					// Bad but we can use this to parse it all out later
+					// ID
+					model.addTextValue(Integer.toString(volumeSet.getId()));
+					model.addTextValue(volumeSet.getName());
+					model.addTextValue(a.getAccountName());
+					String members = "";
+					// Name
+					for (String member : volumeSet.getSetMembers()) {
+						members += member + ", ";
+					}
+					// Remove trailing ', '
+					if (members.length() > 0) {
+						members = members.substring(0, members.length() - 2);
+					}
+					model.addTextValue(members);
+					model.addTextValue(volumeSet.getComment());
+
+					model.completedRow();
+				}
 			}
-
-			final String internalId = credentials.getAccountName() + ";" + volume.getId() + "@"
-					+ credentials.getAccountName() + "@" + volume.getName() + ";" + volumeSetId + "@"
-					+ credentials.getAccountName() + "@" + volumeSetName;
-
-			model.addTextValue(internalId);
-
-			// Volume ID
-			model.addTextValue(Integer.toString(volume.getId()));
-			// Name of this volume
-			model.addTextValue(volume.getName());
-
-			// Round off the size to gb with double precision
-			final double volSize = (volume.getSizeMiB() / 1024d);
-			model.addTextValue(Double.toString(volSize));
-
-			model.addTextValue(volume.getProvisioningTypeAsText());
-
-			model.addTextValue(volume.getUserCPG());
-
-			model.addTextValue(volume.getCopyCPG());
-
-			model.addTextValue(volume.isReadOnlyAsText());
-
-			model.addTextValue(volume.getComment());
-
-			model.completedRow();
 		}
-
 		model.updateReport(report);
 
 		return report;
-
 	}
 
 }

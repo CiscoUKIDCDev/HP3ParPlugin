@@ -132,6 +132,26 @@ public class HP3ParConstants {
 	/**
 	 * User-friendly label for Uost list table
 	 */
+	public static final String VOLUMESET_LIST_FORM_LABEL = "Volume Sets";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String VOLUMESET_LIST_FORM_TABLE_NAME = "HP3ParVolumeSetList";
+
+	/**
+	 * Account list form name
+	 */
+	public static final String VOLUMESET_LIST_FORM_NAME = "HP3ParVolumeSetList";
+
+	/**
+	 * Volume list internal UCSD provider name
+	 */
+	public static final String VOLUMESET_LIST_FORM_PROVIDER = "HP3ParVolumeSetList_provider";
+
+	/**
+	 * User-friendly label for Uost list table
+	 */
 	public static final String HOSTSET_LIST_FORM_LABEL = "Host Sets";
 
 	/**

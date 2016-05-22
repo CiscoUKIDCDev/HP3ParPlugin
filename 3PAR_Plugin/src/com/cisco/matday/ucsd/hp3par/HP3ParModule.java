@@ -73,6 +73,11 @@ import com.cisco.matday.ucsd.hp3par.tasks.vluns.DeleteVlunTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.CreateVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumes.EditVolumeTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.AddVolumeToVolumeSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.CreateVolumeSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.DeleteVolumeSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.EditVolumeSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.RemoveVolumeFromVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.workflow.WorkflowInputTypeDeclaration;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
@@ -117,10 +122,11 @@ public class HP3ParModule extends AbstractCloupiaModule {
 		final AbstractTask[] task = new AbstractTask[] {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
-				new CreateVlunTask(), new DeleteVlunTask(), new CreateHostSetTask(), new EditHostSetTask(),
-				new DeleteHostSetTask(), new CollectInventoryTask(), new AddFCWWNHostTask(), new RemoveFCWWNHostTask(),
-				new AddiSCSIHostTask(), new RemoveiSCSIHostTask(), new EditHostTask(), new AddHostToHostSetTask(),
-				new RemoveHostFromHostSetTask()
+				new CreateVlunTask(), new DeleteVlunTask(), new CollectInventoryTask(), new AddFCWWNHostTask(),
+				new RemoveFCWWNHostTask(), new AddiSCSIHostTask(), new RemoveiSCSIHostTask(), new EditHostTask(),
+				new CreateHostSetTask(), new EditHostSetTask(), new DeleteHostSetTask(), new AddHostToHostSetTask(),
+				new RemoveHostFromHostSetTask(), new CreateVolumeSetTask(), new EditVolumeSetTask(),
+				new DeleteVolumeSetTask(), new AddVolumeToVolumeSetTask(), new RemoveVolumeFromVolumeSetTask()
 		};
 		return task;
 	}
@@ -136,6 +142,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			cfr.registerTabularField(HP3ParConstants.PORT_LIST_FORM_PROVIDER, HP3ParPortSelector.class, "0", "1");
 			cfr.registerTabularField(HP3ParConstants.HOST_LIST_FORM_PROVIDER, HP3ParHostSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.VLUN_LIST_FORM_PROVIDER, HP3ParVlunSelector.class, "0", "4");
+			cfr.registerTabularField(HP3ParConstants.VOLUMESET_LIST_FORM_PROVIDER, HP3ParHostSetSelector.class, "0",
+					"2");
 			cfr.registerTabularField(HP3ParConstants.HOSTSET_LIST_FORM_PROVIDER, HP3ParHostSetSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.ISCSI_LIST_FORM_PROVIDER, HP3PariSCSISelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.FCWWN_LIST_FORM_PROVIDER, HP3ParFCSelector.class, "0", "2");
