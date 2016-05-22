@@ -27,10 +27,12 @@ import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParFCSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostAndHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPortSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVlunSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeAndVolumeSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3PariSCSISelector;
@@ -71,6 +73,9 @@ public class WorkflowInputTypeDeclaration {
 		registerHostSetList();
 		registeriSCSIList();
 		registerfCWWNList();
+		registerHostAndHostSetList();
+		registerVolumeAndVolumeSetList();
+
 	}
 
 	/**
@@ -184,6 +189,31 @@ public class WorkflowInputTypeDeclaration {
 		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.ISCSI_LIST_FORM_NAME,
 				HP3PariSCSISelector.class, "0", "2");
+	}
+
+	private static void registerHostAndHostSetList() {
+		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(
+				HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_TABLE_NAME, HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL,
+				FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_NAME));
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
+		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_NAME,
+				HP3ParHostAndHostSetSelector.class, "0", "2");
+	}
+
+	private static void registerVolumeAndVolumeSetList() {
+		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(
+				HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_TABLE_NAME,
+				HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP,
+				HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_NAME));
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
+		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_NAME,
+				HP3ParVolumeAndVolumeSetSelector.class, "0", "2");
 	}
 
 	private static void registerfCWWNList() {

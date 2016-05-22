@@ -37,10 +37,12 @@ import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParAccountException;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParFCSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostAndHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPortSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVlunSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeAndVolumeSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3PariSCSISelector;
@@ -148,6 +150,10 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			cfr.registerTabularField(HP3ParConstants.VOLUMESET_LIST_FORM_PROVIDER, HP3ParVolumeSetSelector.class, "0",
 					"2");
 			cfr.registerTabularField(HP3ParConstants.HOSTSET_LIST_FORM_PROVIDER, HP3ParHostSetSelector.class, "0", "2");
+			cfr.registerTabularField(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_PROVIDER,
+					HP3ParHostAndHostSetSelector.class, "0", "2");
+			cfr.registerTabularField(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_PROVIDER,
+					HP3ParVolumeAndVolumeSetSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.ISCSI_LIST_FORM_PROVIDER, HP3PariSCSISelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.FCWWN_LIST_FORM_PROVIDER, HP3ParFCSelector.class, "0", "2");
 
