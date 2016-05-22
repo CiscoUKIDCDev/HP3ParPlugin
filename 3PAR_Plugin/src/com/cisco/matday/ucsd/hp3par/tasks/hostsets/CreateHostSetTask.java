@@ -60,8 +60,11 @@ public class CreateHostSetTask extends AbstractTask {
 		// Construct Host name in the format:
 		// id@Account@HosetSet
 		// Don't know the host so just use 0 as a workaround
-		String hostName = "0@" + config.getAccount() + "@" + config.getHostSetName();
+		String hostName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getHostSetName();
 		context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
+
+		String hostSetName = c.getAccountName() + "0@set@" + config.getHostSetName();
+		context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
 	}
 
 	@Override
@@ -79,7 +82,11 @@ public class CreateHostSetTask extends AbstractTask {
 		TaskOutputDefinition[] ops = {
 				// Register output type for the host set created
 				new TaskOutputDefinition(HP3ParConstants.HOSTSET_LIST_FORM_LABEL,
-						HP3ParConstants.HOSTSET_LIST_FORM_TABLE_NAME, HP3ParConstants.HOSTSET_LIST_FORM_LABEL)
+						HP3ParConstants.HOSTSET_LIST_FORM_TABLE_NAME, HP3ParConstants.HOSTSET_LIST_FORM_LABEL),
+
+				new TaskOutputDefinition(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL,
+						HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_TABLE_NAME,
+						HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL)
 		};
 		return ops;
 	}

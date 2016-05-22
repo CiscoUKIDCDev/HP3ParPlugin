@@ -56,8 +56,11 @@ public class EditVolumeSetTask extends AbstractTask {
 		// Construct Volume name in the format:
 		// id@Account@HosetSet
 		// Don't know the volume so just use 0 as a workaround
-		String volumeName = "0@" + config.getAccount() + "@" + config.getVolumeSetName();
+		String volumeName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName();
 		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeName);
+
+		final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getVolumeSetName();
+		context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
 	}
 
 	@Override
@@ -75,7 +78,11 @@ public class EditVolumeSetTask extends AbstractTask {
 		TaskOutputDefinition[] ops = {
 				// Register output type for the volume set created
 				new TaskOutputDefinition(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL,
-						HP3ParConstants.VOLUMESET_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUMESET_LIST_FORM_LABEL)
+						HP3ParConstants.VOLUMESET_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUMESET_LIST_FORM_LABEL),
+
+				new TaskOutputDefinition(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL,
+						HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_TABLE_NAME,
+						HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL),
 		};
 		return ops;
 	}

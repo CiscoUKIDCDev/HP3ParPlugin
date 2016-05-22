@@ -66,6 +66,9 @@ public class EditHostTask extends AbstractTask {
 		String hostName = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getNewName();
 		context.saveOutputValue(HP3ParConstants.HOST_LIST_FORM_LABEL, hostName);
 
+		String hostSetName = config.getAccount() + ";0@host@" + config.getNewName();
+		context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
+
 	}
 
 	@Override
@@ -83,7 +86,11 @@ public class EditHostTask extends AbstractTask {
 		TaskOutputDefinition[] ops = {
 				// Register output type for the volume created
 				new TaskOutputDefinition(HP3ParConstants.HOST_LIST_FORM_LABEL,
-						HP3ParConstants.HOST_LIST_FORM_TABLE_NAME, HP3ParConstants.HOST_LIST_FORM_LABEL)
+						HP3ParConstants.HOST_LIST_FORM_TABLE_NAME, HP3ParConstants.HOST_LIST_FORM_LABEL),
+
+				new TaskOutputDefinition(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL,
+						HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_TABLE_NAME,
+						HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL)
 		};
 		return ops;
 	}

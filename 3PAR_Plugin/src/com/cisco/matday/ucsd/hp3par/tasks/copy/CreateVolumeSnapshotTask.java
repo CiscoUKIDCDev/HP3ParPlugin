@@ -59,6 +59,21 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 			throw new HP3ParVolumeException("Failed to create volume snapshot");
 		}
 
+		try {
+			// Construct Volume name in the format:
+			// id@Account@Volume
+			// Don't know the volume so just use 0 as a workaround
+			String newVolName = "0@" + config.getAccount() + "@" + config.getSnapshotName();
+			context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, newVolName);
+
+			final String volAndVolSetName = c.getAccountName() + ";0@volume@" + config.getSnapshotName();
+			context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
+					+ e.getMessage());
+		}
+
 		ucsdLogger.addInfo("Created volume snapshot: " + config.getSnapshotName());
 	}
 
@@ -78,6 +93,11 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 				// Register output type for the volume created
 				new TaskOutputDefinition(HP3ParConstants.VOLUME_LIST_FORM_LABEL,
 						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL),
+
+				new TaskOutputDefinition(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL,
+						HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_TABLE_NAME,
+						HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL),
+
 		};
 		return ops;
 	}

@@ -66,6 +66,9 @@ public class EditVolumeTask extends AbstractTask {
 			// Don't know the volume so just use 0 as a workaround
 			String tableVolName = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
 			context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, tableVolName);
+
+			final String volAndVolSetName = c.getAccountName() + ";0@volume@" + config.getNewVolumeName();
+			context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
 		}
 		catch (Exception e) {
 			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
@@ -90,6 +93,9 @@ public class EditVolumeTask extends AbstractTask {
 				// Register output type for the volume created
 				new TaskOutputDefinition(HP3ParConstants.VOLUME_LIST_FORM_LABEL,
 						HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUME_LIST_FORM_LABEL),
+				new TaskOutputDefinition(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL,
+						HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_TABLE_NAME,
+						HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL),
 		};
 		return ops;
 	}
