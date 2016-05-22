@@ -22,6 +22,8 @@
 package com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.volumesets.actions.AddVolumeToVolumeSetAction;
+import com.cisco.matday.ucsd.hp3par.reports.volumesets.actions.RemoveVolumeFromVolumeSetAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -51,8 +53,7 @@ public class VolumeSetMemberReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			// new AddVolumeToVolumeSetAction(), new
-			// RemoveVolumeFromVolumeSetAction()
+			new AddVolumeToVolumeSetAction(), new RemoveVolumeFromVolumeSetAction()
 	};
 
 	/**
