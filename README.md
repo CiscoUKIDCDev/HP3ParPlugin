@@ -36,10 +36,10 @@ For more screenshots see the [screenshots page](screenshots.md).
 * Inventory collection and database caching
 * Full support to create/delete VLUNs and Hosts
 * Host sets
-
-### Near-term roadmap
 * Volume sets
-* More tasks (need suggestions - use the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues) to do so)
+
+### Future functionality
+See the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues) to see what's in development and create a new issue for any features you'd like added!
 
 ## Using
 ### Configuring the WSAPI on your 3PAR array
