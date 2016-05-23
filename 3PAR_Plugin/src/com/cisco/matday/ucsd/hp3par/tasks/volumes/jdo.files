@@ -4,3 +4,4 @@
 +CreateVolumeConfig
 +DeleteVolumeConfig
 +EditVolumeConfig
++GrowVolumeConfig

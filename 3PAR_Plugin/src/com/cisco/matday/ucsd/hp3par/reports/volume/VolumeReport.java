@@ -27,6 +27,7 @@ import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeCopyActio
 import com.cisco.matday.ucsd.hp3par.reports.volume.actions.CreateVolumeSnapshotAction;
 import com.cisco.matday.ucsd.hp3par.reports.volume.actions.DeleteVolumeAction;
 import com.cisco.matday.ucsd.hp3par.reports.volume.actions.EditVolumeAction;
+import com.cisco.matday.ucsd.hp3par.reports.volume.actions.GrowVolumeAction;
 import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeAllocationPieChart;
 import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeSnapshotReport;
 import com.cisco.matday.ucsd.hp3par.reports.volume.drilldown.VolumeSummaryReport;
@@ -61,7 +62,8 @@ public class VolumeReport extends DrillableReportWithActions {
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
 			new CreateVolumeAction(), new EditVolumeAction(), new DeleteVolumeAction(),
-			new CreateVolumeSnapshotAction(), new CreateVolumeCopyAction(), new DrillDownAction(),
+			new CreateVolumeSnapshotAction(), new CreateVolumeCopyAction(), new GrowVolumeAction(),
+			new DrillDownAction(),
 	};
 
 	/**

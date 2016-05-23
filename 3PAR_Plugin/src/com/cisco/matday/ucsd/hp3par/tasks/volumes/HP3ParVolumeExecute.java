@@ -30,6 +30,7 @@ import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
+import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeGrowParams;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeParams;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
@@ -45,6 +46,24 @@ import com.google.gson.Gson;
  */
 public class HP3ParVolumeExecute {
 	private static Logger logger = Logger.getLogger(HP3ParVolumeExecute.class);
+
+	// All the actions you can do when growing a volume
+	@SuppressWarnings("javadoc")
+	public static final int VOLUME_GROWTH_STOP_PHYSICAL_COPY = 1;
+	@SuppressWarnings("javadoc")
+	public static final int VOLUME_GROWTH_RESYNC_PHYSICAL_COPY = 2;
+	@SuppressWarnings("javadoc")
+	public static final int VOLUME_GROWTH_GROW_VOLUME = 3;
+	@SuppressWarnings("javadoc")
+	public static final int VOLUME_GROWTH_PROMOTE_VIRTUAL_COPY = 4;
+	@SuppressWarnings("javadoc")
+	public static final int VOLUME_GROWTH_STOP_PROMOTE_VIRTUAL_COPY = 5;
+	@SuppressWarnings("javadoc")
+	public static final int VOLUME_GROWTH_TUNE_VOLUME = 6;
+	@SuppressWarnings("javadoc")
+	public static final int VOLUME_GROWTH_UPDATE_VIRTUAL_COPY = 7;
+	@SuppressWarnings("javadoc")
+	public static final int VOLUME_GROWTH_SNAPSHOT_ENUM_ACTION = 8;
 
 	/**
 	 * Create a new volume
@@ -271,4 +290,55 @@ public class HP3ParVolumeExecute {
 		return status;
 	}
 
+	/**
+	 * Grow an existing volume
+	 *
+	 * @param c
+	 *            Credentials for the account to perform this on
+	 * @param config
+	 *            Configuration settings
+	 * @return Status of the operation
+	 * @throws HP3ParVolumeException
+	 *             if the volume was incorrect
+	 * @throws Exception
+	 *             if the operation was unsuccessful
+	 */
+	public static HP3ParRequestStatus grow(HP3ParCredentials c, GrowVolumeConfig config)
+			throws HP3ParVolumeException, Exception {
+
+		final String volName = config.getVolume().split("@")[2];
+		final HP3ParVolumeGrowParams p = new HP3ParVolumeGrowParams(VOLUME_GROWTH_GROW_VOLUME, config.getNewSize());
+
+		Gson gson = new Gson();
+		HP3ParRequestStatus status = new HP3ParRequestStatus();
+
+		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+
+		final String uri = "/api/v1/volumes/" + volName;
+		request.setUri(uri);
+
+		// Use defaults for a PUT request
+		request.setPutDefaults(gson.toJson(p));
+
+		request.execute();
+		String response = request.getHttpResponse();
+
+		// Shouldn't get a response if all is good... if we did it's trouble
+		if (!response.equals("")) {
+			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
+			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
+			status.setSuccess(false);
+		}
+		else {
+			status.setSuccess(true);
+			// Update the inventory
+			try {
+				HP3ParInventory.update(c, true, "Volume expanded");
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return status;
+	}
 }
