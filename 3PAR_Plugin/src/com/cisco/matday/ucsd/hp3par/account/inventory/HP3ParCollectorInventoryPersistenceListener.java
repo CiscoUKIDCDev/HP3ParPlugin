@@ -35,12 +35,6 @@ public class HP3ParCollectorInventoryPersistenceListener extends PersistenceList
 
 	@Override
 	public void persistItem(ItemResponse arg0) throws Exception {
-		logger.info("HP3PAR Persisting inventory...");
-
-		logger.info("Inventory Persistence arguments: " + arg0.getItem().getName());
-
-		// inv.insert(new );
-
 		return;
 	}
 

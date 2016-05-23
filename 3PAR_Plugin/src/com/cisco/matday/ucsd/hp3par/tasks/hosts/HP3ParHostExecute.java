@@ -397,8 +397,6 @@ public class HP3ParHostExecute {
 
 		String uri = "/api/v1/hosts/" + hostName;
 		request.setUri(uri);
-		logger.info("URI:  " + uri);
-		logger.info("REST: " + gson.toJson(new EditHostNameParams(descriptor, hostName, config.getNewName())));
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new EditHostNameParams(descriptor, hostName, config.getNewName())));
 

@@ -23,9 +23,6 @@ package com.cisco.matday.ucsd.hp3par.account.util;
 
 import org.apache.log4j.Logger;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParAccountDBStore;
-import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-
 /**
  * This is the sample persistent util class for account. You can write your
  * methods to expose your persistence
@@ -43,14 +40,7 @@ public class HP3ParAccountPersistenceUtil {
 	 * @throws Exception
 	 */
 	public static void persistCollectedInventory(String accountName) throws Exception {
-		logger.info("Call in persistCollectedInventory :: inventory  ");
-		logger.info("Account Name " + accountName);
-
-		final HP3ParAccountDBStore account = HP3ParCredentials.getInternalCredential(accountName);
-
-		if (account != null) {
-			logger.info("Remote Host Ip " + account.getServerAddress());
-		}
+		return;
 	}
 
 }

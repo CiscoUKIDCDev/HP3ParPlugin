@@ -21,8 +21,6 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.tasks.vluns;
 
-import org.apache.log4j.Logger;
-
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
@@ -41,7 +39,6 @@ import com.google.gson.Gson;
  *
  */
 public class HP3ParVlunExecute {
-	private static Logger logger = Logger.getLogger(HP3ParVlunExecute.class);
 
 	/**
 	 * Craete a new VLUN
@@ -80,8 +77,6 @@ public class HP3ParVlunExecute {
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
 		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		logger.info("REST: " + gson.toJson(params));
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(params));
@@ -129,8 +124,6 @@ public class HP3ParVlunExecute {
 		final String volumeName = internalId.split("@")[3];
 
 		final String uri = "/api/v1/vluns/" + volumeName + "," + lun + "," + hostName;
-
-		logger.info("Delete URI: " + uri);
 
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 

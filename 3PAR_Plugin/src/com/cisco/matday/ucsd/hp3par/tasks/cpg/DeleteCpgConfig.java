@@ -24,8 +24,6 @@ package com.cisco.matday.ucsd.hp3par.tasks.cpg;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
-import org.apache.log4j.Logger;
-
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -59,8 +57,6 @@ public class DeleteCpgConfig implements TaskConfigIf {
 	@Persistent
 	private String cpg;
 
-	private static Logger logger = Logger.getLogger(DeleteCpgConfig.class);
-
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
@@ -76,9 +72,7 @@ public class DeleteCpgConfig implements TaskConfigIf {
 	 *            Configuration settings to use
 	 */
 	public DeleteCpgConfig(CreateCpgConfig config) {
-		logger.info("Rolling back task - deleting cpg: " + config.getCpgName());
 		String volParse = "0@" + config.getAccount() + "@" + config.getCpgName();
-		logger.info("Format: " + volParse);
 		this.cpg = volParse;
 	}
 

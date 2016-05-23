@@ -117,7 +117,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 	@Override
 	public CloupiaReport[] getReports() {
-		logger.info("Adding reports");
 		final CloupiaReport[] report = new CloupiaReport[] {
 				new AccountReport(), new PollingReport(), new VolumeReport(), new VolumeSetReport(), new CPGReport(),
 				new HostReport(), new HostSetReport(), new VlunReport(), new PortListReport(), new PathReport(),
@@ -128,7 +127,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	// Return a list of API tasks supported
 	@Override
 	public AbstractTask[] getTasks() {
-		logger.info("Adding tasks");
 		final AbstractTask[] task = new AbstractTask[] {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
@@ -145,7 +143,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 	@Override
 	public void onStart(CustomFeatureRegistry cfr) {
-		logger.info("HP 3PAR Plugin");
 		try {
 			// Register LOV inputs
 			cfr.registerTabularField(HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER, HP3ParAccountSelector.class, "0", "0");
@@ -196,7 +193,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			this.createAccountType();
 
 			try {
-				logger.info("Looping through accounts to kick off inventory");
 				final ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
 				final List<InfraAccount> objs = store.queryAll();
 				for (final InfraAccount a : objs) {

@@ -154,8 +154,6 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 			String cquery = "server == '" + this.array_address + "' && userID == '" + this.username
 					+ "' && transport == " + this.https + "' && port == " + this.tcp_port;
 
-			logger.info("query = " + cquery);
-
 			List<InfraAccount> accList = store.query(cquery);
 
 			if ((accList != null) && (accList.size() > 0)) {
@@ -210,8 +208,6 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 
 	@Override
 	public String getPolicy() {
-		logger.info("Getting HP3ParAccount Policy (returning null)");
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -237,8 +233,7 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 
 	@Override
 	public void setPolicy(String policy) {
-		logger.info("Setting HP3ParAccount Policy: " + policy);
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	@Override

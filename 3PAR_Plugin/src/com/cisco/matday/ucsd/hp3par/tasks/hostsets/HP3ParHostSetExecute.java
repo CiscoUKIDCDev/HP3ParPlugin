@@ -65,13 +65,10 @@ public class HP3ParHostSetExecute {
 			setmembers[i] = hostList[i].split("@")[2];
 		}
 
-		SetRequest p = new SetRequest(config.getHostSetName(), setmembers, config.getComment(),
-				config.getDomain());
+		SetRequest p = new SetRequest(config.getHostSetName(), setmembers, config.getComment(), config.getDomain());
 
 		Gson gson = new Gson();
 		final HP3ParRequestStatus status = new HP3ParRequestStatus();
-
-		logger.info("JSON: " + gson.toJson(p));
 
 		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
 
@@ -159,8 +156,7 @@ public class HP3ParHostSetExecute {
 				hostName
 		};
 
-		HP3ParSetEditParams removeParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,
-				removeArray);
+		HP3ParSetEditParams removeParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_REMOVE, removeArray);
 
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
@@ -240,8 +236,7 @@ public class HP3ParHostSetExecute {
 		HP3ParSetEditParams addParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_ADD, addArray);
 		// Build add parameter list:
 		String[] removeArray = remove.toArray(new String[remove.size()]);
-		HP3ParSetEditParams removeParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_REMOVE,
-				removeArray);
+		HP3ParSetEditParams removeParams = new HP3ParSetEditParams(HP3ParConstants.SET_ACTION_REMOVE, removeArray);
 		// Build rename parameter list:
 		HP3ParSetEditParams renameParams = new HP3ParSetEditParams(config.getHostSetName());
 		HP3ParSetEditParams commentParams = new HP3ParSetEditParams();

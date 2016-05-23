@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -24,8 +24,6 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
-import org.apache.log4j.Logger;
-
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
 import com.cloupia.model.cIM.FormFieldDefinition;
@@ -38,7 +36,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
- * 
+ *
  * @author Matt Day
  *
  */
@@ -60,8 +58,6 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	@Persistent
 	private String volume;
 
-	private static Logger logger = Logger.getLogger(DeleteVolumeConfig.class);
-
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
@@ -72,27 +68,23 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Rollback constructor - used specifically for the create volume task
-	 * 
+	 *
 	 * @param config
 	 *            Configuration settings to use
 	 */
 	public DeleteVolumeConfig(CreateVolumeConfig config) {
-		logger.info("Rolling back task - deleting volume: " + config.getVolumeName());
 		String volParse = "0@" + config.getAccount() + "@" + config.getVolumeName();
-		logger.info("Format: " + volParse);
 		this.volume = volParse;
 	}
 
 	/**
 	 * Rollback constructor - used specifically for the copy volume task
-	 * 
+	 *
 	 * @param config
 	 *            Configuration settings to use
 	 */
 	public DeleteVolumeConfig(CreateVolumeCopyConfig config) {
-		logger.info("Rolling back task - deleting volume: " + config.getNewVolumeName());
 		String volParse = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
-		logger.info("Format: " + volParse);
 		this.volume = volParse;
 	}
 
@@ -113,7 +105,7 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the account name
-	 * 
+	 *
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
@@ -133,7 +125,7 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the Volume name
-	 * 
+	 *
 	 * @return Volume details (formatted id@account@volumeName)
 	 */
 	public String getVolume() {
@@ -142,7 +134,7 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set the Volume name
-	 * 
+	 *
 	 * @param volume
 	 *            Must be formatted id@account@volumeName
 	 */

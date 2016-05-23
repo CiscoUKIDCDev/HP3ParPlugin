@@ -242,13 +242,10 @@ public class HP3ParVolumeExecute {
 		// VolumeResponseMember volinfo = new HP3ParVolumeInfo(c,
 		// config.getOriginalName()).getMember();
 		VolumeResponseMember volinfo = HP3ParInventory.getVolumeInfo(c, volName);
-		logger.info("Vol REST Lookup: " + volinfo.getUserCPG());
-		logger.info("Copy CPG Name: " + copyCpgName);
 
 		// If the new copy CPG name is the same as the old one, set it to
 		// null (3PAR will otherwise return an error)
 		if (copyCpgName.equals(volinfo.getCopyCPG())) {
-			logger.info("Edited CPG is the same as the old one, setting to null");
 			copyCpgName = null;
 		}
 
@@ -262,8 +259,6 @@ public class HP3ParVolumeExecute {
 
 		String uri = "/api/v1/volumes/" + volName;
 		request.setUri(uri);
-
-		logger.info("HP 3PAR Edit REST: " + gson.toJson(p));
 
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(p));

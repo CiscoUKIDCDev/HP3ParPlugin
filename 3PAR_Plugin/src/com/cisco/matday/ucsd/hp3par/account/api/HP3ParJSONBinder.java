@@ -55,24 +55,19 @@ public abstract class HP3ParJSONBinder implements ItemDataObjectBinderIf {
 					field.set(obj, value);
 				}
 			}
-			catch (@SuppressWarnings("unused") final SecurityException e) {
-				// TODO Auto-generated catch block
+			catch (final SecurityException e) {
+				logger.warn("Security Exception: " + e.getMessage());
 
 			}
 			catch (@SuppressWarnings("unused") final NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				logger.debug("No field by name " + varName + " for Class " + obj.getClass().getSimpleName());
+				logger.warn("No field by name " + varName + " for Class " + obj.getClass().getSimpleName());
 				continue;
 			}
 			catch (@SuppressWarnings("unused") final IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				// e.printStackTrace();
-				logger.info("Illegal argument value while setting value for " + varName + obj.getClass());
+				logger.warn("Illegal argument value while setting value for " + varName + obj.getClass());
 			}
 			catch (@SuppressWarnings("unused") final IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				// e.printStackTrace();
-				logger.info("Illegal access while setting value for " + varName + obj.getClass());
+				logger.warn("Illegal access while setting value for " + varName + obj.getClass());
 			}
 		}
 	}

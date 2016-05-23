@@ -73,8 +73,6 @@ public class HP3ParVolumeSetExecute {
 		Gson gson = new Gson();
 		final HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		logger.info("JSON: " + gson.toJson(p));
-
 		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
 
 		// Use defaults for a POST request

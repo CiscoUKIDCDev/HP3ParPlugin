@@ -107,7 +107,6 @@ public class HP3ParInventory {
 		PhysicalConnectivityStatus status = new PhysicalConnectivityStatus(infraAccount);
 
 		final String accountName = credentials.getAccountName();
-		logger.info("Creating persistent store for account " + accountName);
 		try {
 			// Test token:
 			HP3ParToken token = new HP3ParToken(credentials);
@@ -118,14 +117,13 @@ public class HP3ParInventory {
 			}
 			token.release();
 			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
-			logger.info("Creating new data store: " + accountName);
 			this.invStore = new HP3ParInventoryDBStore(accountName);
 			invStoreCollection.insert(this.invStore);
 			status.setConnectionOK(true);
 		}
 		catch (Exception e) {
 			status.setConnectionOK(false);
-			logger.info("Exeption when doing this! " + e.getMessage());
+			logger.warn("Exeption when doing this! " + e.getMessage());
 		}
 	}
 
@@ -180,7 +178,6 @@ public class HP3ParInventory {
 			if ((!force) && ((c - store.getUpdated()) < inventoryLife)) {
 				return;
 			}
-			logger.info("Updating persistent store for account " + accountName);
 			store.setUpdated(c);
 
 			final HP3ParVolumeList volumeList = new HP3ParVolumeList(login);
@@ -567,15 +564,13 @@ public class HP3ParInventory {
 	 */
 	public synchronized static void init(HP3ParCredentials credentials) throws Exception {
 		final String accountName = credentials.getAccountName();
-		logger.info("Initialising inventory for account: " + accountName);
 		final String queryString = "accountName == '" + accountName + "'";
 		try {
 			ObjStore<HP3ParInventoryDBStore> invStoreCollection = ObjStoreHelper.getStore(HP3ParInventoryDBStore.class);
-			logger.warn("Deleting old data");
 			invStoreCollection.delete(queryString);
 		}
 		catch (Exception e) {
-			logger.info("Could not delete old data - maybe it doesn't exist. " + e.getMessage());
+			logger.warn("Could not delete old data - maybe it doesn't exist. " + e.getMessage());
 		}
 		HP3ParInventory inv = new HP3ParInventory(credentials);
 		inv.update(false, "Initial collection");

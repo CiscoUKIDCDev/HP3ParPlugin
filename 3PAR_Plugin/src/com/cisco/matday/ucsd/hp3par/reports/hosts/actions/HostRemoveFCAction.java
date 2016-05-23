@@ -80,7 +80,6 @@ public class HostRemoveFCAction extends CloupiaPageAction {
 		this.needsContext = context;
 		this.FORM_ID = PREFIX + this.needsContext + this.selection;
 		this.ACTION_ID = this.FORM_ID + "_ACTION";
-		logger.info("FORM ID " + this.FORM_ID);
 	}
 
 	@Override

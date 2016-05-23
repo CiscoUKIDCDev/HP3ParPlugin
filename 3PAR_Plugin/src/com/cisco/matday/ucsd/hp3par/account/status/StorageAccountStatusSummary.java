@@ -53,7 +53,6 @@ public class StorageAccountStatusSummary {
 	 * @throws Exception
 	 */
 	public static void accountSummary(String accountName) throws Exception {
-		logger.info("Checking account status: " + accountName);
 		HP3ParAccountDBStore acc = HP3ParCredentials.getInternalCredential(accountName);
 		PhysicalInfraAccount infraAccount = AccountUtil.getAccountByName(accountName);
 		PhysicalConnectivityStatus status = new PhysicalConnectivityStatus(infraAccount);
@@ -67,25 +66,23 @@ public class StorageAccountStatusSummary {
 			if (token != null) {
 				accStatus.setReachable(true);
 				t.release();
-				logger.info("Connection OK: " + accountName);
 				accStatus.setLastMessage("Connection OK");
 				status.setConnectionOK(true);
 			}
 			else {
-				logger.info("Connection failed: " + accountName);
 				accStatus.setReachable(false);
 				status.setConnectionOK(false);
 				accStatus.setLastMessage("Could not connect (check username/password)");
 			}
 		}
 		catch (@SuppressWarnings("unused") InvalidHP3ParTokenException e) {
-			logger.info("Connection failed: " + accountName);
+			logger.warn("Connection failed: " + accountName);
 			accStatus.setLastMessage("Could not connect (check username/password)");
 			accStatus.setReachable(false);
 			status.setConnectionOK(false);
 		}
 		catch (@SuppressWarnings("unused") Exception e) {
-			logger.info("Connection failed: " + accountName);
+			logger.warn("Connection failed: " + accountName);
 			accStatus.setLastMessage("Could not connect (is the array down?)");
 			accStatus.setReachable(false);
 			status.setConnectionOK(false);

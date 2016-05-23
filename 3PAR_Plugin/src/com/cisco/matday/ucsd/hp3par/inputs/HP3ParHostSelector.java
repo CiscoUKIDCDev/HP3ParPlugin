@@ -23,8 +23,6 @@ package com.cisco.matday.ucsd.hp3par.inputs;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
@@ -51,8 +49,6 @@ import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
  */
 public class HP3ParHostSelector implements TabularReportGeneratorIf {
 
-	private static Logger logger = Logger.getLogger(HP3ParHostSelector.class);
-
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
 			throws Exception {
@@ -65,8 +61,6 @@ public class HP3ParHostSelector implements TabularReportGeneratorIf {
 
 		ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
 		List<InfraAccount> objs = store.queryAll();
-
-		logger.info("Form context: " + context.getId());
 
 		TabularReportInternalModel model = new TabularReportInternalModel();
 		model.addTextColumn("InternalID", "InternalID", true);

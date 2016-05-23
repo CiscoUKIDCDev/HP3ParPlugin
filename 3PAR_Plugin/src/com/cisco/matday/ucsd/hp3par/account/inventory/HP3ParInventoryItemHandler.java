@@ -23,8 +23,6 @@ package com.cisco.matday.ucsd.hp3par.account.inventory;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.api.HP3ParAccountJSONBinder;
 import com.cisco.matday.ucsd.hp3par.account.api.HP3ParJSONBinder;
@@ -41,8 +39,6 @@ import com.cloupia.service.cIM.inframgr.collector.model.ItemResponse;
  */
 
 public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
-
-	private static Logger logger = Logger.getLogger(HP3ParInventoryItemHandler.class);
 
 	@Override
 	public void cleanup(String accountName) throws Exception {
@@ -97,8 +93,6 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 
 		// String jsonData = api.getInventoryData(getUrl());
 
-		logger.info("Persisting data and querying on schedule");
-
 		HP3ParInventory.update(new HP3ParCredentials(accountName), true, "Periodic inventory collection");
 
 		final String jsonData = null;
@@ -106,28 +100,15 @@ public class HP3ParInventoryItemHandler extends AbstractInventoryItemHandler {
 		bindableResponse.setContext(this.getContext(accountName));
 		bindableResponse.setCollectedData(jsonData);
 		ItemResponse bindedResponse = null;
-		logger.info("Before Calling bind");
 
 		final HP3ParJSONBinder binder = this.getBinder();
 		if (binder != null) {
 			bindedResponse = binder.bind(bindableResponse);
-			logger.info(bindedResponse.getItem().getLabel());
 		}
-
-		// final HP3ParVolumeResponse
-
-		logger.info("After Calling bind");
 
 		final PersistenceListener listener = this.getListener();
 		if (listener != null) {
-			logger.info("Calling for Persistence");
-			if (bindedResponse == null) {
-				logger.info("bindedResponse is null");
-			}
 			listener.persistItem(bindedResponse);
-		}
-		else {
-			logger.info("Persistence is null");
 		}
 
 	}
