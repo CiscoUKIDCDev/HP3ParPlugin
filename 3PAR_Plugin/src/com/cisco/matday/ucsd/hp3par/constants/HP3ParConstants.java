@@ -96,6 +96,46 @@ public class HP3ParConstants {
 	public static final String FCWWN_LIST_FORM_PROVIDER = "HP3ParFCWWNList_provider";
 
 	/**
+	 * User-friendly label for RAID list table
+	 */
+	public static final String RAID_LIST_FORM_LABEL = "RAID Type";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String RAID_LIST_FORM_TABLE_NAME = "HP3ParRAIDList";
+
+	/**
+	 * RAID list form name
+	 */
+	public static final String RAID_LIST_FORM_NAME = "HP3ParRAIDList";
+
+	/**
+	 * RAID list internal UCSD provider name
+	 */
+	public static final String RAID_LIST_FORM_PROVIDER = "HP3ParRAIDList_provider";
+
+	/**
+	 * User-friendly label for DISK list table
+	 */
+	public static final String DISK_LIST_FORM_LABEL = "DISK Type";
+
+	/**
+	 * Account list internal UCSD data type name
+	 */
+	public static final String DISK_LIST_FORM_TABLE_NAME = "HP3ParDISKList";
+
+	/**
+	 * DISK list form name
+	 */
+	public static final String DISK_LIST_FORM_NAME = "HP3ParDISKList";
+
+	/**
+	 * DISK list internal UCSD provider name
+	 */
+	public static final String DISK_LIST_FORM_PROVIDER = "HP3ParDISKList_provider";
+
+	/**
 	 * User-friendly label for CPG list table
 	 */
 	public static final String CPG_LIST_FORM_LABEL = "CPG";

@@ -36,11 +36,13 @@ import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParAccountException;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParAccountSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParCpgSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParDiskTypeSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParFCSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostAndHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPortSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParRaidTypeSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVlunSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeAndVolumeSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVolumeSelector;
@@ -58,6 +60,9 @@ import com.cisco.matday.ucsd.hp3par.reports.volume.VolumeReport;
 import com.cisco.matday.ucsd.hp3par.reports.volumesets.VolumeSetReport;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyTask;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotTask;
+import com.cisco.matday.ucsd.hp3par.tasks.cpg.CreateCpgTask;
+import com.cisco.matday.ucsd.hp3par.tasks.cpg.DeleteCpgTask;
+import com.cisco.matday.ucsd.hp3par.tasks.cpg.EditCpgTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddFCWWNHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.AddiSCSIHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hosts.CreateHostTask;
@@ -132,7 +137,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				new CreateHostSetTask(), new EditHostSetTask(), new DeleteHostSetTask(), new AddHostToHostSetTask(),
 				new RemoveHostFromHostSetTask(), new CreateVolumeSetTask(), new EditVolumeSetTask(),
 				new DeleteVolumeSetTask(), new AddVolumeToVolumeSetTask(), new RemoveVolumeFromVolumeSetTask(),
-				new CreateVolumeSetSnapshotTask(), new GrowVolumeTask()
+				new CreateVolumeSetSnapshotTask(), new GrowVolumeTask(), new CreateCpgTask(), new DeleteCpgTask(),
+				new EditCpgTask()
 		};
 		return task;
 	}
@@ -157,6 +163,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 					HP3ParVolumeAndVolumeSetSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.ISCSI_LIST_FORM_PROVIDER, HP3PariSCSISelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.FCWWN_LIST_FORM_PROVIDER, HP3ParFCSelector.class, "0", "2");
+			cfr.registerTabularField(HP3ParConstants.RAID_LIST_FORM_PROVIDER, HP3ParRaidTypeSelector.class, "0", "1");
+			cfr.registerTabularField(HP3ParConstants.DISK_LIST_FORM_PROVIDER, HP3ParDiskTypeSelector.class, "0", "1");
 
 			// Register drilldown reports
 			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUME_LIST_DRILLDOWN,

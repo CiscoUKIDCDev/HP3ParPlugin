@@ -31,7 +31,7 @@ import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
 /**
- * Configuration task for the 3PAR Volume creation task
+ * Configuration task for the 3PAR Cpg deletion task
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
@@ -39,12 +39,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_create_cpg")
-public class CreateCpgConfig implements TaskConfigIf {
+@PersistenceCapable(detachable = "true", table = "HP3Par_edit_cpg")
+public class EditCpgConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "3PAR Create CPG";
+	public static final String DISPLAY_LABEL = "3PAR Edit CPG";
 
 	@Persistent
 	private long configEntryId;
@@ -52,31 +52,21 @@ public class CreateCpgConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.ACCOUNT_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME)
+	@FormField(label = HP3ParConstants.CPG_LIST_FORM_LABEL, help = "Cpg to edit", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.CPG_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
 	@Persistent
-	private String account;
+	private String cpg;
 
-	@FormField(label = "CPG Name", help = "Name for your new CPG", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@FormField(label = "New CPG Name", help = "New Name for your CPG", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
-	private String cpgName;
-
-	@FormField(label = "RAID Type", help = "RAID Type", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.RAID_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.RAID_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private int raidType;
-
-	@FormField(label = "Disk Type", help = "Disk Type", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.DISK_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.DISK_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private int diskType;
+	private String newName;
 
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
 	 */
-	public CreateCpgConfig() {
+	public EditCpgConfig() {
 
 	}
 
@@ -101,17 +91,8 @@ public class CreateCpgConfig implements TaskConfigIf {
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
-		return this.account;
-	}
-
-	/**
-	 * Set the account name
-	 *
-	 * @param account
-	 *            The volume to be created
-	 */
-	public void setAccount(String account) {
-		this.account = account;
+		// Cpg is in the fomrat id@Account@Cpg
+		return this.cpg.split("@")[1];
 	}
 
 	@Override
@@ -125,48 +106,37 @@ public class CreateCpgConfig implements TaskConfigIf {
 	}
 
 	/**
-	 * @return the cpgName
+	 * Get the Cpg name
+	 *
+	 * @return Cpg details (formatted id@account@cpgName)
 	 */
-	public String getCpgName() {
-		return this.cpgName;
+	public String getCpg() {
+		return this.cpg;
 	}
 
 	/**
-	 * @param cpgName
-	 *            the cpgName to set
+	 * Set the Cpg name
+	 *
+	 * @param cpg
+	 *            Must be formatted id@account@cpgName
 	 */
-	public void setCpgName(String cpgName) {
-		this.cpgName = cpgName;
+	public void setCpg(String cpg) {
+		this.cpg = cpg;
 	}
 
 	/**
-	 * @return the raidType
+	 * @return the newName
 	 */
-	public int getRaidType() {
-		return this.raidType;
+	public String getNewName() {
+		return this.newName;
 	}
 
 	/**
-	 * @param raidType
-	 *            the raidType to set
+	 * @param newName
+	 *            the newName to set
 	 */
-	public void setRaidType(int raidType) {
-		this.raidType = raidType;
-	}
-
-	/**
-	 * @return the diskType
-	 */
-	public int getDiskType() {
-		return this.diskType;
-	}
-
-	/**
-	 * @param diskType
-	 *            the diskType to set
-	 */
-	public void setDiskType(int diskType) {
-		this.diskType = diskType;
+	public void setNewName(String newName) {
+		this.newName = newName;
 	}
 
 }

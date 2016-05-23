@@ -24,6 +24,8 @@ package com.cisco.matday.ucsd.hp3par.tasks.cpg;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
+import org.apache.log4j.Logger;
+
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
@@ -31,7 +33,7 @@ import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
 /**
- * Configuration task for the 3PAR Volume creation task
+ * Configuration task for the 3PAR Cpg deletion task
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
@@ -39,12 +41,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_create_cpg")
-public class CreateCpgConfig implements TaskConfigIf {
+@PersistenceCapable(detachable = "true", table = "HP3Par_delete_cpg")
+public class DeleteCpgConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "3PAR Create CPG";
+	public static final String DISPLAY_LABEL = "3PAR Delete CPG";
 
 	@Persistent
 	private long configEntryId;
@@ -52,32 +54,32 @@ public class CreateCpgConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.ACCOUNT_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.ACCOUNT_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.ACCOUNT_LIST_FORM_TABLE_NAME)
+	@FormField(label = HP3ParConstants.CPG_LIST_FORM_LABEL, help = "Cpg to delete", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.CPG_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.CPG_LIST_FORM_TABLE_NAME)
 	@Persistent
-	private String account;
+	private String cpg;
 
-	@FormField(label = "CPG Name", help = "Name for your new CPG", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TEXT)
-	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
-	@Persistent
-	private String cpgName;
-
-	@FormField(label = "RAID Type", help = "RAID Type", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.RAID_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.RAID_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private int raidType;
-
-	@FormField(label = "Disk Type", help = "Disk Type", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.DISK_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.DISK_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private int diskType;
+	private static Logger logger = Logger.getLogger(DeleteCpgConfig.class);
 
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
 	 */
-	public CreateCpgConfig() {
+	public DeleteCpgConfig() {
 
+	}
+
+	/**
+	 * Rollback constructor - used specifically for the create cpg task
+	 *
+	 * @param config
+	 *            Configuration settings to use
+	 */
+	public DeleteCpgConfig(CreateCpgConfig config) {
+		logger.info("Rolling back task - deleting cpg: " + config.getCpgName());
+		String volParse = "0@" + config.getAccount() + "@" + config.getCpgName();
+		logger.info("Format: " + volParse);
+		this.cpg = volParse;
 	}
 
 	@Override
@@ -101,17 +103,8 @@ public class CreateCpgConfig implements TaskConfigIf {
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
-		return this.account;
-	}
-
-	/**
-	 * Set the account name
-	 *
-	 * @param account
-	 *            The volume to be created
-	 */
-	public void setAccount(String account) {
-		this.account = account;
+		// Cpg is in the fomrat id@Account@Cpg
+		return this.cpg.split("@")[1];
 	}
 
 	@Override
@@ -125,48 +118,22 @@ public class CreateCpgConfig implements TaskConfigIf {
 	}
 
 	/**
-	 * @return the cpgName
+	 * Get the Cpg name
+	 *
+	 * @return Cpg details (formatted id@account@cpgName)
 	 */
-	public String getCpgName() {
-		return this.cpgName;
+	public String getCpg() {
+		return this.cpg;
 	}
 
 	/**
-	 * @param cpgName
-	 *            the cpgName to set
+	 * Set the Cpg name
+	 *
+	 * @param cpg
+	 *            Must be formatted id@account@cpgName
 	 */
-	public void setCpgName(String cpgName) {
-		this.cpgName = cpgName;
-	}
-
-	/**
-	 * @return the raidType
-	 */
-	public int getRaidType() {
-		return this.raidType;
-	}
-
-	/**
-	 * @param raidType
-	 *            the raidType to set
-	 */
-	public void setRaidType(int raidType) {
-		this.raidType = raidType;
-	}
-
-	/**
-	 * @return the diskType
-	 */
-	public int getDiskType() {
-		return this.diskType;
-	}
-
-	/**
-	 * @param diskType
-	 *            the diskType to set
-	 */
-	public void setDiskType(int diskType) {
-		this.diskType = diskType;
+	public void setCpg(String cpg) {
+		this.cpg = cpg;
 	}
 
 }

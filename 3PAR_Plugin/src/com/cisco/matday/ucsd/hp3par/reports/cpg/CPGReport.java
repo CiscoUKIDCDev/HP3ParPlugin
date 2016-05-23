@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -22,6 +22,9 @@
 package com.cisco.matday.ucsd.hp3par.reports.cpg;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.reports.cpg.actions.CreateCpgAction;
+import com.cisco.matday.ucsd.hp3par.reports.cpg.actions.DeleteCpgAction;
+import com.cisco.matday.ucsd.hp3par.reports.cpg.actions.EditCpgAction;
 import com.cisco.matday.ucsd.hp3par.reports.cpg.drilldown.CpgMappedSpacePieChart;
 import com.cisco.matday.ucsd.hp3par.reports.cpg.drilldown.CpgSummaryReport;
 import com.cisco.matday.ucsd.hp3par.reports.cpg.drilldown.CpgVolumeReport;
@@ -35,7 +38,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.actions.DrillDownActi
 
 /**
  * Common Provisioning Group (CPG) report
- * 
+ *
  * @author Matt
  *
  */
@@ -55,7 +58,7 @@ public class CPGReport extends DrillableReportWithActions {
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new DrillDownAction(),
+			new CreateCpgAction(), new EditCpgAction(), new DeleteCpgAction(), new DrillDownAction(),
 	};
 
 	/**

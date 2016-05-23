@@ -19,41 +19,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.test;
+package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.cpg.EditCpgConfig;
-import com.cisco.matday.ucsd.hp3par.tasks.cpg.HP3ParCpgExecute;
-
-// Don't document this test case, it changes too often
+/**
+ * Parameters to represent a 3PAR CPG editing API call.
+ *
+ * See the HP 3PAR documentation for more detail.
+ *
+ * @author Matt Day
+ *
+ */
 @SuppressWarnings("javadoc")
-public class VolumeTest {
+public class HP3ParEditCPGParams {
+	private String newName;
 
-	final static String ipAddress = "10.51.8.210";
-	final static String user = "3paradm";
-	final static String password = "3pardata";
-
-	@SuppressWarnings({
-			"deprecation"
-	})
-	public static void main(String[] args) {
-
-		try {
-
-			EditCpgConfig config = new EditCpgConfig();
-			HP3ParCredentials c = new HP3ParCredentials(ipAddress, user, password);
-
-			config.setCpg("0@3PAR@API-Test");
-			config.setNewName("Renamed-API");
-
-			HP3ParRequestStatus s = HP3ParCpgExecute.edit(c, config);
-
-			System.out.println(s.getError());
-
-		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+	public HP3ParEditCPGParams(String newName) {
+		super();
+		this.newName = newName;
 	}
+
+	/**
+	 * @return the newName
+	 */
+	public String getNewName() {
+		return this.newName;
+	}
+
+	/**
+	 * @param newName
+	 *            the newName to set
+	 */
+	public void setNewName(String newName) {
+		this.newName = newName;
+	}
+
 }

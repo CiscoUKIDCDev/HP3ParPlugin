@@ -19,41 +19,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.test;
+package com.cisco.matday.ucsd.hp3par.rest.cpg.json;
 
-import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
-import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.cpg.EditCpgConfig;
-import com.cisco.matday.ucsd.hp3par.tasks.cpg.HP3ParCpgExecute;
-
-// Don't document this test case, it changes too often
+/**
+ * Parameters to represent a 3PAR LDLayout API call.
+ *
+ * See the HP 3PAR documentation for more detail.
+ *
+ * @author Matt Day
+ *
+ */
 @SuppressWarnings("javadoc")
-public class VolumeTest {
+public class HP3ParLDLayoutParams {
+	private int RAIDType;
+	private HP3ParDiskTypeParams[] diskPatterns;
 
-	final static String ipAddress = "10.51.8.210";
-	final static String user = "3paradm";
-	final static String password = "3pardata";
+	public HP3ParLDLayoutParams() {
 
-	@SuppressWarnings({
-			"deprecation"
-	})
-	public static void main(String[] args) {
-
-		try {
-
-			EditCpgConfig config = new EditCpgConfig();
-			HP3ParCredentials c = new HP3ParCredentials(ipAddress, user, password);
-
-			config.setCpg("0@3PAR@API-Test");
-			config.setNewName("Renamed-API");
-
-			HP3ParRequestStatus s = HP3ParCpgExecute.edit(c, config);
-
-			System.out.println(s.getError());
-
-		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
+
+	public HP3ParLDLayoutParams(int RAIDType, HP3ParDiskTypeParams[] diskPatterns) {
+		super();
+		this.RAIDType = RAIDType;
+		this.diskPatterns = diskPatterns;
+	}
+
+	/**
+	 * @return the rAIDType
+	 */
+	public int getRAIDType() {
+		return this.RAIDType;
+	}
+
+	/**
+	 * @param RAIDType
+	 *            the rAIDType to set
+	 */
+	public void setRAIDType(int RAIDType) {
+		this.RAIDType = RAIDType;
+	}
+
+	/**
+	 * @return the diskPatterns
+	 */
+	public HP3ParDiskTypeParams[] getDiskPatterns() {
+		return this.diskPatterns;
+	}
+
+	/**
+	 * @param diskPatterns
+	 *            the diskPatterns to set
+	 */
+	public void setDiskPatterns(HP3ParDiskTypeParams[] diskPatterns) {
+		this.diskPatterns = diskPatterns;
+	}
+
 }
