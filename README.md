@@ -10,8 +10,6 @@ The project is released under a generous [MIT-style license](https://github.com/
 For installation instructions see the bottom of this page.
 
 ## Warning
-This plugin has never been tested in a production environment before!
-
 There is no support or warranty - implied or otherwise. If you need new features or bugfixes, ask nicely in the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues). The code is there too, so you can fix it yourself (and ideally send those back as a pull request!).
 
 You should back-up your UCS Director database before using this plugin and test any new releases before deploying.
@@ -29,7 +27,7 @@ For more screenshots see the [screenshots page](screenshots.md).
 * Drilldown reports (double-click on items to see more information and graphs)
 * List of values to pick various 3PAR assets for tasks
 * Action buttons to perform each task via the GUI
-* Over 25 tasks
+* 30+ tasks
 * Inventory collection and database caching
 * Full support to create/delete VLUNs and Hosts
 * Host sets
@@ -42,9 +40,11 @@ See the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues) to se
 ### Configuring the WSAPI on your 3PAR array
 You need to enable the WSAPI on your 3PAR array. The official instructions are [available here](http://h20564.www2.hpe.com/hpsc/doc/public/display?docId=c03606339).
 
+**Note:** Your array must support WSAPI 1.3 or later (3PAR OS 3.1.3 or later) for all features to work correctly.
+
 In a nutshell, you need to ssh to your 3PAR controller and issue the following command:
 ```
- startwsapi
+startwsapi
 ```
 You can check the status by doing this:
 ```
@@ -58,7 +58,13 @@ The plugin supports both http and https and the latter is strongly recommended.
 2. From the CLI (typically ssh logged in as shelladmin) select **3** to stop services and then **4** to start them.
 3. You can then add a 3PAR account under a Generic, FlexPod or 3PAR pod
 
-Further instructions and better documentation will be out as/when it becomes more stable.
+You can then administer your 3PAR system either via custom workflow tasks, or via the UCS Director GUI.
+
+#### Custom workflow tasks
+This plugin includes 30+ tasks to integrate with your 3PAR storage array, including creating/modifying VLUNs, Volumes, CPGs and so on. You can use this in conjunction with other supported platforms in UCS Director to automate entire workflows seamlessly.
+
+#### UCS Director GUI
+You can manage the system from UCS Director. Under the Converged view, or under Physical -> Storage. From here you can view information about the array, perform actions and *drilldown* into more detailled reports (either double-click or select the *View Details* button).
 
 ## Credits
 Most of this was lovingly ripped off (and inspired by) Russ Whitear's Nimble plugin (he was super helpful!)
