@@ -85,7 +85,7 @@ public class HP3ParHostSetSelector implements TabularReportGeneratorIf {
 					// Internal ID, format:
 					// accountName;hostid@accountName@hostName
 					model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@"
-							+ credentials.getAccountName() + "@" + hostSet.getName());
+							+ credentials.getAccountName() + "@" + hostSet.getName() + ";hostset");
 					// Bad but we can use this to parse it all out later
 					// ID
 					model.addTextValue(Integer.toString(hostSet.getId()));

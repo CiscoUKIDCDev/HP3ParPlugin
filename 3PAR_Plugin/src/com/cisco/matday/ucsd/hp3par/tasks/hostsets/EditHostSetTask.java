@@ -56,7 +56,7 @@ public class EditHostSetTask extends AbstractTask {
 		// Construct Host name in the format:
 		// id@Account@HosetSet
 		// Don't know the volume so just use 0 as a workaround
-		String hostName = c.getAccountName() + "0@" + config.getAccount() + "@" + config.getHostSetName();
+		String hostName = c.getAccountName() + "0@" + config.getAccount() + "@" + config.getHostSetName() + ";hostset";
 		context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
 
 		String hostSetName = c.getAccountName() + "0@set@" + config.getHostSetName();

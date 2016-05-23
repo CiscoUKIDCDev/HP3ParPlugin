@@ -85,7 +85,7 @@ public class HP3ParVolumeSetSelector implements TabularReportGeneratorIf {
 					// Internal ID, format:
 					// accountName;volumeid@accountName@volumeName
 					model.addTextValue(credentials.getAccountName() + ";" + volumeSet.getId() + "@"
-							+ credentials.getAccountName() + "@" + volumeSet.getName());
+							+ credentials.getAccountName() + "@" + volumeSet.getName() + ";volumeset");
 					// Bad but we can use this to parse it all out later
 					// ID
 					model.addTextValue(Integer.toString(volumeSet.getId()));

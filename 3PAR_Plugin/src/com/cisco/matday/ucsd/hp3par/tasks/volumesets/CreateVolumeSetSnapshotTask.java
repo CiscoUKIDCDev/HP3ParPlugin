@@ -61,7 +61,8 @@ public class CreateVolumeSetSnapshotTask extends AbstractTask {
 
 		ucsdLogger.addInfo("Created volume set snapshot: " + config.getSnapshotName());
 
-		String volumeSetName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getSnapshotName();
+		String volumeSetName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getSnapshotName()
+				+ ";hostset";
 		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeSetName);
 
 		final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getSnapshotName();

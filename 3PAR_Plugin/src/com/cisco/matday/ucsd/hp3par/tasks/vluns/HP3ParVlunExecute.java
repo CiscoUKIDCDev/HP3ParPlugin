@@ -66,11 +66,11 @@ public class HP3ParVlunExecute {
 
 		final String hostType = config.getHost().split("@")[1];
 
-		if (hostType.equals("set")) {
+		if (hostType.equals("hostset")) {
 			hostName = "set:" + hostName;
 		}
 
-		if (volType.equals("set")) {
+		if (volType.equals("volumeset")) {
 			volName = "set:" + volName;
 		}
 

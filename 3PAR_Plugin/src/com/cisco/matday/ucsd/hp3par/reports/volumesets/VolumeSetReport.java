@@ -28,6 +28,7 @@ import com.cisco.matday.ucsd.hp3par.reports.volumesets.actions.DeleteVolumeSetAc
 import com.cisco.matday.ucsd.hp3par.reports.volumesets.actions.EditVolumeSetAction;
 import com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown.VolumeSetMemberReport;
 import com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown.VolumeSetSummaryReport;
+import com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown.VolumeSetVlunReport;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
@@ -54,7 +55,7 @@ public class VolumeSetReport extends DrillableReportWithActions {
 
 	// This MUST be defined ONCE!
 	private CloupiaReport[] drillable = new CloupiaReport[] {
-			new VolumeSetSummaryReport(), new VolumeSetMemberReport()
+			new VolumeSetSummaryReport(), new VolumeSetMemberReport(), new VolumeSetVlunReport()
 	};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {

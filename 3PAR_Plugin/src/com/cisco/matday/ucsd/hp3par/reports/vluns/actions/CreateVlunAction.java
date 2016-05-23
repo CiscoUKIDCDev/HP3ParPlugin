@@ -69,12 +69,39 @@ public class CreateVlunAction extends CloupiaPageAction {
 		// If it's a volume context then it'll be:
 		// AccountName;VolumeID@....
 		try {
-			if (query.split(";").length > 2) {
+			if (query.split(";")[2].equals("volumeset")) {
+				// Volume set drilldown
+				// Construct volume from context:
+				// accountName;id@account@name;type
+				// Needs to look like this:
+				// accountName;id@type@name
+				final String volume = query.split(";")[0] + ";" + query.split(";")[1].split("@")[0] + "@volumeset@"
+						+ query.split(";")[1].split("@")[2];
+				form.setVolume(volume);
+				logger.warn("Volume set query: " + volume);
+				page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
+			}
+			else if (query.split(";")[2].equals("hostset")) {
+				// Host set drilldown
+				// Construct volume from context:
+				// accountName;id@account@name;type
+				// Needs to look like this:
+				// accountName;id@type@name
+				final String host = query.split(";")[0] + ";" + query.split(";")[1].split("@")[0] + "@hostset@"
+						+ query.split(";")[1].split("@")[2];
+				form.setHost(host);
+				page.getFlist().getByFieldId(FORM_ID + ".host").setEditable(false);
+			}
+			else if (query.split(";").length > 2) {
 				// Volume drilldown
 				// Construct volume from context:
 				// 3PAR;4@3PAR@CPGTestEdited;FC_r1;FC_r5
-				final String volume = query.split(";")[1];
+				// Needs to look like this:
+				// accountName;id@type@name
+				final String volume = query.split(";")[1].split("@")[1] + ";" + query.split(";")[1].split("@")[0]
+						+ "@volume@" + query.split(";")[1].split("@")[2];
 				form.setVolume(volume);
+				logger.warn("Volume query: " + volume);
 				page.getFlist().getByFieldId(FORM_ID + ".volume").setEditable(false);
 
 			}
@@ -82,7 +109,12 @@ public class CreateVlunAction extends CloupiaPageAction {
 				// Hosts drilldown
 				// Construct volume from context:
 				// 3PAR;1@3PAR@NewHost
-				form.setHost(query);
+				// Needs to look like this:
+				// accountName;id@type@name
+				final String host = query.split(";")[1].split("@")[1] + ";" + query.split(";")[1].split("@")[0]
+						+ "@host@" + query.split(";")[1].split("@")[2];
+				form.setHost(host);
+				logger.warn("Host query: " + host);
 				page.getFlist().getByFieldId(FORM_ID + ".host").setEditable(false);
 			}
 		}

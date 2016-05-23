@@ -19,73 +19,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.hostsets;
+package com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown;
+
+import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.CreateHostSetAction;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.DeleteHostSetAction;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.actions.EditHostSetAction;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown.HostSetMemberReport;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown.HostSetSummaryReport;
-import com.cisco.matday.ucsd.hp3par.reports.hostsets.drilldown.HostSetVlunReport;
+import com.cisco.matday.ucsd.hp3par.reports.vluns.actions.CreateVlunAction;
+import com.cisco.matday.ucsd.hp3par.reports.vluns.actions.DeleteVlunAction;
 import com.cloupia.model.cIM.DynReportContext;
 import com.cloupia.model.cIM.ReportContextRegistry;
 import com.cloupia.service.cIM.inframgr.reportengine.ContextMapRule;
-import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReport;
 import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportAction;
-import com.cloupia.service.cIM.inframgr.reports.simplified.DrillableReportWithActions;
-import com.cloupia.service.cIM.inframgr.reports.simplified.actions.DrillDownAction;
+import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaReportWithActions;
 
 /**
- * Host report
- *
- * @author Matt
+ * @author Matt Day
  *
  */
-public class HostSetReport extends DrillableReportWithActions {
+public class VolumeSetVlunReport extends CloupiaReportWithActions {
+
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(VolumeSetVlunReport.class);
+
+	private CloupiaReportAction[] actions = {
+			new CreateVlunAction(), new DeleteVlunAction(),
+	};
+
 	/**
 	 * Unique identifier for this report
 	 */
-	public final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.hostsets.HostSetReport";
+	private final static String REPORT_NAME = "com.cisco.matday.ucsd.hp3par.reports.tabular.VolumeSetVlunReport";
 	/**
-	 * User-friendly report name
+	 * User-friendly identifier for this report
 	 */
-	private final static String REPORT_LABEL = "Host Sets";
-
-	// This MUST be defined ONCE!
-	private CloupiaReport[] drillable = new CloupiaReport[] {
-			new HostSetSummaryReport(), new HostSetMemberReport(), new HostSetVlunReport()
-	};
-
-	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new CreateHostSetAction(), new EditHostSetAction(), new DeleteHostSetAction(), new DrillDownAction()
-	};
+	private final static String REPORT_LABEL = "VLUNs";
 
 	/**
-	 * Create Host report
+	 * Overridden default constructor which sets the management column (0)
 	 */
-	public HostSetReport() {
+	public VolumeSetVlunReport() {
 		super();
-		// This sets what column to use as the context ID for child drilldown
-		// reports
+		// IMPORTANT: this tells the framework which column of this report you
+		// want to pass as the report context id
+		// when there is a UI action being launched in this report
 		this.setMgmtColumnIndex(0);
-		// This sets what to show in the GUI in the top
-		this.setMgmtDisplayColumnIndex(2);
 	}
 
 	@Override
-	public CloupiaReport[] getDrilldownReports() {
-		return this.drillable;
-	}
-
-	@Override
-	public Class<HostSetReportImpl> getImplementationClass() {
-		return HostSetReportImpl.class;
-	}
-
-	@Override
-	public CloupiaReportAction[] getActions() {
-		return this.actions;
+	public Class<VolumeSetVlunReportImpl> getImplementationClass() {
+		return VolumeSetVlunReportImpl.class;
 	}
 
 	@Override
@@ -105,25 +87,14 @@ public class HostSetReport extends DrillableReportWithActions {
 
 	@Override
 	public boolean isLeafReport() {
-		return false;
-	}
-
-	@Override
-	public int getMenuID() {
-		return 51;
-	}
-
-	@Override
-	public int getContextLevel() {
-		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.HOSTSET_LIST_DRILLDOWN);
-		return context.getType();
+		return true;
 	}
 
 	@Override
 	public ContextMapRule[] getMapRules() {
 		DynReportContext context = ReportContextRegistry.getInstance()
-				.getContextByName(HP3ParConstants.INFRA_ACCOUNT_TYPE);
+				.getContextByName(HP3ParConstants.VOLUMESET_LIST_DRILLDOWN);
+
 		ContextMapRule rule = new ContextMapRule();
 		rule.setContextName(context.getId());
 		rule.setContextType(context.getType());
@@ -132,6 +103,11 @@ public class HostSetReport extends DrillableReportWithActions {
 		rules[0] = rule;
 
 		return rules;
+	}
+
+	@Override
+	public CloupiaReportAction[] getActions() {
+		return this.actions;
 	}
 
 }

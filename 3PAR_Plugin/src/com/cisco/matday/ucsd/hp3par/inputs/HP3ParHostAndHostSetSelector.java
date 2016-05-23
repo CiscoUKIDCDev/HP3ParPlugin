@@ -123,11 +123,11 @@ public class HP3ParHostAndHostSetSelector implements TabularReportGeneratorIf {
 
 				for (SetResponseMember hostSet : setList.getMembers()) {
 					// Internal ID, format:
-					// accountName;hostid@accountName@hostName
+					// accountName;hostid@type@hostName
 
 					// Internal ID
 					model.addTextValue(
-							credentials.getAccountName() + ";" + hostSet.getId() + "@set@" + hostSet.getName());
+							credentials.getAccountName() + ";" + hostSet.getId() + "@hostset@" + hostSet.getName());
 
 					// ID
 					model.addTextValue(Integer.toString(hostSet.getId()));

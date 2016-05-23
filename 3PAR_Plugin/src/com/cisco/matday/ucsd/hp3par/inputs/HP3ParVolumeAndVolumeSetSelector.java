@@ -115,7 +115,7 @@ public class HP3ParVolumeAndVolumeSetSelector implements TabularReportGeneratorI
 					// Internal ID, format:
 					// accountName;volumeid@accountName@volumeName
 					String internalId = credentials.getAccountName() + ";" + Integer.toString(volumeSet.getId())
-							+ "@set@" + volumeSet.getName();
+							+ "@volumeset@" + volumeSet.getName();
 
 					// Internal ID
 					model.addTextValue(internalId);

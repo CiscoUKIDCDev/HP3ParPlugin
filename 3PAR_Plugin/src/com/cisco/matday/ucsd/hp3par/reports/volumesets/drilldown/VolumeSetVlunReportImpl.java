@@ -19,14 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.reports.volumesets;
-
-import org.apache.log4j.Logger;
+package com.cisco.matday.ucsd.hp3par.reports.volumesets.drilldown;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponse;
-import com.cisco.matday.ucsd.hp3par.rest.sets.json.SetResponseMember;
+import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.VlunResponse;
+import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.VlunResponseMembers;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -34,15 +32,10 @@ import com.cloupia.service.cIM.inframgr.reportengine.ReportRegistryEntry;
 import com.cloupia.service.cIM.inframgr.reports.TabularReportInternalModel;
 
 /**
- * Implements a volume report list
- *
  * @author Matt Day
  *
  */
-public class VolumeSetReportImpl implements TabularReportGeneratorIf {
-
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(VolumeSetReportImpl.class);
+public class VolumeSetVlunReportImpl implements TabularReportGeneratorIf {
 
 	@Override
 	public TabularReport getTabularReportReport(ReportRegistryEntry reportEntry, ReportContext context)
@@ -54,48 +47,39 @@ public class VolumeSetReportImpl implements TabularReportGeneratorIf {
 		report.setContext(context);
 
 		TabularReportInternalModel model = new TabularReportInternalModel();
+		// Internal ID is hidden from normal view and is used by tasks later
 		model.addTextColumn("Internal ID", "Internal ID", true);
-		model.addTextColumn("ID", "ID");
-		model.addTextColumn("Name", "Name");
-		model.addTextColumn("Members", "Members");
-		model.addTextColumn("Comment", "Comments");
+		model.addTextColumn("Host", "Host");
+		model.addTextColumn("LUN", "LUN");
+		model.addTextColumn("Status", "Status");
+		model.addTextColumn("WWN", "WWN");
+
+		final String volumeSet = context.getId().split(";")[1].split("@")[2];
 
 		model.completedHeader();
 
 		HP3ParCredentials credentials = new HP3ParCredentials(context);
 
-		SetResponse volumeSetList = HP3ParInventory.getVolumeSetResponse(new HP3ParCredentials(context));
+		VlunResponse list = HP3ParInventory.getVlunResponse(credentials);
 
-		for (SetResponseMember volumeSet : volumeSetList.getMembers()) {
-
-			// Internal ID, format:
-			// accountName;volumeid@accountName@volumeName
-			model.addTextValue(credentials.getAccountName() + ";" + volumeSet.getId() + "@"
-					+ credentials.getAccountName() + "@" + volumeSet.getName() + ";volumeset");
-
-			// Bad but we can use this to parse it all out later
-			// ID
-			model.addTextValue(Integer.toString(volumeSet.getId()));
-			model.addTextValue(volumeSet.getName());
-			String members = "";
-			// Name
-			for (String member : volumeSet.getSetMembers()) {
-				members += member + ", ";
+		for (VlunResponseMembers vlun : list.getMembers()) {
+			// We only want to match on this volume's children
+			if (!vlun.getVolumeName().equals("set:" + volumeSet)) {
+				continue;
 			}
-			// Remove trailing ', '
-			if (members.length() > 0) {
-				members = members.substring(0, members.length() - 2);
-			}
-			model.addTextValue(members);
-			model.addTextValue(volumeSet.getComment());
+			// ID format:
+			// accountName;lun@accountName@hostname@volumeName
+			model.addTextValue(credentials.getAccountName() + ";" + vlun.getLun() + "@" + credentials.getAccountName()
+					+ "@" + vlun.getHostname() + "@" + vlun.getVolumeName());
+			model.addTextValue(vlun.getHostname());
+			model.addTextValue(Integer.toString(vlun.getLun()));
+			model.addTextValue(vlun.isActive() ? "Active" : "Inactive");
+			model.addTextValue(vlun.getVolumeWWN());
 
 			model.completedRow();
 		}
-
 		model.updateReport(report);
 
 		return report;
-
 	}
-
 }

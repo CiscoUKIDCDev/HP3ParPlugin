@@ -71,7 +71,7 @@ public class HostSetReportImpl implements TabularReportGeneratorIf {
 			// Internal ID, format:
 			// accountName;hostid@accountName@hostName
 			model.addTextValue(credentials.getAccountName() + ";" + hostSet.getId() + "@" + credentials.getAccountName()
-					+ "@" + hostSet.getName());
+					+ "@" + hostSet.getName() + ";hostset");
 
 			// Bad but we can use this to parse it all out later
 			// ID
