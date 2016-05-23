@@ -1,5 +1,5 @@
 # HP 3PAR UCS Director Plugin
-This is an Open Automation plug-in which adds 3PAR support to Cisco UCS Director.
+This is an Open Automation plug-in which adds 3PAR support to Cisco UCS Director 5.4 or later.
 
 You can **[download the latest releases here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/releases)**.
 
@@ -35,6 +35,11 @@ For more screenshots see the [screenshots page](screenshots.md).
 
 ### Future functionality
 See the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues) to see what's in development and create a new issue for any features you'd like added!
+
+## Requirements
+You must have:
+* A 3PAR system running OS 3.1.3 or later (with WSAPI 1.3 or later enabled, see below)
+* Cisco UCS Director 5.4 or later (5.3.x and earlier is not supported)
 
 ## Using
 ### Configuring the WSAPI on your 3PAR array
