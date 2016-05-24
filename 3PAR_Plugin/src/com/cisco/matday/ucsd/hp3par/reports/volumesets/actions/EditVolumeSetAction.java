@@ -69,7 +69,7 @@ public class EditVolumeSetAction extends CloupiaPageAction {
 		String query = context.getId();
 		EditVolumeSetConfig form = new EditVolumeSetConfig();
 
-		final String volumeSetName = query.split("@")[2];
+		final String volumeSetName = query.split(";")[1].split("@")[2];
 
 		// Pre-populate the account and Volume fields:
 		form.setVolumeSet(query);

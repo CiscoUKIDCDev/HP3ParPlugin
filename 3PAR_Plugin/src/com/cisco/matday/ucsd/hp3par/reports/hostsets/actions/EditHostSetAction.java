@@ -69,7 +69,7 @@ public class EditHostSetAction extends CloupiaPageAction {
 		String query = context.getId();
 		EditHostSetConfig form = new EditHostSetConfig();
 
-		final String hostSetName = query.split("@")[2];
+		final String hostSetName = query.split(";")[1].split("@")[2];
 
 		// Pre-populate the account and Host fields:
 		form.setHostSet(query);
