@@ -59,8 +59,8 @@ public class PathReport extends DrillableReportWithActions {
 	private CloupiaReport[] drillable = new CloupiaReport[] {};
 
 	private CloupiaReportAction[] actions = new CloupiaReportAction[] {
-			new HostAddFCAction(false, false), new HostRemoveFCAction(false, true),
-			new HostAddiSCSIAction(false, false), new HostRemoveiSCSIAction(false, true),
+			new HostAddFCAction(false, false), new HostRemoveFCAction(true, true), new HostAddiSCSIAction(false, false),
+			new HostRemoveiSCSIAction(true, true),
 	};
 
 	/**
