@@ -354,6 +354,17 @@ public class HP3ParConstants {
 	 * Label for it (not sure what it does)
 	 */
 	public static final String PORT_LIST_DRILLDOWN_LABEL = "Port Details";
+
+	/**
+	 * Label for it (not sure what it does)
+	 */
+	public static final String SNAPSHOT_LIST_DRILLDOWN_LABEL = "Snapshot Details";
+
+	/**
+	 * Volume list drilldown name for global context registry
+	 */
+	public static final String SNAPSHOT_LIST_DRILLDOWN = "com.cisco.matday.ucsd.hp3par.reports.tabular.SnapshotList";
+
 	/**
 	 * Volume list drilldown name for global context registry
 	 */
