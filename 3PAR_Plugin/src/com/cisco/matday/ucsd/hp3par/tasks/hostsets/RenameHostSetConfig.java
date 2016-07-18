@@ -62,11 +62,6 @@ public class RenameHostSetConfig implements TaskConfigIf {
 	@Persistent
 	private String hostSetName;
 
-	@FormField(label = "Hosts", help = "Hosts", multiline = true, mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOST_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.HOST_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private String hosts;
-
 	@FormField(label = "Comment", help = "Comment", mandatory = false)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
@@ -94,7 +89,6 @@ public class RenameHostSetConfig implements TaskConfigIf {
 	public RenameHostSetConfig(RenameHostSetConfig config, String originalName) {
 		this.hostSet = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getHostSetName() + ";hostset";
 		this.hostSetName = originalName;
-		this.hosts = config.getHosts();
 	}
 
 	@Override
@@ -174,20 +168,6 @@ public class RenameHostSetConfig implements TaskConfigIf {
 	 */
 	public void setHostSetName(String hostSetName) {
 		this.hostSetName = hostSetName;
-	}
-
-	/**
-	 * @return Hosts
-	 */
-	public String getHosts() {
-		return this.hosts;
-	}
-
-	/**
-	 * @param hosts
-	 */
-	public void setHosts(String hosts) {
-		this.hosts = hosts;
 	}
 
 }

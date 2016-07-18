@@ -62,11 +62,6 @@ public class RenameVolumeSetConfig implements TaskConfigIf {
 	@Persistent
 	private String volumeSetName;
 
-	@FormField(label = "Volumes", help = "Volumes", multiline = true, mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
-	@Persistent
-	private String volumes;
-
 	@FormField(label = "Comment", help = "Comment", mandatory = false)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
@@ -95,7 +90,6 @@ public class RenameVolumeSetConfig implements TaskConfigIf {
 		this.volumeSet = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
 				+ ";volumeset";
 		this.volumeSetName = originalName;
-		this.volumes = config.getVolumes();
 	}
 
 	@Override
@@ -176,19 +170,4 @@ public class RenameVolumeSetConfig implements TaskConfigIf {
 	public void setVolumeSetName(String volumeSetName) {
 		this.volumeSetName = volumeSetName;
 	}
-
-	/**
-	 * @return Volumes
-	 */
-	public String getVolumes() {
-		return this.volumes;
-	}
-
-	/**
-	 * @param volumes
-	 */
-	public void setVolumes(String volumes) {
-		this.volumes = volumes;
-	}
-
 }
