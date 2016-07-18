@@ -28,7 +28,6 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParCpgException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.volumesets.DeleteVolumeSetConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -65,8 +64,8 @@ public class EditCpgTask extends AbstractTask {
 
 		try {
 			final String cpgName = config.getCpg().split("@")[2];
-			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
-					"Undo creation of volume: " + config.getNewName(), DeleteVolumeSetConfig.DISPLAY_LABEL,
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "CPG Edited",
+					"Undo editing CPG: " + config.getNewName(), EditCpgConfig.DISPLAY_LABEL,
 					new EditCpgConfig(config, cpgName));
 		}
 		catch (Exception e) {
