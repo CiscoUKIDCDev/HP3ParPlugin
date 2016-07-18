@@ -108,8 +108,8 @@ public class HP3ParHostSetExecute {
 	 * @throws Exception
 	 */
 	public static HP3ParRequestStatus add(HP3ParCredentials c, AddHostToHostSetConfig config) throws Exception {
-		final String hostSetName = config.getHostSet().split("@")[2];
-		final String hostName = config.getHost().split("@")[2];
+		final String hostSetName = config.getHostSet().split(";")[1].split("@")[2];
+		final String hostName = config.getHost().split(";")[1].split("@")[2];
 
 		final String[] addArray = {
 				hostName
@@ -149,8 +149,8 @@ public class HP3ParHostSetExecute {
 	 * @throws Exception
 	 */
 	public static HP3ParRequestStatus remove(HP3ParCredentials c, RemoveHostFromHostSetConfig config) throws Exception {
-		final String hostSetName = config.getHostSet().split("@")[2];
-		final String hostName = config.getHost().split("@")[2];
+		final String hostSetName = config.getHostSet().split(";")[1].split("@")[2];
+		final String hostName = config.getHost().split(";")[1].split("@")[2];
 
 		final String[] removeArray = {
 				hostName
@@ -190,7 +190,7 @@ public class HP3ParHostSetExecute {
 	 */
 	@SuppressWarnings("boxing")
 	public static HP3ParRequestStatus edit(HP3ParCredentials c, EditHostSetConfig config) throws Exception {
-		final String hostSetName = config.getHostSet().split("@")[2];
+		final String hostSetName = config.getHostSet().split(";")[1].split("@")[2];
 
 		HashMap<String, Boolean> keepMap = new HashMap<>();
 
@@ -324,10 +324,9 @@ public class HP3ParHostSetExecute {
 	 *             if the operation was unsuccessful
 	 */
 	public static HP3ParRequestStatus delete(HP3ParCredentials c, DeleteHostSetConfig config) throws Exception {
-
 		// Get the volume name, it's in the format:
 		// id@account@name
-		final String hostSetName = config.getHostSet().split("@")[2];
+		final String hostSetName = config.getHostSet().split(";")[1].split("@")[2];
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
