@@ -27,6 +27,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.tasks.volumes.DeleteVolumeConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -58,6 +59,10 @@ public class CreateVolumeSnapshotTask extends AbstractTask {
 			ucsdLogger.addError("Failed to create volume snapshot:" + s.getError());
 			throw new HP3ParVolumeException("Failed to create volume snapshot");
 		}
+
+		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+				"Undo creation of volume: " + config.getSnapshotName(), DeleteVolumeConfig.DISPLAY_LABEL,
+				new DeleteVolumeConfig(config));
 
 		try {
 			// Construct Volume name in the format:

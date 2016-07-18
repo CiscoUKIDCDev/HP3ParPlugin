@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -33,7 +33,7 @@ import com.cloupia.service.cIM.inframgr.reports.simplified.CloupiaNonTabularRepo
 
 /**
  * Builds the account overview page
- * 
+ *
  * @author Matt Day
  *
  */
@@ -56,7 +56,7 @@ public class VolumeSummaryReport extends CloupiaNonTabularReport {
 
 	/**
 	 * This method returns the report label to be display in UI
-	 * 
+	 *
 	 * @return label of report
 	 */
 	@Override
@@ -75,7 +75,6 @@ public class VolumeSummaryReport extends CloupiaNonTabularReport {
 
 	@Override
 	public Class<VolumeSummaryReportImpl> getImplementationClass() {
-		// TODO Auto-generated method stub
 		return VolumeSummaryReportImpl.class;
 	}
 
