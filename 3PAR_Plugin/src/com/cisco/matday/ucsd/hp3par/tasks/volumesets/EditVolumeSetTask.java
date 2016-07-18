@@ -43,6 +43,7 @@ public class EditVolumeSetTask extends AbstractTask {
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
 		EditVolumeSetConfig config = (EditVolumeSetConfig) context.loadConfigObject();
+		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
 		HP3ParRequestStatus s = HP3ParVolumeSetExecute.edit(c, config);
@@ -52,13 +53,14 @@ public class EditVolumeSetTask extends AbstractTask {
 			throw new HP3ParSetException("Failed to edit volume: " + s.getError());
 		}
 
-		ucsdLogger.addInfo("Created volume set");
+		ucsdLogger.addInfo("Edited volume set");
 
 		try {
-			final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
 			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
 					"Undo editing of volume: " + config.getVolumeSetName(), EditVolumeSetConfig.DISPLAY_LABEL,
 					new EditVolumeSetConfig(config, volumeSetName));
+			ucsdLogger.addInfo(
+					"Registering undo task to rename back to " + volumeSetName + " from " + config.getVolumeSetName());
 		}
 		catch (Exception e) {
 			ucsdLogger.addWarning("Failed to register undo task: " + e.getMessage());

@@ -240,15 +240,12 @@ public class HP3ParHostSetExecute {
 		// Build rename parameter list:
 		HP3ParSetEditParams renameParams = new HP3ParSetEditParams(config.getHostSetName());
 		HP3ParSetEditParams commentParams = new HP3ParSetEditParams();
-		commentParams.setComment(config.getComment());
+		commentParams.setComment((config.getComment() == null) ? "" : config.getComment());
 
 		HP3ParRequestStatus status;
 
 		// Update the comment regardless
 		status = doPut(commentParams, hostSetName, c);
-		if (!status.isSuccess()) {
-			return status;
-		}
 
 		// Add new members
 		if (addArray.length > 0) {

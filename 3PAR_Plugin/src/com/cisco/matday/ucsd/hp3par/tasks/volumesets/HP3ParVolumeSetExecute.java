@@ -196,6 +196,8 @@ public class HP3ParVolumeSetExecute {
 	public static HP3ParRequestStatus edit(HP3ParCredentials c, EditVolumeSetConfig config) throws Exception {
 		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
 
+		logger.info("Editing volumeSetName: " + volumeSetName);
+
 		HashMap<String, Boolean> keepMap = new HashMap<>();
 
 		final String newMembers = config.getVolumes();
@@ -244,15 +246,12 @@ public class HP3ParVolumeSetExecute {
 		// Build rename parameter list:
 		HP3ParSetEditParams renameParams = new HP3ParSetEditParams(config.getVolumeSetName());
 		HP3ParSetEditParams commentParams = new HP3ParSetEditParams();
-		commentParams.setComment(config.getComment());
+		commentParams.setComment((config.getComment() == null) ? "" : config.getComment());
 
 		HP3ParRequestStatus status;
 
 		// Update the comment regardless
 		status = doPut(commentParams, volumeSetName, c);
-		if (!status.isSuccess()) {
-			return status;
-		}
 
 		// Add new members
 		if (addArray.length > 0) {
@@ -298,6 +297,8 @@ public class HP3ParVolumeSetExecute {
 
 		String uri = "/api/v1/volumesets/" + volumeSetName;
 		request.setUri(uri);
+
+		logger.info("EDIT PUT JSON: " + gson.toJson(params));
 
 		// Remove anything outstanding
 		request.setPutDefaults(gson.toJson(params));

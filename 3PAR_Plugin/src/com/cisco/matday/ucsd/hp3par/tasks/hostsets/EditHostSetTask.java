@@ -25,7 +25,6 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
-import com.cisco.matday.ucsd.hp3par.tasks.volumesets.EditVolumeSetConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -53,12 +52,12 @@ public class EditHostSetTask extends AbstractTask {
 			throw new HP3ParSetException("Failed to edit host: " + s.getError());
 		}
 
-		ucsdLogger.addInfo("Created host set");
+		ucsdLogger.addInfo("Edited host set");
 
 		try {
 			final String hostSetName = config.getHostSet().split(";")[1].split("@")[2];
-			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
-					"Undo editing of host set: " + config.getHostSetName(), EditVolumeSetConfig.DISPLAY_LABEL,
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host set created",
+					"Undo editing of host set: " + config.getHostSetName(), EditHostSetConfig.DISPLAY_LABEL,
 					new EditHostSetConfig(config, hostSetName));
 		}
 		catch (Exception e) {
