@@ -72,7 +72,8 @@ public class DeleteVolumeSetConfig implements TaskConfigIf {
 	 *            Config to rollback
 	 */
 	public DeleteVolumeSetConfig(CreateVolumeSetConfig config) {
-		this.volumeSet = "0@" + config.getAccount() + "@" + config.getVolumeSetName();
+		this.volumeSet = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
+				+ ";hostset";
 	}
 
 	@Override

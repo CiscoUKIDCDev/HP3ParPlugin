@@ -26,6 +26,7 @@ import javax.jdo.annotations.Persistent;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeCopyConfig;
+import com.cisco.matday.ucsd.hp3par.tasks.copy.CreateVolumeSnapshotConfig;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
@@ -74,6 +75,17 @@ public class DeleteVolumeConfig implements TaskConfigIf {
 	 */
 	public DeleteVolumeConfig(CreateVolumeConfig config) {
 		String volParse = "0@" + config.getAccount() + "@" + config.getVolumeName();
+		this.volume = volParse;
+	}
+
+	/**
+	 * Rollback constructor - used specifically for the snapshot volume task
+	 *
+	 * @param config
+	 *            Configuration settings to use
+	 */
+	public DeleteVolumeConfig(CreateVolumeSnapshotConfig config) {
+		String volParse = "0@" + config.getAccount() + "@" + config.getSnapshotName();
 		this.volume = volParse;
 	}
 

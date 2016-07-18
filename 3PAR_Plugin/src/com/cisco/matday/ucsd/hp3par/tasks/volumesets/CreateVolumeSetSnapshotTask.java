@@ -61,12 +61,19 @@ public class CreateVolumeSetSnapshotTask extends AbstractTask {
 
 		ucsdLogger.addInfo("Created volume set snapshot: " + config.getSnapshotName());
 
-		String volumeSetName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getSnapshotName()
-				+ ";hostset";
-		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeSetName);
+		try {
+			final String volumeSetName = c.getAccountName() + ";0@" + config.getAccount() + "@"
+					+ config.getSnapshotName() + ";volumeset";
+			context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeSetName);
 
-		final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getSnapshotName();
-		context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
+			final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getSnapshotName();
+			context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not register output value " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
+					+ e.getMessage());
+		}
+
 	}
 
 	@Override
