@@ -331,7 +331,8 @@ public class HP3ParVolumeSetExecute {
 
 		// Get the volume name, it's in the format:
 		// id@account@name
-		final String volumeSetName = config.getVolumeSet().split("@")[2];
+		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
+		logger.info("Deleting volume: " + volumeSetName);
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
