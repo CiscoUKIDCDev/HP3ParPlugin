@@ -27,7 +27,6 @@ import java.util.List;
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
 import org.apache.log4j.Logger;
 
@@ -56,10 +55,6 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
 @PersistenceCapable(detachable = "true", table = "hp3par_inventory_db_v3")
 public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
-
-	@PrimaryKey
-	@Column(name = "ID")
-	private long id;
 
 	@Persistent
 	private String accountName;
