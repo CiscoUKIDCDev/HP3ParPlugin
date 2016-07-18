@@ -59,10 +59,14 @@ public class CreateVlunTask extends AbstractTask {
 			throw new HP3ParVlunException("VLUN creation failed");
 		}
 		ucsdLogger.addInfo("Created VLUN");
-
-		// Configure rollback
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "VLUN created",
-				"Undo creation of VLUN", DeleteVlunConfig.DISPLAY_LABEL, new DeleteVlunConfig(config));
+		try {
+			// Configure rollback
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "VLUN created",
+					"Undo creation of VLUN", DeleteVlunConfig.DISPLAY_LABEL, new DeleteVlunConfig(config));
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Failed to add rollback task for VLUN: " + e.getMessage());
+		}
 
 		// Register output
 		try {

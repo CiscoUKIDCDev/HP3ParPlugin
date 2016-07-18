@@ -73,7 +73,7 @@ public class DeleteVlunConfig implements TaskConfigIf {
 	 */
 	public DeleteVlunConfig(CreateVlunConfig c) {
 		// Format: accountName;lun@accountName@hostname@volumeName
-		final String hostName = c.getHost().split("@")[3];
+		final String hostName = c.getHost().split("@")[2];
 		final String volumeName = c.getVolume().split("@")[2];
 		this.vlun = c.getAccount() + ";" + c.getLun() + "@" + c.getAccount() + "@" + hostName + "@" + volumeName;
 
