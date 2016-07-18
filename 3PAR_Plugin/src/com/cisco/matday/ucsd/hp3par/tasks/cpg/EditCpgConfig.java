@@ -70,6 +70,20 @@ public class EditCpgConfig implements TaskConfigIf {
 
 	}
 
+	/**
+	 * Rollback constructor - this method shouldn't be instantiated directly
+	 * 
+	 * @param config
+	 *            config to rollback from
+	 * @param originalName
+	 *            Original CPG name to return to
+	 */
+	public EditCpgConfig(EditCpgConfig config, String originalName) {
+		final String cpgName = "0@" + config.getAccount() + "@" + config.getNewName();
+		this.newName = originalName;
+		this.cpg = cpgName;
+	}
+
 	@Override
 	public long getActionId() {
 		return this.actionId;

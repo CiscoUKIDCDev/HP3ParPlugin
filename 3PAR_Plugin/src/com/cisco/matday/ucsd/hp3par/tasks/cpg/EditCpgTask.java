@@ -28,6 +28,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParCpgException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.DeleteVolumeSetConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -60,14 +61,27 @@ public class EditCpgTask extends AbstractTask {
 			ucsdLogger.addError("Failed to edit Cpg: " + s.getError());
 			throw new HP3ParCpgException("Cpg deletion failed");
 		}
-		ucsdLogger.addInfo("Editd cpg");
+		ucsdLogger.addInfo("Edited cpg");
 
-		// Construct Cpg name in the format:
-		// id@Account@Volume
-		// Don't know the volume so just use 0 as a workaround
-		String cpgName = "0@" + config.getAccount() + "@" + config.getNewName();
-		context.saveOutputValue(HP3ParConstants.CPG_LIST_FORM_LABEL, cpgName);
-
+		try {
+			final String cpgName = config.getCpg().split("@")[2];
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+					"Undo creation of volume: " + config.getNewName(), DeleteVolumeSetConfig.DISPLAY_LABEL,
+					new EditCpgConfig(config, cpgName));
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not register undo task: " + e.getMessage());
+		}
+		try {
+			// Construct Cpg name in the format:
+			// id@Account@Volume
+			// Don't know the volume so just use 0 as a workaround
+			String cpgName = "0@" + config.getAccount() + "@" + config.getNewName();
+			context.saveOutputValue(HP3ParConstants.CPG_LIST_FORM_LABEL, cpgName);
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not register outputs for task: " + e.getMessage());
+		}
 	}
 
 	@Override

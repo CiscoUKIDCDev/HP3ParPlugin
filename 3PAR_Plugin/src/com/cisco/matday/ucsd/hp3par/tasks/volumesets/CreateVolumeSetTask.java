@@ -52,20 +52,33 @@ public class CreateVolumeSetTask extends AbstractTask {
 			throw new HP3ParSetException("Failed to create volume set: " + s.getError());
 		}
 
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
-				"Undo creation of volume: " + config.getVolumeSetName(), DeleteVolumeSetConfig.DISPLAY_LABEL,
-				new DeleteVolumeSetConfig(config));
-
 		ucsdLogger.addInfo("Created volume set");
-		// Construct Volume name in the format:
-		// id@Account@HosetSet
-		// Don't know the volume so just use 0 as a workaround
-		String volumeName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
-				+ ";volumeset";
-		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeName);
 
-		final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getVolumeSetName();
-		context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
+		try {
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+					"Undo creation of volume: " + config.getVolumeSetName(), DeleteVolumeSetConfig.DISPLAY_LABEL,
+					new DeleteVolumeSetConfig(config));
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not register undo task: " + e.getMessage());
+		}
+		try {
+			// Construct Volume name in the format:
+			// id@Account@HosetSet
+			// Don't know the volume so just use 0 as a workaround
+			String volumeName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
+					+ ";volumeset";
+			context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeName);
+
+			final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getVolumeSetName();
+			context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+					"Undo creation of volume: " + config.getVolumeSetName(), DeleteVolumeSetConfig.DISPLAY_LABEL,
+					new DeleteVolumeSetConfig(config));
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not register outputs: " + e.getMessage());
+		}
 
 	}
 
