@@ -104,7 +104,7 @@ public class DeleteHostSetConfig implements TaskConfigIf {
 	 * @return Account name
 	 */
 	public String getAccount() {
-		return this.hostSet.split("@")[1];
+		return this.hostSet.split(";")[0];
 	}
 
 	/**
