@@ -61,7 +61,7 @@ public class CreateVolumeSetTask extends AbstractTask {
 		// id@Account@HosetSet
 		// Don't know the volume so just use 0 as a workaround
 		String volumeName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
-				+ ";hostset";
+				+ ";volumeset";
 		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeName);
 
 		final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getVolumeSetName();

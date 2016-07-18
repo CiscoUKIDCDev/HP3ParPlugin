@@ -51,20 +51,31 @@ public class CreateHostSetTask extends AbstractTask {
 			ucsdLogger.addError("Failed to create host set: " + s.getError());
 			throw new HP3ParSetException("Failed to create host set: " + s.getError());
 		}
-
-		context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host created",
-				"Undo creation of host: " + config.getHostSetName(), DeleteHostSetConfig.DISPLAY_LABEL,
-				new DeleteHostSetConfig(config));
-
 		ucsdLogger.addInfo("Created host set");
-		// Construct Host name in the format:
-		// id@Account@HosetSet
-		// Don't know the host so just use 0 as a workaround
-		String hostName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getHostSetName() + ";hostset";
-		context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
 
-		String hostSetName = c.getAccountName() + "0@set@" + config.getHostSetName();
-		context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
+		try {
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host created",
+					"Undo creation of host: " + config.getHostSetName(), DeleteHostSetConfig.DISPLAY_LABEL,
+					new DeleteHostSetConfig(config));
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not save rollback task: " + e.getMessage());
+		}
+
+		try {
+			// Construct Host name in the format:
+			// id@Account@HosetSet
+			// Don't know the host so just use 0 as a workaround
+			String hostName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getHostSetName()
+					+ ";hostset";
+			context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
+
+			String hostSetName = c.getAccountName() + "0@set@" + config.getHostSetName();
+			context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not save output values: " + e.getMessage());
+		}
 	}
 
 	@Override
