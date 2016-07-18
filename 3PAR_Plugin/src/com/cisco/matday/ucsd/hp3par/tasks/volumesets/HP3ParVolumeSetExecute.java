@@ -111,8 +111,8 @@ public class HP3ParVolumeSetExecute {
 	 * @throws Exception
 	 */
 	public static HP3ParRequestStatus add(HP3ParCredentials c, AddVolumeToVolumeSetConfig config) throws Exception {
-		final String volumeSetName = config.getVolumeSet().split("@")[2];
-		final String volumeName = config.getVolume().split("@")[2];
+		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
+		final String volumeName = config.getVolume().split(";")[1].split("@")[2];
 
 		final String[] addArray = {
 				volumeName
@@ -153,8 +153,8 @@ public class HP3ParVolumeSetExecute {
 	 */
 	public static HP3ParRequestStatus remove(HP3ParCredentials c, RemoveVolumeFromVolumeSetConfig config)
 			throws Exception {
-		final String volumeSetName = config.getVolumeSet().split("@")[2];
-		final String volumeName = config.getVolume().split("@")[2];
+		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
+		final String volumeName = config.getVolume().split(";")[1].split("@")[2];
 
 		final String[] removeArray = {
 				volumeName
@@ -194,7 +194,7 @@ public class HP3ParVolumeSetExecute {
 	 */
 	@SuppressWarnings("boxing")
 	public static HP3ParRequestStatus edit(HP3ParCredentials c, EditVolumeSetConfig config) throws Exception {
-		final String volumeSetName = config.getVolumeSet().split("@")[2];
+		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
 
 		HashMap<String, Boolean> keepMap = new HashMap<>();
 
@@ -384,7 +384,7 @@ public class HP3ParVolumeSetExecute {
 	public static HP3ParRequestStatus snapshot(HP3ParCredentials c, CreateVolumeSetSnapshotConfig config)
 			throws HP3ParVolumeException, Exception {
 
-		final String volumeSetName = config.getVolumeSet().split("@")[2];
+		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
 
 		final HP3ParSnapshotParams p = new HP3ParSnapshotParams(config.getSnapshotName(), config.isReadOnly(),
 				config.getComment());
