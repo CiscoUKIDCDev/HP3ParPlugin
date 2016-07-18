@@ -59,15 +59,29 @@ public class EditHostTask extends AbstractTask {
 			throw new HP3ParHostException("Host deletion failed");
 		}
 		ucsdLogger.addInfo("Edited Host");
+		try {
+			final String hostName = config.getHost().split(";")[1].split("@")[2];
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host edited",
+					"Undo editing of host: " + config.getNewName(), EditHostConfig.DISPLAY_LABEL,
+					new EditHostConfig(config, hostName));
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Failed to register undo task: " + e.getMessage());
+		}
 
-		// Construct Host name in the format:
-		// id@Account@Volume
-		// Don't know the volume so just use 0 as a workaround
-		String hostName = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getNewName();
-		context.saveOutputValue(HP3ParConstants.HOST_LIST_FORM_LABEL, hostName);
+		try {
+			// Construct Host name in the format:
+			// id@Account@Volume
+			// Don't know the volume so just use 0 as a workaround
+			String hostName = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getNewName();
+			context.saveOutputValue(HP3ParConstants.HOST_LIST_FORM_LABEL, hostName);
 
-		String hostSetName = config.getAccount() + ";0@host@" + config.getNewName();
-		context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
+			String hostSetName = config.getAccount() + ";0@host@" + config.getNewName();
+			context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Failed to register outputs: " + e.getMessage());
+		}
 
 	}
 

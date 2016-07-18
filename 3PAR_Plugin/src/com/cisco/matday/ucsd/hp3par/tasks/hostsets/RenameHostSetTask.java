@@ -64,14 +64,20 @@ public class RenameHostSetTask extends AbstractTask {
 			ucsdLogger.addWarning("Failed to register undo task: " + e.getMessage());
 		}
 
-		// Construct Host name in the format:
-		// id@Account@HosetSet
-		// Don't know the volume so just use 0 as a workaround
-		String hostName = c.getAccountName() + "0@" + config.getAccount() + "@" + config.getHostSetName() + ";hostset";
-		context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
+		try {
+			// Construct Host name in the format:
+			// id@Account@HosetSet
+			// Don't know the volume so just use 0 as a workaround
+			String hostName = c.getAccountName() + "0@" + config.getAccount() + "@" + config.getHostSetName()
+					+ ";hostset";
+			context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
 
-		String hostSetName = c.getAccountName() + "0@set@" + config.getHostSetName();
-		context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
+			String hostSetName = c.getAccountName() + "0@set@" + config.getHostSetName();
+			context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Failed to register outputs: " + e.getMessage());
+		}
 	}
 
 	@Override

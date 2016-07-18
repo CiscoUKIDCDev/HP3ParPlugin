@@ -101,6 +101,23 @@ public class EditHostConfig implements TaskConfigIf {
 	}
 
 	/**
+	 * Rollback task
+	 * <p>
+	 *
+	 * Empty default constructor - this method shouldn't be instantiated
+	 * directly
+	 * 
+	 * @param config
+	 *            Config to roll back
+	 * @param originalName
+	 *            Original name to rollback to
+	 */
+	public EditHostConfig(EditHostConfig config, String originalName) {
+		this.host = config.getAccount() + ";0@" + config.getAccount() + "@" + this.getNewName();
+		this.newName = originalName;
+	}
+
+	/**
 	 * @return Account name
 	 */
 	public String getAccount() {
