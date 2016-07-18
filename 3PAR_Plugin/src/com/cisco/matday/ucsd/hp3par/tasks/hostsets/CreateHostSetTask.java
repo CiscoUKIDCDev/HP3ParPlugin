@@ -70,7 +70,7 @@ public class CreateHostSetTask extends AbstractTask {
 					+ ";hostset";
 			context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
 
-			String hostSetName = c.getAccountName() + "0@set@" + config.getHostSetName();
+			String hostSetName = c.getAccountName() + ";0@set@" + config.getHostSetName() + ";hostset";
 			context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
 		}
 		catch (Exception e) {

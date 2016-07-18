@@ -72,9 +72,6 @@ public class CreateVolumeSetTask extends AbstractTask {
 
 			final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getVolumeSetName();
 			context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
-			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
-					"Undo creation of volume: " + config.getVolumeSetName(), DeleteVolumeSetConfig.DISPLAY_LABEL,
-					new DeleteVolumeSetConfig(config));
 		}
 		catch (Exception e) {
 			ucsdLogger.addWarning("Could not register outputs: " + e.getMessage());

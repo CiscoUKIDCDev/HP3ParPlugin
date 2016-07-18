@@ -31,7 +31,9 @@ import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
 /**
- * Configuration task for the 3PAR Host creation task
+ * Configuration task for the 3PAR Host set creation task
+ * <p>
+ * Used ONLY for the action button
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config

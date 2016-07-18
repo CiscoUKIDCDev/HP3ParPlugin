@@ -185,6 +185,47 @@ public class HP3ParVolumeSetExecute {
 	}
 
 	/**
+	 * Rename an existing volume set
+	 *
+	 * @param c
+	 * @param config
+	 * @return Status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus rename(HP3ParCredentials c, RenameVolumeSetConfig config) throws Exception {
+		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
+
+		// Build rename parameter list:
+		HP3ParSetEditParams renameParams = new HP3ParSetEditParams(config.getVolumeSetName());
+		HP3ParSetEditParams commentParams = new HP3ParSetEditParams();
+		commentParams.setComment((config.getComment() == null) ? "" : config.getComment());
+
+		HP3ParRequestStatus status;
+
+		// Update the comment regardless
+		status = doPut(commentParams, volumeSetName, c);
+
+		// Rename if needed (must be done LAST)
+		if (!config.getVolumeSetName().equals(volumeSetName)) {
+			status = doPut(renameParams, volumeSetName, c);
+			if (!status.isSuccess()) {
+				return status;
+			}
+		}
+
+		// Update the inventory
+		try {
+			HP3ParInventory.update(c, true, "Volume set rename");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return status;
+
+	}
+
+	/**
 	 * Edit an existing volume set
 	 *
 	 * @param c

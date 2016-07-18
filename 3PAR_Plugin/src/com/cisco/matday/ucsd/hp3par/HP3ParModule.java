@@ -74,7 +74,7 @@ import com.cisco.matday.ucsd.hp3par.tasks.hosts.RemoveiSCSIHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.AddHostToHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.CreateHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.DeleteHostSetTask;
-import com.cisco.matday.ucsd.hp3par.tasks.hostsets.EditHostSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.hostsets.RenameHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.RemoveHostFromHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.system.CollectInventoryTask;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.CreateVlunTask;
@@ -87,7 +87,7 @@ import com.cisco.matday.ucsd.hp3par.tasks.volumesets.AddVolumeToVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumesets.CreateVolumeSetSnapshotTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumesets.CreateVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumesets.DeleteVolumeSetTask;
-import com.cisco.matday.ucsd.hp3par.tasks.volumesets.EditVolumeSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.RenameVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumesets.RemoveVolumeFromVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.workflow.WorkflowInputTypeDeclaration;
 import com.cloupia.fw.objstore.ObjStore;
@@ -134,8 +134,8 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
 				new CreateVlunTask(), new DeleteVlunTask(), new CollectInventoryTask(), new AddFCWWNHostTask(),
 				new RemoveFCWWNHostTask(), new AddiSCSIHostTask(), new RemoveiSCSIHostTask(), new EditHostTask(),
-				new CreateHostSetTask(), new EditHostSetTask(), new DeleteHostSetTask(), new AddHostToHostSetTask(),
-				new RemoveHostFromHostSetTask(), new CreateVolumeSetTask(), new EditVolumeSetTask(),
+				new CreateHostSetTask(), new RenameHostSetTask(), new DeleteHostSetTask(), new AddHostToHostSetTask(),
+				new RemoveHostFromHostSetTask(), new CreateVolumeSetTask(), new RenameVolumeSetTask(),
 				new DeleteVolumeSetTask(), new AddVolumeToVolumeSetTask(), new RemoveVolumeFromVolumeSetTask(),
 				new CreateVolumeSetSnapshotTask(), new GrowVolumeTask(), new CreateCpgTask(), new DeleteCpgTask(),
 				new EditCpgTask()

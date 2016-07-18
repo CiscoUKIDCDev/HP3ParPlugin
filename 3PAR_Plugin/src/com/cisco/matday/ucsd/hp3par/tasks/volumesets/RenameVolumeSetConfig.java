@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
+package com.cisco.matday.ucsd.hp3par.tasks.volumesets;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -31,7 +31,7 @@ import com.cloupia.service.cIM.inframgr.customactions.UserInputField;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
 /**
- * Configuration task for the 3PAR Host creation task
+ * Configuration task for the 3PAR Volume creation task
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
@@ -39,12 +39,12 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "HP3Par_delete_host_set")
-public class DeleteHostSetConfig implements TaskConfigIf {
+@PersistenceCapable(detachable = "true", table = "HP3Par_rename_volume_set")
+public class RenameVolumeSetConfig implements TaskConfigIf {
 	/**
 	 * Task display label
 	 */
-	public static final String DISPLAY_LABEL = "3PAR Delete Host Set";
+	public static final String DISPLAY_LABEL = "3PAR Rename Volume Set";
 
 	@Persistent
 	private long configEntryId;
@@ -52,16 +52,34 @@ public class DeleteHostSetConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.HOSTSET_LIST_FORM_LABEL, help = "HP 3PAR Host Set", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.HOSTSET_LIST_FORM_PROVIDER)
-	@UserInputField(type = HP3ParConstants.HOSTSET_LIST_FORM_TABLE_NAME)
+	@FormField(label = HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, help = "Volume Set", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUMESET_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.VOLUMESET_LIST_FORM_TABLE_NAME)
 	@Persistent
-	private String hostSet;
+	private String volumeSet;
+
+	@FormField(label = "New Volume Set Name", help = "Name", type = FormFieldDefinition.FIELD_TYPE_TEXT)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String volumeSetName;
+
+	@FormField(label = "Volumes", help = "Volumes", multiline = true, mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUME_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.VOLUME_LIST_FORM_TABLE_NAME)
+	@Persistent
+	private String volumes;
+
+	@FormField(label = "Comment", help = "Comment", mandatory = false)
+	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
+	@Persistent
+	private String comment;
+
+	@Persistent
+	private String originalName;
 
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
 	 */
-	public DeleteHostSetConfig() {
+	public RenameVolumeSetConfig() {
 
 	}
 
@@ -70,9 +88,14 @@ public class DeleteHostSetConfig implements TaskConfigIf {
 	 *
 	 * @param config
 	 *            Config to rollback
+	 * @param originalName
+	 *            original volume name to rollback to
 	 */
-	public DeleteHostSetConfig(CreateHostSetConfig config) {
-		this.hostSet = config.getAccount() + ";0@set@" + config.getHostSetName() + ";hostset";
+	public RenameVolumeSetConfig(RenameVolumeSetConfig config, String originalName) {
+		this.volumeSet = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
+				+ ";volumeset";
+		this.volumeSetName = originalName;
+		this.volumes = config.getVolumes();
 	}
 
 	@Override
@@ -90,6 +113,25 @@ public class DeleteHostSetConfig implements TaskConfigIf {
 		return DISPLAY_LABEL;
 	}
 
+	/**
+	 * Get the comment
+	 *
+	 * @return Comment - might be null (and is optional)
+	 */
+	public String getComment() {
+		return this.comment;
+	}
+
+	/**
+	 * Set the comment - this is optional
+	 *
+	 * @param comment
+	 *            Optional commentary
+	 */
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	@Override
 	public void setActionId(long actionId) {
 		this.actionId = actionId;
@@ -104,21 +146,49 @@ public class DeleteHostSetConfig implements TaskConfigIf {
 	 * @return Account name
 	 */
 	public String getAccount() {
-		return this.hostSet.split("@")[1];
+		return this.volumeSet.split(";")[0];
 	}
 
 	/**
-	 * @return host set
+	 * @return Volume set
 	 */
-	public String getHostSet() {
-		return this.hostSet;
+	public String getVolumeSet() {
+		return this.volumeSet;
 	}
 
 	/**
-	 * @param hostSet
+	 * @param volumeSet
 	 */
-	public void setHostSet(String hostSet) {
-		this.hostSet = hostSet;
+	public void setVolumeSet(String volumeSet) {
+		this.volumeSet = volumeSet;
+	}
+
+	/**
+	 * @return Volumename
+	 */
+	public String getVolumeSetName() {
+		return this.volumeSetName;
+	}
+
+	/**
+	 * @param volumeSetName
+	 */
+	public void setVolumeSetName(String volumeSetName) {
+		this.volumeSetName = volumeSetName;
+	}
+
+	/**
+	 * @return Volumes
+	 */
+	public String getVolumes() {
+		return this.volumes;
+	}
+
+	/**
+	 * @param volumes
+	 */
+	public void setVolumes(String volumes) {
+		this.volumes = volumes;
 	}
 
 }

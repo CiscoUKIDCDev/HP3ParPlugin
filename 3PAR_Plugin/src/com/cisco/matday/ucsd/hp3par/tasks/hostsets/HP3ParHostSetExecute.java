@@ -181,6 +181,47 @@ public class HP3ParHostSetExecute {
 	}
 
 	/**
+	 * Rename an existing host set
+	 *
+	 * @param c
+	 * @param config
+	 * @return Status
+	 * @throws Exception
+	 */
+	public static HP3ParRequestStatus rename(HP3ParCredentials c, RenameHostSetConfig config) throws Exception {
+		final String hostSetName = config.getHostSet().split(";")[1].split("@")[2];
+
+		// Build rename parameter list:
+		HP3ParSetEditParams renameParams = new HP3ParSetEditParams(config.getHostSetName());
+		HP3ParSetEditParams commentParams = new HP3ParSetEditParams();
+		commentParams.setComment((config.getComment() == null) ? "" : config.getComment());
+
+		HP3ParRequestStatus status;
+
+		// Update the comment regardless
+		status = doPut(commentParams, hostSetName, c);
+
+		// Rename if needed (must be done LAST)
+		if (!config.getHostSetName().equals(hostSetName)) {
+			status = doPut(renameParams, hostSetName, c);
+			if (!status.isSuccess()) {
+				return status;
+			}
+		}
+
+		// Update the inventory
+		try {
+			HP3ParInventory.update(c, true, "Host set rename");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return status;
+
+	}
+
+	/**
 	 * Edit an existing host set
 	 *
 	 * @param c

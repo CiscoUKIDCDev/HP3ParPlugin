@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
+package com.cisco.matday.ucsd.hp3par.tasks.volumesets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
@@ -32,67 +32,71 @@ import com.cloupia.service.cIM.inframgr.customactions.CustomActionLogger;
 import com.cloupia.service.cIM.inframgr.customactions.CustomActionTriggerContext;
 
 /**
- * Create host implementation task
+ * Create volume implementation task
  *
  * @author Matt Day
  *
  */
-public class EditHostSetTask extends AbstractTask {
+public class RenameVolumeSetTask extends AbstractTask {
 
 	@Override
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
-		EditHostSetConfig config = (EditHostSetConfig) context.loadConfigObject();
+		RenameVolumeSetConfig config = (RenameVolumeSetConfig) context.loadConfigObject();
+		final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
-		HP3ParRequestStatus s = HP3ParHostSetExecute.edit(c, config);
+		HP3ParRequestStatus s = HP3ParVolumeSetExecute.rename(c, config);
 
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to edit host: " + s.getError());
-			throw new HP3ParSetException("Failed to edit host: " + s.getError());
+			ucsdLogger.addError("Failed to rename volume set: " + s.getError());
+			throw new HP3ParSetException("Failed to rename volume set: " + s.getError());
 		}
 
-		ucsdLogger.addInfo("Edited host set");
+		ucsdLogger.addInfo("Renamed volume set");
 
 		try {
-			final String hostSetName = config.getHostSet().split(";")[1].split("@")[2];
-			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Host set created",
-					"Undo editing of host set: " + config.getHostSetName(), EditHostSetConfig.DISPLAY_LABEL,
-					new EditHostSetConfig(config, hostSetName));
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+					"Undo renaming of volume: " + config.getVolumeSetName(), RenameVolumeSetConfig.DISPLAY_LABEL,
+					new RenameVolumeSetConfig(config, volumeSetName));
+			ucsdLogger.addInfo(
+					"Registering undo task to rename back to " + volumeSetName + " from " + config.getVolumeSetName());
 		}
 		catch (Exception e) {
 			ucsdLogger.addWarning("Failed to register undo task: " + e.getMessage());
 		}
 
-		// Construct Host name in the format:
+		// Construct Volume name in the format:
 		// id@Account@HosetSet
 		// Don't know the volume so just use 0 as a workaround
-		String hostName = c.getAccountName() + "0@" + config.getAccount() + "@" + config.getHostSetName() + ";hostset";
-		context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
+		String volumeName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
+				+ ";volumeset";
+		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeName);
 
-		String hostSetName = c.getAccountName() + "0@set@" + config.getHostSetName();
-		context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
+		final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getVolumeSetName();
+		context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
 	}
 
 	@Override
 	public TaskConfigIf getTaskConfigImplementation() {
-		return new EditHostSetConfig();
+		return new RenameVolumeSetConfig();
 	}
 
 	@Override
 	public String getTaskName() {
-		return EditHostSetConfig.DISPLAY_LABEL;
+		return RenameVolumeSetConfig.DISPLAY_LABEL;
 	}
 
 	@Override
 	public TaskOutputDefinition[] getTaskOutputDefinitions() {
 		TaskOutputDefinition[] ops = {
-				// Register output type for the host set created
-				new TaskOutputDefinition(HP3ParConstants.HOSTSET_LIST_FORM_LABEL,
-						HP3ParConstants.HOSTSET_LIST_FORM_TABLE_NAME, HP3ParConstants.HOSTSET_LIST_FORM_LABEL),
-				new TaskOutputDefinition(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL,
-						HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_TABLE_NAME,
-						HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL)
+				// Register output type for the volume set created
+				new TaskOutputDefinition(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL,
+						HP3ParConstants.VOLUMESET_LIST_FORM_TABLE_NAME, HP3ParConstants.VOLUMESET_LIST_FORM_LABEL),
+
+				new TaskOutputDefinition(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL,
+						HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_TABLE_NAME,
+						HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL),
 		};
 		return ops;
 	}

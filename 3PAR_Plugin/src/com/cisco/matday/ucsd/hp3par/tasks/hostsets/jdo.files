@@ -6,3 +6,4 @@
 +DeleteHostSetConfig
 +AddHostToHostSetConfig
 +RemoveHostFromHostSetConfig
++RenameHostSetConfig
