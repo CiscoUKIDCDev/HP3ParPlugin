@@ -53,11 +53,22 @@ public class EditVolumeSetTask extends AbstractTask {
 		}
 
 		ucsdLogger.addInfo("Created volume set");
+
+		try {
+			final String volumeSetName = config.getVolumeSet().split(";")[1].split("@")[2];
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+					"Undo editing of volume: " + config.getVolumeSetName(), EditVolumeSetConfig.DISPLAY_LABEL,
+					new EditVolumeSetConfig(config, volumeSetName));
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Failed to register undo task: " + e.getMessage());
+		}
+
 		// Construct Volume name in the format:
 		// id@Account@HosetSet
 		// Don't know the volume so just use 0 as a workaround
 		String volumeName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
-				+ ";hostset";
+				+ ";volumeset";
 		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeName);
 
 		final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getVolumeSetName();

@@ -66,6 +66,9 @@ public class CreateVlunTask extends AbstractTask {
 		}
 		catch (Exception e) {
 			ucsdLogger.addWarning("Failed to add rollback task for VLUN: " + e.getMessage());
+			final String blah = config.getAccount() + ";" + config.getLun() + "@" + config.getAccount() + "@"
+					+ config.getHost() + "@" + config.getVolume();
+			ucsdLogger.addWarning(blah);
 		}
 
 		// Register output
@@ -75,8 +78,8 @@ public class CreateVlunTask extends AbstractTask {
 			final String hostName = config.getHost().split("@")[2];
 			final String volumeName = config.getVolume().split("@")[2];
 
-			String output = config.getAccount() + ";" + config.getLun() + "@" + config.getAccount() + "@" + volumeName
-					+ "@" + hostName;
+			String output = config.getAccount() + ";" + config.getLun() + "@" + config.getAccount() + "@" + hostName
+					+ "@" + volumeName;
 			context.saveOutputValue(HP3ParConstants.VLUN_LIST_FORM_LABEL, output);
 		}
 		catch (Exception e) {

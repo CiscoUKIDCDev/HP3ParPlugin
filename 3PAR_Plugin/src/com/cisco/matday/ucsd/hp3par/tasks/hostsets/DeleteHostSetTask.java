@@ -47,11 +47,11 @@ public class DeleteHostSetTask extends AbstractTask {
 		HP3ParRequestStatus s = HP3ParHostSetExecute.delete(c, config);
 
 		if (!s.isSuccess()) {
-			ucsdLogger.addError("Failed to delete host: " + s.getError());
-			throw new HP3ParSetException("Failed to delete host: " + s.getError());
+			ucsdLogger.addError("Failed to delete host set: " + s.getError());
+			throw new HP3ParSetException("Failed to delete host set: " + s.getError());
 		}
 
-		ucsdLogger.addInfo("Created host set");
+		ucsdLogger.addInfo("Deleted host set");
 	}
 
 	@Override

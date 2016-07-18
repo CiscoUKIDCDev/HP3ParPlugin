@@ -52,7 +52,7 @@ public class EditVolumeSetConfig implements TaskConfigIf {
 	@Persistent
 	private long actionId;
 
-	@FormField(label = HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, help = "HP 3PAR Account", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUMESET_LIST_FORM_PROVIDER)
+	@FormField(label = HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, help = "Volume Set", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.VOLUMESET_LIST_FORM_PROVIDER)
 	@UserInputField(type = HP3ParConstants.VOLUMESET_LIST_FORM_TABLE_NAME)
 	@Persistent
 	private String volumeSet;
@@ -81,6 +81,21 @@ public class EditVolumeSetConfig implements TaskConfigIf {
 	 */
 	public EditVolumeSetConfig() {
 
+	}
+
+	/**
+	 * Rollback constructor - this method shouldn't be instantiated directly
+	 *
+	 * @param config
+	 *            Config to rollback
+	 * @param originalName
+	 *            original volume name to rollback to
+	 */
+	public EditVolumeSetConfig(EditVolumeSetConfig config, String originalName) {
+		this.volumeSet = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
+				+ ";volumeset";
+		this.volumeSetName = originalName;
+		this.volumes = config.getVolumes();
 	}
 
 	@Override

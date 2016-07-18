@@ -46,8 +46,18 @@ public class DeleteVlunTask extends AbstractTask {
 	public void executeCustomAction(CustomActionTriggerContext context, CustomActionLogger ucsdLogger)
 			throws Exception {
 
+		ucsdLogger.addInfo("Starting log task");
+
 		// Obtain account information:
 		DeleteVlunConfig config = (DeleteVlunConfig) context.loadConfigObject();
+
+		try {
+			ucsdLogger.addWarning("LUN: " + config.getVlun());
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not get LUN: " + e.getMessage());
+		}
+
 		HP3ParCredentials c = new HP3ParCredentials(config.getAccount());
 
 		// Delete the VLUN

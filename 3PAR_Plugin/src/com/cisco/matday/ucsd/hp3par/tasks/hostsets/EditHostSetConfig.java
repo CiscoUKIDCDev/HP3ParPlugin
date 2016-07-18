@@ -83,6 +83,20 @@ public class EditHostSetConfig implements TaskConfigIf {
 
 	}
 
+	/**
+	 * Rollback constructor - this method shouldn't be instantiated directly
+	 *
+	 * @param config
+	 *            Config to rollback
+	 * @param originalName
+	 *            original volume name to rollback to
+	 */
+	public EditHostSetConfig(EditHostSetConfig config, String originalName) {
+		this.hostSet = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getHostSetName() + ";hostset";
+		this.hostSetName = originalName;
+		this.hosts = config.getHosts();
+	}
+
 	@Override
 	public long getActionId() {
 		return this.actionId;

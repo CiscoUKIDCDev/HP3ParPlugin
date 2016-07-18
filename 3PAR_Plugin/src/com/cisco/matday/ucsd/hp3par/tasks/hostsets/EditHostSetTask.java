@@ -25,6 +25,7 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.EditVolumeSetConfig;
 import com.cloupia.service.cIM.inframgr.AbstractTask;
 import com.cloupia.service.cIM.inframgr.TaskConfigIf;
 import com.cloupia.service.cIM.inframgr.TaskOutputDefinition;
@@ -53,6 +54,17 @@ public class EditHostSetTask extends AbstractTask {
 		}
 
 		ucsdLogger.addInfo("Created host set");
+
+		try {
+			final String hostSetName = config.getHostSet().split(";")[1].split("@")[2];
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume created",
+					"Undo editing of host set: " + config.getHostSetName(), EditVolumeSetConfig.DISPLAY_LABEL,
+					new EditHostSetConfig(config, hostSetName));
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Failed to register undo task: " + e.getMessage());
+		}
+
 		// Construct Host name in the format:
 		// id@Account@HosetSet
 		// Don't know the volume so just use 0 as a workaround
