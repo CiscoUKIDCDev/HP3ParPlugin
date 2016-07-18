@@ -82,7 +82,7 @@ public class CreateVlunConfig implements TaskConfigIf {
 	 */
 	public String getAccount() {
 		// Volume is in the fomrat id@Account@Volume
-		return this.host.split("@")[1];
+		return this.host.split(";")[0];
 	}
 
 	@Override
