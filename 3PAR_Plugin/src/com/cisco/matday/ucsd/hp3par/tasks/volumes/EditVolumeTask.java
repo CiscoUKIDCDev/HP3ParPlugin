@@ -60,6 +60,18 @@ public class EditVolumeTask extends AbstractTask {
 			ucsdLogger.addError("Failed to edit Volume: " + s.getError());
 			throw new HP3ParVolumeException("Volume edit failed: " + s.getError());
 		}
+
+		try {
+			// Register rollback
+			context.getChangeTracker().undoableResourceAdded("assetType", "idString", "Volume edited",
+					"Undo renaming of volume: " + config.getNewVolumeName(), EditVolumeConfig.DISPLAY_LABEL,
+					new EditVolumeConfig(config));
+
+		}
+		catch (Exception e) {
+			ucsdLogger.addWarning("Could not register rollback task: " + HP3ParConstants.ACCOUNT_LIST_FORM_LABEL + ": "
+					+ e.getMessage());
+		}
 		try {
 			// Construct Volume name in the format:
 			// id@Account@Volume

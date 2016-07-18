@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -32,7 +32,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
 
 /**
  * Config file to edit volumes
- * 
+ *
  * @author Matt Day
  *
  */
@@ -69,6 +69,25 @@ public class EditVolumeConfig implements TaskConfigIf {
 	private String originalName;
 
 	/**
+	 * Initialise and remember the original volume name
+	 */
+	public EditVolumeConfig() {
+		this.originalName = this.newVolumeName;
+	}
+
+	/**
+	 * Allow rollback of volume editing
+	 *
+	 * @param config
+	 */
+	public EditVolumeConfig(EditVolumeConfig config) {
+		// Construct volume ID
+		String volParse = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
+		this.setNewVolumeName(config.getVolume().split("@")[2]);
+		this.setVolume(volParse);
+	}
+
+	/**
 	 * @return the volume
 	 */
 	public String getVolume() {
@@ -102,13 +121,6 @@ public class EditVolumeConfig implements TaskConfigIf {
 	 * Task display label
 	 */
 	public static final String DISPLAY_LABEL = "3PAR Edit Volume";
-
-	/**
-	 * Initialise and remember the original volume namegett
-	 */
-	public EditVolumeConfig() {
-		this.originalName = this.newVolumeName;
-	}
 
 	/**
 	 * @return Original name of the volume (pre-editing)
@@ -157,7 +169,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the account name
-	 * 
+	 *
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
@@ -167,7 +179,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the comment
-	 * 
+	 *
 	 * @return Comment - might be null (and is optional)
 	 */
 	public String getComment() {
@@ -176,7 +188,7 @@ public class EditVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set the comment - this is optional
-	 * 
+	 *
 	 * @param comment
 	 *            Optional commentary
 	 */
