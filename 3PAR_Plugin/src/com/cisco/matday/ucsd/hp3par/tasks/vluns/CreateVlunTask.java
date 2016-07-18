@@ -72,7 +72,7 @@ public class CreateVlunTask extends AbstractTask {
 		try {
 			// Construct VLUN name in the format:
 			// Format: accountName;lun@accountName@volumeName@hostname
-			final String hostName = config.getHost().split("@")[3];
+			final String hostName = config.getHost().split("@")[2];
 			final String volumeName = config.getVolume().split("@")[2];
 
 			String output = config.getAccount() + ";" + config.getLun() + "@" + config.getAccount() + "@" + volumeName
