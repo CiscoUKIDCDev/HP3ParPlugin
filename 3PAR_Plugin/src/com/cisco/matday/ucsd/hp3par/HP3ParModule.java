@@ -74,8 +74,8 @@ import com.cisco.matday.ucsd.hp3par.tasks.hosts.RemoveiSCSIHostTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.AddHostToHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.CreateHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.DeleteHostSetTask;
-import com.cisco.matday.ucsd.hp3par.tasks.hostsets.RenameHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.hostsets.RemoveHostFromHostSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.hostsets.RenameHostSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.system.CollectInventoryTask;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.CreateVlunTask;
 import com.cisco.matday.ucsd.hp3par.tasks.vluns.DeleteVlunTask;
@@ -87,8 +87,8 @@ import com.cisco.matday.ucsd.hp3par.tasks.volumesets.AddVolumeToVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumesets.CreateVolumeSetSnapshotTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumesets.CreateVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumesets.DeleteVolumeSetTask;
-import com.cisco.matday.ucsd.hp3par.tasks.volumesets.RenameVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.tasks.volumesets.RemoveVolumeFromVolumeSetTask;
+import com.cisco.matday.ucsd.hp3par.tasks.volumesets.RenameVolumeSetTask;
 import com.cisco.matday.ucsd.hp3par.workflow.WorkflowInputTypeDeclaration;
 import com.cloupia.fw.objstore.ObjStore;
 import com.cloupia.fw.objstore.ObjStoreHelper;
@@ -119,9 +119,9 @@ public class HP3ParModule extends AbstractCloupiaModule {
 	@Override
 	public CloupiaReport[] getReports() {
 		final CloupiaReport[] report = new CloupiaReport[] {
-				new AccountReport(), new PollingReport(), new VolumeReport(), new VolumeSetReport(),
-				new SnapshotReport(), new CPGReport(), new HostReport(), new HostSetReport(), new VlunReport(),
-				new PortListReport(), new PathReport(),
+				new AccountReport(), new VolumeReport(), new VolumeSetReport(), new SnapshotReport(), new CPGReport(),
+				new HostReport(), new HostSetReport(), new VlunReport(), new PortListReport(), new PathReport(),
+				new PollingReport(),
 		};
 		return report;
 	}
