@@ -15,9 +15,9 @@ There is no support or warranty - implied or otherwise. If you need new features
 You should back-up your UCS Director database before using this plugin and test any new releases before deploying.
 
 ## Screenshots
-![Converged view screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-summary.png)
+![Summary](screenshots/summary.png)
 
-![Workflow task screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Workflow.png)
+![Workflow task screenshot](screenshots/tasks.png)
 
 For more screenshots see the [screenshots page](screenshots.md).
 

@@ -1,31 +1,40 @@
 # Screenshots
 Summary page:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-summary.png)
+
+![Summary Page](screenshots/summary.png)
+
+Tasks:
+
+![Tasks](screenshots/tasks.png)
 
 Volume list:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Volumes.png)
 
-Creating a volume:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Create-Volume.png)
+![Volume List](screenshots/volumes.png)
 
-Volume drilldown:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Volume-Drilldown.png)
+Volume summary:
 
-Volume snapshot:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Volume-Snapshots.png)
+![Volume summary](screenshots/volume-summary.png)
 
-CPG Summary:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-CPG-Summary.png)
+Volume sets:
 
-CPG Drilldown Volume view:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Cpg-Volumes.png)
+![Volume Sets](screenshots/volume-sets.png)
 
-Host list:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Hosts.png)
+Snapshots:
 
-VLUN list:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-VLUNs.png)
+![Snapshots](screenshots/snapshots.png)
 
-Custom task and Workflow list:
-![Screenshot](https://matt.fragilegeek.com/ucsd/3PAR-Plugin-Workflow.png)
+CPGs:
 
+![CPGs](screenshots/cpgs.png)
+
+Hosts:
+
+![Hosts](screenshots/hosts.png)
+
+Host Sets:
+
+![Host sets](screenshots/host-sets.png)
+
+VLUNs:
+
+![VLUNs](screenshots/vluns.png)

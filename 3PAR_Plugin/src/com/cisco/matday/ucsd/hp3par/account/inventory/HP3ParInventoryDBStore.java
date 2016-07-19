@@ -52,7 +52,7 @@ import com.cloupia.model.cIM.InventoryDBItemIf;
  * @author Matt Day
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_inventory_db_v3")
+@PersistenceCapable(detachable = "true", table = "hp3par_inventory_db_v5")
 public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	private static Logger logger = Logger.getLogger(HP3ParModule.class);
 
@@ -104,7 +104,7 @@ public class HP3ParInventoryDBStore implements InventoryDBItemIf {
 	 * future
 	 */
 	@Persistent
-	public static final int API_VERSION = 2;
+	public static final int API_VERSION = 3;
 
 	/**
 	 * Initialise inventory with an account name
