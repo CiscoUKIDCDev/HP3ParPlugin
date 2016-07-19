@@ -3,7 +3,7 @@ This is an Open Automation plug-in which adds 3PAR support to Cisco UCS Director
 
 You can **[download the latest releases here](https://github.com/CiscoUKIDCDev/HP3ParPlugin/releases)**.
 
-The plugin is being actively developed on an ad-hoc basis. Upcoming features are documented over in the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues). You can also create requests there if you'd like new features or have found bugs.
+The plugin is considered largely feature complete. Releases may be less often, but it will be maintained and tested with future UCS Director releases.
 
 The project is released under a generous [MIT-style license](https://github.com/CiscoUKIDCDev/HP3ParPlugin/blob/master/LICENSE) which means you can download it, change it and even charge for it provided the copyright is maintained. I'd request kindly that you send back any bugfixes as pull requests, but you have no obligation to do so.
 
