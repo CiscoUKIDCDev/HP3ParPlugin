@@ -16,11 +16,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/ucsd-rest-sdk/ucsd-rest-api-sdk-v2.jar"/>
-	<classpathentry kind="lib" path="lib/ucsd-httprequest/httpRequest-ucsd-1.0.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/Users/matt/Documents/UCS%20Director%20JavaDoc/httpRequest%20Docs/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/apache-commons-httpclient/httpclient-4.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/apache-commons-httpclient/httpcore-4.4.3.jar"/>
 	<classpathentry kind="lib" path="lib/apache-commons-httpclient/commons-logging-1.2.jar"/>
@@ -31,5 +26,6 @@
 	<classpathentry kind="lib" path="lib/jdo/datanucleus-core-4.1.0-release.jar"/>
 	<classpathentry kind="lib" path="lib/jdo/datanucleus-rdbms-4.1.0-release.jar"/>
 	<classpathentry kind="lib" path="lib/jdo/jdoEnhancer.jar"/>
+	<classpathentry kind="lib" path="lib/ucsd-httprequest/httpRequest-ucsd-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
