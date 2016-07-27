@@ -34,7 +34,8 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
-import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParVolumeAction;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
@@ -74,7 +75,7 @@ public class HP3ParVolumeSetExecute {
 		Gson gson = new Gson();
 		final HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		final UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.POST);
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(p));
@@ -335,15 +336,14 @@ public class HP3ParVolumeSetExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
+
+		// Remove anything outstanding
+		request.setPutDefaults(gson.toJson(params));
 
 		String uri = "/api/v1/volumesets/" + volumeSetName;
 		request.setUri(uri);
 
-		logger.info("EDIT PUT JSON: " + gson.toJson(params));
-
-		// Remove anything outstanding
-		request.setPutDefaults(gson.toJson(params));
 		request.execute();
 		String response = request.getHttpResponse();
 		if (!response.equals("")) {
@@ -379,13 +379,13 @@ public class HP3ParVolumeSetExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		String uri = "/api/v1/volumesets/" + volumeSetName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.DELETE);
 
 		// Use defaults for a DELETE request
 		request.setDeleteDefaults();
+
+		String uri = "/api/v1/volumesets/" + volumeSetName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -435,7 +435,7 @@ public class HP3ParVolumeSetExecute {
 		Gson gson = new Gson();
 		final HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		final UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.POST);
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(new HP3ParVolumeAction("createSnapshot", p)));

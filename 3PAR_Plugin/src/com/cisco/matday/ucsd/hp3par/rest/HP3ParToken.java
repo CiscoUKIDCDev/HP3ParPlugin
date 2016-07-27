@@ -3,7 +3,7 @@
  * @author Matt Day
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -29,18 +29,18 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.exceptions.InvalidHP3ParTokenException;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.rwhitear.threeParREST.authenticate.json.LoginRequestJSON;
 import com.cisco.rwhitear.threeParREST.authenticate.json.LoginResponseJSON;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
-import com.rwhitear.ucsdHttpRequest.constants.HttpRequestConstants;
 
 /**
  * Provides mechanisms to obtain and release tokens from a 3PAR array.
- * 
+ *
  * Generally you should not access this directly but instead use the
  * UCSD3ParHttpWrapper class to do it for you - this helps avoid having to
  * manage releasing the token when done with it
- * 
+ *
  * @author Matt Day
  *
  */
@@ -52,33 +52,32 @@ public class HP3ParToken {
 	/**
 	 * Obtain a token from the array. Note, you <b>must</b> call release() when
 	 * done with it.
-	 * 
+	 *
 	 * @param loginCredentials
 	 * @throws HttpException
 	 * @throws IOException
 	 */
 	public HP3ParToken(HP3ParCredentials loginCredentials) throws HttpException, IOException {
 		this.loginCredentials = loginCredentials;
-		getToken(loginCredentials);
+		this.getToken(loginCredentials);
 	}
 
 	private void getToken(HP3ParCredentials credentials) throws HttpException, IOException {
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(credentials);
-		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
+		UcsdHttpConnection request = new UcsdHttpConnection(credentials, httpMethod.POST);
 		request.setUri(threeParRESTconstants.GET_SESSION_TOKEN_URI);
-		request.setMethodType(HttpRequestConstants.METHOD_TYPE_POST);
-		request.setBodyText(new LoginRequestJSON(credentials.getUsername(), credentials.getPassword()).convertToJSON());
+		request.setBodyJson(new LoginRequestJSON(credentials.getUsername(), credentials.getPassword()).convertToJSON());
 		// Explicitly don't try and use a token:
 		request.setToken(false);
 		request.execute();
 		String initToken = new LoginResponseJSON().getSessionToken(request.getHttpResponse());
+		System.out.println(request.getHttpResponse());
 		this.token = initToken;
 	}
 
 	/**
 	 * Get the token
-	 * 
+	 *
 	 * @return HP3Par authentication Token
 	 * @throws InvalidHP3ParTokenException
 	 *             If the token could not be obtained (e.g. credentials are
@@ -95,7 +94,7 @@ public class HP3ParToken {
 	/**
 	 * Release the token when done. This <b>must</b> be called when a token is
 	 * no longer in use.
-	 * 
+	 *
 	 * @throws HttpException
 	 * @throws IOException
 	 * @throws InvalidHP3ParTokenException
@@ -106,11 +105,9 @@ public class HP3ParToken {
 			throw new InvalidHP3ParTokenException("Token has expired or was already released");
 		}
 		logger.debug("Released token: " + this.token);
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(this.loginCredentials);
-		request.addContentTypeHeader(HttpRequestConstants.CONTENT_TYPE_JSON);
+		UcsdHttpConnection request = new UcsdHttpConnection(this.loginCredentials, httpMethod.DELETE);
 		String uri = "/api/v1/credentials/" + this.token;
 		request.setUri(uri);
-		request.setMethodType(HttpRequestConstants.METHOD_TYPE_DELETE);
 		// Explicitly don't try and use a token:
 		request.setToken(false);
 		request.execute();

@@ -1,0 +1,298 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Cisco and/or its affiliates
+ * @author Matt Day
+ *
+ * Unless explicitly stated otherwise all files in this repository are licensed
+ * under the Apache Software License 2.0
+ *******************************************************************************/
+package com.cisco.matday.ucsd.hp3par.rest;
+
+import java.io.IOException;
+
+import org.apache.commons.httpclient.protocol.Protocol;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
+
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+
+/**
+ * Handles communication to the Spark servers.
+ * <p>
+ * Can be used in two ways, the first where the constructor takes the account,
+ * uri and method is the easiest but is restricted in flexibility. It will add
+ * proxy settings and the token headers automatically.
+ * <p>
+ * The default constructor does no setup (not even proxy) and can be used for
+ * more advanced workloads.
+ *
+ * @author Matt Day
+ *
+ */
+public class UcsdHttpLibrary {
+	private static Logger logger = Logger.getLogger(UcsdHttpLibrary.class);
+
+	private HttpRequestBase request;
+
+	private String response = null;
+	private int httpCode;
+	private DefaultHttpClient httpclient = new DefaultHttpClient();
+	private httpMethod method;
+
+	// Default to https on 443
+	private String protocol = "https";
+	private int port = 443;
+	private String server;
+
+	// By default do not allow untrusted certificates
+	private boolean allowUntrustedCertificates = false;
+
+	/**
+	 * Enum type for http method
+	 */
+	public enum httpMethod {
+		/**
+		 * http POST method
+		 */
+		POST,
+		/**
+		 * http GET method
+		 */
+		GET,
+		/**
+		 * http DELETE method
+		 */
+		DELETE,
+		/**
+		 * http PUT method
+		 */
+		PUT
+	}
+
+	/**
+	 * Enum type for protocols
+	 */
+	public enum httpProtocol {
+		/**
+		 * http
+		 */
+		HTTP,
+		/**
+		 * https
+		 */
+		HTTPS,
+	}
+
+	/**
+	 * Create a connection to the 3PAR Array using the specified account.
+	 * <p>
+	 * Automatically configures the token and proxy settings.
+	 *
+	 * @param account
+	 *            Account from which to connect
+	 * @param path
+	 *            path to request to (e.g. /v1/rooms)
+	 * @param method
+	 *            Method to use (i.e. GET, POST, DELETE, PUT)
+	 */
+	public UcsdHttpLibrary(HP3ParCredentials account, String path, httpMethod method) {
+		// Store the method type
+		this.method = method;
+
+		this.setServer(account.getArray_address());
+
+		// Set the URI and method to the Spark Server
+		this.setUri(path, this.method);
+
+		// Set header
+		this.setHeader("Content-type", "application/json; charset=utf-8");
+	}
+
+	/**
+	 * Create a new http entry with no configuration. You will need to call
+	 * setUri() etc yourself
+	 *
+	 * @see #setUri
+	 * @see #setServer
+	 * @see #setHeader
+	 */
+	public UcsdHttpLibrary() {
+		super();
+	}
+
+	/**
+	 * Allow untrusted certificates for this session? Useful if connecting to
+	 * lab or internal equipment without a trusted certificate
+	 *
+	 * @param allow
+	 *            true to allow untrusted certificates
+	 */
+	public void allowUntrustedCertificates(boolean allow) {
+		this.allowUntrustedCertificates = allow;
+	}
+
+	/**
+	 * Set an http header
+	 *
+	 * @param key
+	 *            Key (e.g. "Content-type")
+	 * @param value
+	 *            Value (e.g. "text/plain")
+	 */
+	public void setHeader(String key, String value) {
+		this.request.addHeader(key, value);
+	}
+
+	/**
+	 * Sets a JSON body parameter
+	 *
+	 * @param body
+	 */
+	public void setJsonBody(String body) {
+		this.setBody(body, ContentType.APPLICATION_JSON);
+	}
+
+	/**
+	 * Sets a body parameter
+	 *
+	 * @param body
+	 *            message body to add
+	 * @param contentType
+	 *            Content type
+	 */
+	public void setBody(String body, ContentType contentType) {
+		try {
+			// Attempt to cast it to an EntityEnclosingMethod which supports
+			// body elements (i.e. POST, PUT methods) and set the body
+			((HttpEntityEnclosingRequestBase) this.request).setEntity(new StringEntity(body, contentType));
+		}
+		catch (Exception e) {
+			logger.error("Cannot add http body to request: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Set the URI and method to use
+	 *
+	 * @param path
+	 *            path (e.g. /api.ciscospark.com/v1/rooms)
+	 * @param method
+	 *            http method Method to use (i.e. GET, POST, DELETE, PUT)
+	 */
+	public void setUri(String path, httpMethod method) {
+		switch (method) {
+		case GET:
+			this.request = new HttpGet(path);
+			return;
+		case PUT:
+			this.request = new HttpPut(path);
+			return;
+		case POST:
+			this.request = new HttpPost(path);
+			return;
+		case DELETE:
+			this.request = new HttpDelete(path);
+			return;
+		default:
+			logger.error("Unknown method type " + method);
+			return;
+		}
+	}
+
+	/**
+	 * Set the server to connect to (e.g. api.ciscospark.com)
+	 *
+	 * @param server
+	 *            server to connect to
+	 */
+	public void setServer(String server) {
+		this.server = server;
+	}
+
+	/**
+	 * Set the protocol to connect with (http or https)
+	 *
+	 * @param protocol
+	 *            protocol to connect with
+	 * @param port
+	 *            TCP port to use
+	 */
+	public void setProtocol(httpProtocol protocol, int port) {
+		this.protocol = (protocol == httpProtocol.HTTPS) ? "https" : "http";
+		this.port = port;
+	}
+
+	/**
+	 * Execute the request
+	 *
+	 * @throws ClientProtocolException
+	 *             If there is a connectivity problem
+	 * @throws IOException
+	 *             If there is an IO connectivity problem
+	 */
+	@SuppressWarnings("deprecation")
+	public void execute() throws ClientProtocolException, IOException {
+		try {
+			// If SSL verification is disabled, use own socket factory
+			if (this.allowUntrustedCertificates) {
+				// Create a new socket factory and set it to always say yes
+				SSLSocketFactory socketFactory = new SSLSocketFactory((chain, authType) -> true);
+
+				// This method is deprecated, but the workaround is to upgrade
+				// to 4.3 which isn't included in UCSD as of 5.5
+				socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+
+				this.httpclient.getConnectionManager().getSchemeRegistry()
+						.register(new Scheme("https", 443, socketFactory));
+			}
+			try {
+				HttpHost target = new HttpHost(this.server, this.port, this.protocol);
+				HttpResponse rsp = this.httpclient.execute(target, this.request);
+				this.response = EntityUtils.toString(rsp.getEntity());
+				this.httpCode = rsp.getStatusLine().getStatusCode();
+			}
+			finally {
+				this.request.releaseConnection();
+			}
+		}
+		catch (Exception e) {
+			logger.error("Failed to execute http request: " + e.getMessage());
+		}
+		finally {
+			// ALWAYS reset the https handler for other plugins
+			Protocol.unregisterProtocol("https");
+		}
+	}
+
+	/**
+	 * Return the http response body
+	 *
+	 * @return http response
+	 */
+	public String getResponse() {
+		return this.response;
+	}
+
+	/**
+	 * Return the http response code
+	 *
+	 * @return http response code
+	 */
+	public int getResponseCode() {
+		return this.httpCode;
+	}
+
+}

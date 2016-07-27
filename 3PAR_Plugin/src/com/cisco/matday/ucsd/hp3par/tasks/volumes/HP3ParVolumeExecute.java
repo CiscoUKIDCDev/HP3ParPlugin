@@ -28,7 +28,8 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParCpgException;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
-import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeEditParams;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeGrowParams;
@@ -105,7 +106,7 @@ public class HP3ParVolumeExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.POST);
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(volume));
@@ -162,13 +163,13 @@ public class HP3ParVolumeExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		String uri = "/api/v1/volumes/" + volName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.DELETE);
 
 		// Use defaults for a DELETE request
 		request.setDeleteDefaults();
+
+		String uri = "/api/v1/volumes/" + volName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -256,13 +257,13 @@ public class HP3ParVolumeExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		String uri = "/api/v1/volumes/" + volName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
 
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(p));
+
+		String uri = "/api/v1/volumes/" + volName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -308,13 +309,13 @@ public class HP3ParVolumeExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		final String uri = "/api/v1/volumes/" + volName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
 
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(p));
+
+		final String uri = "/api/v1/volumes/" + volName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();

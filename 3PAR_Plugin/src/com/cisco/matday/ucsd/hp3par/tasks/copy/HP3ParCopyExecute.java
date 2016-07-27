@@ -28,7 +28,8 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParCpgException;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
-import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParCopyParams;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParSnapshotParams;
 import com.cisco.matday.ucsd.hp3par.rest.copy.json.HP3ParVolumeAction;
@@ -98,7 +99,7 @@ public class HP3ParCopyExecute {
 		Gson gson = new Gson();
 		final HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		final UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.POST);
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(new HP3ParVolumeAction("createPhysicalCopy", p)));
@@ -163,7 +164,7 @@ public class HP3ParCopyExecute {
 		Gson gson = new Gson();
 		final HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		final UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		final UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.POST);
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(new HP3ParVolumeAction("createSnapshot", p)));

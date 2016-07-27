@@ -28,7 +28,8 @@ import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.exceptions.InvalidHP3ParTokenException;
-import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.VolumeResponseMember;
 import com.google.gson.Gson;
 
@@ -57,7 +58,7 @@ public class HP3ParVolumeInfo {
 	@Deprecated
 	public HP3ParVolumeInfo(HP3ParCredentials loginCredentials, String volName)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+		UcsdHttpConnection request = new UcsdHttpConnection(loginCredentials, httpMethod.GET);
 		// Use defaults for GET method
 		request.setGetDefaults();
 		// Volume info uri:

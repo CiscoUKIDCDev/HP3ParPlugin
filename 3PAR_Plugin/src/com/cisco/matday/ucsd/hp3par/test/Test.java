@@ -1,6 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Cisco and/or its affiliates
- * @author Russ Whitear
+ * Copyright (c) 2016 Matt Day, Cisco and others
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,39 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *******************************************************************************/
-package com.cisco.rwhitear.threeParREST.authenticate.json;
+package com.cisco.matday.ucsd.hp3par.test;
 
-import com.google.gson.Gson;
+import java.io.IOException;
 
-//Supressing javadoc warnings as it's not my code to document
+import org.apache.commons.httpclient.HttpException;
+
+import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
+
 @SuppressWarnings("javadoc")
-public class LoginResponseJSON {
-
-	private String request;
-
-	public String getSessionToken(String initRequest) {
-		this.request = initRequest;
-
-		Gson gson = new Gson();
-
-		LoginResponseJsonWrapper lrd = gson.fromJson(this.request, LoginResponseJsonWrapper.class);
-
-		return lrd.getKey();
-
-	}
-
-}
-
-class LoginResponseJsonWrapper {
-
-	private String key;
-
-	public String getKey() {
-		return this.key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
+public class Test {
+	@SuppressWarnings({
+			"deprecation"
+	})
+	public static void main(String[] args) throws HttpException, IOException {
+		HP3ParCredentials c = new HP3ParCredentials("10.51.8.210", "3paradm", "3pardata");
+		final UcsdHttpConnection request = new UcsdHttpConnection(c);
+		// Use defaults for GET method
+		request.setGetDefaults();
+		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);
+		request.execute();
+		String json = request.getHttpResponse();
+		System.out.println(json);
 	}
 
 }

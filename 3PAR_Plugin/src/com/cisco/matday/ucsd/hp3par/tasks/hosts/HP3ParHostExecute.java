@@ -27,7 +27,8 @@ import org.apache.log4j.Logger;
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
-import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostMessage;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.HP3ParHostParams;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.EditHostNameParams;
@@ -70,7 +71,7 @@ public class HP3ParHostExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.POST);
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(params));
@@ -123,13 +124,13 @@ public class HP3ParHostExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		String uri = "/api/v1/hosts/" + hostName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.DELETE);
 
 		// Use defaults for a DELETE request
 		request.setDeleteDefaults();
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -177,13 +178,13 @@ public class HP3ParHostExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		String uri = "/api/v1/hosts/" + hostName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
 
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new HostiSCSINameParams(config.getIscsiName(), ADD)));
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -232,13 +233,13 @@ public class HP3ParHostExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		String uri = "/api/v1/hosts/" + hostName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
 
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new HostFCNameParams(config.getWWN(), ADD)));
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -283,13 +284,13 @@ public class HP3ParHostExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		String uri = "/api/v1/hosts/" + hostName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
 
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new HostiSCSINameParams(iSCSIName, REMOVE)));
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -334,13 +335,13 @@ public class HP3ParHostExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
-
-		String uri = "/api/v1/hosts/" + hostName;
-		request.setUri(uri);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
 
 		// Use defaults for a PUT request
 		request.setPutDefaults(gson.toJson(new HostFCNameParams(iSCSIName, REMOVE)));
+
+		String uri = "/api/v1/hosts/" + hostName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -394,12 +395,12 @@ public class HP3ParHostExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
+		// Use defaults for a PUT request
+		request.setPutDefaults(gson.toJson(new EditHostNameParams(descriptor, hostName, config.getNewName())));
 
 		String uri = "/api/v1/hosts/" + hostName;
 		request.setUri(uri);
-		// Use defaults for a PUT request
-		request.setPutDefaults(gson.toJson(new EditHostNameParams(descriptor, hostName, config.getNewName())));
 
 		request.execute();
 		String response = request.getHttpResponse();

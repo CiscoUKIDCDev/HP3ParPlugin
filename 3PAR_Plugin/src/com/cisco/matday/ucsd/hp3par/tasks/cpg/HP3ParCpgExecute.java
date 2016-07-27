@@ -26,7 +26,8 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.HP3ParCreateCPGParams;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.HP3ParDiskTypeParams;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.HP3ParEditCPGParams;
@@ -72,7 +73,7 @@ public class HP3ParCpgExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.POST);
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(params));
@@ -120,13 +121,12 @@ public class HP3ParCpgExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.DELETE);
+		// Use defaults for a DELETE request
+		request.setDeleteDefaults();
 
 		String uri = "/api/v1/cpgs/" + cpgName;
 		request.setUri(uri);
-
-		// Use defaults for a DELETE request
-		request.setDeleteDefaults();
 
 		request.execute();
 		String response = request.getHttpResponse();
@@ -177,15 +177,15 @@ public class HP3ParCpgExecute {
 			return status;
 		}
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.DELETE);
 
 		HP3ParEditCPGParams params = new HP3ParEditCPGParams(config.getNewName());
 
-		String uri = "/api/v1/cpgs/" + cpgName;
-		request.setUri(uri);
-
 		// Use defaults for a DELETE request
 		request.setPutDefaults(gson.toJson(params));
+
+		String uri = "/api/v1/cpgs/" + cpgName;
+		request.setUri(uri);
 
 		request.execute();
 		String response = request.getHttpResponse();

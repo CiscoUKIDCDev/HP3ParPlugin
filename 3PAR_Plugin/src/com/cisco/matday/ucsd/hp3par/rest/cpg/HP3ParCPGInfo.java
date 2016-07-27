@@ -28,7 +28,8 @@ import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.exceptions.InvalidHP3ParTokenException;
-import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.matday.ucsd.hp3par.rest.cpg.json.CPGResponseMember;
 import com.google.gson.Gson;
 
@@ -56,7 +57,7 @@ public class HP3ParCPGInfo {
 	public HP3ParCPGInfo(HP3ParCredentials loginCredentials, String cpg)
 			throws HttpException, IOException, InvalidHP3ParTokenException {
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(loginCredentials);
+		UcsdHttpConnection request = new UcsdHttpConnection(loginCredentials, httpMethod.GET);
 		// Use defaults for a GET request
 		request.setGetDefaults();
 

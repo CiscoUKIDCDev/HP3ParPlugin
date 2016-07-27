@@ -26,7 +26,8 @@ import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
-import com.cisco.matday.ucsd.hp3par.rest.UCSD3ParHttpWrapper;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
 import com.cisco.matday.ucsd.hp3par.rest.vluns.rest.HP3ParVlunParams;
 import com.cisco.matday.ucsd.hp3par.rest.volumes.json.HP3ParVolumeMessage;
@@ -77,7 +78,7 @@ public class HP3ParVlunExecute {
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.POST);
 
 		// Use defaults for a POST request
 		request.setPostDefaults(gson.toJson(params));
@@ -128,9 +129,9 @@ public class HP3ParVlunExecute {
 
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
-		UCSD3ParHttpWrapper request = new UCSD3ParHttpWrapper(c);
+		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.DELETE);
 
-		// Use defaults for a POST request
+		// Use defaults for a DELETE request
 		request.setDeleteDefaults();
 		request.setUri(uri);
 
