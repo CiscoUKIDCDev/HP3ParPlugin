@@ -58,12 +58,7 @@ showwsapi
 The plugin supports both http and https and the latter is strongly recommended.
 
 ### Installing in UCS Director
-
-1. Under **Administration -> Open Automation** upload the plugin file (HP3Par-plugin.zip). Select it and click **enable**.
-2. From the CLI (typically ssh logged in as shelladmin) select **3** to stop services and then **4** to start them.
-3. You can then add a 3PAR account under a Generic, FlexPod or 3PAR pod
-
-You can then administer your 3PAR system either via custom workflow tasks, or via the UCS Director GUI.
+Please see the **[installation guide](INSTALL.md)** for information on how to compile and install this plugin.
 
 #### Custom workflow tasks
 This plugin includes 30+ tasks to integrate with your 3PAR storage array, including creating/modifying VLUNs, Volumes, CPGs and so on. You can use this in conjunction with other supported platforms in UCS Director to automate entire workflows seamlessly.
