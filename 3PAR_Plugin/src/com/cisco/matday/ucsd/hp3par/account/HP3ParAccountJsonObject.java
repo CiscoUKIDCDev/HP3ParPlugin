@@ -3,7 +3,7 @@
  * @author Matt Day
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -24,9 +24,9 @@ package com.cisco.matday.ucsd.hp3par.account;
 
 /**
  * 3PAR Account information as a REST object
- * 
+ *
  * See the HP 3PAR documentation for more information
- * 
+ *
  * @author Matt Day
  *
  */
@@ -39,6 +39,7 @@ public class HP3ParAccountJsonObject {
 	private String isCredentialPolicy;
 	private String username;
 	private String password;
+	private boolean validateCert;
 	private int tcp_port;
 	private boolean https;
 
@@ -48,6 +49,21 @@ public class HP3ParAccountJsonObject {
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	/**
+	 * @return the validateCert
+	 */
+	public boolean isValidateCert() {
+		return this.validateCert;
+	}
+
+	/**
+	 * @param validateCert
+	 *            the validateCert to set
+	 */
+	public void setValidateCert(boolean validateCert) {
+		this.validateCert = validateCert;
 	}
 
 	public String getArray_address() {

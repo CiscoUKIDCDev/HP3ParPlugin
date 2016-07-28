@@ -73,6 +73,13 @@ public class HP3ParConnectionHandler extends PhysicalConnectivityTestHandler {
 						status.setErrorMsg("Could not get authentication token (check credentials)");
 						return status;
 					}
+					catch (javax.net.ssl.SSLPeerUnverifiedException e) {
+						logger.warn("SSL Exception raised testing connection - certificate invalid");
+						// Didn't get a token
+						status.setConnectionOK(false);
+						status.setErrorMsg("Certificate error (server validation failed: " + e.getMessage() + ")");
+						return status;
+					}
 					catch (@SuppressWarnings("unused") Exception e) {
 						logger.warn("Exception raised testing connection - probably wrong IP address or unreachable");
 						// Didn't get a token

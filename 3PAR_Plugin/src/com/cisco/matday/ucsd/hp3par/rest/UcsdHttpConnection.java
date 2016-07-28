@@ -78,7 +78,7 @@ public class UcsdHttpConnection {
 	private String server;
 
 	// By default do not allow untrusted certificates
-	private boolean allowUntrustedCertificates = false;
+	private boolean validateCertificates = false;
 
 	boolean useToken = false;
 	HP3ParCredentials credentials = null;
@@ -125,28 +125,13 @@ public class UcsdHttpConnection {
 	 * Only initialise from credentials to allow token later
 	 *
 	 * @param credentials
-	 */
-	@Deprecated
-	public UcsdHttpConnection(HP3ParCredentials credentials) {
-		this.credentials = credentials;
-		// Allow untrusted credentials by default:
-		this.allowUntrustedCertificates = true;
-		this.server = credentials.getArray_address();
-		this.port = credentials.getTcp_port();
-		this.protocol = (credentials.isHttps()) ? "https" : "http";
-	}
-
-	/**
-	 * Only initialise from credentials to allow token later
-	 *
-	 * @param credentials
 	 * @param method
 	 *            Http Method to use
 	 */
 	public UcsdHttpConnection(HP3ParCredentials credentials, httpMethod method) {
 		this.credentials = credentials;
 		// Allow untrusted credentials by default:
-		this.allowUntrustedCertificates = true;
+		this.validateCertificates = credentials.validateCert();
 		this.setMethod(method);
 		this.server = credentials.getArray_address();
 		this.port = credentials.getTcp_port();
@@ -308,7 +293,7 @@ public class UcsdHttpConnection {
 	@SuppressWarnings("deprecation")
 	public void execute() throws HttpException, IOException {
 		// If SSL verification is disabled, use own socket factory
-		if (this.allowUntrustedCertificates) {
+		if (!this.validateCertificates) {
 			try {
 				// Create a new socket factory and set it to always say yes
 				SSLSocketFactory socketFactory = new SSLSocketFactory((chain, authType) -> true);

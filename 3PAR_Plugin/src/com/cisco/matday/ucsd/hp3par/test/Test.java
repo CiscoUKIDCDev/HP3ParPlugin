@@ -27,6 +27,7 @@ import org.apache.commons.httpclient.HttpException;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection;
+import com.cisco.matday.ucsd.hp3par.rest.UcsdHttpConnection.httpMethod;
 import com.cisco.rwhitear.threeParREST.constants.threeParRESTconstants;
 
 @SuppressWarnings("javadoc")
@@ -36,7 +37,7 @@ public class Test {
 	})
 	public static void main(String[] args) throws HttpException, IOException {
 		HP3ParCredentials c = new HP3ParCredentials("10.51.8.210", "3paradm", "3pardata");
-		final UcsdHttpConnection request = new UcsdHttpConnection(c);
+		final UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.GET);
 		// Use defaults for GET method
 		request.setGetDefaults();
 		request.setUri(threeParRESTconstants.GET_VOLUMES_URI);

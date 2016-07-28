@@ -55,6 +55,7 @@ public class HP3ParCredentials {
 	private String password;
 	// This MUST be intialised (thus is final):
 	private final String accountName;
+	private boolean validateCert = false;
 
 	static Logger logger = Logger.getLogger(HP3ParCredentials.class);
 
@@ -95,6 +96,7 @@ public class HP3ParCredentials {
 	public HP3ParCredentials(String array_address, String username, String password) {
 		this.accountName = "internal";
 		this.init(array_address, username, password, true, HP3ParConstants.DEFAULT_PORT);
+		this.validateCert = true;
 	}
 
 	/**
@@ -175,9 +177,17 @@ public class HP3ParCredentials {
 		String initUsername = account.getUsername();
 		String initPassword = account.getPassword();
 		String initArrayAddress = account.getArray_address();
+		this.validateCert = account.isValidateCert();
 		boolean initHttps = account.isHttps();
 		int initTcpPort = account.getTcp_port();
 		this.init(initArrayAddress, initUsername, initPassword, initHttps, initTcpPort);
+	}
+
+	/**
+	 * @return if the server certificate should be validated or not
+	 */
+	public boolean validateCert() {
+		return this.validateCert;
 	}
 
 	/**
@@ -305,7 +315,8 @@ public class HP3ParCredentials {
 	public static HP3ParAccountDBStore getInternalCredential(String accountName) throws Exception {
 		PhysicalInfraAccount acc = AccountUtil.getAccountByName(accountName);
 		String json = acc.getCredential();
-		AbstractInfraAccount specificAcc = (AbstractInfraAccount) JSON.jsonToJavaObject(json, HP3ParAccountDBStore.class);
+		AbstractInfraAccount specificAcc = (AbstractInfraAccount) JSON.jsonToJavaObject(json,
+				HP3ParAccountDBStore.class);
 		specificAcc.setAccount(acc);
 
 		return (HP3ParAccountDBStore) specificAcc;

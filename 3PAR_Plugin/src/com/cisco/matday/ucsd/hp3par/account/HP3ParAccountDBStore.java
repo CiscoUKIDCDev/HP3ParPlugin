@@ -75,6 +75,10 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	private boolean https;
 
 	@Persistent
+	@FormField(label = "Validate server certificate", help = "Validate https certificate (disable for labs)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
+	private boolean validateCert;
+
+	@Persistent
 	@FormField(label = "Poll Interval (minutes)", help = "Between 1 and 60 minutes. -1 to disable (not recommended). Inventory will always be polled after an action.", type = FormFieldDefinition.FIELD_TYPE_NUMBER)
 	private int polling;
 
@@ -83,9 +87,25 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	 */
 	public HP3ParAccountDBStore() {
 		super();
+		this.validateCert = true;
 		this.https = true;
 		this.tcp_port = HP3ParConstants.DEFAULT_PORT;
 		this.polling = (int) (HP3ParConstants.INVENTORY_LIFE / HP3ParConstants.MILLISECOND_TO_MINUTES);
+	}
+
+	/**
+	 * @return if the certificate should be validated
+	 */
+	public boolean isValidateCert() {
+		return this.validateCert;
+	}
+
+	/**
+	 * @param validateCert
+	 *            if the server certificate should be validated
+	 */
+	public void setValidateCert(boolean validateCert) {
+		this.validateCert = validateCert;
 	}
 
 	@Override
@@ -153,7 +173,8 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 			ObjStore<InfraAccount> store = ObjStoreHelper.getStore(InfraAccount.class);
 
 			String cquery = "server == '" + this.array_address + "' && userID == '" + this.username
-					+ "' && transport == " + this.https + "' && port == " + this.tcp_port;
+					+ " && validateCert == '" + this.validateCert + "' && transport == " + this.https + "' && port == "
+					+ this.tcp_port;
 
 			List<InfraAccount> accList = store.query(cquery);
 
