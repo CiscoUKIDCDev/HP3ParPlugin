@@ -3,7 +3,7 @@
  * @author Matt Day
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -36,7 +36,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * <p>
  * This shouldn't be instantiated directly, instead it should be included as a
  * form field or task config
- * 
+ *
  * @author Matt Day
  *
  */
@@ -113,7 +113,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the desired volume
-	 * 
+	 *
 	 * @return The volume to be created
 	 */
 	public String getVolumeName() {
@@ -122,7 +122,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set the desired volume
-	 * 
+	 *
 	 * @param volumeName
 	 *            The volume to be created
 	 */
@@ -132,7 +132,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the desired volume size
-	 * 
+	 *
 	 * @return The size of the volume to be created
 	 */
 	public long getVolume_size() {
@@ -141,7 +141,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set the desired volume size
-	 * 
+	 *
 	 * @param volume_size
 	 *            The volume to be created
 	 */
@@ -166,7 +166,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the account name
-	 * 
+	 *
 	 * @return Account name to do this on
 	 */
 	public String getAccount() {
@@ -175,7 +175,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set the account name
-	 * 
+	 *
 	 * @param account
 	 *            The volume to be created
 	 */
@@ -185,7 +185,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the CPG
-	 * 
+	 *
 	 * @return CPG details (formatted id@account@cpgName)
 	 */
 	public String getCpg() {
@@ -194,7 +194,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set the CPG name
-	 * 
+	 *
 	 * @param cpg
 	 *            The cpg to create the volume on - must be formatted
 	 *            id@account@cpgName
@@ -205,7 +205,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get the comment
-	 * 
+	 *
 	 * @return Comment - might be null (and is optional)
 	 */
 	public String getComment() {
@@ -214,7 +214,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set the comment - this is optional
-	 * 
+	 *
 	 * @param comment
 	 *            Optional commentary
 	 */
@@ -224,7 +224,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Get if this should be thin provisioned or not
-	 * 
+	 *
 	 * @return True if thin provisioning is desired
 	 */
 	public boolean isThin_provision() {
@@ -233,7 +233,7 @@ public class CreateVolumeConfig implements TaskConfigIf {
 
 	/**
 	 * Set if this should be thin provisioned
-	 * 
+	 *
 	 * @param thin_provision
 	 *            true to thin provision
 	 */

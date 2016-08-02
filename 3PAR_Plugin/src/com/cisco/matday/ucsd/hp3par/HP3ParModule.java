@@ -119,18 +119,17 @@ public class HP3ParModule extends AbstractCloupiaModule {
 
 	@Override
 	public CloupiaReport[] getReports() {
-		final CloupiaReport[] report = new CloupiaReport[] {
+		return new CloupiaReport[] {
 				new AccountReport(), new VolumeReport(), new VolumeSetReport(), new SnapshotReport(), new CPGReport(),
 				new HostReport(), new HostSetReport(), new VlunReport(), new PortListReport(), new PathReport(),
 				new PollingReport(),
 		};
-		return report;
 	}
 
 	// Return a list of API tasks supported
 	@Override
 	public AbstractTask[] getTasks() {
-		final AbstractTask[] task = new AbstractTask[] {
+		return new AbstractTask[] {
 				new CreateVolumeTask(), new DeleteVolumeTask(), new CreateVolumeSnapshotTask(),
 				new CreateVolumeCopyTask(), new EditVolumeTask(), new CreateHostTask(), new DeleteHostTask(),
 				new CreateVlunTask(), new DeleteVlunTask(), new CollectInventoryTask(), new AddFCWWNHostTask(),
@@ -141,7 +140,6 @@ public class HP3ParModule extends AbstractCloupiaModule {
 				new CreateVolumeSetSnapshotTask(), new GrowVolumeTask(), new CreateCpgTask(), new DeleteCpgTask(),
 				new EditCpgTask()
 		};
-		return task;
 	}
 
 	@Override

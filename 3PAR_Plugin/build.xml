@@ -7,7 +7,7 @@
 		<delete file="${basedir}/{moduleID}-plugin.zip" />
 	</target>
 	
-	<target name="build" depends="clean, jdoEnhance">
+	<target name="build" depends="clean, jdoEnhance, verify">
 		<delete dir="${basedir}/build" />
 		<mkdir dir="${basedir}/build" />
 		<jar destfile="${basedir}/build/${moduleID}-plugin.jar" update="true">
@@ -56,5 +56,9 @@
 			</classpath>
 		</java>
 	</target>
-
+	<target name="verify">
+	        <exec dir="${basedir}" executable="python" failonerror="true">
+	            <arg line="../ucsd-troubleshooter/SHOOTER.py" />
+        	</exec>
+	</target>
 </project>

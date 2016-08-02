@@ -46,7 +46,7 @@ import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
  * @author matt
  *
  */
-@PersistenceCapable(detachable = "true", table = "hp3par_account")
+@PersistenceCapable(detachable = "true", table = "HP3Par_account")
 public class HP3ParAccountDBStore extends AbstractInfraAccount implements ConnectorCredential {
 
 	static Logger logger = Logger.getLogger(HP3ParAccountDBStore.class);
