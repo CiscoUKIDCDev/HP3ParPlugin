@@ -5,7 +5,7 @@ To compile this plugin, you will need:
 * [Ant](https://ant.apache.org/)
 
 ## Steps to compile
-1. Clone or download the plugin source code. 
+1. Clone or download the [plugin source code](https://github.com/CiscoUKIDCDev/HP3ParPlugin/releases). If downloading from git, you should checkout a stable version (e.g. ```git checkout 1.0.1```)
 2. Open a terminal session and open the ```3PAR_Plugin``` folder
 3. Execute the command ```ant build```
 
