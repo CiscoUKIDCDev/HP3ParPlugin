@@ -6,19 +6,27 @@
 		<delete dir="${basedir}/build" />
 		<delete file="${basedir}/{moduleID}-plugin.zip" />
 	</target>
-	<target name="debug" depends="clean, jdoEnhance, verify">
+	<target name="compile" description="compile the source">
+		<javac srcdir="${basedir}/src" destdir="${classesdir}">
+			<classpath>
+				<pathelement path="${classpath}"/>
+				<pathelement location="lib/logging/log4j-1.2.15.jar"/>
+				<pathelement path="${classesdir}"/>
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="debug" depends="clean, compile, jdoEnhance, verify">
 		<delete dir="${basedir}/build" />
 		<mkdir dir="${basedir}/build" />
 		<jar destfile="${basedir}/build/${moduleID}-plugin.jar" update="true">
-	        <fileset dir="${basedir}/bin">
-	        </fileset>
-	    </jar>
+		        <fileset dir="${basedir}/bin">
+		        </fileset>
+	        </jar>
 		<copy file="${basedir}/${moduleID}.feature" tofile="${basedir}/build/${moduleID}.feature" />
-		<!-- 
-		TODO: Necessary runtime jars need to be copied into ${basedir}/build folder!
-		But DO NOT copy the open automation jars into the build folder!
-		When introducing new jars, make sure your .feature file lists each jar as well!!!
-		-->
 		<!-- Copy all the resources into the zip -->
 		<mkdir dir="${basedir}/build/resources" />
 		<copy todir="${basedir}/build/resources">
@@ -39,7 +47,8 @@
 		</zip>
 		<echo message="${moduleID} feature is located at ${basedir}/${moduleID}-plugin.zip"></echo>
 	</target>
-	<target name="build" depends="clean, jdoEnhance">
+
+	<target name="build" depends="clean, compile, jdoEnhance">
 		<delete dir="${basedir}/build" />
 		<mkdir dir="${basedir}/build" />
 		<jar destfile="${basedir}/build/${moduleID}-plugin.jar" update="true">
