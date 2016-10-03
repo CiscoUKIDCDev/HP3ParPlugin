@@ -24,6 +24,7 @@ package com.cisco.matday.ucsd.hp3par.inputs;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
 import com.cloupia.model.cIM.ReportContext;
 import com.cloupia.model.cIM.TabularReport;
 import com.cloupia.service.cIM.inframgr.TabularReportGeneratorIf;
@@ -66,7 +67,7 @@ public class HP3ParPersonaSelector implements TabularReportGeneratorIf {
 			// Internal ID is simply the persona ID
 			model.addTextValue(Integer.toString(i));
 			model.addTextValue(Integer.toString(i));
-			model.addTextValue(HP3ParConstants.HOST_PERSONAS[i]);
+			model.addTextValue(HostResponseMember.getPersona(i));
 			model.completedRow();
 		}
 

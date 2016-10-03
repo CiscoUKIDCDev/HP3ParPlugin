@@ -24,6 +24,8 @@ package com.cisco.matday.ucsd.hp3par.rest.hosts.json;
 
 import java.util.List;
 
+import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
+
 /**
  * @author Matt Day
  *
@@ -111,6 +113,21 @@ public class HostResponseMember {
 	 */
 	public void setDescriptors(HostResponseDescriptors descriptors) {
 		this.descriptors = descriptors;
+	}
+
+	/**
+	 * Return a hosts persona based on its ID
+	 *
+	 * @param id
+	 * @return Host persona name
+	 */
+	public static String getPersona(int id) {
+		try {
+			return HP3ParConstants.HOST_PERSONAS[id];
+		}
+		catch (@SuppressWarnings("unused") Exception e) {
+			return "Unknown";
+		}
 	}
 
 }

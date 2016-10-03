@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
-import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponse;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseDescriptors;
 import com.cisco.matday.ucsd.hp3par.rest.hosts.json.HostResponseMember;
@@ -88,7 +87,7 @@ public class HostReportImpl implements TabularReportGeneratorIf {
 			// Name
 			model.addTextValue(host.getName());
 
-			model.addTextValue(HP3ParConstants.HOST_PERSONAS[host.getPersona()]);
+			model.addTextValue(HostResponseMember.getPersona(host.getPersona()));
 
 			final int fcPaths = host.getFCPaths().size();
 			model.addTextValue(Integer.toString(fcPaths));
