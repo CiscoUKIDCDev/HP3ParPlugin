@@ -34,8 +34,9 @@ package com.cisco.matday.ucsd.hp3par.rest.hosts.json;
 public class EditHostNameParams {
 	final HostResponseDescriptors descriptors;
 	final String newName;
+	final int persona;
 
-	public EditHostNameParams(HostResponseDescriptors descriptors, String oldName, String newName) {
+	public EditHostNameParams(HostResponseDescriptors descriptors, String oldName, String newName, int persona) {
 		this.descriptors = descriptors;
 		if (!oldName.equals(newName)) {
 			this.newName = newName;
@@ -43,6 +44,7 @@ public class EditHostNameParams {
 		else {
 			this.newName = null;
 		}
+		this.persona = persona;
 
 	}
 

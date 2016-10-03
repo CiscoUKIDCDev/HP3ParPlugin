@@ -32,6 +32,7 @@ public class HP3ParHostParams {
 	private String name;
 	private String domain;
 	private HostResponseDescriptors descriptors;
+	private int persona;
 
 	/**
 	 * @param name
@@ -40,6 +41,18 @@ public class HP3ParHostParams {
 	public HP3ParHostParams(String name, HostResponseDescriptors desc) {
 		this.name = name;
 		this.descriptors = desc;
+		this.persona = 1;
+	}
+
+	/**
+	 * @param name
+	 * @param desc
+	 * @param persona
+	 */
+	public HP3ParHostParams(String name, HostResponseDescriptors desc, int persona) {
+		this.name = name;
+		this.descriptors = desc;
+		this.persona = persona;
 	}
 
 	/**
@@ -53,6 +66,22 @@ public class HP3ParHostParams {
 			this.domain = domain;
 		}
 		this.descriptors = desc;
+		this.persona = 1;
+	}
+
+	/**
+	 * @param name
+	 * @param domain
+	 * @param desc
+	 * @param persona
+	 */
+	public HP3ParHostParams(String name, String domain, HostResponseDescriptors desc, int persona) {
+		this.name = name;
+		if ((domain != null) && (!"".equals(domain))) {
+			this.domain = domain;
+		}
+		this.descriptors = desc;
+		this.persona = persona;
 	}
 
 	/**
@@ -98,6 +127,21 @@ public class HP3ParHostParams {
 	 */
 	public void setDescriptors(HostResponseDescriptors descriptors) {
 		this.descriptors = descriptors;
+	}
+
+	/**
+	 * @return the persona
+	 */
+	public int getPersona() {
+		return this.persona;
+	}
+
+	/**
+	 * @param persona
+	 *            the persona to set
+	 */
+	public void setPersona(int persona) {
+		this.persona = persona;
 	}
 
 }

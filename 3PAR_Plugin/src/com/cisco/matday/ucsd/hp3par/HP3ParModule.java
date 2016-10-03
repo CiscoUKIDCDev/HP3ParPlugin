@@ -42,6 +42,7 @@ import com.cisco.matday.ucsd.hp3par.inputs.HP3ParFCSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostAndHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSetSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPersonaSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPortSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParRaidTypeSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVlunSelector;
@@ -163,6 +164,7 @@ public class HP3ParModule extends AbstractCloupiaModule {
 			cfr.registerTabularField(HP3ParConstants.FCWWN_LIST_FORM_PROVIDER, HP3ParFCSelector.class, "0", "2");
 			cfr.registerTabularField(HP3ParConstants.RAID_LIST_FORM_PROVIDER, HP3ParRaidTypeSelector.class, "0", "1");
 			cfr.registerTabularField(HP3ParConstants.DISK_LIST_FORM_PROVIDER, HP3ParDiskTypeSelector.class, "0", "1");
+			cfr.registerTabularField(HP3ParConstants.PERSONA_LIST_FORM_PROVIDER, HP3ParPersonaSelector.class, "0", "2");
 
 			// Register drilldown reports
 			ReportContextRegistry.getInstance().register(HP3ParConstants.VOLUME_LIST_DRILLDOWN,

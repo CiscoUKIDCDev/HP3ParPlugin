@@ -63,6 +63,11 @@ public class EditHostConfig implements TaskConfigIf {
 	@Persistent
 	private String newName;
 
+	@FormField(label = HP3ParConstants.PERSONA_LIST_FORM_LABEL, help = "Host Persona", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.PERSONA_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.PERSONA_LIST_FORM_TABLE_NAME)
+	@Persistent
+	private int persona;
+
 	@FormField(label = "Location", help = "Location", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
@@ -268,6 +273,21 @@ public class EditHostConfig implements TaskConfigIf {
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	/**
+	 * @return the persona
+	 */
+	public int getPersona() {
+		return this.persona;
+	}
+
+	/**
+	 * @param persona
+	 *            the persona to set
+	 */
+	public void setPersona(int persona) {
+		this.persona = persona;
 	}
 
 }

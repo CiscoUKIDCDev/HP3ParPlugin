@@ -32,6 +32,7 @@ import com.cisco.matday.ucsd.hp3par.inputs.HP3ParFCSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostAndHostSetSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParHostSetSelector;
+import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPersonaSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParPortSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParRaidTypeSelector;
 import com.cisco.matday.ucsd.hp3par.inputs.HP3ParVlunSelector;
@@ -80,6 +81,7 @@ public class WorkflowInputTypeDeclaration {
 		registerVolumeAndVolumeSetList();
 		registerRaidList();
 		registerDiskList();
+		registerPersonaList();
 
 	}
 
@@ -255,5 +257,17 @@ public class WorkflowInputTypeDeclaration {
 		// display in the GUI
 		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.DISK_LIST_FORM_NAME,
 				HP3ParDiskTypeSelector.class, "0", "1");
+	}
+
+	private static void registerPersonaList() {
+		WorkflowInputTypeRegistry sampleInputType = WorkflowInputTypeRegistry.getInstance();
+		sampleInputType.addDeclaration(new WorkflowInputFieldTypeDeclaration(
+				HP3ParConstants.PERSONA_LIST_FORM_TABLE_NAME, HP3ParConstants.PERSONA_LIST_FORM_LABEL,
+				FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, HP3ParConstants.PERSONA_LIST_FORM_NAME));
+
+		// First item is what we return to the workflow, second is what we
+		// display in the GUI
+		TabularFieldRegistry.getInstance().registerTabularField(HP3ParConstants.PERSONA_LIST_FORM_NAME,
+				HP3ParPersonaSelector.class, "0", "2");
 	}
 }

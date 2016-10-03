@@ -63,6 +63,11 @@ public class CreateHostConfig implements TaskConfigIf {
 	@Persistent
 	private String hostName;
 
+	@FormField(label = HP3ParConstants.PERSONA_LIST_FORM_LABEL, help = "Host Persona", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TABULAR_POPUP, table = HP3ParConstants.PERSONA_LIST_FORM_PROVIDER)
+	@UserInputField(type = HP3ParConstants.PERSONA_LIST_FORM_TABLE_NAME)
+	@Persistent
+	private int persona;
+
 	@FormField(label = "Domain", help = "Domain", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_TEXT)
 	@UserInputField(type = HP3ParConstants.GENERIC_TEXT_INPUT)
 	@Persistent
@@ -103,7 +108,8 @@ public class CreateHostConfig implements TaskConfigIf {
 	 * directly
 	 */
 	public CreateHostConfig() {
-
+		// Set persona to "Generic" by default
+		this.persona = 1;
 	}
 
 	@Override
@@ -272,6 +278,21 @@ public class CreateHostConfig implements TaskConfigIf {
 	 */
 	public void setDomain(String domain) {
 		this.domain = domain;
+	}
+
+	/**
+	 * @return the persona
+	 */
+	public int getPersona() {
+		return this.persona;
+	}
+
+	/**
+	 * @param persona
+	 *            the persona to set
+	 */
+	public void setPersona(int persona) {
+		this.persona = persona;
 	}
 
 }

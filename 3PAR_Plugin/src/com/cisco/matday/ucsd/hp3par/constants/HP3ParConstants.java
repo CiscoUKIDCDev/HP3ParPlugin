@@ -137,6 +137,26 @@ public class HP3ParConstants {
 	public static final String DISK_LIST_FORM_PROVIDER = "HP3ParDISKList_provider";
 
 	/**
+	 * User-friendly label for the persona type
+	 */
+	public static final String PERSONA_LIST_FORM_PROVIDER = "Host Persona Type";
+
+	/**
+	 * Persona list internal UCSD data type name
+	 */
+	public static final String PERSONA_LIST_FORM_TABLE_NAME = "HP3ParPersonaList";
+
+	/**
+	 * Persona list form name
+	 */
+	public static final String PERSONA_LIST_FORM_NAME = "HP3ParPersonaList";
+
+	/**
+	 * User-friendly label for Persona list table
+	 */
+	public static final String PERSONA_LIST_FORM_LABEL = "Host Persona";
+
+	/**
 	 * User-friendly label for CPG list table
 	 */
 	public static final String CPG_LIST_FORM_LABEL = "CPG";
@@ -493,5 +513,13 @@ public class HP3ParConstants {
 	 * Maximum number of polling log entries
 	 */
 	public static final int MAX_POLLING_LOG_ENTRIES = 200;
+
+	/**
+	 * Host persona types
+	 */
+	public final static String[] HOST_PERSONAS = {
+			"Unused", "Generic", "Generic-ALUA", "Generic-Legacy", "HPUX-Legacy", "AIX-Legacy", "Egenera",
+			"NetApp ONTAP", "VMware", "OpenVMS", "HPUX", "WindowsServer"
+	};
 
 }

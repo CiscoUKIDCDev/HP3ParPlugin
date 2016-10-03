@@ -86,6 +86,7 @@ public class EditHostAction extends CloupiaPageAction {
 			form.setModel(member.getDescriptors().getModel());
 			form.setNewName(hostName);
 			form.setOs(member.getDescriptors().getOs());
+			form.setPersona(member.getPersona());
 		}
 		catch (@SuppressWarnings("unused") Exception e) {
 			// Do nothing

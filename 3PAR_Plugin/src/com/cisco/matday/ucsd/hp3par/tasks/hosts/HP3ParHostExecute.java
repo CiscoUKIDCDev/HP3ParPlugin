@@ -66,7 +66,8 @@ public class HP3ParHostExecute {
 		desc.setModel(config.getModel());
 		desc.setOs(config.getOs());
 
-		HP3ParHostParams params = new HP3ParHostParams(config.getHostName(), config.getDomain(), desc);
+		HP3ParHostParams params = new HP3ParHostParams(config.getHostName(), config.getDomain(), desc,
+				config.getPersona());
 
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
@@ -397,7 +398,8 @@ public class HP3ParHostExecute {
 
 		UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.PUT);
 		// Use defaults for a PUT request
-		request.setPutDefaults(gson.toJson(new EditHostNameParams(descriptor, hostName, config.getNewName())));
+		request.setPutDefaults(
+				gson.toJson(new EditHostNameParams(descriptor, hostName, config.getNewName(), config.getPersona())));
 
 		String uri = "/api/v1/hosts/" + hostName;
 		request.setUri(uri);
