@@ -24,6 +24,8 @@ package com.cisco.matday.ucsd.hp3par.rest.hosts.json;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 
 /**
@@ -32,6 +34,8 @@ import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
  */
 @SuppressWarnings("javadoc")
 public class HostResponseMember {
+
+	private static Logger logger = Logger.getLogger(HostResponseMember.class);
 
 	private int id;
 	private String name;
@@ -125,7 +129,8 @@ public class HostResponseMember {
 		try {
 			return HP3ParConstants.HOST_PERSONAS[id];
 		}
-		catch (@SuppressWarnings("unused") Exception e) {
+		catch (Exception e) {
+			logger.warn("Unknown persona ID: " + id + " (this is a bug): " + e.getMessage());
 			return "Unknown";
 		}
 	}
