@@ -4,9 +4,15 @@
 	
 	<target name="clean">
 		<delete dir="${basedir}/build" />
+		<delete dir="${basedir}/bin" />
 		<delete file="${basedir}/{moduleID}-plugin.zip" />
 	</target>
 	<target name="compile" description="compile the source">
+		<mkdir dir="${basedir}/bin" />
+                <copy file="${basedir}/src/device_icon_mapping.xml" tofile="${basedir}/bin/device_icon_mapping.xml" />
+                <copy file="${basedir}/src/module.properties" tofile="${basedir}/bin/module.properties" />
+                <copy file="${basedir}/src/taskdoclet.xml" tofile="${basedir}/bin/taskdoclet.xml" />
+
 		<javac srcdir="${basedir}/src" destdir="${classesdir}">
 			<classpath>
 				<pathelement path="${classpath}"/>
