@@ -191,6 +191,15 @@ public class HP3ParCredentials {
 	}
 
 	/**
+	 * Configure whether to validate the server certificate or not
+	 * 
+	 * @param validateCert
+	 */
+	public void setValidateCert(boolean validateCert) {
+		this.validateCert = validateCert;
+	}
+
+	/**
 	 * Get the current protocol in use - http or https
 	 *
 	 * @return Current protocol (http or https)

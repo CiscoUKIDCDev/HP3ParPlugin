@@ -37,6 +37,7 @@ public class Test {
 	})
 	public static void main(String[] args) throws HttpException, IOException {
 		HP3ParCredentials c = new HP3ParCredentials("10.51.8.210", "3paradm", "3pardata");
+		c.setValidateCert(false);
 		final UcsdHttpConnection request = new UcsdHttpConnection(c, httpMethod.GET);
 		// Use defaults for GET method
 		request.setGetDefaults();

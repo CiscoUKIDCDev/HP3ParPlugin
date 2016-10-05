@@ -52,7 +52,7 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	static Logger logger = Logger.getLogger(HP3ParAccountDBStore.class);
 
 	@Persistent
-	private boolean isCredentialPolicy = false;
+	private boolean isCredentialPolicy = true;
 
 	@Persistent
 	@FormField(label = "Device Address", help = "Device Address (hostname or IP address)", mandatory = true)
@@ -115,7 +115,7 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 
 	@Override
 	public boolean isCredentialPolicy() {
-		return false;
+		return true;
 	}
 
 	@Override
