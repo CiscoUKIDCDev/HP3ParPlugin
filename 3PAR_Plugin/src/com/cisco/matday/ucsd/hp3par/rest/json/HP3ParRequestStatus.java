@@ -3,7 +3,7 @@
  * @author Matt Day
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal 
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -25,7 +25,7 @@ package com.cisco.matday.ucsd.hp3par.rest.json;
 /**
  * Obtains any error messages from the 3PAR array after performing various
  * operations on it
- * 
+ *
  * @author Matt Day
  *
  */
@@ -36,7 +36,7 @@ public class HP3ParRequestStatus {
 	/**
 	 * Was there an error message? This will return "no error" if not, but it's
 	 * best to test isSuccess() first
-	 * 
+	 *
 	 * @return Error message (if any)
 	 */
 	public String getError() {
@@ -53,7 +53,7 @@ public class HP3ParRequestStatus {
 
 	/**
 	 * Was this operation a success?
-	 * 
+	 *
 	 * @return Success of operation
 	 */
 	public boolean isSuccess() {
@@ -64,5 +64,4 @@ public class HP3ParRequestStatus {
 	public void setSuccess(boolean success) {
 		this.success = success;
 	}
-
 }

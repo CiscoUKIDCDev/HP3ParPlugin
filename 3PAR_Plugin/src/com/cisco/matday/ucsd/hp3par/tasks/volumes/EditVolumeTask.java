@@ -25,6 +25,7 @@ package com.cisco.matday.ucsd.hp3par.tasks.volumes;
 import org.apache.log4j.Logger;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParVolumeException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
@@ -77,10 +78,11 @@ public class EditVolumeTask extends AbstractTask {
 			// Construct Volume name in the format:
 			// id@Account@Volume
 			// Don't know the volume so just use 0 as a workaround
-			String tableVolName = "0@" + config.getAccount() + "@" + config.getNewVolumeName();
+			int id = HP3ParInventory.getVolumeInfo(c, config.getNewVolumeName()).getId();
+			String tableVolName = id + "@" + config.getAccount() + "@" + config.getNewVolumeName();
 			context.saveOutputValue(HP3ParConstants.VOLUME_LIST_FORM_LABEL, tableVolName);
 
-			final String volAndVolSetName = c.getAccountName() + ";0@volume@" + config.getNewVolumeName();
+			final String volAndVolSetName = c.getAccountName() + ";" + id + "@volume@" + config.getNewVolumeName();
 			context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
 		}
 		catch (Exception e) {

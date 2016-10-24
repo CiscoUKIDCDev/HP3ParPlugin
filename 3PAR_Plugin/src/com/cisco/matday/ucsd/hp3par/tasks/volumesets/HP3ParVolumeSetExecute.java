@@ -94,7 +94,7 @@ public class HP3ParVolumeSetExecute {
 			status.setSuccess(true);
 			// Update the inventory
 			try {
-				HP3ParInventory.update(c, true, "Volume creation");
+				HP3ParInventory.update(c, true, "Volume set creation");
 			}
 			catch (Exception e) {
 				e.printStackTrace();

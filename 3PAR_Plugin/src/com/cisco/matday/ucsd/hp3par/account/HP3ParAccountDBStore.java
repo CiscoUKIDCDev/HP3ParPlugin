@@ -36,7 +36,9 @@ import com.cloupia.lib.connector.account.AbstractInfraAccount;
 import com.cloupia.model.cIM.FormFieldDefinition;
 import com.cloupia.model.cIM.InfraAccount;
 import com.cloupia.service.cIM.inframgr.collector.view2.ConnectorCredential;
+import com.cloupia.service.cIM.inframgr.forms.wizard.FieldValidation;
 import com.cloupia.service.cIM.inframgr.forms.wizard.FormField;
+import com.cloupia.service.cIM.inframgr.forms.wizard.HideFieldOnCondition;
 
 /**
  * This class extends the in-build UCS Director account storage. Don't use it
@@ -52,34 +54,42 @@ public class HP3ParAccountDBStore extends AbstractInfraAccount implements Connec
 	static Logger logger = Logger.getLogger(HP3ParAccountDBStore.class);
 
 	@Persistent
-	private boolean isCredentialPolicy = true;
+	@FormField(label = "Use Credential Policy", validate = true, help = "Select if you want to use policy to give the credentials.", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
+	private boolean isCredentialPolicy = false;
 
 	@Persistent
 	@FormField(label = "Device Address", help = "Device Address (hostname or IP address)", mandatory = true)
+	@HideFieldOnCondition(field = "isCredentialPolicy", op = FieldValidation.OP_EQUALS, value = "false")
 	private String array_address;
 
 	@Persistent
 	@FormField(label = "TCP Port", help = "TCP Port (default is 8080 for https, 8008 for http)", mandatory = true)
+	@HideFieldOnCondition(field = "isCredentialPolicy", op = FieldValidation.OP_EQUALS, value = "false")
 	private int tcp_port;
 
 	@Persistent
 	@FormField(label = "Username", help = "Username", mandatory = true)
+	@HideFieldOnCondition(field = "isCredentialPolicy", op = FieldValidation.OP_EQUALS, value = "false")
 	private String username;
 
 	@Persistent
 	@FormField(label = "Password", help = "Password", mandatory = true, type = FormFieldDefinition.FIELD_TYPE_PASSWORD)
+	@HideFieldOnCondition(field = "isCredentialPolicy", op = FieldValidation.OP_EQUALS, value = "false")
 	private String password;
 
 	@Persistent
 	@FormField(label = "Use secure connection (https)", help = "Use secure connection (https)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
+	@HideFieldOnCondition(field = "isCredentialPolicy", op = FieldValidation.OP_EQUALS, value = "false")
 	private boolean https;
 
 	@Persistent
 	@FormField(label = "Validate server certificate", help = "Validate https certificate (disable for labs)", type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
+	@HideFieldOnCondition(field = "isCredentialPolicy", op = FieldValidation.OP_EQUALS, value = "false")
 	private boolean validateCert;
 
 	@Persistent
 	@FormField(label = "Poll Interval (minutes)", help = "Between 1 and 60 minutes. -1 to disable (not recommended). Inventory will always be polled after an action.", type = FormFieldDefinition.FIELD_TYPE_NUMBER)
+	@HideFieldOnCondition(field = "isCredentialPolicy", op = FieldValidation.OP_EQUALS, value = "false")
 	private int polling;
 
 	/**

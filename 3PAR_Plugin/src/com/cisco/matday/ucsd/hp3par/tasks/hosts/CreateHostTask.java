@@ -23,6 +23,7 @@
 package com.cisco.matday.ucsd.hp3par.tasks.hosts;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
@@ -62,11 +63,11 @@ public class CreateHostTask extends AbstractTask {
 
 		// Construct Host name in the format:
 		// id@Account@Volume
-		// Don't know the volume so just use 0 as a workaround
-		String hostName = config.getAccount() + ";0@" + config.getAccount() + "@" + config.getHostName();
+		int id = HP3ParInventory.getHostInfo(c, config.getHostName()).getId();
+		String hostName = config.getAccount() + ";" + id + "@" + config.getAccount() + "@" + config.getHostName();
 		context.saveOutputValue(HP3ParConstants.HOST_LIST_FORM_LABEL, hostName);
 
-		String hostSetName = config.getAccount() + ";0@host@" + config.getHostName();
+		String hostSetName = config.getAccount() + ";" + id + "@host@" + config.getHostName();
 		context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
 	}
 

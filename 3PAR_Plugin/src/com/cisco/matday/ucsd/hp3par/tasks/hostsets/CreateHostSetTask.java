@@ -23,6 +23,7 @@
 package com.cisco.matday.ucsd.hp3par.tasks.hostsets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
@@ -67,11 +68,12 @@ public class CreateHostSetTask extends AbstractTask {
 			// Construct Host name in the format:
 			// id@Account@HosetSet
 			// Don't know the host so just use 0 as a workaround
-			String hostName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getHostSetName()
+			int id = HP3ParInventory.getHostSetInfo(c, config.getHostSetName()).getId();
+			String hostName = c.getAccountName() + ";" + id + "@" + config.getAccount() + "@" + config.getHostSetName()
 					+ ";hostset";
 			context.saveOutputValue(HP3ParConstants.HOSTSET_LIST_FORM_LABEL, hostName);
 
-			String hostSetName = c.getAccountName() + ";0@set@" + config.getHostSetName() + ";hostset";
+			String hostSetName = c.getAccountName() + ";" + id + "@set@" + config.getHostSetName() + ";hostset";
 			context.saveOutputValue(HP3ParConstants.HOST_AND_HOSTSET_LIST_FORM_LABEL, hostSetName);
 		}
 		catch (Exception e) {

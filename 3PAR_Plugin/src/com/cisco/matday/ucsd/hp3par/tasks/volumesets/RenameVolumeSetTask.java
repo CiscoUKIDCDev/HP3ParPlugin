@@ -23,6 +23,7 @@
 package com.cisco.matday.ucsd.hp3par.tasks.volumesets;
 
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
+import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.constants.HP3ParConstants;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParSetException;
 import com.cisco.matday.ucsd.hp3par.rest.json.HP3ParRequestStatus;
@@ -70,11 +71,12 @@ public class RenameVolumeSetTask extends AbstractTask {
 		// Construct Volume name in the format:
 		// id@Account@HosetSet
 		// Don't know the volume so just use 0 as a workaround
-		String volumeName = c.getAccountName() + ";0@" + config.getAccount() + "@" + config.getVolumeSetName()
+		int id = HP3ParInventory.getVolumeSetInfo(c, config.getVolumeSetName()).getId();
+		String volumeName = c.getAccountName() + ";" + id + "@" + config.getAccount() + "@" + config.getVolumeSetName()
 				+ ";volumeset";
 		context.saveOutputValue(HP3ParConstants.VOLUMESET_LIST_FORM_LABEL, volumeName);
 
-		final String volAndVolSetName = c.getAccountName() + ";0@set@" + config.getVolumeSetName();
+		final String volAndVolSetName = c.getAccountName() + ";" + id + "@set@" + config.getVolumeSetName();
 		context.saveOutputValue(HP3ParConstants.VOLUME_AND_VOLUMESET_LIST_FORM_LABEL, volAndVolSetName);
 	}
 
