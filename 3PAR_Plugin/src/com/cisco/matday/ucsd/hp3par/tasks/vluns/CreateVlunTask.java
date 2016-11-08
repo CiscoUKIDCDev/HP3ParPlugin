@@ -54,7 +54,7 @@ public class CreateVlunTask extends AbstractTask {
 
 		// Create the VLUN
 		HP3ParRequestStatus s = HP3ParVlunExecute.create(c, config);
-		// If it wasn't createderror out
+		// If it wasn't created error out
 		if (!s.isSuccess()) {
 			ucsdLogger.addError("Failed to create VLUN: " + s.getError());
 			throw new HP3ParVlunException("VLUN creation failed");

@@ -68,6 +68,11 @@ public class CreateVlunConfig implements TaskConfigIf {
 	@Persistent
 	private int lun;
 
+	@FormField(label = "Auto LUN", help = "Auto LUN", mandatory = false, type = FormFieldDefinition.FIELD_TYPE_BOOLEAN)
+	@UserInputField(type = "Boolean")
+	@Persistent
+	private boolean autoLun;
+
 	/**
 	 * Empty default constructor - this method shouldn't be instantiated
 	 * directly
@@ -160,6 +165,21 @@ public class CreateVlunConfig implements TaskConfigIf {
 	 */
 	public void setLun(int lun) {
 		this.lun = lun;
+	}
+
+	/**
+	 * @return the autoLun
+	 */
+	public boolean useAutoLun() {
+		return this.autoLun;
+	}
+
+	/**
+	 * @param autoLun
+	 *            the autoLun to set
+	 */
+	public void setAutoLun(boolean autoLun) {
+		this.autoLun = autoLun;
 	}
 
 }

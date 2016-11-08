@@ -38,6 +38,14 @@ public class HP3ParVlunParams {
 	private int lun;
 	private String hostname;
 	PortResponsePos portPos;
+	private boolean autoLun;
+
+	public HP3ParVlunParams(String volumeName, String hostName) {
+		super();
+		this.volumeName = volumeName;
+		this.autoLun = true;
+		this.hostname = hostName;
+	}
 
 	public HP3ParVlunParams(String volumeName, String hostName, int lun) {
 		super();
@@ -76,6 +84,51 @@ public class HP3ParVlunParams {
 
 	public void setHostName(String hostName) {
 		this.hostname = hostName;
+	}
+
+	/**
+	 * @return the hostname
+	 */
+	public String getHostname() {
+		return this.hostname;
+	}
+
+	/**
+	 * @param hostname
+	 *            the hostname to set
+	 */
+	public void setHostname(String hostname) {
+		this.hostname = hostname;
+	}
+
+	/**
+	 * @return the portPos
+	 */
+	public PortResponsePos getPortPos() {
+		return this.portPos;
+	}
+
+	/**
+	 * @param portPos
+	 *            the portPos to set
+	 */
+	public void setPortPos(PortResponsePos portPos) {
+		this.portPos = portPos;
+	}
+
+	/**
+	 * @return the autoLun
+	 */
+	public boolean isAutoLun() {
+		return this.autoLun;
+	}
+
+	/**
+	 * @param autoLun
+	 *            the autoLun to set
+	 */
+	public void setAutoLun(boolean autoLun) {
+		this.autoLun = autoLun;
 	}
 
 }

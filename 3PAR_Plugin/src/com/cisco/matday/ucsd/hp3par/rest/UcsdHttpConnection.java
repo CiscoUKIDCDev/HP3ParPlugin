@@ -27,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.commons.httpclient.HttpException;
+import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -66,7 +67,13 @@ public class UcsdHttpConnection {
 
 	private HttpRequestBase request;
 
+	// http status code
+	private int statusCode = 0;
+	// server headers returned
+	private Header[] headers;
+	// Response string
 	private String response = null;
+
 	private DefaultHttpClient httpclient = new DefaultHttpClient();
 
 	// Assume GET by default
@@ -327,6 +334,8 @@ public class UcsdHttpConnection {
 			System.out.println("URL: " + this.request.getURI().toString());
 			HttpHost target = new HttpHost(this.server, this.port, this.protocol);
 			HttpResponse rsp = this.httpclient.execute(target, this.request);
+			this.statusCode = rsp.getStatusLine().getStatusCode();
+			this.headers = rsp.getAllHeaders();
 			if (rsp.getEntity() != null) {
 				this.response = EntityUtils.toString(rsp.getEntity());
 			}
@@ -355,6 +364,20 @@ public class UcsdHttpConnection {
 	 */
 	public String getHttpResponse() {
 		return this.response;
+	}
+
+	/**
+	 * @return the statusCode
+	 */
+	public int getStatusCode() {
+		return this.statusCode;
+	}
+
+	/**
+	 * @return the headers
+	 */
+	public Header[] getHeaders() {
+		return this.headers;
 	}
 
 }

@@ -22,6 +22,8 @@
  *******************************************************************************/
 package com.cisco.matday.ucsd.hp3par.tasks.vluns;
 
+import org.apache.http.Header;
+
 import com.cisco.matday.ucsd.hp3par.account.HP3ParCredentials;
 import com.cisco.matday.ucsd.hp3par.account.inventory.HP3ParInventory;
 import com.cisco.matday.ucsd.hp3par.exceptions.HP3ParHostException;
@@ -73,8 +75,15 @@ public class HP3ParVlunExecute {
 			volName = "set:" + volName;
 		}
 
-		// Build vlun information object:
-		HP3ParVlunParams params = new HP3ParVlunParams(volName, hostName, config.getLun());
+		// Build vlun information object if we need an auto LUN or not:
+		HP3ParVlunParams params = null;
+		if (config.useAutoLun()) {
+			params = new HP3ParVlunParams(volName, hostName);
+		}
+		else {
+			params = new HP3ParVlunParams(volName, hostName, config.getLun());
+		}
+
 		Gson gson = new Gson();
 		HP3ParRequestStatus status = new HP3ParRequestStatus();
 
@@ -87,25 +96,34 @@ public class HP3ParVlunExecute {
 		request.execute();
 		String response = request.getHttpResponse();
 
-		// Shouldn't get a response if all is good... if we did it's trouble
-		if (!response.equals("")) {
+		// Need an http 201 (created) message:
+		if (request.getStatusCode() == 201) {
+			status.setSuccess(true);
+			for (Header h : request.getHeaders()) {
+				if (h.getName().equals("Location")) {
+					// LUN ID gets returned as a String, e.g.:
+					// /api/v1/vluns/VolumeName,LunID,HostName
+					try {
+						int id = Integer.parseInt(h.getValue().split(",")[1]);
+						// Update the LUN ID in the config:
+						config.setLun(id);
+						HP3ParInventory.update(c, true, "VLUN " + id + " created");
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+					break;
+				}
+			}
+		}
+		else {
 			HP3ParVolumeMessage message = gson.fromJson(response, HP3ParVolumeMessage.class);
 			status.setError("Error code: " + message.getCode() + ": " + message.getDesc());
 			status.setSuccess(false);
 		}
-		else {
-			status.setSuccess(true);
-			// Update the inventory
-			try {
-				HP3ParInventory.update(c, true, "VLUN Creation");
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+
 		// Return the same reference as passed for convenience and clarity
 		return status;
-
 	}
 
 	/**
