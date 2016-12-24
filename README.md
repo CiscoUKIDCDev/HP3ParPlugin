@@ -10,7 +10,7 @@ The project is released under a generous [MIT-style license](https://github.com/
 For installation instructions see the bottom of this page.
 
 ## Warning
-There is no support or warranty - implied or otherwise. If you need new features or bugfixes, ask nicely in the [issues tab](https://github.com/CiscoUKIDCDev/HP3ParPlugin/issues). The code is there too, so you can fix it yourself (and ideally send those back as a pull request!).
+There is no support or warranty for this plugin, implied or otherwise. You deploy it at your own risk. As of 2017 this plugin is no longer being maintained by the original author. If you require support or features you will need to provide them yourself or work with a professional services organisation such as Metsi or Vzure.
 
 You should back-up your UCS Director database before using this plugin and test any new releases before deploying.
 
